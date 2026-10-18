@@ -31,6 +31,15 @@ export class NativeDatabase {
       CREATE TABLE IF NOT EXISTS pins (owner TEXT NOT NULL, scope TEXT NOT NULL, media_id TEXT NOT NULL, PRIMARY KEY(owner,scope,media_id));
       CREATE TABLE IF NOT EXISTS prepared_files (file_key TEXT PRIMARY KEY NOT NULL, scope TEXT NOT NULL, media_id TEXT NOT NULL, created_at INTEGER NOT NULL);
     `)
+      // Additive local migration: old/source rows remain conservative local media.
+      if (
+        !(await connection.query('PRAGMA table_info(media)')).values?.some(
+          (row) => row.name === 'downloaded',
+        )
+      )
+        await connection.execute(
+          'ALTER TABLE media ADD COLUMN downloaded INTEGER NOT NULL DEFAULT 0 CHECK(downloaded IN (0,1));',
+        )
       return new NativeDatabase(connection, manager, name)
     } catch (error) {
       await manager.closeConnection(name, false).catch(() => undefined)

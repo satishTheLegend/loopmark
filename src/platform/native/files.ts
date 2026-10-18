@@ -43,6 +43,7 @@ export class NativeMedia implements PlatformMedia {
     bytes: Blob,
     scope: CollectionKey,
     generation: Generation,
+    options?: { downloaded?: true },
   ): Promise<void> {
     mediaRefSchema.parse(ref)
     const raw = new Uint8Array(await bytes.arrayBuffer())
@@ -100,8 +101,8 @@ export class NativeMedia implements PlatformMedia {
       if (existing && !sameRef(JSON.parse(existing.body as string) as MediaRef, ref))
         throw new DomainError('MEDIA_INVALID')
       await db.run(
-        'INSERT INTO media(scope,id,body,file_key,prepared_at) VALUES(?,?,?,?,?) ON CONFLICT(scope,id) DO UPDATE SET file_key=excluded.file_key,prepared_at=excluded.prepared_at',
-        [scopeId, ref.id, JSON.stringify(ref), fileKey, Date.now()],
+        'INSERT INTO media(scope,id,body,file_key,prepared_at,downloaded) VALUES(?,?,?,?,?,?) ON CONFLICT(scope,id) DO UPDATE SET file_key=excluded.file_key,prepared_at=excluded.prepared_at',
+        [scopeId, ref.id, JSON.stringify(ref), fileKey, Date.now(), options?.downloaded ? 1 : 0],
         false,
       )
       await db.run('DELETE FROM prepared_files WHERE file_key=?', [fileKey], false)

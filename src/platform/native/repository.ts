@@ -42,6 +42,7 @@ import { NativeDraftStore, type NativeDraft } from './drafts'
 import { activeScope, assertGeneration, scopeKey } from './recovery-journal'
 import { durableFiles } from './files-bridge'
 import { completeNativeRebase, nativeRebaseBlocked } from './rebase'
+import { removeNativeDownloads } from './downloads'
 
 export interface NativeRepositoryOptions {
   databaseName?: string
@@ -91,6 +92,11 @@ export class NativeRepository implements Repository {
   }
   async readActive(): Promise<SessionScope | null> {
     return this.database.serial(activeScope)
+  }
+  async removeDownloads(scope: SessionScope, projectId: string) {
+    const result = await removeNativeDownloads(this.database, scope, projectId)
+    this.publish()
+    return result
   }
   private async reviewIn(
     db: SQLiteDBConnection,
