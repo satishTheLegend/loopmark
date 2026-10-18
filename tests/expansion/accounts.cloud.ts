@@ -136,7 +136,9 @@ test('actual account deletion retains reviewed work and a private status receipt
   await page.getByRole('button', { name: 'Review account deletion' }).click()
   await expect(page.getByRole('radio', { name: /Keep a separate local copy/ })).toBeChecked()
   releasePush()
-  await expect(page.locator('.sync-status > span:not(.sr-only)')).toHaveText('Synced to your account')
+  const syncLabel = page.locator('.sync-status > span:not(.sr-only)')
+  await expect(syncLabel).toBeVisible()
+  await expect(syncLabel).toHaveText('Synced to your account')
   await page.waitForTimeout(5100)
   const code = await deliveredCode(email, () =>
     page.getByRole('button', { name: 'Send deletion code' }).click(),

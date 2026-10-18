@@ -24,9 +24,9 @@ test('a fresh bag link survives reload and OTP, opens only the explicitly select
     await a.getByLabel('What will you do next?').fill(next)
     await a.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
     await expect(a.getByRole('dialog')).toHaveCount(0)
-    await expect(a.locator('.sync-status > span:not(.sr-only)')).toHaveText('Synced to your account', {
-      timeout: 20000,
-    })
+    const syncLabel = a.locator('.sync-status > span:not(.sr-only)')
+    await expect(syncLabel).toBeVisible({ timeout: 20000 })
+    await expect(syncLabel).toHaveText('Synced to your account', { timeout: 20000 })
 
     await b.goto(`${origin}/p/${projectId}`)
     await expect(
