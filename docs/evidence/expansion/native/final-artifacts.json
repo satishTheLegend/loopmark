@@ -6,7 +6,7 @@
   "storeDistribution": false,
   "ios": {
     "file": "loopmark-ios-simulator-fb52c6e.tar.gz",
-    "sha256": "b9d5794fb339d4a8cc818c81dd45f3a9497b1cfccf7bde0e97454afe16cdd066",
+    "sha256": "bfc93ff0c34d90d1a2bc288cf2f2561550bf1d7c08489875939418578f8dbcd9",
     "appDirectorySha256": "9d21730e58a20a76a80a21adb27a44c5b9ca50909740a55e227fefa589fca425",
     "target": "iOS Simulator arm64, ad hoc local simulator signature"
   },
