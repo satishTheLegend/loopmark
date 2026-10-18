@@ -16,6 +16,7 @@ test('actual two-device conflict requires a fresh review, preserves device recov
   const first = await browser.newContext(),
     second = await browser.newContext(),
     fresh = await browser.newContext()
+  let releaseInitialPull = () => {}
   try {
     const a = await first.newPage(),
       b = await second.newPage(),
@@ -47,10 +48,28 @@ test('actual two-device conflict requires a fresh review, preserves device recov
     await expect(b.locator('.sync-status')).toContainText('Synced to your account', {
       timeout: 20000,
     })
+    // A conflict receipt can arrive before its authoritative pull. Open the
+    // review in that interval deliberately, then require the explicit refresh.
+    let holdInitialPull = true
+    let observeInitialPull!: () => void
+    const initialPullObserved = new Promise<void>((resolve) => {
+      observeInitialPull = resolve
+    })
+    const initialPullGate = new Promise<void>((resolve) => {
+      releaseInitialPull = resolve
+    })
+    await a.route('**/functions/v1/sync-pull', async (route) => {
+      if (holdInitialPull) {
+        observeInitialPull()
+        await initialPullGate
+      }
+      await route.continue()
+    })
     await first.setOffline(false)
     await expect(a.locator('.sync-status')).toContainText('Changes need your review', {
       timeout: 25000,
     })
+    await initialPullObserved
     await a.getByRole('button', { name: 'Sync details', exact: true }).click()
     await a.getByRole('button', { name: 'Review versions', exact: true }).click()
     const review = a.getByRole('dialog', { name: 'Review these versions' })
@@ -58,6 +77,20 @@ test('actual two-device conflict requires a fresh review, preserves device recov
       'Keep the two extra shoulder repeats from this device.',
     )
     await expect(review.getByRole('region', { name: 'This device version' })).toContainText('4 mm')
+    await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText(
+      'Original cardigan',
+    )
+    holdInitialPull = false
+    releaseInitialPull()
+    await expect(review.getByRole('alert')).toContainText(
+      'New changes arrived while this review was open.',
+      { timeout: 20000 },
+    )
+    await expect(
+      review.getByRole('button', { name: 'Use cloud version', exact: true }),
+    ).toHaveCount(0)
+    await review.getByRole('button', { name: 'Refresh versions', exact: true }).click()
+    await expect(review.getByRole('alert')).toHaveCount(0)
     await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText(
       'Use the revised shoulder repeat from the other device.',
     )
@@ -116,6 +149,7 @@ test('actual two-device conflict requires a fresh review, preserves device recov
     ).toBeVisible()
     await expect(c.getByRole('heading', { name: 'Device cardigan', exact: true })).toHaveCount(0)
   } finally {
+    releaseInitialPull()
     await first.close()
     await second.close()
     await fresh.close()
