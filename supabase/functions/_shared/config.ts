@@ -94,6 +94,10 @@ const schema = z
     LOOPMARK_CLOUD_ENROLLED: flag,
     LOOPMARK_RAZORPAY_ENROLLED: flag,
     LOOPMARK_REVENUECAT_ENROLLED: flag,
+    LOOPMARK_REVENUECAT_PROJECT_ID: z
+      .string()
+      .regex(/^proj[A-Za-z0-9]{4,100}$/)
+      .optional(),
     LOOPMARK_PAYMENT_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
     LOOPMARK_ERASURE_LEDGER_URL: z
       .union([origin, z.literal('http://erasure-ledger:8787')])
@@ -189,6 +193,7 @@ const schema = z
     if (
       value.LOOPMARK_REVENUECAT_ENROLLED &&
       (!value.LOOPMARK_CLOUD_ENROLLED ||
+        !value.LOOPMARK_REVENUECAT_PROJECT_ID ||
         !value.REVENUECAT_SECRET_API_KEY ||
         !value.REVENUECAT_WEBHOOK_SECRET)
     )
@@ -242,6 +247,7 @@ export type ServerConfig = Readonly<{
   cloudEnrolled: boolean
   razorpayEnrolled: boolean
   revenueCatEnrolled: boolean
+  revenueCatProjectId?: string
   paymentsEnrolled: boolean
   paymentEnvironment: 'sandbox' | 'production'
   erasureLedgerUrl?: string
@@ -301,6 +307,7 @@ export function parseServerConfig(environment: Readonly<Record<string, unknown>>
     cloudEnrolled: value.LOOPMARK_CLOUD_ENROLLED,
     razorpayEnrolled: value.LOOPMARK_RAZORPAY_ENROLLED,
     revenueCatEnrolled: value.LOOPMARK_REVENUECAT_ENROLLED,
+    revenueCatProjectId: value.LOOPMARK_REVENUECAT_PROJECT_ID,
     paymentsEnrolled: value.LOOPMARK_RAZORPAY_ENROLLED || value.LOOPMARK_REVENUECAT_ENROLLED,
     paymentEnvironment: value.LOOPMARK_PAYMENT_ENVIRONMENT,
     erasureLedgerUrl: value.LOOPMARK_ERASURE_LEDGER_URL,

@@ -440,3 +440,141 @@ export const accountUsageSchema = z
       .strict(),
   })
   .strict()
+
+const purchaseProviderSchema = z.enum(['razorpay', 'revenuecat'])
+const purchaseProductIdSchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/)
+export const localizedProductSchema = z
+  .object({
+    id: purchaseProductIdSchema,
+    title: z.string().min(1).max(100),
+    displayPrice: z.string().min(1).max(100),
+    currency: z.string().regex(/^[A-Z]{3}$/),
+    amountMinor: z.number().int().positive().max(100_000_000),
+    provider: purchaseProviderSchema,
+  })
+  .strict()
+export const entitlementProjectionSchema = z
+  .object({
+    billingPrincipalId: z.string().uuid(),
+    accountId: z.string().uuid(),
+    upgraded: z.boolean(),
+    revision: revisionSchema,
+    verifiedAt: timestamp,
+  })
+  .strict()
+const purchasePreparationShape = {
+  attemptId: z.string().uuid(),
+  productId: purchaseProductIdSchema,
+  collection: collectionKeySchema,
+}
+export const checkoutRequestSchema = z.discriminatedUnion('action', [
+  z.object({ action: z.literal('products') }).strict(),
+  z.object({ action: z.literal('prepare'), ...purchasePreparationShape }).strict(),
+  z.object({ action: z.literal('status'), attemptId: z.string().uuid() }).strict(),
+  z
+    .object({
+      action: z.literal('verify'),
+      attemptId: z.string().uuid(),
+      paymentId: z.string().regex(/^pay_[A-Za-z0-9]{1,100}$/),
+      paymentLinkId: z.string().regex(/^plink_[A-Za-z0-9]{1,100}$/),
+      paymentLinkStatus: z.literal('paid'),
+      signature: hashSchema,
+    })
+    .strict(),
+])
+export const checkoutProductsSchema = z
+  .object({ products: z.array(localizedProductSchema).max(20) })
+  .strict()
+export const purchaseSubmittedSchema = z
+  .object({ status: z.literal('pending'), attemptId: z.string().uuid() })
+  .strict()
+export const checkoutPreparationSchema = z
+  .discriminatedUnion('status', [
+    purchaseSubmittedSchema,
+    z
+      .object({
+        status: z.literal('ready'),
+        attemptId: z.string().uuid(),
+        environment: z.enum(['sandbox', 'production']),
+        paymentLinkId: z.string().regex(/^plink_[A-Za-z0-9]{1,100}$/),
+        checkoutUrl: z.string().regex(/^https:\/\/rzp\.io\/(?:i|l)\/[A-Za-z0-9_-]{1,100}$/),
+        expiresAt: timestamp,
+        product: localizedProductSchema,
+      })
+      .strict(),
+  ])
+  .superRefine((value, context) => {
+    if (value.status === 'ready' && value.product.provider !== 'razorpay')
+      context.addIssue({ code: 'custom', message: 'Checkout provider mismatch' })
+  })
+export const billingStatusSchema = z
+  .object({
+    entitlement: entitlementProjectionSchema,
+    attempt: z
+      .object({
+        id: z.string().uuid(),
+        provider: purchaseProviderSchema,
+        state: z.enum([
+          'preparing',
+          'ready',
+          'pending',
+          'verified',
+          'failed',
+          'disputed',
+          'refunded',
+          'revoked',
+        ]),
+      })
+      .strict()
+      .nullable(),
+    recoveryKeyConfigured: z.boolean(),
+  })
+  .strict()
+export const purchaseRestoreRequestSchema = z.discriminatedUnion('action', [
+  z.object({ action: z.literal('prepare'), ...purchasePreparationShape }).strict(),
+  z
+    .object({
+      action: z.literal('reconcile'),
+      requestId: z.string().uuid(),
+      provider: purchaseProviderSchema,
+    })
+    .strict(),
+  z.object({ action: z.literal('status'), attemptId: z.string().uuid().optional() }).strict(),
+])
+export const purchaseRecoveryWireRequestSchema = z.discriminatedUnion('action', [
+  z
+    .object({
+      action: z.literal('set-key'),
+      requestId: z.string().uuid(),
+      nextRecoveryKeyHash: hashSchema,
+      reauthentication: reauthenticationProofSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      action: z.literal('claim'),
+      requestId: z.string().uuid(),
+      provider: purchaseProviderSchema,
+      evidenceId: z
+        .string()
+        .min(1)
+        .max(255)
+        .regex(/^[A-Za-z0-9._:=-]+$/),
+      recoveryKey: hashSchema.optional(),
+      nextRecoveryKeyHash: hashSchema,
+      reauthentication: reauthenticationProofSchema,
+    })
+    .strict(),
+  z.object({ action: z.literal('status'), requestId: z.string().uuid() }).strict(),
+])
+export const purchaseRecoveryWireResponseSchema = z.discriminatedUnion('status', [
+  z.object({ status: z.literal('key-saved'), recoveryKeyHash: hashSchema }).strict(),
+  z.object({ status: z.literal('pending'), caseId: z.string().uuid() }).strict(),
+  z
+    .object({
+      status: z.literal('recovered'),
+      entitlement: entitlementProjectionSchema,
+      recoveryKeyHash: hashSchema,
+    })
+    .strict(),
+])

@@ -213,6 +213,7 @@ describe('server configuration boundary', () => {
 
   it('requires explicit independent provider enrollment; secrets alone never enable payments', () => {
     const revenueCat = {
+      LOOPMARK_REVENUECAT_PROJECT_ID: 'projSynthetic1234',
       REVENUECAT_SECRET_API_KEY: 'synthetic_revenuecat_api_secret',
       REVENUECAT_WEBHOOK_SECRET: 'synthetic_revenuecat_webhook_secret',
     }
@@ -232,6 +233,23 @@ describe('server configuration boundary', () => {
     })
     expect(native.paymentsEnrolled).toBe(true)
     expect(native.revenueCatEnrolled).toBe(true)
+    expect(native.revenueCatProjectId).toBe('projSynthetic1234')
+    expect(() =>
+      parseServerConfig({
+        ...serverConfig,
+        ...revenueCat,
+        LOOPMARK_CLOUD_ENROLLED: 'true',
+        LOOPMARK_REVENUECAT_ENROLLED: 'true',
+        LOOPMARK_REVENUECAT_PROJECT_ID: undefined,
+      }),
+    ).toThrow()
+    expect(() =>
+      parseServerConfig({
+        ...serverConfig,
+        ...revenueCat,
+        LOOPMARK_REVENUECAT_PROJECT_ID: '../../other',
+      }),
+    ).toThrow()
     expect(native.razorpayEnrolled).toBe(false)
     const web = parseServerConfig({
       ...serverConfig,

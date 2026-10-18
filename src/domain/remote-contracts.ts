@@ -2,8 +2,12 @@ import type {
   CheckpointCreate,
   CollectionKey,
   DeletionReceipt,
+  EntitlementProjection,
+  LocalizedProduct,
   MediaRef,
   ProjectCreate,
+  PurchaseEnvironment,
+  PurchaseProvider,
   ReauthenticationProof,
   Receipt,
   ReplacementPreview,
@@ -155,3 +159,72 @@ export interface AccountUsage {
     allocatedBytes: 83886080
   }
 }
+
+export interface PurchasePreparationInput {
+  attemptId: string
+  productId: string
+  collection: CollectionKey
+}
+export type CheckoutRequest =
+  | { action: 'products' }
+  | ({ action: 'prepare' } & PurchasePreparationInput)
+  | { action: 'status'; attemptId: string }
+  | {
+      action: 'verify'
+      attemptId: string
+      paymentId: string
+      paymentLinkId: string
+      paymentLinkStatus: 'paid'
+      signature: string
+    }
+export interface CheckoutProducts {
+  products: LocalizedProduct[]
+}
+export type CheckoutPreparation =
+  | { status: 'pending'; attemptId: string }
+  | {
+      status: 'ready'
+      attemptId: string
+      environment: PurchaseEnvironment
+      paymentLinkId: string
+      checkoutUrl: string
+      expiresAt: string
+      product: LocalizedProduct
+    }
+export type PurchaseAttemptState =
+  'preparing' | 'ready' | 'pending' | 'verified' | 'failed' | 'disputed' | 'refunded' | 'revoked'
+export interface BillingStatus {
+  entitlement: EntitlementProjection
+  attempt: { id: string; provider: PurchaseProvider; state: PurchaseAttemptState } | null
+  recoveryKeyConfigured: boolean
+}
+export type PurchaseRestoreRequest =
+  | ({ action: 'prepare' } & PurchasePreparationInput)
+  | { action: 'reconcile'; requestId: string; provider: PurchaseProvider }
+  | { action: 'status'; attemptId?: string }
+export interface PurchaseSubmitted {
+  status: 'pending'
+  attemptId: string
+}
+/** The client persists the raw next key before sending its hash, including on retry. */
+export type PurchaseRecoveryWireRequest =
+  | {
+      action: 'set-key'
+      requestId: string
+      nextRecoveryKeyHash: string
+      reauthentication?: ReauthenticationProof
+    }
+  | {
+      action: 'claim'
+      requestId: string
+      provider: PurchaseProvider
+      evidenceId: string
+      recoveryKey?: string
+      nextRecoveryKeyHash: string
+      reauthentication: ReauthenticationProof
+    }
+  | { action: 'status'; requestId: string }
+export type PurchaseRecoveryWireResponse =
+  | { status: 'key-saved'; recoveryKeyHash: string }
+  | { status: 'pending'; caseId: string }
+  | { status: 'recovered'; entitlement: EntitlementProjection; recoveryKeyHash: string }
