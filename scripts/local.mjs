@@ -31,7 +31,7 @@ export function execute(command, args, options = {}) {
       stderr += data
     })
     child.on('error', reject)
-    child.on('close', (code) => resolveResult({ code, stdout, stderr }))
+    child.on('close', (code) => resolveResult({ code: code ?? 1, stdout, stderr }))
   })
 }
 async function cli(args, context) {

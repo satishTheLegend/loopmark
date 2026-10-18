@@ -8,6 +8,7 @@ const suites = {
     'tests/server/schema.test.ts',
     'tests/server/sync-ordering.test.ts',
     'tests/server/boundaries.test.ts',
+    'tests/server/review-regressions.test.ts',
   ],
   media: ['tests/server/media.test.ts'],
   replacement: ['tests/server/replacement.test.ts'],

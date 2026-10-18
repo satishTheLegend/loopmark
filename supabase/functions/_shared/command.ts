@@ -55,12 +55,15 @@ export function endpoint(
       'X-Robots-Tag': 'noindex, nofollow',
       Vary: 'Origin',
     }
-    if (origin && origin === allowedOrigin) {
+    // These are the exact Capacitor WebView origins verified in both native runtimes.
+    // CORS is transport policy; verified JWT ownership remains required below.
+    const allowedOrigins = new Set([allowedOrigin, 'capacitor://localhost', 'https://localhost'])
+    if (origin && allowedOrigins.has(origin)) {
       headers['Access-Control-Allow-Origin'] = origin
       headers['Access-Control-Allow-Headers'] = 'authorization, apikey, content-type, x-client-info'
       headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
     }
-    if (origin && origin !== allowedOrigin)
+    if (origin && !allowedOrigins.has(origin))
       return new Response(JSON.stringify({ error: new DomainError('NOT_AVAILABLE').detail }), {
         status: 403,
         headers,

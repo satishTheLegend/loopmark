@@ -7,7 +7,7 @@ create extension if not exists pgcrypto with schema extensions;
 create table loopmark_private.accounts (
  id uuid primary key references auth.users(id), state text not null default 'active' check(state in ('active','deleting','deleted')),
  deletion_generation bigint not null default 0 check(deletion_generation>=0), billing_principal_id uuid not null default gen_random_uuid() unique,
- created_at timestamptz not null default now()
+ created_at timestamptz not null default now(), compacted_at timestamptz
 );
 create table loopmark_private.collections (
  id text primary key, owner_id uuid not null unique references loopmark_private.accounts(id), epoch text not null,

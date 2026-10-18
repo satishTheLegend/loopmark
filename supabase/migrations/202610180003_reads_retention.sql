@@ -21,7 +21,9 @@ exception when numeric_value_out_of_range or invalid_text_representation then pe
 
 create function public.loopmark_snapshot(request jsonb) returns jsonb language plpgsql security definer set search_path='' as $$
 declare uid uuid:=auth.uid(); a loopmark_private.accounts; c loopmark_private.collections; s loopmark_private.snapshots;
- manifest jsonb; items jsonb; item jsonb; result jsonb; p jsonb:='[]'; checkpoints jsonb:='[]'; media jsonb:='[]'; offset_value integer:=0; index_value integer:=0; next_page text; action text:=request->>'action'; begin
+ manifest jsonb; items jsonb; item jsonb; result jsonb; candidate jsonb; ref jsonb;
+ p jsonb:='[]'; checkpoints jsonb:='[]'; media jsonb:='[]'; next_p jsonb; next_checkpoints jsonb; next_media jsonb;
+ seen_media jsonb:='{}'; next_seen jsonb; offset_value integer:=0; index_value integer:=0; next_page text; action text:=request->>'action'; begin
  if uid is null then perform loopmark_private.fail('AUTH_REQUIRED'); end if;
  select * into a from loopmark_private.accounts where id=uid for update;
  if not found or a.state<>'active' then perform loopmark_private.fail('AUTH_REQUIRED'); end if;
@@ -37,7 +39,7 @@ declare uid uuid:=auth.uid(); a loopmark_private.accounts; c loopmark_private.co
   insert into loopmark_private.snapshots(id,owner_id,collection_id,epoch,revision,cursor,purpose,manifest,expires_at)
    values(gen_random_uuid()::text,uid,c.id,c.epoch,c.revision,c.next_cursor,request->>'purpose',items,now()+interval '1 hour') returning * into s;
   insert into loopmark_private.snapshot_media(owner_id,snapshot_id,collection_id,media_id)
-   select distinct uid,s.id,c.id,ref->>'id' from loopmark_private.checkpoints cp cross join lateral jsonb_each(cp.data) as refs(key,ref)
+   select distinct uid,s.id,c.id,refs.ref->>'id' from loopmark_private.checkpoints cp cross join lateral jsonb_each(cp.data) as refs(key,ref)
    where cp.owner_id=uid and cp.collection_id=c.id and cp.deleted_at is null and refs.key in ('photo','voice');
  elsif action in ('page','renew') then
   if not loopmark_private.exact_keys(request,case when action='page' then array['action','snapshotId','after'] else array['action','snapshotId'] end) or not loopmark_private.valid_id(request->>'snapshotId') then perform loopmark_private.fail('VALIDATION'); end if;
@@ -52,24 +54,41 @@ declare uid uuid:=auth.uid(); a loopmark_private.accounts; c loopmark_private.co
   end if;
  else perform loopmark_private.fail('VALIDATION'); end if;
  if offset_value>jsonb_array_length(s.manifest) then perform loopmark_private.fail('VALIDATION'); end if;
+ -- A shared immutable media object may appear in several checkpoints or pages.
+ -- Declare it once, on the first referencing record in the entire snapshot chain.
+ for ref in select refs.value from jsonb_array_elements(s.manifest) with ordinality as entry(value,ord)
+  cross join lateral jsonb_each(entry.value->'value') refs where ord<=offset_value and refs.key in ('photo','voice') loop
+  seen_media:=seen_media||jsonb_build_object(ref->>'id',true);
+ end loop;
  for item in select value from jsonb_array_elements(s.manifest) with ordinality as entry(value,ord) where ord>offset_value order by ord limit 50 loop
-  if item->>'kind'='project' then p:=p||jsonb_build_array(item->'value'); else
-   checkpoints:=checkpoints||jsonb_build_array(item->'value');
-   select media||coalesce(jsonb_agg(value),'[]') into media from jsonb_each(item->'value') where key in ('photo','voice');
+  next_p:=p; next_checkpoints:=checkpoints; next_media:=media; next_seen:=seen_media;
+  if item->>'kind'='project' then next_p:=p||jsonb_build_array(item->'value'); else
+   next_checkpoints:=checkpoints||jsonb_build_array(item->'value');
+   for ref in select value from jsonb_each(item->'value') where key in ('photo','voice') loop
+    if not(next_seen ? (ref->>'id')) then next_media:=next_media||jsonb_build_array(ref); next_seen:=next_seen||jsonb_build_object(ref->>'id',true); end if;
+   end loop;
   end if;
+  next_page:=case when offset_value+index_value+1<jsonb_array_length(s.manifest) then (offset_value+index_value+1)::text else null end;
+  candidate:=jsonb_build_object('protocolVersion',2,'snapshotId',s.id,'collectionId',s.collection_id,'epoch',s.epoch,'cursor',s.cursor::text,'revision',s.revision::text,
+   'after',case when action='page' then request->'after' else 'null'::jsonb end,'expiresAt',to_char(s.expires_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
+   'projects',next_p,'checkpoints',next_checkpoints,'media',next_media,'nextPage',next_page);
+  if octet_length(loopmark_private.canonical(candidate))>524288 then
+   if index_value=0 then perform loopmark_private.fail('INVARIANT_VIOLATION'); end if;
+   exit;
+  end if;
+  p:=next_p; checkpoints:=next_checkpoints; media:=next_media; seen_media:=next_seen; result:=candidate;
   index_value:=index_value+1;
  end loop;
- next_page:=case when offset_value+index_value<jsonb_array_length(s.manifest) then (offset_value+index_value)::text else null end;
- result:=jsonb_build_object('protocolVersion',2,'snapshotId',s.id,'collectionId',s.collection_id,'epoch',s.epoch,'cursor',s.cursor::text,'revision',s.revision::text,
- 'after',case when action='page' then request->'after' else 'null'::jsonb end,'expiresAt',to_char(s.expires_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),'projects',p,'checkpoints',checkpoints,'media',media,'nextPage',next_page);
- if octet_length(result::text)>524288 then perform loopmark_private.fail('INVARIANT_VIOLATION'); end if;
+ if result is null then result:=jsonb_build_object('protocolVersion',2,'snapshotId',s.id,'collectionId',s.collection_id,'epoch',s.epoch,'cursor',s.cursor::text,'revision',s.revision::text,
+  'after',case when action='page' then request->'after' else 'null'::jsonb end,'expiresAt',to_char(s.expires_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
+  'projects','[]'::jsonb,'checkpoints','[]'::jsonb,'media','[]'::jsonb,'nextPage',null); end if;
  return result;
 end $$;
 
 create function public.loopmark_compact(p_limit integer default 20) returns integer language plpgsql security definer set search_path='' as $$
 declare a record; c loopmark_private.collections; d record; floor_value bigint; min_snapshot bigint; boundary bigint; processed integer:=0; begin
  if coalesce(auth.jwt()->>'role','')<>'service_role' or p_limit is null or p_limit not between 1 and 100 then perform loopmark_private.fail('AUTH_REQUIRED'); end if;
- for a in select id from loopmark_private.accounts where state='active' order by id limit p_limit for update skip locked loop
+ for a in select id from loopmark_private.accounts where state='active' order by compacted_at nulls first,id limit p_limit for update skip locked loop
   select * into c from loopmark_private.collections where owner_id=a.id for update;
   delete from loopmark_private.snapshots where owner_id=a.id and expires_at<=now();
   for d in select * from loopmark_private.devices where owner_id=a.id order by id for update loop
@@ -87,6 +106,7 @@ declare a record; c loopmark_private.collections; d record; floor_value bigint; 
    delete from loopmark_private.change_feed where owner_id=a.id and collection_id=c.id and cursor<=boundary;
   end if;
   -- Tombstones are deliberately retained longer than 90 days, avoiding resurrection/ID reuse.
+  update loopmark_private.accounts set compacted_at=clock_timestamp() where id=a.id;
   processed:=processed+1;
  end loop;
  return processed;
