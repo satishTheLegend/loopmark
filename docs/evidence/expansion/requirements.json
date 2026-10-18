@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL CORRECTED FINAL SOURCEa1a3b72: IR23 source and20 exact ownership regressions independently reviewed;373 unit cases/46 files and13 supporting commands bound. Current native/controller artifacts and full80cloud/255UI/target100guest execution pending; no final approval.",
+  "reviewState": "PROVISIONAL FINAL SOURCEa1a3b72: IR23 source,20 exact regressions,373unit/13supporting commands and actual native controller proof independently bound. Four production native journeys and full80cloud/255UI/target100guest still pending; no final approval.",
   "reviewer": "final_traceability_review (independent of implementation authors)",
   "reviewedSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
   "requiredIds": [
@@ -714,6 +714,24 @@
         "intermediateMetadataPath": "docs/evidence/expansion/I13/scope-completion/metadata.json",
         "intermediateMetadataSha256": "f81a852bec19af24bfc74db501425868dd352dd047b9720591be4be176a06276",
         "traceIndexSha256": "bd0f38672f54a8224a989742a419dd7c8f28f86f357a4e39150411e035a73160"
+      }
+    },
+    "nativeControllerA1": {
+      "path": "docs/evidence/expansion/native/controller-switch-c670df7/index.json",
+      "sha256": "f62f5f6e03fc3aec0bdb40f243b15a172fbf13a80348aa72a305b2bdf1e42880",
+      "scope": "Actual AppController/SyncCoordinator/Web Locks/native SQLite with held synthetic snapshot-release barrier. Both platforms preserve newly selected guest view/scope, allow another save, and retain exact data/selection after SQLite reopen. Synthetic account/network and test app, not provider/store or performance qualification.",
+      "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+      "reviewedAgainstRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+      "currentFreezeQualified": true,
+      "independentBinding": {
+        "rawEvidenceFilesVerified": 6,
+        "canonicalQualificationManifestMatches": true,
+        "bothRetainedArchiveHashesMatch": true,
+        "iosRegularFileHashesVerified": 59,
+        "webAssetsVerifiedInsideEachArtifact": 8,
+        "bothRuntimeReportsBindExactRetainedArtifactAndBundle": true,
+        "productSourceDiffAgainstFreeze": "empty",
+        "fixtureSourceMatchesExecutedRevision": true
       }
     }
   },
@@ -18256,6 +18274,51 @@
         }
       ],
       "assertionNote": "Deterministic deferred storage/network or nested-microtask ordering; actual repository used with fake-indexeddb. This expanded title is an exact executed parameter case."
+    },
+    "tests/native/harness/controller-switch.ts:review:6391cfaab27b": {
+      "file": "tests/native/harness/controller-switch.ts",
+      "line": 22,
+      "testName": "nativeControllerSwitch",
+      "sourceSha256": "242db98127d35e120fa5e151b5c46842e97850c922f0b14b63930fef188d6a3f",
+      "level": "actual-native-integration",
+      "executedProofRefs": [
+        "nativeControllerA1"
+      ],
+      "frozenSource": {
+        "path": "tests/native/harness/controller-switch.ts",
+        "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+        "sha256": "242db98127d35e120fa5e151b5c46842e97850c922f0b14b63930fef188d6a3f",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Real hydration before a deferred snapshot-release callback; deliberately select guest while cleanup waits; release old callback and assert ready/no error/exact scope/project; save another project; actual close/reopen preserves view and selection.",
+      "frozenExecutions": [
+        {
+          "proofRef": "nativeControllerA1",
+          "platform": "ios",
+          "testName": "nativeControllerSwitch",
+          "report": "docs/evidence/expansion/native/controller-switch-c670df7/ios-controller.json",
+          "status": "passed",
+          "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+          "assertionGroups": [
+            "late snapshot cleanup cannot clear the guest view or publish ACCOUNT_CHANGED",
+            "current guest remains editable through the real repository and controller",
+            "guest records and selection persist after actual SQLite close/reopen"
+          ]
+        },
+        {
+          "proofRef": "nativeControllerA1",
+          "platform": "android",
+          "testName": "nativeControllerSwitch",
+          "report": "docs/evidence/expansion/native/controller-switch-c670df7/android-controller.json",
+          "status": "passed",
+          "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+          "assertionGroups": [
+            "late snapshot cleanup cannot clear the guest view or publish ACCOUNT_CHANGED",
+            "current guest remains editable through the real repository and controller",
+            "guest records and selection persist after actual SQLite close/reopen"
+          ]
+        }
+      ]
     }
   },
   "requirements": [
@@ -27831,7 +27894,8 @@
         "src/services/app-controller.test.ts:review:f8d0820c6093",
         "src/services/app-controller.test.ts:review:a1b0f1673417",
         "src/sync/coordinator.test.ts:review:fc3b335dc84c",
-        "src/sync/coordinator.test.ts:review:db25d8a4c689"
+        "src/sync/coordinator.test.ts:review:db25d8a4c689",
+        "tests/native/harness/controller-switch.ts:review:6391cfaab27b"
       ],
       "acceptanceBranches": [
         {
@@ -27855,7 +27919,8 @@
             "src/services/app-controller.test.ts:review:2ed8ea91c274",
             "src/services/app-controller.test.ts:review:5164711db3d4",
             "src/services/app-controller.test.ts:review:f8d0820c6093",
-            "src/services/app-controller.test.ts:review:a1b0f1673417"
+            "src/services/app-controller.test.ts:review:a1b0f1673417",
+            "tests/native/harness/controller-switch.ts:review:6391cfaab27b"
           ],
           "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "implementationRefs": [
@@ -28033,6 +28098,32 @@
               "status": "passed",
               "durationMs": 9.808207999999922,
               "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448"
+            },
+            {
+              "proofRef": "nativeControllerA1",
+              "platform": "ios",
+              "testName": "nativeControllerSwitch",
+              "report": "docs/evidence/expansion/native/controller-switch-c670df7/ios-controller.json",
+              "status": "passed",
+              "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "assertionGroups": [
+                "late snapshot cleanup cannot clear the guest view or publish ACCOUNT_CHANGED",
+                "current guest remains editable through the real repository and controller",
+                "guest records and selection persist after actual SQLite close/reopen"
+              ]
+            },
+            {
+              "proofRef": "nativeControllerA1",
+              "platform": "android",
+              "testName": "nativeControllerSwitch",
+              "report": "docs/evidence/expansion/native/controller-switch-c670df7/android-controller.json",
+              "status": "passed",
+              "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "assertionGroups": [
+                "late snapshot cleanup cannot clear the guest view or publish ACCOUNT_CHANGED",
+                "current guest remains editable through the real repository and controller",
+                "guest records and selection persist after actual SQLite close/reopen"
+              ]
             }
           ],
           "proofRefs": [
@@ -28040,7 +28131,8 @@
             "nativePullCurrent",
             "unitFinal353",
             "scopeOwnershipControlled",
-            "unitFinal373"
+            "unitFinal373",
+            "nativeControllerA1"
           ]
         },
         {
@@ -28290,7 +28382,8 @@
           "branch": "restart",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "tests/expansion/accounts.cloud.ts:119"
+            "tests/expansion/accounts.cloud.ts:119",
+            "tests/native/harness/controller-switch.ts:review:6391cfaab27b"
           ],
           "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "implementationRefs": [
@@ -28348,10 +28441,37 @@
               "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
               "testSourceSha256": "848ea5b854fa04985e20ba6868c5d4f2a9775c69d0ce32979b37c331e33e2433",
               "durationAsReported": "15.4s"
+            },
+            {
+              "proofRef": "nativeControllerA1",
+              "platform": "ios",
+              "testName": "nativeControllerSwitch",
+              "report": "docs/evidence/expansion/native/controller-switch-c670df7/ios-controller.json",
+              "status": "passed",
+              "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "assertionGroups": [
+                "late snapshot cleanup cannot clear the guest view or publish ACCOUNT_CHANGED",
+                "current guest remains editable through the real repository and controller",
+                "guest records and selection persist after actual SQLite close/reopen"
+              ]
+            },
+            {
+              "proofRef": "nativeControllerA1",
+              "platform": "android",
+              "testName": "nativeControllerSwitch",
+              "report": "docs/evidence/expansion/native/controller-switch-c670df7/android-controller.json",
+              "status": "passed",
+              "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "assertionGroups": [
+                "late snapshot cleanup cannot clear the guest view or publish ACCOUNT_CHANGED",
+                "current guest remains editable through the real repository and controller",
+                "guest records and selection persist after actual SQLite close/reopen"
+              ]
             }
           ],
           "proofRefs": [
-            "webCloud0b"
+            "webCloud0b",
+            "nativeControllerA1"
           ]
         }
       ],
@@ -28380,7 +28500,8 @@
         "unitFinal353",
         "webCloud0b",
         "scopeOwnershipControlled",
-        "unitFinal373"
+        "unitFinal373",
+        "nativeControllerA1"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -41440,11 +41561,12 @@
       ],
       "finding": "An older asynchronous sync/refresh can finish after deliberate collection selection, increment refreshVersion or stop/cancel/publish against the obsolete scope. Observed actual-cloud failures include a false fatal ACCOUNT_CHANGED and an invalidated new-collection refresh leaving the old UI. Repository mutation generation fences preserve stored data. Adjacent coordinator publications after awaited initial/final/error-path reads also require cancellation ownership checks.",
       "owner": "client controller and sync coordinator",
-      "status": "a1a3b72 source independently approved: full-scope/ABA,busy/version and post-await/catch ownership, including synchronous publication checks after awaitcheck. Exact20 regression case objects pass within373 finalunits; source/log/trace hashes match. Actual current native/controller and browser closure pending.",
+      "status": "a1a3b72 source and20 exact ownership regressions reviewed; actual native controller/coordinator/Web Locks/SQLite held-cleanup/save/reopen proof passes both platforms, with retained qualification artifacts independently rehashed. Current production journeys and full current browser closure pending.",
       "proofRefs": [
         "webCloud0b",
         "scopeOwnershipControlled",
-        "unitFinal373"
+        "unitFinal373",
+        "nativeControllerA1"
       ],
       "requiredInvariants": [
         "Obsolete/busy selected refresh returns before incrementing refreshVersion or causing stop/cancel/error effects.",
