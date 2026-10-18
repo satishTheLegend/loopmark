@@ -37,6 +37,7 @@ export interface StoredCollection {
   info: CollectionInfo
   version: string
   cursor: string
+  serverRevision?: string
   sequence: string
   sequences: Record<string, string>
   projects: ProjectRecord[]
@@ -81,6 +82,7 @@ export function emptyCollection(info: CollectionInfo): StoredCollection {
     info: parseInfo(info),
     version: '0',
     cursor: '0',
+    serverRevision: '0',
     sequence: '0',
     sequences: {},
     projects: [],
@@ -90,7 +92,7 @@ export function emptyCollection(info: CollectionInfo): StoredCollection {
     operations: {},
     tombstones: {},
     anchors: { projects: [], checkpoints: [] },
-    hydration: 'ready',
+    hydration: info.kind === 'connected' ? 'empty' : 'ready',
   }
 }
 export function mediaRefs(checkpoints: CheckpointRecord[]): MediaRef[] {
@@ -221,6 +223,7 @@ function mutateRecords(
       break
     }
     case 'collection.replace':
+      if (overlay) return
       throw new DomainError('SYNC_REBASE_REQUIRED')
   }
 }
@@ -272,7 +275,28 @@ function localOverlayRevision(
     )?.revision ?? '0'
   )
 }
+export function acknowledgedRevision(state: StoredCollection): string {
+  return [
+    state.serverRevision ?? '0',
+    state.cursor,
+    ...Object.values(state.receipts).map((r) => r.revision),
+    ...state.projects.map((p) => p.revision),
+    ...state.checkpoints.map((c) => c.revision),
+    ...Object.values(state.tombstones),
+  ].reduce((a, b) => (BigInt(a) > BigInt(b) ? a : b), '0')
+}
 export function assertIntentBase(state: StoredCollection, intent: LocalIntent): void {
+  if (intent.kind === 'collection.replace') {
+    if (
+      state.info.kind !== 'connected' ||
+      state.pending.length ||
+      !intent.base ||
+      !('revision' in intent.base) ||
+      intent.base.revision !== acknowledgedRevision(state)
+    )
+      throw new DomainError('REVISION_CONFLICT')
+    return
+  }
   const command = {
     ...intentCommand(intent),
     collectionId: state.info.key.collectionId,
@@ -329,7 +353,10 @@ export function applyIntent(
   options: { upgraded: boolean },
 ): void {
   intentCommand(intent)
+  if (state.pending.some((p) => p.intent.kind === 'collection.replace'))
+    throw new DomainError('SYNC_REBASE_REQUIRED')
   assertIntentBase(state, intent)
+  if (intent.kind === 'collection.replace') return
   const view = viewOf(state)
   if (state.info.kind === 'connected') {
     const target = revisionTarget(intentCommand(intent))
@@ -420,6 +447,10 @@ export function applyReceipt(state: StoredCollection, input: Receipt): void {
         break
     }
   }
+  state.serverRevision =
+    BigInt(receipt.revision) > BigInt(state.serverRevision ?? '0')
+      ? receipt.revision
+      : (state.serverRevision ?? '0')
   state.receipts[receipt.operationId] = receipt
   state.pending = state.pending.filter((p) => p.command.operationId !== receipt.operationId)
   if (!state.pending.length) state.anchors = { projects: [], checkpoints: [] }
@@ -469,6 +500,7 @@ export function hydrateState(
   state.projects = projects
   state.checkpoints = checkpoints
   state.cursor = first.cursor
+  state.serverRevision = first.revision
   state.receipts = {}
   state.tombstones = {}
   state.anchors = { projects: [], checkpoints: [] }
@@ -551,4 +583,58 @@ export function prepareResolution(
   state.pending = state.pending.filter((p) => !retired.has(p.intent.operationId))
   if (!state.pending.length) state.anchors = { projects: [], checkpoints: [] }
   return { projects, checkpoints, retired: [...retired] }
+}
+
+export function completeReplacementState(
+  source: StoredCollection,
+  operationId: string,
+  receiptInput: Receipt,
+  pages: SnapshotManifest[],
+  device: { id: string; generation: string },
+  now: number,
+): { old: StoredCollection; next: StoredCollection } {
+  const receipt = parseReceipt(receiptInput),
+    pending = source.pending.find((p) => p.intent.operationId === operationId)
+  if (
+    source.info.kind !== 'connected' ||
+    source.pending.length !== 1 ||
+    !pending ||
+    pending.command.kind !== 'collection.replace' ||
+    pending.command.deviceId !== device.id ||
+    pending.command.deviceGeneration !== device.generation ||
+    receipt.operationId !== operationId ||
+    receipt.sha256 !== pending.command.sha256 ||
+    receipt.epoch !== source.info.key.epoch ||
+    receipt.changes.length !== 1 ||
+    receipt.changes[0].kind !== 'collection.replaced' ||
+    receipt.changes[0].nextEpoch !== pending.command.payload.nextEpoch
+  )
+    throw new DomainError('SYNC_PAGE_INVALID')
+  const next = emptyCollection({
+    ...source.info,
+    key: { ...source.info.key, epoch: pending.command.payload.nextEpoch },
+  })
+  hydrateState(next, pages, now)
+  if (BigInt(pages[0].revision) < BigInt(receipt.revision))
+    throw new DomainError('SYNC_PAGE_INVALID')
+  next.sequences = { ...source.sequences }
+  next.sequence = source.sequence
+  next.version = localRevision(
+    source.version,
+    ...next.projects.map((p) => p.revision),
+    ...next.checkpoints.map((c) => c.revision),
+  )
+  const old = structuredClone(source)
+  old.info = {
+    ...old.info,
+    kind: 'recovered',
+    accountId: null,
+    name: `Previous ${old.info.name}`.slice(0, 100),
+    legacyAccess: false,
+  }
+  old.pending = []
+  old.anchors = { projects: [], checkpoints: [] }
+  old.receipts[operationId] = receipt
+  old.version = nextRevision(old.version)
+  return { old, next }
 }

@@ -25,6 +25,7 @@ import {
   deviceKey,
   viewOf,
   applyIntent,
+  completeReplacementState,
   prepareResolution,
   type ConflictResolution,
   applyReceipt,
@@ -429,6 +430,61 @@ export class BrowserRepository implements Repository {
       if (state.info.kind !== 'connected') throw new DomainError('VALIDATION')
       applyReceipt(state, receipt)
     })
+  }
+  async completeReplacement(
+    key: CollectionKey,
+    input: { operationId: string; receipt: Receipt; pages: SnapshotManifest[] },
+    generation: number,
+  ): Promise<SessionScope> {
+    const fingerprint = await canonicalHash({
+        operationId: input.operationId,
+        receipt: input.receipt,
+      }),
+      receiptKey = JSON.stringify(['replacement-complete', keyOf(key), input.operationId])
+    const result = await transaction(this.database, 'readwrite', async (tx) => {
+      const saved = await requestResult<{ fingerprint: string; value: SessionScope } | undefined>(
+        tx.objectStore('meta').get(receiptKey),
+      )
+      if (saved) {
+        if (saved.fingerprint !== fingerprint) throw new DomainError('OPERATION_REUSED')
+        if (canonicalJson(await activeScope(tx)) !== canonicalJson(saved.value))
+          throw new DomainError('ACCOUNT_CHANGED')
+        return saved.value
+      }
+      const active = await assertGeneration(tx, key, generation),
+        source = await getState(tx, key)
+      const { old, next } = completeReplacementState(
+        source,
+        input.operationId,
+        input.receipt,
+        input.pages,
+        active.device,
+        Date.now(),
+      )
+      if (await requestResult(tx.objectStore('collections').get(keyOf(next.info.key))))
+        throw new DomainError('REVISION_CONFLICT')
+      const scope = { ...active, key: next.info.key, generation: active.generation + 1 }
+      if (!Number.isSafeInteger(scope.generation)) throw new DomainError('INVARIANT_VIOLATION')
+      // Copy only byte-identical cached refs; missing remote media remains explicitly unavailable.
+      for (const ref of mediaRefs(next.checkpoints)) {
+        const row = await requestResult<MediaRow | undefined>(
+          tx.objectStore('media').get(mediaKey(key, ref.id)),
+        )
+        if (row && canonicalJson(row.ref) === canonicalJson(ref))
+          tx.objectStore('media').add({
+            ...row,
+            key: mediaKey(next.info.key, ref.id),
+            scope: next.info.key,
+          })
+      }
+      putState(tx, old)
+      putState(tx, next)
+      tx.objectStore('meta').put({ key: 'active', value: scope })
+      tx.objectStore('meta').add({ key: receiptKey, scope: key, fingerprint, value: scope })
+      return scope
+    })
+    this.publish()
+    return result
   }
   async applyPage(key: CollectionKey, input: PullPage, generation: number): Promise<void> {
     const page = parsePullPage(input)

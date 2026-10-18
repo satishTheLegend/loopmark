@@ -62,6 +62,11 @@ export interface Repository {
     },
     generation: Generation,
   ): Promise<{ recovered: CollectionKey | null; commit: LocalCommit | null }>
+  completeReplacement(
+    key: CollectionKey,
+    input: { operationId: string; receipt: Receipt; pages: SnapshotManifest[] },
+    generation: Generation,
+  ): Promise<SessionScope>
   applyPage(key: CollectionKey, page: PullPage, generation: Generation): Promise<void>
   acknowledge(key: CollectionKey, receipt: Receipt, generation: Generation): Promise<void>
   hydrate(key: CollectionKey, pages: SnapshotManifest[], generation: Generation): Promise<void>

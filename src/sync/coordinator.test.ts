@@ -73,6 +73,7 @@ it('hydrates before selection use and reconciles the feed with no pending work',
   const { repo, scope, coordinator, transport } = await setup()
   await coordinator.run(scope)
   expect((await repo.readView(scope.key)).hydration).toBe('ready')
+  expect(transport.snapshot).toHaveBeenCalledTimes(1)
   expect(transport.pull).toHaveBeenCalledTimes(1)
   expect(coordinator.getSnapshot().state).toBe('idle')
 })
