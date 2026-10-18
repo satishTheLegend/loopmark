@@ -1,14 +1,14 @@
 # Expanded release readiness
 
-Status: **implementation and local verification in progress; external activation blocked by named prerequisites**. This is the expanded release record. Foundation-only completion reports describe their earlier scope and do not establish cloud, billing or native release readiness.
+Status: **local implementation and browser/backend verification complete; final native qualification in progress; external activation blocked by named prerequisites**. This is the expanded release record. Foundation-only completion reports describe their earlier scope and do not establish cloud, billing or native release readiness.
 
 ## Current disposition
 
 | Boundary | Evidence available | Remaining gate |
 | --- | --- | --- |
-| Guest craft workflow and separate restore | 382 current unit cases, 20 scale cases, retained 255-case UI / 264-case full guest / 100-case targeted guest matrices | Complete the affected browser/native qualification for reviewed `b5151ea` startup readiness; collection-switch runtime proof remains bound to `a1a3b72` |
-| Account/connection/sync/deletion | Actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, authority/retention/recovery; final 84/84 server tests | Retained `a1a3b72` cloud run 77/80; two fixture corrections and the controlled startup-readiness fix are reviewed; `b5151ea` full run 76/80 with all four branches closed by explicit focused reruns; final status-freshness correction and native assertions in progress |
-| iOS/Android | Real SQLite/files, inbox-store faults, OS file delivery, production capture/relaunch/permissions/diagnostic share cancel/review/restore/repeat; measured small/48 MiB operations | Physical hardware, store sandbox, signing and actual associated-domain proof |
+| Guest craft workflow and separate restore | 394 current unit cases, 15 current status/accessibility cases and 40 current startup/draft cases; retained 255-case UI / 264-case full guest / 100-case targeted guest matrices and isolated scale evidence | Finish the current frozen native artifact qualification; physical-device behavior remains separate |
+| Account/connection/sync/deletion | Current `2b6e628` affected cloud run 40/40; actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, authority/retention/recovery and 84/84 server tests. Earlier 77/80 and 76/80 full runs remain failed records with explicit focused closures | Hosted provider configuration and production qualification; no live account or purchase claim |
+| iOS/Android | Real SQLite/files, inbox-store faults, OS file delivery, production capture/relaunch/permissions/diagnostic share cancel/review/restore/repeat; measured small/48 MiB operations | Current full harness, acknowledged-voice restart and production artifact refresh in progress; physical hardware, store sandbox, signing and actual associated-domain proof remain external |
 | Web/store purchases | Strict contracts, hosted/native adapters and actual local ledger/webhook authority using an explicitly synthetic provider | Real merchant/RevenueCat/store accounts and actual sandbox scenario evidence |
 | Operations and contributor workflow | Actual encrypted database/object recovery, independent-current erasure ledger, fair scheduling, alerts, compatible rollback, clean automated contributor checkout and dependency provenance; 1,000-account recovery/audit pass, simultaneous burst and peak backup fail | Independent final judgment; hosted capacity qualification, disaster-separated external recovery facility and operating owner |
 | Pilot and funding | Concrete 21-day/15-maker protocol, operating scenarios and activation record | Named owners, approved funds, consented cohort, actual 10/8/5 outcomes |
