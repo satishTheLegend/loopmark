@@ -1,16 +1,16 @@
 # Expanded release readiness
 
-Status: **local implementation and browser/backend verification complete; final native qualification in progress; external activation blocked by named prerequisites**. This is the expanded release record. Foundation-only completion reports describe their earlier scope and do not establish cloud, billing or native release readiness.
+Status: **local implementation and recorded browser/backend/native verification complete; external activation blocked by named prerequisites**. This is the expanded release record. Foundation-only completion reports describe their earlier scope and do not establish cloud, billing or native release readiness.
 
 ## Current disposition
 
 | Boundary | Evidence available | Remaining gate |
 | --- | --- | --- |
-| Guest craft workflow and separate restore | 394 current unit cases, 15 current status/accessibility cases and 40 current startup/draft cases; retained 255-case UI / 264-case full guest / 100-case targeted guest matrices and isolated scale evidence | Finish the current frozen native artifact qualification; physical-device behavior remains separate |
+| Guest craft workflow and separate restore | 394 current unit cases, 15 current status/accessibility cases and 40 current startup/draft cases; retained 255-case UI / 264-case full guest / 100-case targeted guest matrices and isolated scale evidence | Physical-device behavior and actual maker outcomes remain separate |
 | Account/connection/sync/deletion | Current `2b6e628` affected cloud run 40/40; actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, authority/retention/recovery and 84/84 server tests. Earlier 77/80 and 76/80 full runs remain failed records with explicit focused closures | Hosted provider configuration and production qualification; no live account or purchase claim |
-| iOS/Android | Real SQLite/files, inbox-store faults, OS file delivery, production capture/relaunch/permissions/diagnostic share cancel/review/restore/repeat; measured small/48 MiB operations | Current full harness, acknowledged-voice restart and production artifact refresh in progress; physical hardware, store sandbox, signing and actual associated-domain proof remain external |
+| iOS/Android | Current `2b6e628`: 31 harness groups on each of four launches, six Android instrumentation cases, two synthetic recording flows and four production/OS backup journeys pass; real SQLite/files, durable restart and retained exact binaries. Earlier small/48 MiB measurements retain their source scope | Physical hardware, store sandbox, signing and actual associated-domain proof remain external; large-backup memory pressure is unqualified |
 | Web/store purchases | Strict contracts, hosted/native adapters and actual local ledger/webhook authority using an explicitly synthetic provider | Real merchant/RevenueCat/store accounts and actual sandbox scenario evidence |
-| Operations and contributor workflow | Actual encrypted database/object recovery, independent-current erasure ledger, fair scheduling, alerts, compatible rollback, clean automated contributor checkout and dependency provenance; 1,000-account recovery/audit pass, simultaneous burst and peak backup fail | Independent final judgment; hosted capacity qualification, disaster-separated external recovery facility and operating owner |
+| Operations and contributor workflow | Actual encrypted database/object recovery, independent-current erasure ledger, fair scheduling, alerts, compatible rollback, clean automated contributor checkout and dependency provenance; 1,000-account recovery/audit pass, simultaneous burst and peak backup fail | Hosted capacity qualification, disaster-separated external recovery facility and operating owner; the 1,000-client burst is not qualified |
 | Pilot and funding | Concrete 21-day/15-maker protocol, operating scenarios and activation record | Named owners, approved funds, consented cohort, actual 10/8/5 outcomes |
 
 Use the [execution ledger](expansion-execution.md) for changing implementation detail. A PASS in one boundary does not imply another. Simulator microphone denial is not physical recording fidelity. A synthetic provider response is not a provider sandbox transaction. A source review is not an executed recovery drill.
@@ -33,4 +33,4 @@ The output `evidence-complete` means the supplied recorded statuses and hashes a
 4. Review source/build/config hashes, actual sandbox and recovery results, privacy/store disclosures and rollback record. Authorize a particular deployment or store submission only after its gates pass.
 5. Authorize the separate [21-day pilot](expansion-research-protocol.md). Recruit 15 qualified makers, measure voluntary capture/week-later restart/actual purchases, and record prompting and missing data. No engineering result substitutes for this study.
 
-Outstanding external prerequisites do not excuse unfinished local implementation. Continue independent code, tests, operations preparation and documentation before final handoff.
+The [independent judgment](expansion-judge.md) records the requirement-level disposition and evidence limits. External prerequisites do not convert local fixtures into provider, physical-device or human qualification.
