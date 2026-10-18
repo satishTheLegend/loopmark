@@ -38,7 +38,7 @@ async function setup() {
     media: [],
   }
   const transport = {
-    releaseSnapshot: vi.fn(async () => {}),
+    releaseSnapshot: vi.fn(async (_id: string, _signal: AbortSignal) => {}),
     snapshot: vi.fn(async () => snapshot),
     push: vi.fn(async (command: import('../domain/contracts').Command) =>
       receipt(command.operationId, command.sha256),
@@ -78,6 +78,17 @@ it('hydrates before selection use and reconciles the feed with no pending work',
   expect(transport.releaseSnapshot).toHaveBeenCalledWith('snapshot', expect.any(AbortSignal))
   expect(transport.pull).toHaveBeenCalledTimes(1)
   expect(coordinator.getSnapshot().state).toBe('idle')
+})
+it('releases an owned snapshot with an independent live signal after foreground cancellation', async () => {
+  const { repo, scope, coordinator, transport } = await setup()
+  vi.spyOn(repo, 'hydrate').mockImplementationOnce(async () => {
+    coordinator.stop()
+    throw new DomainError('ACCOUNT_CHANGED')
+  })
+  await coordinator.run(scope)
+  expect(transport.releaseSnapshot).toHaveBeenCalledTimes(1)
+  const signal = vi.mocked(transport.releaseSnapshot).mock.calls[0][1] as AbortSignal
+  expect(signal.aborted).toBe(false)
 })
 it('retries a lost acknowledgement with exactly the same signed command and one local effect', async () => {
   const { repo, scope, snapshot, coordinator, transport, sleep } = await setup()

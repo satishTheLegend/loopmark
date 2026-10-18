@@ -14,13 +14,24 @@ import type {
   LocalWorkCounts,
 } from './controller-contract'
 export interface CollectionConnections {
+  resume?(
+    destination: AccountSession,
+    scope: SessionScope,
+    signal?: AbortSignal,
+  ): Promise<SessionScope | null>
   preview(
     source: CollectionKey,
     destination: AccountSession,
     email: string,
     scope: SessionScope,
+    signal?: AbortSignal,
   ): Promise<AttachPreview>
-  confirm(preview: AttachPreview, destination: AccountSession, scope: SessionScope): Promise<void>
+  confirm(
+    preview: AttachPreview,
+    destination: AccountSession,
+    scope: SessionScope,
+    signal?: AbortSignal,
+  ): Promise<SessionScope>
 }
 export interface AppControllerOptions {
   repository: Repository
@@ -168,7 +179,22 @@ export function createAppController(options: AppControllerOptions): AppControlle
     signal.throwIfAborted()
     if (!identity || identity.accountId !== value.accountId) throw new DomainError('AUTH_REQUIRED')
     const all = await repository.listCollections()
-    if (!all.some((c) => keyOf(c.key) === keyOf(value.collection)))
+    let awaitingReplacement = false
+    for (const collection of all.filter(
+      (c) =>
+        c.kind === 'connected' &&
+        c.accountId === value.accountId &&
+        c.key.collectionId === value.collection.collectionId,
+    ))
+      if (
+        (await repository.pending(collection.key)).some(
+          (p) =>
+            p.intent.kind === 'collection.replace' &&
+            p.intent.payload.nextEpoch === value.collection.epoch,
+        )
+      )
+        awaitingReplacement = true
+    if (!awaitingReplacement && !all.some((c) => keyOf(c.key) === keyOf(value.collection)))
       await repository.createCollection({
         key: value.collection,
         kind: 'connected',
@@ -214,6 +240,8 @@ export function createAppController(options: AppControllerOptions): AppControlle
     }).catch((error) => publish({ phase: 'error', error: safeError(error) }))
   })
   async function resumeAuthenticated(scope: SessionScope) {
+    if (session && state.auth === 'authenticated' && options.connections?.resume)
+      scope = (await options.connections.resume(session, scope, cancel.signal)) ?? scope
     if (
       session &&
       state.auth === 'authenticated' &&
@@ -221,6 +249,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
       canonicalJson(scope.device) === canonicalJson(session.device)
     )
       await repository.resumeAfterAuthentication(scope.key, scope.generation)
+    return scope
   }
   function authenticate(work: (auth: AccountAuth, signal: AbortSignal) => Promise<AccountSession>) {
     authVersion++
@@ -248,8 +277,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
           })
         await refresh(next)
       } else {
-        await resumeAuthenticated(scope)
-        await refresh(scope)
+        await refresh(await resumeAuthenticated(scope))
       }
     })
   }
@@ -435,8 +463,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
                     key: selected.key,
                     device: session.device,
                   })
-                await resumeAuthenticated(selected)
-                await refresh(selected)
+                await refresh(await resumeAuthenticated(selected))
               }),
             )
             .catch((error) => {
@@ -489,8 +516,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
           key,
           device: view.info.kind === 'connected' ? session!.device : previous.device,
         })
-        await resumeAuthenticated(scope)
-        await refresh(scope)
+        await refresh(await resumeAuthenticated(scope))
       })
     },
     async prepareSignOut() {
@@ -647,15 +673,33 @@ export function createAppController(options: AppControllerOptions): AppControlle
       const scope = bound()
       if (!options.connections || !session || !state.account)
         throw new DomainError('CAPABILITY_UNAVAILABLE')
-      return options.connections.preview(source, session, state.account.email, scope)
+      return options.connections.preview(source, session, state.account.email, scope, cancel.signal)
     },
     confirmAttach(preview) {
       return serial(async () => {
         const scope = state.scope
         if (!scope || !options.connections || !session)
           throw new DomainError('CAPABILITY_UNAVAILABLE')
-        await options.connections.confirm(preview, session, scope)
-        await refresh(scope)
+        sync?.stop()
+        try {
+          const selected = await options.connections.confirm(preview, session, scope, cancel.signal)
+          session = { ...session, collection: selected.key }
+          await refresh(selected)
+        } catch (error) {
+          const active = await repository.readActive()
+          if (active) {
+            const view = await repository.readView(active.key)
+            if (view.info.kind !== 'connected' || view.info.accountId === session.accountId) {
+              if (
+                view.info.kind === 'connected' &&
+                active.key.collectionId === session.collection.collectionId
+              )
+                session = { ...session, collection: active.key }
+              await refresh(active)
+            }
+          }
+          throw error
+        }
       })
     },
     async dispose() {

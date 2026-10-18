@@ -104,6 +104,51 @@ it('login retains guest selection, exposes verified identity and switches only d
   await controller.chooseCollection(connected.key)
   expect(controller.getSnapshot().scope?.key).toEqual(connected.key)
 })
+it('does not create an empty next epoch over a pending replacement when verified auth advances after response loss', async () => {
+  const { repo, controller, connected, session, auth } = await setup()
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const scope = controller.getSnapshot().scope!
+  await repo.hydrate(
+    scope.key,
+    [
+      {
+        protocolVersion: 2,
+        snapshotId: 'snapshot',
+        collectionId: scope.key.collectionId,
+        epoch: scope.key.epoch,
+        cursor: '0',
+        revision: '0',
+        expiresAt: '2030-01-01T00:00:00.000Z',
+        after: null,
+        nextPage: null,
+        projects: [],
+        checkpoints: [],
+        media: [],
+      },
+    ],
+    scope.generation,
+  )
+  await repo.commitLocal(
+    scope.key,
+    {
+      kind: 'collection.replace',
+      operationId: 'replacement',
+      createdAt: now,
+      base: { revision: '0' },
+      payload: { reservationId: 'reservation', candidateSha256: 'a'.repeat(64), nextEpoch: 'next' },
+    },
+    scope.generation,
+  )
+  auth.verifyCode = async () => ({
+    ...session,
+    collection: { ...session.collection, epoch: 'next' },
+  })
+  await controller.verifyCode('maker@example.test', '123456')
+  expect((await repo.listCollections()).some((c) => c.key.epoch === 'next')).toBe(false)
+  expect(controller.getSession()?.collection.epoch).toBe('next')
+  expect(await repo.pending(scope.key)).toHaveLength(1)
+})
 it('sign-out counts unsent project mutations and requires explicit discard with no checkpoint', async () => {
   const { controller, repo, connected, auth } = await setup()
   await controller.verifyCode('maker@example.test', '123456')

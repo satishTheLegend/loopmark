@@ -4,6 +4,7 @@ import type { SyncTransport } from '../platform/contracts'
 import { canonicalJson } from '../domain/canonical-json'
 import { DomainError, safeError, type SafeError } from '../domain/errors'
 import type { TabLease } from './tab-lease'
+import { releaseSnapshotQuietly } from './snapshots'
 export interface SyncStatus {
   state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
   pending: number
@@ -45,6 +46,7 @@ export function createSyncCoordinator(options: {
   lease: TabLease
   clock?: SyncClock
   online?: () => boolean
+  currentAccountId?: () => string | null
 }): SyncCoordinator {
   const { repository, transport, lease } = options,
     time = options.clock ?? clock
@@ -134,7 +136,14 @@ export function createSyncCoordinator(options: {
         await repository.hydrate(scope.key, pages, scope.generation)
       } finally {
         // Releasing cannot roll back already applied metadata. Failed cleanup expires server-side.
-        await transport.releaseSnapshot(snapshotId, signal).catch(() => {})
+        await releaseSnapshotQuietly(transport, snapshotId, async () => {
+          if (options.currentAccountId) return options.currentAccountId() === view.info.accountId
+          const active = await repository.readActive()
+          return (
+            !!active &&
+            (await repository.readView(active.key)).info.accountId === view.info.accountId
+          )
+        })
       }
     }
     for (const item of pending) {

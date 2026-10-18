@@ -794,9 +794,23 @@ export class BrowserRepository implements Repository {
       )
       for (const draft of drafts)
         if (keyOf(draft.scope) === keyOf(key)) tx.objectStore('drafts').delete(draft.key)
-      const metadata = await requestResult<Array<{ key: string; scope?: CollectionKey }>>(
-        tx.objectStore('meta').getAll(),
+      const metadata = await requestResult<
+        Array<{
+          key: string
+          scope?: CollectionKey
+          value?: { kind?: string; value?: { phase?: string } }
+        }>
+      >(tx.objectStore('meta').getAll())
+      if (
+        metadata.some(
+          (row) =>
+            row.scope &&
+            keyOf(row.scope) === keyOf(key) &&
+            row.value?.kind === 'candidate' &&
+            !['complete', 'cancelled'].includes(row.value.value?.phase ?? ''),
+        )
       )
+        throw new DomainError('SYNC_REBASE_REQUIRED')
       for (const row of metadata)
         if (row.scope && keyOf(row.scope) === keyOf(key)) tx.objectStore('meta').delete(row.key)
       tx.objectStore('collections').delete(keyOf(key))
