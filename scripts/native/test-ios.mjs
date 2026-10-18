@@ -1,7 +1,8 @@
 import { run, root, evidenceDirectory } from './process.mjs'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { readFile, unlink, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
 import { productManifest, verifyProductAssets, appDirectoryHash } from './product-evidence.mjs'
 const exec = promisify(execFile)
 const device = process.env.LOOPMARK_IOS_SIMULATOR
@@ -34,6 +35,9 @@ const { stdout } = await exec('xcrun', [
   'data',
 ])
 const reportPath = `${stdout.trim()}/Documents/loopmark-native-results.json`
+const runId = randomUUID()
+await mkdir(`${stdout.trim()}/Documents`, { recursive: true })
+await writeFile(`${stdout.trim()}/Documents/loopmark-native-run-id`, runId)
 const reports = []
 for (let pass = 0; pass < 2; pass++) {
   await unlink(reportPath).catch((error) => {
@@ -61,8 +65,12 @@ for (let pass = 0; pass < 2; pass++) {
   if (report.platform !== 'ios' || report.results.some((result) => !result.passed))
     throw new Error(`Native assertions failed: ${JSON.stringify(report)}`)
 }
-if (reports[1].restartPhase !== 2)
-  throw new Error('Process restart did not observe the durable seed.')
+if (
+  reports.some((report) => report.runId !== runId) ||
+  reports[0].restartPhase !== 1 ||
+  reports[1].restartPhase !== 2
+)
+  throw new Error('Process restart did not prove a fresh run-specific phase1 to phase2 transition.')
 const { stdout: installed } = await exec('xcrun', [
   'simctl',
   'get_app_container',
@@ -76,6 +84,7 @@ await writeFile(
   JSON.stringify(
     {
       simulator: device,
+      runId,
       sourceCommit: manifest.sourceCommit,
       manifestFileSha256: manifest.manifestFileSha256,
       artifactSha256: await appDirectoryHash(installed.trim()),

@@ -66,7 +66,9 @@ export function wave(): Blob {
   view.setUint32(40, 2, true)
   return new Blob([bytes], { type: 'audio/wav' })
 }
-export async function persistenceTests(test: Test) {
+export async function persistenceTests(test: Test, runId: string) {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(runId))
+    throw new Error('An explicit unique native fixture run ID is required.')
   let restartPhase = 0
   await test('actual SQLite record/outbox atomicity and failed transaction preserves draft', async () => {
     const info = fixture(true),
@@ -273,9 +275,9 @@ export async function persistenceTests(test: Test) {
     await repo.close()
   })
   await test('saved collection survives a full native app process restart', async () => {
-    // A new, fixture-owned database prevents the earlier project-only seed from
-    // satisfying this stronger acknowledged-voice restart assertion.
-    const repo = await openNativeRepository({ databaseName: 'restart_voice_fixture_v2' })
+    // The host runner supplies a fresh ID before its two process launches, so
+    // an earlier seed cannot satisfy a new qualification attempt.
+    const repo = await openNativeRepository({ databaseName: `rv_${runId.replaceAll('-', '')}` })
     const collections = await repo.listCollections()
     if (!collections.length) {
       const info = fixture()

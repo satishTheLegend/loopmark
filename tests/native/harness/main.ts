@@ -64,7 +64,16 @@ await test('actual device credential save, read, clear', async () => {
   await store.clear()
   assert((await store.read()) === null)
 })
-const restartPhase = await persistenceTests(test)
+const runId = String(
+  (
+    await Filesystem.readFile({
+      path: 'loopmark-native-run-id',
+      directory: Directory.Data,
+      encoding: Encoding.UTF8,
+    })
+  ).data,
+).trim()
+const restartPhase = await persistenceTests(test, runId)
 await test('native corrupt/missing cache repair preserves draft/export pins and transaction fences', async () => {
   await nativeMediaRepair()
 })
@@ -87,6 +96,7 @@ await test('native runtime scheduler waits for startup and queued selection sett
 await capabilityTests(test)
 const report = {
   schemaVersion: 1,
+  runId,
   restartPhase,
   platform: Capacitor.getPlatform(),
   origin: location.origin,

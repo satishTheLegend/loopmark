@@ -2,6 +2,7 @@ import { run, root, androidEnvironment, evidenceDirectory } from './process.mjs'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { readFile, writeFile } from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
 import { productManifest, verifyProductAssets, verifyProductApk } from './product-evidence.mjs'
 const exec = promisify(execFile)
 const serial = process.env.ANDROID_SERIAL
@@ -30,6 +31,30 @@ const artifactSha256 = await verifyProductApk(
   manifest,
 )
 await run(adb, ['-s', serial, 'install', '-r', 'android/app/build/outputs/apk/debug/app-debug.apk'])
+const runId = randomUUID()
+await run(adb, ['-s', serial, 'shell', 'run-as', 'app.loopmark.craft', 'mkdir', '-p', 'files'])
+// This shell payload contains only a generated UUID and a fixed fixture-private filename.
+await run(adb, [
+  '-s',
+  serial,
+  'shell',
+  'run-as',
+  'app.loopmark.craft',
+  'sh',
+  '-c',
+  `'printf %s ${runId} > files/loopmark-native-run-id'`,
+])
+const { stdout: writtenRunId } = await exec(adb, [
+  '-s',
+  serial,
+  'shell',
+  'run-as',
+  'app.loopmark.craft',
+  'cat',
+  'files/loopmark-native-run-id',
+])
+if (writtenRunId.trim() !== runId)
+  throw new Error('Native fixture run challenge was not persisted.')
 const reports = []
 for (let pass = 0; pass < 2; pass++) {
   await run(adb, ['-s', serial, 'shell', 'am', 'force-stop', 'app.loopmark.craft'])
@@ -68,13 +93,18 @@ for (let pass = 0; pass < 2; pass++) {
   if (report.platform !== 'android' || report.results.some((result) => !result.passed))
     throw new Error(`Native assertions failed: ${JSON.stringify(report)}`)
 }
-if (reports[1].restartPhase !== 2)
-  throw new Error('Process restart did not observe the durable seed.')
+if (
+  reports.some((report) => report.runId !== runId) ||
+  reports[0].restartPhase !== 1 ||
+  reports[1].restartPhase !== 2
+)
+  throw new Error('Process restart did not prove a fresh run-specific phase1 to phase2 transition.')
 await writeFile(
   `${await evidenceDirectory()}/android-runtime.json`,
   JSON.stringify(
     {
       emulator: serial,
+      runId,
       sourceCommit: manifest.sourceCommit,
       manifestFileSha256: manifest.manifestFileSha256,
       artifactSha256,
