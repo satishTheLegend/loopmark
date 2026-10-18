@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "completedAt": "2026-10-18T17:20:44Z",
+  "scope": "Only this task-created native worktree regenerable build caches; no running native build/emulator was present.",
+  "removed": [
+    {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex",
+      "reportedAllocatedKiB": 713952
+    },
+    {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/ModuleCache.noindex",
+      "reportedAllocatedKiB": 160356
+    },
+    {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SDKExplicitPrecompiledModules",
+      "reportedAllocatedKiB": 241532
+    },
+    {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Index.noindex",
+      "reportedAllocatedKiB": 23804
+    },
+    {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/CompilationCache.noindex",
+      "reportedAllocatedKiB": 28
+    },
+    {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/android/app/build/intermediates",
+      "reportedAllocatedKiB": 64736
+    }
+  ],
+  "reportedAllocatedKiB": 1204408,
+  "freeBytesBefore": 12157571072,
+  "freeBytesAfter": 14308245504,
+  "observedFreeBytesDelta": 2150674432,
+  "preserved": [
+    "canonical native artifacts and prior candidates",
+    "all source and recorded raw evidence",
+    "all iOS Logs/Test .xcresult and test reports",
+    "Build/Products, Android APK outputs and reports",
+    "SPM dependencies and shared node_modules",
+    "SDK/JDK/toolchains and installed simulator/emulator data"
+  ],
+  "limitation": "APFS sharing/compression and unrelated host activity mean reported path sizes and free-space delta need not match."
+}
