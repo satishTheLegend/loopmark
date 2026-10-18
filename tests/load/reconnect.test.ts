@@ -350,7 +350,12 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         (result.status === 429 && result.body?.error?.retryable)
       ) {
         metrics.retryCount++
-        await wait(Math.min(10000, 500 * 2 ** attempt) + Math.random() * 1000)
+        await wait(
+          Math.min(
+            Math.min(10000, 500 * 2 ** attempt) + Math.random() * 1000,
+            Math.max(0, deadline - Date.now()),
+          ),
+        )
         continue
       }
       throw new Error(
@@ -417,6 +422,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
     if (failed.length) {
       report.phase = 'bounded-post-pressure-recovery'
       report.recoveryStartedAt = new Date().toISOString()
+      report.recoveryFailureKinds = {}
       const deadline = Date.now() + 5 * 60_000
       const recovered = await mapLimit(prepared, 8, async ({ a, cmd, checkpointCommand }) => {
         try {
@@ -427,7 +433,14 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
             page.body.entries.map((entry: { operationId: string }) => entry.operationId),
           ).toEqual([cmd.operationId, checkpointCommand.operationId])
           return true
-        } catch {
+        } catch (error) {
+          const reason = String((error as Error)?.message ?? '')
+          const kind = /^LOAD_[A-Z0-9_]+$/.test(reason)
+            ? reason
+            : (error as Error)?.name === 'AssertionError'
+              ? 'ASSERTION'
+              : 'UNCLASSIFIED'
+          report.recoveryFailureKinds[kind] = (report.recoveryFailureKinds[kind] ?? 0) + 1
           return false
         }
       })
