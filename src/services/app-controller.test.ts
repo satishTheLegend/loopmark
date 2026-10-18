@@ -183,3 +183,13 @@ it('local initialization does not wait for a hung authentication request', async
   expect(local.getSnapshot().phase).toBe('ready')
   expect(local.getSnapshot().view?.info.kind).toBe('guest')
 })
+it('a validated native/web callback follows the same verified guest-preserving account path', async () => {
+  const { controller, auth, guest } = await setup()
+  const callback = vi.spyOn(auth, 'completeCallback')
+  await controller.completeCallback(
+    'https://configured.example/auth/callback?code=validated-by-auth',
+  )
+  expect(callback).toHaveBeenCalled()
+  expect(controller.getSnapshot().account?.email).toBe('verified@example.test')
+  expect(controller.getSnapshot().scope?.key).toEqual(guest.key)
+})

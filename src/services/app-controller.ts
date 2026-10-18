@@ -211,6 +211,34 @@ export function createAppController(options: AppControllerOptions): AppControlle
       await refresh(next)
     }).catch((error) => publish({ phase: 'error', error: safeError(error) }))
   })
+  function authenticate(work: (auth: AccountAuth, signal: AbortSignal) => Promise<AccountSession>) {
+    authVersion++
+    return serial(async () => {
+      if (!auth) throw new DomainError('CAPABILITY_UNAVAILABLE')
+      const scope = state.scope
+      if (!scope) throw new DomainError('ACCOUNT_CHANGED')
+      const signal = cancel.signal
+      authenticating = true
+      let value: AccountSession
+      try {
+        value = await work(auth, signal)
+        await check(scope)
+        await acceptSession(value, signal)
+      } finally {
+        authenticating = false
+      }
+      const selected = await repository.readView(scope.key)
+      // A different account must never inherit the previous account's selected cache.
+      if (selected.info.kind === 'connected' && selected.info.accountId !== value.accountId) {
+        const local = await guest(),
+          next = await repository.transition(scope, {
+            key: local.key,
+            device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
+          })
+        await refresh(next)
+      } else await refresh(scope)
+    })
+  }
   const api: AppController = {
     async initialize() {
       return serial(async () => {
@@ -301,32 +329,10 @@ export function createAppController(options: AppControllerOptions): AppControlle
       }
     },
     verifyCode(email, code) {
-      authVersion++
-      return serial(async () => {
-        if (!auth) throw new DomainError('CAPABILITY_UNAVAILABLE')
-        const scope = state.scope
-        if (!scope) throw new DomainError('ACCOUNT_CHANGED')
-        const signal = cancel.signal
-        authenticating = true
-        let value: AccountSession
-        try {
-          value = await auth.verifyCode(email, code, signal)
-          await check(scope)
-          await acceptSession(value, signal)
-        } finally {
-          authenticating = false
-        }
-        const selected = await repository.readView(scope.key)
-        // A different account must never inherit the previous account's selected cache.
-        if (selected.info.kind === 'connected' && selected.info.accountId !== value.accountId) {
-          const local = await guest(),
-            next = await repository.transition(scope, {
-              key: local.key,
-              device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
-            })
-          await refresh(next)
-        } else await refresh(scope)
-      })
+      return authenticate((auth, signal) => auth.verifyCode(email, code, signal))
+    },
+    completeCallback(url) {
+      return authenticate((auth, signal) => auth.completeCallback(url, signal))
     },
     chooseCollection(key) {
       return serial(async () => {

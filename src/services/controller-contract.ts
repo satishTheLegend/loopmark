@@ -46,6 +46,7 @@ export interface AppController {
   subscribe(listener: () => void): () => void
   requestCode(email: string): Promise<{ retryAt: string }>
   verifyCode(email: string, code: string): Promise<void>
+  completeCallback(url: string): Promise<void>
   prepareSignOut(): Promise<LocalWorkCounts>
   signOut(options: { keepLocal: boolean; discardUniqueWork?: boolean }): Promise<void>
   chooseCollection(key: CollectionKey): Promise<void>
