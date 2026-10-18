@@ -1,6 +1,10 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const desktopViewport = { width: 1440, height: 1000 }
+const testPort = Number(process.env.LOOPMARK_TEST_PORT ?? 4173)
+if (!Number.isSafeInteger(testPort) || testPort < 1024 || testPort > 65535)
+  throw new Error('LOOPMARK_TEST_PORT must be an integer from 1024 to 65535')
+const testOrigin = `http://127.0.0.1:${testPort}`
 const chromiumMedia = {
   args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'],
 }
@@ -15,7 +19,7 @@ export default defineConfig({
   expect: { timeout: 8_000 },
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: testOrigin,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     viewport: desktopViewport,
@@ -50,9 +54,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview -- --port 4173 --strictPort',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
+    command: `npm run preview -- --port ${testPort} --strictPort`,
+    url: testOrigin,
+    reuseExistingServer: !process.env.CI && !process.env.LOOPMARK_TEST_PORT,
     timeout: 30_000,
   },
 })

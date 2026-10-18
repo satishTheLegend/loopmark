@@ -14,18 +14,18 @@ Read-only inspection found one worktree, `/Users/lalaji/Repos/CGProjects/loopmar
 
 The integrator must inspect `git status --short`, `git diff --check`, source fingerprints and retained evidence; isolate the exact foundation source/tests/evidence from unrelated or still-changing planning files; and make the local foundation commit only after its contents match the verified candidate. If executable source changed since that run, rerun the affected checks and final baseline before freezing. Record the resulting full SHA in new `docs/evidence/expansion/foundation.json`; do not invent it now. Include the final reviewed planning documents in a separate plan commit if needed. Both commits stay local unless separately authorized for publication.
 
-Worktrunk v0.80.0 is installed. Read-only `wt config show` found no user or project hook configuration; shell integration was inactive in the tool process. No worktree is created during planning. After P0/P1, use the authorized local `wt` workflow with explicit bases and `--no-cd`; each worker receives its absolute worktree path and runs its own `npm ci`. There is no hook provisioning to depend on, so `--no-hooks` avoids unrelated hook execution. Reinspect configuration before creation if it has changed; never auto-approve arbitrary hooks.
+Worktrunk v0.80.0 is installed. Its actual CLI lacks the newer documentation’s `--path` option; use the per-invocation `worktree-path` override below without changing global configuration. Read-only `wt config show` found no user or project hook configuration; shell integration was inactive in the tool process. No worktree is created during planning. After P0/P1, use the authorized local `wt` workflow with explicit bases and `--no-cd`; each worker receives its absolute worktree path and runs its own `npm ci`. There is no hook provisioning to depend on, so `--no-hooks` avoids unrelated hook execution. Reinspect configuration before creation if it has changed; never auto-approve arbitrary hooks.
 
 ```sh
 # Future execution only. Set this to the full SHA recorded by P0, never the old HEAD.
 LOOPMARK_FOUNDATION_SHA="<P0 recorded full SHA>"
-wt switch --create expansion/integration --base "$LOOPMARK_FOUNDATION_SHA" --no-cd --no-hooks --path ../loopmark-expansion-integration
+wt --config-set 'worktree-path = "../loopmark-expansion-integration"' switch --create expansion/integration --base "$LOOPMARK_FOUNDATION_SHA" --no-cd --no-hooks
 
 # Run I01 in that integration worktree and record its reviewed contract commit.
 LOOPMARK_CONTRACT_SHA="<I01 recorded full SHA>"
-wt switch --create expansion/client --base "$LOOPMARK_CONTRACT_SHA" --no-cd --no-hooks --path ../loopmark-expansion-client
-wt switch --create expansion/backend --base "$LOOPMARK_CONTRACT_SHA" --no-cd --no-hooks --path ../loopmark-expansion-backend
-wt switch --create expansion/native --base "$LOOPMARK_CONTRACT_SHA" --no-cd --no-hooks --path ../loopmark-expansion-native
+wt --config-set 'worktree-path = "../loopmark-expansion-client"' switch --create expansion/client --base "$LOOPMARK_CONTRACT_SHA" --no-cd --no-hooks
+wt --config-set 'worktree-path = "../loopmark-expansion-backend"' switch --create expansion/backend --base "$LOOPMARK_CONTRACT_SHA" --no-cd --no-hooks
+wt --config-set 'worktree-path = "../loopmark-expansion-native"' switch --create expansion/native --base "$LOOPMARK_CONTRACT_SHA" --no-cd --no-hooks
 ```
 
 These are command templates whose two SHA values come from execution evidence, not executable placeholder values. Record each worktree's actual path, base SHA, branch, local project ID, ports and output directory. The integrator brings reviewed commits into `expansion/integration` sequentially and records their SHAs. Workers refresh from the reviewed integration checkpoint between dependent packages. No branch deletion, remote push, deployment or store submission is implied.

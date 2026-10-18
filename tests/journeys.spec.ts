@@ -205,12 +205,12 @@ test('@chromium-media simulated microphone recording and photo survive a full ex
   expect(exported.projects[0].checkpoints[0].voice).toMatch(/^data:audio\/webm/)
   const context = await browser.newContext()
   const other = await context.newPage()
-  await other.goto('http://127.0.0.1:4173/#backup')
+  await other.goto(`${new URL(page.url()).origin}/#backup`)
   await uploadBackup(other, exported)
   await expect(other.getByRole('dialog')).toContainText('1 projects · 1 checkpoints')
   await other.getByRole('button', { name: 'Replace and restore' }).click()
   await expect(other.getByRole('dialog')).toHaveCount(0)
-  await other.goto(`http://127.0.0.1:4173/#project=${exported.projects[0].id}`)
+  await other.goto(`${new URL(page.url()).origin}/#project=${exported.projects[0].id}`)
   await expect(other.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
     'Continue with the blue yarn.',
   )
@@ -396,7 +396,10 @@ test('production cache permits offline reload, capture, and later reload without
 }, testInfo) => {
   const remoteRequests: string[] = []
   page.on('request', (request) => {
-    if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== 'http://127.0.0.1:4173')
+    if (
+      /^https?:/.test(request.url()) &&
+      new URL(request.url()).origin !== new URL(String(testInfo.project.use.baseURL)).origin
+    )
       remoteRequests.push(request.url())
   })
   await page.goto('/')
@@ -793,11 +796,11 @@ test('native recorder accepts a synthesized audio stream and restores its playab
   const otherContext = await browser.newContext()
   try {
     const other = await otherContext.newPage()
-    await other.goto('http://127.0.0.1:4173/#backup')
+    await other.goto(`${new URL(page.url()).origin}/#backup`)
     await uploadBackup(other, exported)
     await other.getByRole('button', { name: 'Replace and restore' }).click()
     await expect(other.getByRole('dialog')).toHaveCount(0)
-    await other.goto(`http://127.0.0.1:4173/#project=${exported.projects[0].id}`)
+    await other.goto(`${new URL(page.url()).origin}/#project=${exported.projects[0].id}`)
     const restoredAudio = other.locator('audio')
     await expect(restoredAudio).toHaveAttribute('src', voice!)
     // Playback evidence checks actual decoder acceptance and progress, beyond a data URL existing.

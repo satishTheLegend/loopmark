@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-Open the URL printed by Vite, normally **http://127.0.0.1:5173**. No API keys, account, environment variables, or backend are required.
+Open the URL printed by Vite, a deterministic port unique to this checkout (override with `LOOPMARK_DEV_APP_PORT`). No API keys, account, environment variables, or backend are required.
 
 For the full offline experience, use the production build:
 

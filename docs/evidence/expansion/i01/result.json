@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "package": "I01",
+  "requirements": [
+    "X01",
+    "X02",
+    "X03",
+    "X04",
+    "X05",
+    "X06",
+    "X07",
+    "X08",
+    "X09",
+    "X10"
+  ],
+  "baseCommit": "8353f234178cb9681a122022667d9ff3725832b4",
+  "resultCommit": null,
+  "recordedAt": "2026-10-18T11:22:50.199372+00:00",
+  "environment": {
+    "node": "26.8.2",
+    "platform": "macOS arm64"
+  },
+  "workerCache": "loopmark-9ee894dc8d34",
+  "unit": {
+    "command": "npm test",
+    "passed": 80,
+    "failed": 0,
+    "files": 4
+  },
+  "browser": {
+    "command": "LOOPMARK_TEST_PORT=4181 npm run test:e2e -- --project=chromium --workers=2 --output=test-results-i01 --reporter=json",
+    "passed": 43,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 29091.389
+  },
+  "otherChecks": [
+    "strict TypeScript/Vite build PASS",
+    "format:check PASS",
+    "guest doctor ready0",
+    "npm audit zero vulnerabilities",
+    "xcode uuid override: 1000 valid unique IDs"
+  ],
+  "reviewers": [
+    "backend_contract_review: six findings repaired and confirmed",
+    "contract_source: three findings repaired and confirmed; legacy extraction mechanically unchanged"
+  ],
+  "sourceHashes": {
+    "capacitor.config.ts": "cdce2a80e160aa2db451ac3afd9bda112a9fd6a87ce39d722d2d541e15b4a99c",
+    "package-lock.json": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d",
+    "package.json": "497343210be5a1b69fef462cbf2dc138124bab5220cae472b53a1e24b4232501",
+    "playwright.config.ts": "ac981cb291f60132f16ab84671897034fafb162af71fcafd5b7a391b8e1e2591",
+    "scripts/doctor.mjs": "fd5a85ab34850a6a15cb26d8b1b944fd6f28646a7c4a4327a603c2f8cb3410c3",
+    "scripts/lib/config.d.mts": "a131552fb3263ee09d5538ea74d1cb1d806ee68c3018d2c624a5291d9a6155ec",
+    "scripts/lib/config.mjs": "cbb482f5ac63ed99bfb1e7af47a9054988baf91fb7a1ee7944c515d02303710c",
+    "src/config.test.ts": "d649c1cace2698fc898e995d29c93aa59dbaa8d62896778255fd39cf64392582",
+    "src/config.ts": "cd9316c9823d6a498f03210b0c95dbb409513e63f62a05aa97d5a449b91b5a1a",
+    "src/data.ts": "512c5670f4397ffcb0431427a4dcc74d93a142f46a5327d0aa6a358277e4f9a2",
+    "src/domain/canonical-json.ts": "9d9bc1279c6e99acbdebdff2dca75316edceb4dcfa75a56a9dddd0c76265d774",
+    "src/domain/contracts.test.ts": "7c5b7ef32b27d2fc4525a9b4e5a0979ec17c58459afd1f4098dd10306d5f581d",
+    "src/domain/contracts.ts": "6632d238161e3697dc758c325f390b5770191f270df20191b00d0a2d1dac280b",
+    "src/domain/errors.ts": "6127d0d12eadca535189a1366b07a2192284cdc34a992be4bd665de63038a07d",
+    "src/domain/media-contract.ts": "c1f39949c63bb817d5ca6a681e34174ffb9911b875ee807095028620cae11da5",
+    "src/domain/policy.test.ts": "80c433b2b7010c18769a1ee84836d239bc18e4071d8e8bca2f4d21fed2ec590d",
+    "src/domain/policy.ts": "361fb357c8439e286f37126cf7390195d4c94231ca245d70bc8c300edd0fd8df",
+    "src/domain/portable-schema.ts": "391eb0802bddc4058d11d26c98e2701f5faa42b7b12793e56e4a850f990c4b99",
+    "src/domain/portable.ts": "ca351bf619a1ddac8a69fdaccf831e8a1dedc4d1d905d71932a123c6c9700817",
+    "src/domain/revisions.ts": "a01ef320928feaa845f1d194b84d902ac3bcdf04fe1a00abfd2a7728b063aa41",
+    "src/domain/schema.ts": "b51c680b949934476b8fc45ee811433237bcf4d3e5a79eef9950b344fa9b881b",
+    "src/help/errors.ts": "8e413356327dded5ae535171080665380e7b563c578c9bd5ff8bddddcedd52c0",
+    "src/platform/contracts.ts": "91e4245abb63c74a1a6a57f98a2cef6c276dc8b88ec4cfea837f668d4cb0016d",
+    "src/repositories/contract-suite.ts": "ab19a0bab29056d5d77d629ce58f1a517fcf0bbb1a3aa69beaac73ec3c9a1d18",
+    "src/repositories/contracts.ts": "d124c3781854ecf69b73792de10cdbc46f2cf09c18bc88f514083207b9fc310f",
+    "src/types.ts": "f68323366b0bc956ea6f366637a65cef2740a8221807bedf6c27e8dac83a91fb",
+    "supabase/functions/_shared/config.ts": "d568b1cceb3d711e0cbd438653cdb58eff47f8ceaa57e0c554653fc538999582",
+    "vite.config.ts": "113017a924e59a8d3a9dca39e96fd108220d99b3dcf776862c81b6173b0a9bf1"
+  },
+  "limitations": [
+    "Repository and platform interfaces are not adapter runtime verification.",
+    "Native packages installed; no native build or provider transaction verified in I01.",
+    "Full five-profile foundation matrix remains historical evidence; I01 executed Chromium regression only."
+  ]
+}

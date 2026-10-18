@@ -1,0 +1,15 @@
+[
+  { "VITE_LOOPMARK_MEDIA_CONCURRENCY": "0" },
+  { "VITE_LOOPMARK_MEDIA_CONCURRENCY": "5" },
+  { "VITE_LOOPMARK_MEDIA_CONCURRENCY": "1.5" },
+  { "VITE_LOOPMARK_MAX_PROJECTS": "900" },
+  { "VITE_LOOPMARK_OWNER_ID": "synthetic-other-owner" },
+  { "VITE_LOOPMARK_TEST_GRANT": "true" },
+  { "VITE_LOOPMARK_AUTH_REDIRECT": "https://attacker.example.test" },
+  { "VITE_LOOPMARK_APP_ORIGIN": "http://remote.example.test" },
+  { "VITE_LOOPMARK_APP_ORIGIN": "https://app.example.test/auth/callback" },
+  { "VITE_LOOPMARK_APP_ORIGIN": "https://user:secret@app.example.test" },
+  { "VITE_LOOPMARK_APP_ORIGIN": "https://app.example.test?redirect=elsewhere" },
+  { "VITE_LOOPMARK_APP_ORIGIN": "javascript:alert(1)" },
+  { "VITE_LOOPMARK_SUPABASE_URL": "https://backend.example.test" }
+]

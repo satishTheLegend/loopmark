@@ -1,0 +1,29 @@
+[
+  {
+    "input": {
+      "z": 1,
+      "a": [
+        "हुक",
+        {
+          "β": true,
+          "a": null
+        }
+      ]
+    },
+    "canonical": "{\"a\":[\"हुक\",{\"a\":null,\"β\":true}],\"z\":1}",
+    "sha256": "b45d2a108d2d0943fcb067576ac9dcadd964c6aba7bdee95b5f70faab799cab1"
+  },
+  {
+    "input": {},
+    "canonical": "{}",
+    "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  {
+    "input": {
+      "emoji": "🧶",
+      "line": "next\nrow"
+    },
+    "canonical": "{\"emoji\":\"🧶\",\"line\":\"next\\nrow\"}",
+    "sha256": "1e8f157862c3e57186e0d301d8190e36a1118c7803f432a1fdc13c6734f19697"
+  }
+]

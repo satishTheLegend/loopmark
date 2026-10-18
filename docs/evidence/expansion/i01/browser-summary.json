@@ -1,0 +1,13 @@
+{
+  "stats": {
+    "startTime": "2026-10-18T11:19:56.014Z",
+    "duration": 29091.389,
+    "expected": 43,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "project": "chromium",
+  "port": 4181,
+  "scope": "43 existing Chromium cases after compatibility extraction; synthetic media; no native/provider claim"
+}
