@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "productSourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "files": [
+    "tests/ui/expanded-accessibility.ui.ts",
+    "tests/ui/account-states.ui.ts"
+  ],
+  "args": [
+    "run",
+    "test:ui",
+    "--",
+    "tests/ui/expanded-accessibility.ui.ts",
+    "tests/ui/account-states.ui.ts",
+    "--workers=1",
+    "--retries=0",
+    "--grep",
+    "(?:sync announces each actionable transition once without repeating polling updates|account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow|known saved-change checking replaces current without repeated announcements and preserves new remedies)$"
+  ],
+  "startedAt": "2026-10-18T18:50:18.526Z",
+  "finishedAt": "2026-10-18T18:50:52.209Z",
+  "exitCode": 0,
+  "signal": null
+}

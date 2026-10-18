@@ -1,0 +1,38 @@
+
+> loopmark@1.0.0 test:ui
+> playwright test --config=playwright.ui.config.ts tests/ui/expanded-accessibility.ui.ts tests/ui/account-states.ui.ts --workers=1 --retries=0 --grep (?:sync announces each actionable transition once without repeating polling updates|account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow|known saved-change checking replaces current without repeated announcements and preserves new remedies)$
+
+[WebServer] (node:95038) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:95059) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 15 tests using 1 worker
+
+(node:95061) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (1.9s)
+  ✓   2 [chromium] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (575ms)
+  ✓   3 [chromium] › tests/ui/expanded-accessibility.ui.ts:54:1 › account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow (3.3s)
+(node:95100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [firefox] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (2.8s)
+  ✓   5 [firefox] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (582ms)
+  ✓   6 [firefox] › tests/ui/expanded-accessibility.ui.ts:54:1 › account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow (3.7s)
+(node:95147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [webkit] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (2.3s)
+  ✓   8 [webkit] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (597ms)
+  ✓   9 [webkit] › tests/ui/expanded-accessibility.ui.ts:54:1 › account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow (2.7s)
+(node:95268) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [chromium-mobile] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (1.7s)
+  ✓  11 [chromium-mobile] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (609ms)
+  ✓  12 [chromium-mobile] › tests/ui/expanded-accessibility.ui.ts:54:1 › account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow (3.3s)
+(node:95315) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [webkit-mobile] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (1.8s)
+  ✓  14 [webkit-mobile] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (540ms)
+  ✓  15 [webkit-mobile] › tests/ui/expanded-accessibility.ui.ts:54:1 › account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow (2.6s)
+
+  15 passed (33.2s)

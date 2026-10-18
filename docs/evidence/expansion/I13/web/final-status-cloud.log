@@ -1,0 +1,63 @@
+
+> loopmark@1.0.0 test:sync
+> node scripts/test-sync-smoke.mjs tests/expansion/accounts.cloud.ts tests/expansion/conflicts.cloud.ts tests/expansion/downloads.cloud.ts tests/expansion/media-export.cloud.ts tests/expansion/purchases.cloud.ts --workers=1 --retries=0
+
+[WebServer] (node:95504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:95526) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 40 tests using 1 worker
+
+(node:95527) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (12.8s)
+  ✓   2 [chromium] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (14.1s)
+  ✓   3 [chromium] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (10.2s)
+  ✓   4 [chromium] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (16.9s)
+  ✓   5 [chromium] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (19.3s)
+  ✓   6 [chromium] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (11.6s)
+  ✓   7 [chromium] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.9s)
+  ✓   8 [chromium] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (7.6s)
+(node:98402) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [firefox] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (12.0s)
+  ✓  10 [firefox] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (13.7s)
+  ✓  11 [firefox] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (9.6s)
+  ✓  12 [firefox] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (18.9s)
+  ✓  13 [firefox] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (20.8s)
+  ✓  14 [firefox] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (12.3s)
+  ✓  15 [firefox] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (17.1s)
+  ✓  16 [firefox] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (7.1s)
+(node:99606) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [webkit] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (13.4s)
+  ✓  18 [webkit] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (15.9s)
+  ✓  19 [webkit] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (10.5s)
+  ✓  20 [webkit] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (19.0s)
+  ✓  21 [webkit] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (20.6s)
+  ✓  22 [webkit] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (10.7s)
+  ✓  23 [webkit] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.1s)
+  ✓  24 [webkit] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (5.4s)
+(node:442) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  25 [chromium-mobile] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (9.8s)
+  ✓  26 [chromium-mobile] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (11.6s)
+  ✓  27 [chromium-mobile] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (8.8s)
+  ✓  28 [chromium-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (14.7s)
+  ✓  29 [chromium-mobile] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (17.4s)
+  ✓  30 [chromium-mobile] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (10.2s)
+  ✓  31 [chromium-mobile] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.6s)
+  ✓  32 [chromium-mobile] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (5.2s)
+(node:996) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [webkit-mobile] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (9.4s)
+  ✓  34 [webkit-mobile] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (11.1s)
+  ✓  35 [webkit-mobile] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (9.0s)
+  ✓  36 [webkit-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (16.0s)
+  ✓  37 [webkit-mobile] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (18.8s)
+  ✓  38 [webkit-mobile] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (12.6s)
+  ✓  39 [webkit-mobile] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (12.8s)
+  ✓  40 [webkit-mobile] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (5.2s)
+
+  40 passed (8.7m)

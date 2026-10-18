@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "4f3ac02ef6004b55676dd8def14d49f1b41730b5",
+  "productSourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "files": [
+    "tests/expansion/accounts.cloud.ts",
+    "tests/expansion/conflicts.cloud.ts",
+    "tests/expansion/downloads.cloud.ts",
+    "tests/expansion/media-export.cloud.ts",
+    "tests/expansion/purchases.cloud.ts"
+  ],
+  "args": [
+    "run",
+    "test:sync",
+    "--",
+    "tests/expansion/accounts.cloud.ts",
+    "tests/expansion/conflicts.cloud.ts",
+    "tests/expansion/downloads.cloud.ts",
+    "tests/expansion/media-export.cloud.ts",
+    "tests/expansion/purchases.cloud.ts",
+    "--workers=1",
+    "--retries=0"
+  ],
+  "startedAt": "2026-10-18T18:51:06.168Z",
+  "finishedAt": "2026-10-18T18:59:47.018Z",
+  "exitCode": 0,
+  "signal": null
+}

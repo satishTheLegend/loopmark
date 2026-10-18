@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "97dd79bc6aff8e5083fdf547495fc698da461324",
+  "sourceFiles": [
+    {
+      "path": "scripts/local.mjs",
+      "sha256": "8129631ceb9d87fb8c6f93058f2f7d20620066924724ad1046fcd7a0cfbe055a"
+    },
+    {
+      "path": "scripts/billing-fixture.mjs",
+      "sha256": "97e67c4f9746f466ed97e0d7c37cfcea6683002459485fe7f66ee9b6bf177615"
+    },
+    {
+      "path": "scripts/lib/config.mjs",
+      "sha256": "cbb482f5ac63ed99bfb1e7af47a9054988baf91fb7a1ee7944c515d02303710c"
+    }
+  ],
+  "selectedProfile": "loopmark-expansi-eeac3023",
+  "projectId": "loopmark-loopmark-expansi-eeac3023",
+  "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-backend",
+  "invocation": "Import qualified integration scripts/local.mjs and call exported main([\"down\"]) with the already-running backend checkout as cwd; no CLI reset, volume deletion or runtime prepare.",
+  "startedAt": "2026-10-18T19:00:01.144Z",
+  "before": {
+    "running": [
+      "loopmark_billing_fixture_loopmark-loopmark-expansi-eeac3023",
+      "loopmark_erasure_ledger_loopmark-loopmark-expansi-eeac3023",
+      "supabase_auth_loopmark-loopmark-expansi-eeac3023",
+      "supabase_db_loopmark-loopmark-expansi-eeac3023",
+      "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+      "supabase_inbucket_loopmark-loopmark-expansi-eeac3023",
+      "supabase_kong_loopmark-loopmark-expansi-eeac3023",
+      "supabase_realtime_loopmark-loopmark-expansi-eeac3023",
+      "supabase_rest_loopmark-loopmark-expansi-eeac3023",
+      "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+      "workspace-crm-clamav"
+    ],
+    "owned": [
+      "supabase_db_loopmark-loopmark-expansi-eeac3023",
+      "supabase_auth_loopmark-loopmark-expansi-eeac3023",
+      "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+      "supabase_rest_loopmark-loopmark-expansi-eeac3023",
+      "supabase_realtime_loopmark-loopmark-expansi-eeac3023",
+      "supabase_inbucket_loopmark-loopmark-expansi-eeac3023",
+      "supabase_kong_loopmark-loopmark-expansi-eeac3023",
+      "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+      "loopmark_billing_fixture_loopmark-loopmark-expansi-eeac3023",
+      "loopmark_erasure_ledger_loopmark-loopmark-expansi-eeac3023"
+    ],
+    "mountedVolumes": [
+      "loopmark-loopmark-expansi-eeac3023-erasure-ledger",
+      "supabase_db_loopmark-loopmark-expansi-eeac3023",
+      "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+      "supabase_storage_loopmark-loopmark-expansi-eeac3023"
+    ]
+  },
+  "finishedAt": "2026-10-18T19:00:07.867Z",
+  "exitCode": 0,
+  "signal": null,
+  "stdout": "Loopmark local down: loopmark-loopmark-expansi-eeac3023 (/Users/lalaji/Repos/CGProjects/loopmark-expansion-backend)\nStopped this project; database and independent erasure-ledger volumes retained.\n",
+  "stderr": "",
+  "after": {
+    "running": [
+      "workspace-crm-clamav"
+    ],
+    "volumes": [
+      {
+        "name": "loopmark-loopmark-expansi-eeac3023-erasure-ledger",
+        "preserved": true
+      },
+      {
+        "name": "supabase_db_loopmark-loopmark-expansi-eeac3023",
+        "preserved": true
+      },
+      {
+        "name": "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+        "preserved": true
+      },
+      {
+        "name": "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+        "preserved": true
+      }
+    ]
+  },
+  "onlySelectedServicesStopped": true,
+  "allMountedVolumesPreserved": true
+}

@@ -1,157 +1,90 @@
 {
   "schemaVersion": 1,
-  "status": "pending-final-adjudication",
-  "note": "Final source is asserted byte-for-byte against frozen product inputs. Later commits add evidence and test-only corrections. Counts do not replace requirement-level adjudication; initial failures and focused closures are separate.",
+  "status": "pending-final-independent-adjudication",
   "artifacts": [
     {
-      "path": "docs/evidence/expansion/I13/web/final-build-navigation.log",
-      "sha256": "2719769dc2a90850d39e9a08b795c321cabf3deb44241728eb35ae995cae8f22",
-      "sourceLogModifiedAt": "2026-10-18T16:19:19.014123+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-unit.log",
-      "sha256": "9ef5ee3c0097f1d8c0282e8c8bbec6064961197b73793bc2ea15a15c097e892f",
-      "sourceLogModifiedAt": "2026-10-18T16:04:41.801310+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-ui.log",
-      "sha256": "5cc7c7205087f314e674d78ae827a5426f32e31b2307b8f9aac6919bb5004725",
-      "sourceLogModifiedAt": "2026-10-18T16:01:18.640249+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-ui-followup.log",
-      "sha256": "d1de58b01579082f1b17c63637625c5073e5dbc436264a4cbe696cdb3fc94f5b",
-      "sourceLogModifiedAt": "2026-10-18T16:04:02.425759+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/project-detail-ui.log",
-      "sha256": "d205bc726120c1aeacd023fa09907ee50fdb96c39ce5ef61222d5d2a09a0a5db",
-      "sourceLogModifiedAt": "2026-10-18T16:13:57.320430+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-guest.log",
-      "sha256": "beea3f5808196d9fc16f5bf184238ebf41ee23de0a4b423315dbd26913c086c3",
-      "sourceLogModifiedAt": "2026-10-18T16:10:58.122999+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-guest-followup.log",
-      "sha256": "a4469ffdd9639ac4feb3ec4a30500d992d72797029ae09752c40707e0a7b8d33",
-      "sourceLogModifiedAt": "2026-10-18T16:19:58.530212+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-firefox-draft-repeat.log",
-      "sha256": "1a909c35cbdb1dc7b7add486c1ca2a3a30b6c639e87793132cb9bef2f42ff728",
-      "sourceLogModifiedAt": "2026-10-18T16:20:46.565189+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-scale.log",
-      "sha256": "40d4fc4953097440ab78f4444f2809e0e59d89f6dd7e90cfb6e581b58a39fa92",
-      "sourceLogModifiedAt": "2026-10-18T16:23:09.658460+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-security.log",
-      "sha256": "21a6c9174625363f2766d706578675de9f758120e54df4ccdc643ca9288f2bad",
-      "sourceLogModifiedAt": "2026-10-18T15:57:30.567358+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-compat.log",
-      "sha256": "c787ef4609bd82074aae8ce6f707ae9408137b4ab2bb50dffbd4628e9daadc82",
-      "sourceLogModifiedAt": "2026-10-18T15:57:32.961334+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-examples.log",
-      "sha256": "0ad5672fdc9ccddb878708bdd13b301e8f6b9b17658b7205cd41c99c5097a128",
-      "sourceLogModifiedAt": "2026-10-18T15:57:33.838830+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-docs.log",
-      "sha256": "4fbd2050d58c3fc085ff024bbd8a31ffdff6013db54344cfccac0903fde97e43",
-      "sourceLogModifiedAt": "2026-10-18T16:18:47.549215+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-audit-production.json",
-      "sha256": "32ceb003eb0cf52be8c708bbb0cc10aa7f2b55ddaa22e4c85df6667929c068ec",
-      "sourceLogModifiedAt": "2026-10-18T15:56:58.005744+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-audit-all.json",
-      "sha256": "32ceb003eb0cf52be8c708bbb0cc10aa7f2b55ddaa22e4c85df6667929c068ec",
-      "sourceLogModifiedAt": "2026-10-18T15:57:30.038315+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-unit-frozen.log",
-      "sha256": "944b192ff68921eec1dafda656d1a072c0bf12743ad3d22487d281fa1e316d29",
-      "sourceLogModifiedAt": "2026-10-18T16:28:41.643031+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-supporting-frozen.log",
-      "sha256": "1a79301dce0f4f7b3f11a944353d6f9daa02af6b3ada4bd04ce8b785aacb7bc0",
-      "sourceLogModifiedAt": "2026-10-18T16:29:31.506658+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-ui-frozen.log",
-      "sha256": "3f11b351c08a237ee4641fd8c9351395452d41878a3887714f8afd02a1f393ca",
-      "sourceLogModifiedAt": "2026-10-18T16:47:55.336390+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-guest-frozen.log",
-      "sha256": "7cc786b6d79e683715056af3bc0702a358dd5df8cb1d5629f094da892f49b2d9",
-      "sourceLogModifiedAt": "2026-10-18T16:33:52.975605+00:00"
-    },
-    {
-      "path": "docs/evidence/expansion/I13/web/final-guest-after-sw-fix.log",
-      "sha256": "48a73d743e601a503eaf9e6eacc9d9b47a85c4ba20fd24704038c8361fa0b6c3",
-      "sourceLogModifiedAt": "2026-10-18T16:50:02.300074+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-scope-ui.log",
+      "sha256": "ecee9b0c8312062c8f89cc93e82b150e1d288087dc0f96593526a93afc3d00d6"
     },
     {
       "path": "docs/evidence/expansion/I13/web/final-guest-current.log",
-      "sha256": "c7ba2ee8e4fc1da01bd12d54880abebe1c2f112f2705fc05340db63630bc0506",
-      "sourceLogModifiedAt": "2026-10-18T17:27:22.793464+00:00"
+      "sha256": "c7ba2ee8e4fc1da01bd12d54880abebe1c2f112f2705fc05340db63630bc0506"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-cloud-frozen.log",
-      "sha256": "f85e81240d7c44a69591be2b5b1762003a16f059e552e23314189a99c20fb1cc",
-      "sourceLogModifiedAt": "2026-10-18T17:27:20.645397+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-scope-guest.log",
+      "sha256": "9bbe75f9c90b7a739563ad5b45a48bbf9e11493d1a1099df429016b0afa13a6e"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-load-capture.log",
-      "sha256": "125dc722d80734df13348222cd63de1b87a04b7455d3aec9a8946d2d0765d303",
-      "sourceLogModifiedAt": "2026-10-18T16:56:58.688263+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-scope-guest-selection.json",
+      "sha256": "551468ebcec82a20a5c401d72b6088bb865108ec94ccc9a90c206bd75e6fd30c"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-format-frozen.log",
-      "sha256": "cc859f427f5c7083d993e27cbfa16a51fb004d4b31ce8f55a310703af58c299d",
-      "sourceLogModifiedAt": "2026-10-18T16:28:45.751792+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-scope-cloud.log",
+      "sha256": "98b9fbf8ef9ca41f0b8ea13faccf8e2bf90eef49fd4cf4dc4c1ca99b7492d451"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-integration-checks.log",
-      "sha256": "7939e6bd9f1deb886cf7b73f5b25b36f09b7a8a3d6818a900cfbaef8de0e2bf0",
-      "sourceLogModifiedAt": "2026-10-18T17:15:30.484962+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-ready-guest.log",
+      "sha256": "0cf2c70a4486cd695150acca4e0075357320fcc915f470832336d667141f62c4"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/cloud-candidate-a07-partial.log",
-      "sha256": "02993ac7a265075fa1728eae9acf9871fc85d464e0fb9ce7bc5ac2ef2dc1195e",
-      "sourceLogModifiedAt": "2026-10-18T17:04:17.314875+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-ready-guest-selection.json",
+      "sha256": "98029476523755a6a6115adc6c3b8d7bcea6e113d9a29c5bcfaa3020c479f935"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/cloud-noop-download-followup.log",
-      "sha256": "3b1ecfa5214631fad838b534dc7d50dd1dd500e378769536aa7f75da31a1f914",
-      "sourceLogModifiedAt": "2026-10-18T17:07:50.006361+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-ready-cloud.log",
+      "sha256": "e5881b86f9a9b5e8bb5003ab09349a6e4eca54c09cef67b40eb799d3b696874d"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-unit-report.json",
-      "sha256": "59cfb9e0f04d77a871c20d9c38e87d40676664c6ba982cd115e8bbe9d78db741",
-      "sourceLogModifiedAt": "2026-10-18T17:15:21.350433+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-ready-cloud-followup.log",
+      "sha256": "f508fc0f0f5be269a56cdd50912d2aa0051963a75a09eefdb79495c0501eeeac"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-integration-checks.json",
-      "sha256": "d81eaf68e153f8a424dc4f303622e7d74494cd394ec5097f9fa633486800ffcb",
-      "sourceLogModifiedAt": "2026-10-18T17:15:30.489070+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-ready-cloud-followup-selection.json",
+      "sha256": "d13d9b5e202811f68ab1ef904fd325367362d8cb2ddeb0ab1241f292534b65ff"
     },
     {
-      "path": "docs/evidence/expansion/I13/web/final-native-fixture-format.log",
-      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
-      "sourceLogModifiedAt": "2026-10-18T17:17:15.804146+00:00"
+      "path": "docs/evidence/expansion/I13/web/final-ready-auth-query.log",
+      "sha256": "f579d87216438d3f7974663395f9cd8e833fdb394cb109aaf5a1856d8f846c13"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-ready-auth-query-selection.json",
+      "sha256": "c02e8073279e276f92a136f186978a32d70bb5af33e4114e7a26be2394626aba"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-status-ui.log",
+      "sha256": "2aa4123e1c953536cc28a2e2e280bd3bdd7910d836c59dda4fdc60faa2778655"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-status-ui-selection.json",
+      "sha256": "3fce86ad664126e90a53a27750372efa5cdb51f5fcbcf577a9378f485de3372d"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-status-cloud.log",
+      "sha256": "5cba0e701c865f477725db0d6cf9b2ac75180fd0a921bd9339241374da30125a"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-status-cloud-selection.json",
+      "sha256": "70cb49a4c4c48f3b166f5e9f6067535245131ef50de71dd7d01df31d729b2e0b"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-status-guest.log",
+      "sha256": "13e87cffb352077e9ce8a222619982425bd533ae4e6a593a91ffa057514d2447"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-status-guest-selection.json",
+      "sha256": "003b6611621377b29cb6e13091592f10e9d7d520d0576926ee28358971500840"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-announcement-integration-checks.json",
+      "sha256": "6146c3cf52ddfc4060924baf22ef27afad3c950457a35b772aa242f94e996dba"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-announcement-integration-checks.log",
+      "sha256": "b4a8312fe03f07ea10518feebdc256a3e963e2ef1f74777f94ea763f239a1212"
+    },
+    {
+      "path": "docs/evidence/expansion/I13/web/final-announcement-unit-report.json",
+      "sha256": "31eca2912f2dd56e9e77c343796b66fb288bdc4a389a85cceb4423c40568fd1f"
     }
   ]
 }
