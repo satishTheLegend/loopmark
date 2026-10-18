@@ -68,6 +68,9 @@ export async function adapterTests(
       db.run('DELETE FROM media WHERE scope=? AND id=?', [scopeKey(info.key), prepared.ref.id]),
     )
     const view = await repo.readView(info.key)
+    await rejects(() => repo.snapshot(info.key))
+    const partialSnapshot = await repo.snapshot(info.key, { allowMissingMedia: true })
+    assert(partialSnapshot.media[0].id === prepared.ref.id)
     await rejects(() => repo.retainLocal(info.key, 'Strict copy', view.revision, 1))
     const retained = await repo.retainLocal(info.key, 'Acknowledged missing', view.revision, 1, {
       allowMissingMedia: true,
@@ -96,6 +99,11 @@ export async function adapterTests(
       (await repo.listCollections()).length === count &&
         !!(await repo.drafts.read('checkpoint:source', info.key)),
     )
+    await repo.media.storeVerified(prepared.ref, wave(), info.key, 1)
+    await repo.removeLocal(info.key, view.revision, 1)
+    const bytes = await new Response(await repo.media.open(prepared.ref, info.key)).arrayBuffer()
+    assert(bytes.byteLength === prepared.ref.bytes)
+    await repo.releaseSnapshot(partialSnapshot.id)
     await repo.close()
   })
   await test('native verified authentication resumes only matching-device auth failures', async () => {
