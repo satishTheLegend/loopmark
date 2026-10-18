@@ -253,6 +253,17 @@ it('continues only the interrupted invariant and auxiliary phases of an exact re
   report.readOnly = false
   report.success = false
   report.auxiliaryStartedAt = new Date().toISOString()
+  report.auxiliaryScope = {
+    existingSyntheticOwnersReauthenticated: 11,
+    additionalSyntheticRateLimitOwners: 1,
+    profileWideOperations: [
+      'synthetic billing seed',
+      'bounded purchase reconciliation',
+      'fair retention compaction',
+    ],
+    originalMutationRecoveryReplays: 0,
+    postCompactionOriginalCommandRefusalProbes: 1,
+  }
   try {
     await mapLimit(
       prepared.filter((_, i) => i < 10 || i === count - 1),
