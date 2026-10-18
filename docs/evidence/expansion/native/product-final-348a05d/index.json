@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+  "webSourceEquivalent": "a07b014",
+  "testFixtureCommits": [
+    "33aea9b",
+    "d7fc461"
+  ],
+  "recordedAt": "2026-10-18T16:54:06.411Z",
+  "passed": true,
+  "performanceClaim": false,
+  "execution": "Actual iOS 26.5 simulator and Android 16/API 36 emulator production app, with concurrent unrelated browser qualification; functional assertions only.",
+  "files": {
+    "ios-product.log": "c69e4a2b648cca04c743fcb11f33adced29016e69bc567dccc9538080dd9bea4",
+    "ios-inbox.log": "0fcd70aada23c78ee54d148d12e695fc87370a6929d7c943c771f48a74d73ce2",
+    "android-product.log": "78894ca58701f42be6c0067287c4e7cdbe0fdd6097d323d2486391b2882da049",
+    "android-inbox.log": "125ef7de740faa12306c5b746d2d79f2930719a97104db8f76c12b496cb46256",
+    "rejected-ios-broad-selector.log": "fc25a924606d3e6d892ad3518f36263d3f5ae18567db5fda20fc940d1a9d110a",
+    "rejected-android-repeated-malformed-fixture.log": "1c65586e0ddb087ad54e9fc0e38060ddee0c3cfab0d17859fda24d5b194be2d4",
+    "ios-product.json": "1ceff870dcf1087f1c4c024793b12d22adc2ea984dc66b2b193b4fc58d75d330",
+    "ios-inbox-product.json": "7ad52299fd3e61dccffe650e8786769f9a4dc6178543890da08ff10d5903f892",
+    "android-product.json": "445174304212e5021d9451d721f7a15a78e654d71f5b92c921ec21a85a0376d0",
+    "android-inbox-product.json": "0dbe3ed00cbcc1d1c5d6f62e49c197f2ecf84e66f854cf9ae7d21a1e1701cff2",
+    "product-bundle.json": "9ae5abc8e2d76b6fa5ac82864564608ac6b217672df78f876dc5f018a9482226"
+  },
+  "artifactManifest": {
+    "schemaVersion": 1,
+    "sourceCommit": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+    "webSourceEquivalent": "a07b014",
+    "productionWebAssets": true,
+    "storeDistribution": false,
+    "ios": {
+      "file": "loopmark-ios-simulator-348a05d.tar.gz",
+      "sha256": "8d39808bb7038a449274e97e473105ed3db8f4588c0948c3f18213db8abcb844",
+      "appDirectorySha256": "58b1ef440cecb5025313114cbe787e10837cc9c68fff9a652e35099be67aa046",
+      "target": "iOS Simulator arm64, ad hoc local simulator signature"
+    },
+    "android": {
+      "file": "loopmark-android-debug-348a05d.apk",
+      "sha256": "ced977f8c40c171e74966addad89e03f8082cd984ebd412d9b6f6e306553a471",
+      "target": "Android debug APK; local debug key, no release/store signing"
+    }
+  },
+  "archiveExtractionVerified": true,
+  "reruns": [
+    {
+      "file": "rejected-ios-broad-selector.log",
+      "result": "failed",
+      "reason": "Original XCTest selected the shelf search text field via firstMatch after its creation tap did not show the form. Exact cause of that first tap is unproven under host contention. Test33aea9b requires the Project name field; rerun on the same collection without data reset opened the form and passed."
+    },
+    {
+      "file": "rejected-android-repeated-malformed-fixture.log",
+      "result": "failed",
+      "reason": "Malformed fixture used identical bytes across runs and correctly produced an already-handled notice. Test d7fc461 gives each run distinct immutable malformed bytes. After explicit dismissal of that notice, the full real-OS journey passed."
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator proof, not physical device qualification.",
+    "Local simulator/debug signatures only; no distribution signing or store/provider transaction qualification.",
+    "No timing or memory conclusion from these contended functional runs.",
+    "Staged-export all-byte integrity and isolated native performance remain separate earlier evidence."
+  ]
+}

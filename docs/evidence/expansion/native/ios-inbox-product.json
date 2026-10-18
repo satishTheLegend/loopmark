@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
-  "sourceCommit": "fb52c6e5adbb2ae24aac7134716c098d9247f6a4",
-  "manifestFileSha256": "bd5489153294a07448785a54adb6dd56788e48882cfa1bfbf6579a7a086533bd",
-  "artifactSha256": "9d21730e58a20a76a80a21adb27a44c5b9ca50909740a55e227fefa589fca425",
+  "sourceCommit": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+  "manifestFileSha256": "9ae5abc8e2d76b6fa5ac82864564608ac6b217672df78f876dc5f018a9482226",
+  "artifactSha256": "58b1ef440cecb5025313114cbe787e10837cc9c68fff9a652e35099be67aa046",
   "artifactFormat": "app-directory-sha256",
   "passed": true,
-  "completedAt": "2026-10-18T16:33:57.477Z",
+  "completedAt": "2026-10-18T16:49:45.836Z",
   "assertions": [
     "OS file URL opens the production app and presents review without importing",
     "cancel and process relaunch preserve the pending file",
