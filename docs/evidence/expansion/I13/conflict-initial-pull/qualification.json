@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-18T17:30:22.347425+00:00",
+  "productSourceCommit": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+  "testSourceCommit": "2b05e0231341e1aeea6a1953bd9257d0e618dfbf",
+  "testSourcePath": "tests/expansion/conflicts.cloud.ts",
+  "testSourceSha256": "f206a511cb1ee2ee20f4830f3232898d43347f48b8b936248640a84022e0c18b",
+  "originalFailure": {
+    "run": "docs/evidence/expansion/I13/web/final-cloud-frozen.log",
+    "profile": "webkit-mobile",
+    "traceSha256": "b5e95bf1db7fa570b280dc55487e2a8493a9dd45ffbdb5f961e1402d6ef9d531",
+    "privateTracePath": ".gstack/cloud-candidate-0b518fa/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/trace.zip",
+    "diagnosis": "The test opened a conflict review before its authoritative pull completed. The product correctly froze reviewed values and required an explicit refresh after new data arrived. The prior test incorrectly awaited updated values inside the stale review."
+  },
+  "change": "Hold the actual first sync-pull request after a conflict receipt; open and assert old cloud/current device versions; release the real request; require the stale warning and absence of acceptance action; explicitly refresh and assert new cloud values. Preserve the subsequent second-device change, another stale review, explicit cloud choice, separate recovered device work, reload and third-device convergence. No product change or response stubbing.",
+  "results": {
+    "planned": 5,
+    "passed": 5,
+    "failed": 0,
+    "retries": 0,
+    "profiles": [
+      "chromium",
+      "firefox",
+      "webkit",
+      "chromium-mobile",
+      "webkit-mobile"
+    ],
+    "duration": "1.2m"
+  },
+  "evidence": [
+    {
+      "path": "docs/evidence/expansion/I13/conflict-initial-pull/green.log",
+      "sha256": "99685c6f4f878b7335e3a7100076f0e542722847fdcba4fd9822e1c03d3dfc29"
+    }
+  ]
+}
