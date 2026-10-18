@@ -34,6 +34,8 @@ The [isolated measurement](evidence/expansion/native/benchmarks/optimized-eb63bd
 
 A [separate functional run](evidence/expansion/native/benchmarks/share-file-integrity-2ba523f/qualification.json) now rereads all 50,331,648 bytes of the actual private file prepared by the production native share helper on each platform. Every byte equals the serialized export and the result includes a SHA-256 digest. This closes the earlier staged-file size-only limitation without revising the isolated timings or claiming that an external receiving application was tested.
 
+The matrix also retains earlier named native groups whose original reports omit exact runtime source/artifact digests. Their evidence commits and fixture hashes are recorded separately; an evidence commit is not treated as the tested source revision. Likewise, Android store tests and the small compatibility/example suites retain their actual class/file reporting granularity. Exact individual reporter objects are claimed only where they exist.
+
 ## Current unit and build qualification
 
 For current `a1a3b72`, the [untouched 373-case report](evidence/expansion/I13/web/final-scope-unit-report.json) and [qualification](evidence/expansion/I13/web/unit-qualification.json) agree object-for-object. Every case passes, and all 46 test-file hashes match immutable/current source. The [current thirteen command records](evidence/expansion/I13/web/final-scope-integration-checks.json) cover the production build and supporting checks with exact timestamps and exit zero. Twenty selected ownership regressions are mapped individually, including all action/transition/stage parameter values.
