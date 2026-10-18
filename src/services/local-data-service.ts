@@ -76,7 +76,11 @@ async function expandProject(
         return value
       })
     } catch (error) {
-      if (allowMissing && error instanceof DomainError && error.detail.code === 'BACKUP_INCOMPLETE')
+      if (
+        allowMissing &&
+        error instanceof DomainError &&
+        ['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+      )
         return undefined
       throw error
     }
@@ -260,7 +264,10 @@ export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter
           await limit(async () => (await media.open(ref, bound.key)).cancel())
           return { ...item, state: 'available' as const }
         } catch (error) {
-          if (error instanceof DomainError && error.detail.code === 'BACKUP_INCOMPLETE')
+          if (
+            error instanceof DomainError &&
+            ['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+          )
             return { ...item, state: 'missing' as const }
           throw error
         }

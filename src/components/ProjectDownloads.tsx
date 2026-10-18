@@ -22,6 +22,7 @@ export function ProjectDownloads({
   const [confirm, setConfirm] = useState(false)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
+  const [checkRevision, setCheckRevision] = useState(0)
   const lifecycle = useRef(0)
   const action = useRef<AbortController | null>(null)
   useEffect(() => {
@@ -44,7 +45,7 @@ export function ProjectDownloads({
       action.current?.abort()
       action.current = null
     }
-  }, [service, projectId, revision])
+  }, [service, projectId, revision, checkRevision])
 
   async function run(kind: 'download' | 'remove') {
     if (action.current) return
@@ -126,6 +127,11 @@ export function ProjectDownloads({
         </p>
       )}
       <ErrorMessage message={error} />
+      {error && !availability && !busy && (
+        <button className="text-button" onClick={() => setCheckRevision((value) => value + 1)}>
+          Check files again
+        </button>
+      )}
       {notice && <p role="status">{notice}</p>}
       {connected ? (
         <div className="account-actions">

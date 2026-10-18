@@ -6,6 +6,7 @@ import { createLocalDataAdapter } from './local-data-service'
 import { info, png, wav, now } from '../repositories/browser/fixtures.test-support'
 import type { DataAdapter } from '../data'
 import type { SessionScope } from '../domain/contracts'
+import { transaction, requestResult, mediaKey } from '../repositories/browser/schema'
 let repository: BrowserRepository, adapter: DataAdapter, scope: SessionScope, factory: IDBFactory
 const input = {
   name: 'Moss scarf',
@@ -275,4 +276,39 @@ it('shelf reads no media and selected detail/availability bound media work to tw
   expect(detail?.checkpoints.every((c) => c.photo === png)).toBe(true)
   expect(availability.every((item) => item.state === 'available')).toBe(true)
   expect(maximum).toBe(2)
+})
+
+it('a corrupt cached attachment stays an explicit display placeholder without hiding checkpoint text or weakening strict export', async () => {
+  const p = await adapter.createProject(input, 'corrupt-display')
+  await adapter.addCheckpoint(
+    p.id,
+    {
+      position: 'Row 8',
+      toolSize: '4 mm',
+      nextStep: 'Keep the saved next step',
+      notes: 'Visible text',
+      photo: png,
+    },
+    'corrupt-photo',
+  )
+  const view = await repository.readView(scope.key),
+    ref = view.checkpoints[0].photo!
+  await transaction(repository.database, 'readwrite', async (tx) => {
+    const row = await requestResult(tx.objectStore('media').get(mediaKey(scope.key, ref.id)))
+    const bytes = new Uint8Array(row.bytes)
+    bytes[bytes.length - 1] ^= 1
+    tx.objectStore('media').put({ ...row, bytes: bytes.buffer })
+  })
+  const opened = await adapter.getProject(p.id)
+  expect(opened?.checkpoints[0]).toMatchObject({
+    nextStep: 'Keep the saved next step',
+    notes: 'Visible text',
+  })
+  expect(opened?.checkpoints[0].photo).toBeUndefined()
+  expect(await adapter.mediaAvailability(p.id)).toEqual([
+    { checkpointId: view.checkpoints[0].id, kind: 'photo', state: 'missing' },
+  ])
+  expect((await adapter.listProjects())[0].id).toBe(p.id)
+  await expect(adapter.exportBackup()).rejects.toMatchObject({ detail: { code: 'MEDIA_INVALID' } })
+  expect(await repository.readView(scope.key)).toEqual(view)
 })
