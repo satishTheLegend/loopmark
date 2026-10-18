@@ -42,6 +42,9 @@ CI separates Linux guest, isolated local backend, macOS iOS and Android jobs. Te
 
 ## Verified integration pitfalls
 
+- Authentication can be published before queued local recovery settles. Automatic sync must wait for an observable readiness edge; do not defer an old explicit sync request until it can bind to a different account. Install queue ordering before notifying synchronous subscribers, and test delayed recovery plus queued account switches.
+- A visible “Synced” label can belong to the preceding empty-account cycle. Before testing a destructive review of newly saved work, observe that exact operation’s push receipt and corresponding pull, then the settled visible status. Keep deliberate stale-review rejection and explicit re-review assertions.
+
 - A valid empty sync page with an unchanged cursor is a read. Do not advance its collection revision or publish a mutation; otherwise an unrelated background poll invalidates a reviewed sign-out/deletion. Validate generation, account, epoch and cursor before treating it as a no-op, and retain CAS for every real change.
 - On the first service-worker install, `registration.waiting` alone does not mean an update exists. Require an active worker as well; an inserted banner can move a pointer target between press and release. The regression uses a real controlled worker lifecycle and asserts both geometry and the resulting project form.
 - Native bridge numbers are JSON numbers. Capacitor Android's `getLong` does not accept the Java Integer used for small offsets; validate bounded offsets with the installed SDK's matching getter. Foundation JSON dictionaries must pass through Capacitor's `JSTypes.coerceDictionaryToJSObject` before returning nested iOS data.
