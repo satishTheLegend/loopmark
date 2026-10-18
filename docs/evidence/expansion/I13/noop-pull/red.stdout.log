@@ -1,0 +1,54 @@
+
+ RUN  v5.0.5 <project-root>
+
+ ❯ src/repositories/browser/pull-review.test.ts (5 tests | 1 failed) 21ms
+   × an unchanged empty pull preserves a device review, pending work, drafts and subscribers 12ms
+ ❯ src/services/app-controller.test.ts (21 tests | 1 failed) 141ms
+   × an empty background pull after deletion review permits explicit draft discard and preserves guest work 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/repositories/browser/pull-review.test.ts > an unchanged empty pull preserves a device review, pending work, drafts and subscribers
+AssertionError: expected { key: { …(3) }, revision: '2', …(1) } to deeply equal { key: { …(3) }, revision: '1', …(1) }
+
+- Expected
++ Received
+
+@@ -8,7 +8,7 @@
+    "key": {
+      "collectionId": "collection",
+      "epoch": "epoch",
+      "namespace": "account_fixture",
+    },
+-   "revision": "1",
++   "revision": "2",
+  }
+
+ ❯ src/repositories/browser/pull-review.test.ts:46:47
+     44|   try {
+     45|     await repo.applyPage(scope.key, page, scope.generation)
+     46|     expect(await repo.reviewLocal(scope.key)).toEqual(review)
+       |                                               ^
+     47|     expect(await repo.readView(scope.key)).toEqual(view)
+     48|     expect(await createBrowserDraftStore(repo, scope).read(draft.key))…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/services/app-controller.test.ts > an empty background pull after deletion review permits explicit draft discard and preserves guest work
+DomainError: This information changed elsewhere.
+ ❯ src/repositories/browser/repository.ts:128:15
+    126|       await getState(tx, target.key)
+    127|       if (review && canonicalJson(await this.reviewIn(tx, review.key))…
+    128|         throw new DomainError('REVISION_CONFLICT')
+       |               ^
+    129|       const generation = (active?.generation ?? -1) + 1
+    130|       if (!Number.isSafeInteger(generation)) throw new DomainError('IN…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 24 passed (26)
+   Start at  22:35:26
+   Duration  290ms (tests 50%, import 31%, transform 18%, worker 1%)
+

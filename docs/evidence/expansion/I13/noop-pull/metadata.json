@@ -1,0 +1,77 @@
+{
+  "fixed_commit": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+  "before_fix_commit": "45ed656d75be99d92422d9a3945c1dfb4ce637e0",
+  "original_cloud_product_source": "a07b014cdde249bbba94c6567a73f24f800797da",
+  "source_blobs": {
+    "src/repositories/state.ts": {
+      "before": "5826ba5003929265d30a1437599ff9b285d109bb",
+      "after": "0572517f3c98dc4837dacdd40650c9c17f694411",
+      "cloud_a07": "5826ba5003929265d30a1437599ff9b285d109bb"
+    },
+    "src/repositories/browser/repository.ts": {
+      "before": "78e1229f0463cc86b82bbc17b1ba537ffee2a92b",
+      "after": "1bb6e0c04b954a482a8d23bc9e8e690250f9a3b2",
+      "cloud_a07": "78e1229f0463cc86b82bbc17b1ba537ffee2a92b"
+    },
+    "src/platform/native/repository.ts": {
+      "before": "ebbbe83b91d54c6f1550eac77ba63a2fac6b72a5",
+      "after": "7829e7be49f256b6796551e3b08023081aedf675",
+      "cloud_a07": "ebbbe83b91d54c6f1550eac77ba63a2fac6b72a5"
+    }
+  },
+  "green_test_blobs": {
+    "src/repositories/browser/pull-review.test.ts": "15bc854552ffc9872b073c331887a41251e81b44",
+    "src/services/app-controller.test.ts": "3cbdd3b8211578935d0d0181c99d0ea183a57a2c"
+  },
+  "red_test_source_note": "The same new regression assertions ran before the source fix; Prettier formatted the test files before green. The exact pre-format test blobs were not separately captured. Red output preserves assertion details and stack locations.",
+  "commands": {
+    "red": "npx vitest run src/repositories/browser/pull-review.test.ts src/services/app-controller.test.ts > .gstack/noop-pull-red.log 2>&1",
+    "green": "npx vitest run src/repositories/browser/pull-review.test.ts src/repositories/browser/repository.test.ts src/repositories/browser/transition.test.ts src/services/app-controller.test.ts src/sync/coordinator.test.ts > .gstack/noop-pull-green.log 2>&1",
+    "typecheck": "npx tsc -b --pretty false > .gstack/noop-pull-typecheck.log 2>&1"
+  },
+  "results": {
+    "red": {
+      "failed": 2,
+      "passed": 24,
+      "duration_ms": 290
+    },
+    "green": {
+      "passed": 69,
+      "failed": 0,
+      "files": 5,
+      "duration_ms": 441
+    },
+    "typecheck": {
+      "exit_code": 0,
+      "output_bytes": 0
+    }
+  },
+  "logs": {
+    "red": {
+      "original_path": ".gstack/noop-pull-red.log",
+      "original_sha256": "385c200e058a9a9aa7dbcd51c45b4cf5fbb096d6904a07dcfa3af4d3d8df6082",
+      "preserved_file": "red.stdout.log",
+      "preserved_sha256": "306541bcff3e242a3ca512c0cb0f25ec9cda57e644ae65818fd81517aeb232a0",
+      "transformation": "Only the absolute repository root is replaced with <project-root>.",
+      "exit_code": 1
+    },
+    "green": {
+      "original_path": ".gstack/noop-pull-green.log",
+      "original_sha256": "0209ece8624b236af985048badb71a23a422c244da6fe13210481d5227c958c6",
+      "preserved_file": "green.stdout.log",
+      "preserved_sha256": "d1d722f5bcee5087f73fa6bfc45cbb665dd180f631055e6f9da09abb7e07329f",
+      "transformation": "Only the absolute repository root is replaced with <project-root>.",
+      "exit_code": 0
+    },
+    "typecheck": {
+      "original_path": ".gstack/noop-pull-typecheck.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved_file": "typecheck.stdout.log",
+      "preserved_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "Only the absolute repository root is replaced with <project-root>.",
+      "exit_code": 0
+    }
+  },
+  "cloud_proof_sha256": "6d6809f286bb30dcff1e536d90bf2e8fe2e278e29760d2b41652ff3f7ca359a0",
+  "scope": "This package records deterministic IDB/controller regression and focused unit/typecheck evidence. Root owns the actual cloud rerun; native agent owns SQLite/runtime verification. Those outcomes are not claimed here."
+}

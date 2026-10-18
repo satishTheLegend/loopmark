@@ -1,0 +1,88 @@
+{
+  "source_commit": "a07b014cdde249bbba94c6567a73f24f800797da",
+  "trace_sha256": "94fa6fd1e784402d1917bf94d061566b349344487b09683406e20b0d72adc0e5",
+  "trace_relative_path": "test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-chromium/trace.zip",
+  "timeline": [
+    {
+      "event": "sync-pull",
+      "started_ms": 2657.034,
+      "duration_ms": 175.381,
+      "status": 200,
+      "entries": 0,
+      "cursor_unchanged": true,
+      "has_more": false
+    },
+    {
+      "event": "sync-pull",
+      "started_ms": 3663.152,
+      "duration_ms": 14.084,
+      "status": 200,
+      "entries": 1,
+      "cursor_unchanged": false,
+      "has_more": false
+    },
+    {
+      "event": "Click",
+      "test_line": 20,
+      "started_ms": 3842.152,
+      "finished_ms": 4101.855,
+      "failed": false
+    },
+    {
+      "event": "sync-pull",
+      "started_ms": 3855.208,
+      "duration_ms": 13.346,
+      "status": 200,
+      "entries": 0,
+      "cursor_unchanged": true,
+      "has_more": false
+    },
+    {
+      "event": "Navigate",
+      "test_line": 21,
+      "started_ms": 4102.143,
+      "finished_ms": 4106.643,
+      "failed": false
+    },
+    {
+      "event": "Click",
+      "test_line": 22,
+      "started_ms": 4106.864,
+      "finished_ms": 4133.975,
+      "failed": false
+    },
+    {
+      "event": "Check",
+      "test_line": 23,
+      "started_ms": 4134.408,
+      "finished_ms": 4416.627,
+      "failed": false
+    },
+    {
+      "event": "sync-pull",
+      "started_ms": 4227.071,
+      "duration_ms": 12.038,
+      "status": 200,
+      "entries": 0,
+      "cursor_unchanged": true,
+      "has_more": false
+    },
+    {
+      "event": "Click",
+      "test_line": 32,
+      "started_ms": 9913.543,
+      "finished_ms": 9959.27,
+      "failed": false
+    },
+    {
+      "event": "Expect \"toContainText\"",
+      "test_line": 34,
+      "started_ms": 9959.49,
+      "finished_ms": 39965.796,
+      "failed": true
+    }
+  ],
+  "final_ui_error": "REVISION_CONFLICT",
+  "deletion_http_request_observed": false,
+  "note": "Extracted event labels and timings only. No emails, OTPs, account/device IDs, craft content, headers or response payloads retained. Source trace remains local. Matrix stopped after independent confirmed failures; this is not a complete-suite result."
+}
