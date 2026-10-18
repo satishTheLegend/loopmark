@@ -125,13 +125,16 @@ test('reload cannot bypass actual Auth resend throttling and the UI offers a tim
   // then immediately forward the real request. Record a missed timing
   // precondition separately instead of diagnosing it as a throttle bypass.
   let marker: FixtureSendMarker | null = null
-  await page.route('**/auth/v1/otp', async (route) => {
-    if (route.request().method() !== 'POST') return route.continue()
-    if (route.request().postDataJSON()?.email !== email)
-      throw new Error('Unexpected user in the synthetic resend request')
-    marker = await prepareFixtureAuth(email, 'throttled')
-    await route.continue()
-  })
+  await page.route(
+    (url) => url.pathname === '/auth/v1/otp',
+    async (route) => {
+      if (route.request().method() !== 'POST') return route.continue()
+      if (route.request().postDataJSON()?.email !== email)
+        throw new Error('Unexpected user in the synthetic resend request')
+      marker = await prepareFixtureAuth(email, 'throttled')
+      await route.continue()
+    },
+  )
   const limited = page.waitForResponse(
     (response) =>
       new URL(response.url()).pathname === '/auth/v1/otp' && response.request().method() === 'POST',

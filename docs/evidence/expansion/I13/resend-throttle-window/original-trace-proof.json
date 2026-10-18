@@ -61,7 +61,7 @@
   },
   "test_blobs": {
     "before": "bdea342689f01e6d4380452dc485eeb7403976d1",
-    "after": "c0cd886a93b388061c322ef901c6145c7ba2540b"
+    "after": "53a4f1d21dd19e04e3a8cbcca56d7d19171e6f78"
   },
   "privacy": "Only request timing/status and generic UI action names are retained. No email address, OTP, request/response body, token, credential or session data copied."
 }

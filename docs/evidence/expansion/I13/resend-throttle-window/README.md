@@ -15,3 +15,7 @@ Real API priming would require another email request and still depend on the sam
 ## Verification
 
 Prettier and `git diff --check` pass. No browser, build, service or SQL command was executed during preparation. Runtime verification is pending root coordination: both Auth error journeys across five profiles (10 cases), including the original Firefox resend failure. Product source remains frozen.
+
+## Query-safe interception correction
+
+The first root follow-up exposed a fixture-only routing error: the Auth SDK sends `/auth/v1/otp?redirect_to=…`, while the initial route glob ended at `/otp`. Both real requests reached Auth; the second returned HTTP429, but the fixture marker was absent and the test explicitly failed. [The bounded follow-up proof](query-route-proof.json) records the original trace hash, pathname/query key and response statuses without the redirect value or credentials. The corrected route compares `URL.pathname` and retains the exact POST and synthetic-user guards. Runtime verification remains pending.

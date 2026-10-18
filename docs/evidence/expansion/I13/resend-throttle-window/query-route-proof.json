@@ -1,0 +1,27 @@
+{
+  "trace_path": "test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium/trace.zip",
+  "trace_sha256": "d9fbc51b603ff56cc133e0af8af405d2f1406efa92c3ab02abf75a4e57f17ce0",
+  "failure": "Synthetic resend fixture was not prepared",
+  "actual_requests": [
+    {
+      "method": "POST",
+      "pathname": "/auth/v1/otp",
+      "query_keys": [
+        "redirect_to"
+      ],
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "pathname": "/auth/v1/otp",
+      "query_keys": [
+        "redirect_to"
+      ],
+      "status": 429
+    }
+  ],
+  "cause": "The original **/auth/v1/otp route glob required the URL to end at otp. The SDK adds redirect_to, so the fixture hook did not run. The real server still returned429 inside its ordinary window, but the explicit marker-precondition assertion correctly refused to claim the controlled fixture ran.",
+  "correction": "Match URL.pathname === /auth/v1/otp, preserving exact POST/body-email guards and real request forwarding. Query parameter values are neither copied nor interpreted by the fixture.",
+  "verification": "Prettier and diff check only in this lane; focused real-browser verification remains pending root coordination.",
+  "privacy": "Only URL pathname and query key names retained, never redirect value, email, OTP, payload, auth token or code."
+}
