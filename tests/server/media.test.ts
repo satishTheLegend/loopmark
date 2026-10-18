@@ -3,6 +3,75 @@ import { actor, command, createProject, request, sql, quote } from './helpers'
 import { audioFixture, reserve, upload, download } from './media-fixtures'
 
 describe('I07 real private media admission', () => {
+  it('refuses an expired ordinary upload reservation and completes the same retained bytes with a fresh reservation', async () => {
+    const a = await actor(),
+      created = await createProject(a),
+      fixture = audioFixture(101)
+    const old = await reserve(a, fixture.ref)
+    expect((await upload(a, old.body, fixture.bytes)).status).toBe(200)
+    await sql(
+      `update loopmark_private.upload_reservations set expires_at=now()-interval '1 second' where id=${quote(old.body.id)} and owner_id=${quote(a.id)}::uuid`,
+    )
+    expect((await upload(a, old.body, fixture.bytes)).body.error.code).toBe('SNAPSHOT_EXPIRED')
+    const cp = {
+      id: crypto.randomUUID(),
+      projectId: created.project.id,
+      createdAt: new Date().toISOString(),
+      position: '8',
+      toolSize: '4mm',
+      nextStep: 'Keep this voice note',
+      notes: '',
+      voice: fixture.ref,
+    }
+    const append = await command(
+      a,
+      { kind: 'checkpoint.create', payload: { checkpoint: cp, updatedAt: cp.createdAt } },
+      { revision: '1' },
+    )
+    const receipt = await request(a.token, 'sync-push', append)
+    expect(receipt.status).toBe(200)
+    expect((await download(a, fixture.ref)).status).toBe(400)
+    const stale = await command(
+      a,
+      {
+        kind: 'media.attach',
+        payload: {
+          projectId: created.project.id,
+          checkpointId: cp.id,
+          reservationId: old.body.id,
+          media: fixture.ref,
+        },
+      },
+      { revision: '2' },
+    )
+    expect((await request(a.token, 'media-finalize', stale)).body.error.code).toBe(
+      'SNAPSHOT_EXPIRED',
+    )
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.operation_receipts where owner_id=${quote(a.id)}::uuid and operation_id=${quote(stale.operationId)}`,
+      ),
+    ).toBe('0')
+    const fresh = await reserve(a, fixture.ref)
+    expect(fresh.body.id).not.toBe(old.body.id)
+    expect((await upload(a, fresh.body, fixture.bytes)).status).toBe(200)
+    const attach = await command(
+      a,
+      {
+        kind: 'media.attach',
+        payload: {
+          projectId: created.project.id,
+          checkpointId: cp.id,
+          reservationId: fresh.body.id,
+          media: fixture.ref,
+        },
+      },
+      { revision: '2' },
+    )
+    expect((await request(a.token, 'media-finalize', attach)).status).toBe(200)
+    expect((await request(a.token, 'sync-push', append)).body).toEqual(receipt.body)
+    expect((await download(a, fixture.ref)).bytes).toEqual(fixture.bytes)
+  })
   it('streams verified bytes, atomically consumes an ordinary reservation with checkpoint.create, and denies other owners', async () => {
     const a = await actor(),
       b = await actor(),

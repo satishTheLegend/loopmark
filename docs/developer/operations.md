@@ -2,7 +2,7 @@
 
 The operator runner targets the exact worktree profile on a local Docker socket. It rejects TCP/SSH Docker contexts, remote overrides, another profile, hosted environments, unknown flags and unbounded limits. It does not log credentials, craft text, email, raw webhook bodies or object URLs. Hosted scheduling and independent infrastructure require the separate I14 account/ownership qualification; these local commands do not activate a service.
 
-Run commands from the project directory. JSON stdout has one result, including `schemaVersion`, status, dry-run state, counts, safe errors and an operation ID. Exit codes are 0 success, 1 partial work, 2 invalid input, 3 unavailable/unqualified dependency, and 130 cancelled. The command defaults to **dry-run**. Add `--execute` to mutate. `--limit` defaults to 20 and accepts 1–100; each worker phase is bounded. Ctrl-C stops new work and unfinished work remains retryable under its durable IDs/leases.
+Run commands from the project directory. `npm run ops -- --help` describes the flags and safety boundary without accessing Docker. JSON stdout has one result, including `schemaVersion`, status, dry-run state, counts, next cursor, safe errors and an operation ID. Exit codes are 0 success, 2 invalid usage/configuration, 3 unavailable dependency, 4 partial/retryable work (including cancellation), and 5 denied scope or invariant violation. The defaults are **local environment, dry-run and limit 20**. An explicit `--target` is always required. Add `--execute` to mutate. `--limit` accepts 1–100; each worker phase is bounded. Ctrl-C stops new work and unfinished work remains retryable under its durable IDs/leases.
 
 ```sh
 npm run ops -- status --environment local --target all --limit 20 --json
@@ -13,7 +13,12 @@ npm run ops -- maintenance --environment local --target all --limit 20 --json --
 npm run ops -- backup-snapshot --environment local --target all --job-id POINT_UUID --json --execute
 npm run ops -- restore-check --environment local --target POINT_UUID --json --execute
 npm run ops -- schedule --environment local --target all --limit 20 --json --execute
+npm run ops -- maintenance --target all --cursor RETURNED_TOKEN --limit 20 --json --execute
 ```
+
+`--cursor` is an authenticated opaque continuation bound to the exact project, command, target and job ID. It is supported by maintenance, webhook replay, purchase reconciliation and deletion resumption. Copy the returned token intact. Maintenance resumes from the last durably acknowledged ledger position and refuses a token that would skip ahead; older valid positions safely replay. Other workers resume from their durable due/lease state, so changing queue contents cannot cause an OFFSET skip. A final empty batch ends the chain. Dry-run preserves a supplied cursor and performs no writes. Service-key rotation invalidates old cursors; start a fresh bounded batch afterward. `--job-id` separately retries a backup point and cannot be combined with `--cursor`. Hosted environments remain denied until a separately qualified adapter exists.
+
+Dry-run includes `preview.selectedWorkItems` and per-phase eligible inventory. Its actual mutation count remains zero. Counts are advisory because execution reacquires leases and checks eligibility and byte integrity; provider results are not predicted. Maintenance reports its selected compaction/expiry work separately from the bounded ledger/media work determined at execution. A restore preview requires an existing complete unexpired point but does not claim that the copied bytes have already passed verification.
 
 `replay-webhooks` performs authenticated-inbox reconciliation through current provider lookup. It does not treat historical event state as authority. Payment workers use at most four active canonical purchase leases and fenced updates. Native admission reservations expire after 15 minutes; cancelling the native sheet releases only intent admission. A late verified purchase still reconciles.
 

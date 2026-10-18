@@ -1,16 +1,140 @@
 import { beforeAll, describe, it, expect } from 'vitest'
 import { randomUUID } from 'node:crypto'
+import { execFile } from 'node:child_process'
 import { createClient } from '@supabase/supabase-js'
 import { actor, createProject, request, command, quote, localEnvironment } from './helpers'
 import { context, rpc, sql, type OpsContext } from '../../scripts/ops/common.mjs'
 import { rollbackCheck } from '../../scripts/ops/rollback.mjs'
-import { seedBilling, prepare } from './billing-fixtures'
+import { encodeCursor } from '../../scripts/ops/cursor.mjs'
+import { seedBilling, prepare, webhook } from './billing-fixtures'
 let ctx: OpsContext
 beforeAll(async () => {
   ctx = await context()
   await seedBilling()
 })
 describe('I11 actual operational control and compatible runtime rollback', () => {
+  it('runs default-local dry-run and returns resumable partial and denied CLI exit contracts on actual services', async () => {
+    const cli = (args: string[]) =>
+      new Promise<{ code: number; body: any; stderr: string }>((resolve, reject) => {
+        execFile(
+          process.execPath,
+          ['scripts/ops.mjs', ...args],
+          { timeout: 60000, maxBuffer: 1024 * 1024 },
+          (error, stdout, stderr) => {
+            try {
+              resolve({ code: error ? Number(error.code) : 0, body: JSON.parse(stdout), stderr })
+            } catch {
+              reject(new Error('Operator CLI did not return bounded JSON'))
+            }
+          },
+        )
+      })
+    const initial = await cli(['status', '--target', 'all', '--json'])
+    expect(initial.code).toBe(0)
+    expect(initial.body).toMatchObject({
+      environment: 'local',
+      dryRun: true,
+      counts: { changed: 0 },
+    })
+    const event = 'evt_' + randomUUID().replaceAll('-', '')
+    expect(
+      (
+        await webhook(event, {
+          event: 'payment.captured',
+          payload: { payment: { entity: { id: 'pay_' + randomUUID().replaceAll('-', '') } } },
+        })
+      ).status,
+    ).toBe(200)
+    await sql(
+      ctx,
+      `update loopmark_private.webhook_inbox set next_attempt=now()-interval '1 day' where provider='razorpay' and environment='sandbox' and event_id=${quote(event)}`,
+    )
+    try {
+      const dry = await cli(['replay-webhooks', '--target', 'all', '--limit', '1', '--json'])
+      expect(dry.code).toBe(0)
+      expect(dry.body.preview.phases.webhooks).toBe(1)
+      expect(dry.body.preview.selectedWorkItems).toBeGreaterThanOrEqual(1)
+      expect(
+        await sql(
+          ctx,
+          `select fence from loopmark_private.webhook_inbox where event_id=${quote(event)}`,
+        ),
+      ).toBe('0')
+      const partial = await cli([
+        'replay-webhooks',
+        '--target',
+        'all',
+        '--limit',
+        '1',
+        '--execute',
+        '--json',
+      ])
+      expect(partial.code).toBe(4)
+      expect(partial.body.status).toBe('partial')
+      expect(partial.body.counts.failed).toBeGreaterThan(0)
+      expect(partial.body.nextCursor).toMatch(/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}$/)
+      expect(partial.stderr).toBe('')
+      const dryResume = await cli([
+        'replay-webhooks',
+        '--target',
+        'all',
+        '--cursor',
+        partial.body.nextCursor,
+        '--json',
+      ])
+      expect(dryResume.code).toBe(0)
+      expect(dryResume.body.jobId).toBe(partial.body.jobId)
+      expect(dryResume.body.counts.changed).toBe(0)
+      const denied = await cli([
+        'resume-deletions',
+        '--target',
+        'all',
+        '--cursor',
+        partial.body.nextCursor,
+        '--execute',
+        '--json',
+      ])
+      expect(denied.code).toBe(5)
+      expect(denied.body.errors).toEqual([{ code: 'NOT_AVAILABLE' }])
+      expect(denied.body.counts.changed).toBe(0)
+      const position = Number(
+        await sql(
+          ctx,
+          "select ledger_cursor from loopmark_private.operation_schedules where kind='maintenance'",
+        ),
+      )
+      const skipped = encodeCursor(
+        ctx,
+        { command: 'maintenance', target: 'all' },
+        randomUUID(),
+        position + 1,
+      )
+      const noSkip = await cli([
+        'maintenance',
+        '--target',
+        'all',
+        '--cursor',
+        skipped,
+        '--execute',
+        '--json',
+      ])
+      expect(noSkip.code).toBe(5)
+      expect(noSkip.body.errors).toEqual([{ code: 'NOT_AVAILABLE' }])
+      expect(
+        Number(
+          await sql(
+            ctx,
+            "select ledger_cursor from loopmark_private.operation_schedules where kind='maintenance'",
+          ),
+        ),
+      ).toBe(position)
+    } finally {
+      await sql(
+        ctx,
+        `update loopmark_private.webhook_inbox set status='done',lease_until=null where provider='razorpay' and environment='sandbox' and event_id=${quote(event)}`,
+      )
+    }
+  })
   it('records bounded redacted phase/queue projections and protects them from direct client writes', async () => {
     const a = await actor(),
       operation = 'a'.repeat(64)

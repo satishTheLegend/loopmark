@@ -5,6 +5,21 @@ import { rollbackCheck, rollbackResume } from './ops/rollback.mjs'
 import { alerts, loadPolicy } from './ops/policy.mjs'
 export { alerts } from './ops/policy.mjs'
 import { backupSnapshot, restoreCheck, expirePoints, replayErasure } from './ops/recovery.mjs'
+import { encodeCursor, decodeCursor, resumable } from './ops/cursor.mjs'
+import { previewWork } from './ops/preview.mjs'
+export const help = `Loopmark local service operations
+Usage: npm run ops -- <command> --target <UUID|all> [--environment local] [--limit 1..100] [--cursor TOKEN] [--job-id UUID] [--json] [--execute]
+Commands: status, replay-webhooks, reconcile-purchases, resume-deletions, backup-snapshot, restore-check, maintenance, schedule, rollback-check, rollback-resume, pause-enrollment, resume-enrollment, pause-payments, resume-payments.
+Defaults: local environment, limit 20, dry-run. Target is always explicit. --help never accesses Docker.
+Only the exact worktree's loopback stack on a local Docker socket is supported. Hosted environments are denied. --execute allows mutation within that scope. Restore checks use a fresh isolated destination.
+--cursor resumes maintenance or leased reconciliation/deletion batches. Tokens are authenticated and bound to project, command and target. --job-id retries one backup ID. Do not combine these flags.
+Exits: 0 success; 2 usage/config; 3 dependency unavailable; 4 partial/retryable/cancelled; 5 denied/invariant violation.
+Examples:
+  npm run ops -- status --target all --json
+  npm run ops -- maintenance --target all --limit 20 --execute --json
+  npm run ops -- maintenance --target all --cursor RETURNED_TOKEN --execute --json
+  npm run ops -- restore-check --target POINT_UUID --execute --json
+`
 export function parseArguments(args) {
   const command = args[0],
     allowed = [
@@ -26,19 +41,28 @@ export function parseArguments(args) {
   if (!allowed.includes(command)) throw new OpsError('VALIDATION')
   const parsed = {
     command,
-    environment: null,
+    environment: 'local',
     target: null,
     limit: 20,
     json: false,
     execute: false,
     jobId: null,
+    cursor: null,
   }
   const seen = new Set()
   for (let i = 1; i < args.length; i++) {
     const flag = args[i]
     if (
       seen.has(flag) ||
-      !['--environment', '--target', '--limit', '--json', '--execute', '--job-id'].includes(flag)
+      ![
+        '--environment',
+        '--target',
+        '--limit',
+        '--json',
+        '--execute',
+        '--job-id',
+        '--cursor',
+      ].includes(flag)
     )
       throw new OpsError('VALIDATION')
     seen.add(flag)
@@ -51,14 +75,25 @@ export function parseArguments(args) {
     if (flag === '--environment') parsed.environment = value
     if (flag === '--target') parsed.target = value
     if (flag === '--job-id') parsed.jobId = value
+    if (flag === '--cursor') parsed.cursor = value
     if (flag === '--limit') {
       if (!/^[1-9][0-9]{0,2}$/.test(value) || Number(value) > 100) throw new OpsError('VALIDATION')
       parsed.limit = Number(value)
     }
   }
-  if (parsed.environment !== 'local') throw new OpsError('CAPABILITY_UNAVAILABLE')
+  if (!['local', 'staging', 'production'].includes(parsed.environment))
+    throw new OpsError('VALIDATION')
+  if (parsed.environment !== 'local') throw new OpsError('NOT_AVAILABLE')
   if (parsed.target !== 'all' && !uuid.test(parsed.target ?? '')) throw new OpsError('VALIDATION')
   if (parsed.jobId !== null && !uuid.test(parsed.jobId)) throw new OpsError('VALIDATION')
+  if (parsed.jobId !== null && command !== 'backup-snapshot') throw new OpsError('VALIDATION')
+  if (
+    parsed.cursor !== null &&
+    (!resumable.has(command) ||
+      parsed.jobId !== null ||
+      !/^[A-Za-z0-9_-]{1,1900}\.[A-Za-z0-9_-]{43}$/.test(parsed.cursor))
+  )
+    throw new OpsError('VALIDATION')
   if (command === 'restore-check' && parsed.target === 'all') throw new OpsError('VALIDATION')
   if (!['restore-check', 'resume-deletions'].includes(command) && parsed.target !== 'all')
     throw new OpsError('VALIDATION')
@@ -66,11 +101,16 @@ export function parseArguments(args) {
 }
 export async function operate(options, { ctx, signal } = {}) {
   ctx ??= await context()
+  const resume = decodeCursor(ctx, options)
+  if (resume) options.jobId = resume.jobId
+  if (options.execute && (resumable.has(options.command) || options.command === 'backup-snapshot'))
+    options.jobId ??= randomUUID()
   const result = {
     schemaVersion: 1,
     command: options.command,
     environment: 'local',
     projectId: ctx.config.projectId,
+    target: options.target,
     status: 'ok',
     dryRun: !options.execute,
     counts: { examined: 0, changed: 0, failed: 0 },
@@ -88,7 +128,11 @@ export async function operate(options, { ctx, signal } = {}) {
     syncQueueScope:
       'received-commands-only; unsent device outboxes are not observable by the server',
   }
-  if (!options.execute || options.command === 'status') return result
+  if (!options.execute || options.command === 'status') {
+    result.nextCursor = options.cursor ?? null
+    result.preview = await previewWork(ctx, options)
+    return result
+  }
   if (signal?.aborted) throw new OpsError('CANCELLED')
   if (/^(pause|resume)-(enrollment|payments)$/.test(options.command)) {
     const enabled = options.command.startsWith('resume-')
@@ -127,12 +171,14 @@ export async function operate(options, { ctx, signal } = {}) {
   } else if (options.command === 'maintenance') {
     const inventory = await currentLedger(ctx)
     if (signal?.aborted) throw new OpsError('CANCELLED')
-    const cursor = Number(
+    const savedCursor = Number(
       await sql(
         ctx,
         "select ledger_cursor from loopmark_private.operation_schedules where kind='maintenance'",
       ),
     )
+    const cursor = resume?.position ?? savedCursor
+    if (cursor > savedCursor) throw new OpsError('NOT_AVAILABLE')
     if (cursor > inventory.entries.length) throw new OpsError('SERVICE_UNAVAILABLE')
     const batch = { ...inventory, entries: inventory.entries.slice(cursor, cursor + options.limit) }
     await replayErasure(ctx, batch, 'postgres', signal)
@@ -142,7 +188,7 @@ export async function operate(options, { ctx, signal } = {}) {
     )
     result.nextCursor =
       cursor + batch.entries.length < inventory.entries.length
-        ? String(cursor + batch.entries.length)
+        ? encodeCursor(ctx, options, result.jobId, cursor + batch.entries.length)
         : null
     if (signal?.aborted) throw new OpsError('CANCELLED')
     const expired = await expirePoints(ctx, options.limit)
@@ -207,10 +253,21 @@ export async function operate(options, { ctx, signal } = {}) {
       options.target,
     )
     Object.assign(result, { counts: report.counts, status: report.status, errors: report.errors })
+    // Workers resume from durable due/lease state, not a mutable OFFSET which could skip work.
+    if (report.counts.examined || report.counts.failed)
+      result.nextCursor = encodeCursor(ctx, options, result.jobId)
   }
   return result
 }
 export async function main(args = process.argv.slice(2)) {
+  if (
+    (args.length === 1 && args[0] === '--help') ||
+    (args.length === 2 && args[1] === '--help' && !args[0].startsWith('--'))
+  ) {
+    process.stdout.write(help)
+    process.exitCode = 0
+    return
+  }
   let options
   const controller = new AbortController(),
     cancel = () => controller.abort()
@@ -220,24 +277,40 @@ export async function main(args = process.argv.slice(2)) {
     options = parseArguments(args)
     const result = await operate(options, { signal: controller.signal })
     process.stdout.write(JSON.stringify(result) + '\n')
-    process.exitCode = result.status === 'ok' ? 0 : 1
+    process.exitCode = result.status === 'ok' ? 0 : 4
   } catch (error) {
     const code = error instanceof OpsError ? error.code : 'SERVICE_UNAVAILABLE'
     process.stdout.write(
       JSON.stringify({
         schemaVersion: 1,
-        status: code === 'VALIDATION' ? 'denied' : 'unavailable',
+        status:
+          errorExit(code) === 5 ? 'denied' : errorExit(code) === 4 ? 'partial' : 'unavailable',
         dryRun: !options?.execute,
         counts: { examined: 0, changed: 0, failed: 1 },
-        nextCursor: null,
+        nextCursor: errorExit(code) === 4 ? (options?.cursor ?? null) : null,
         jobId: options?.jobId ?? null,
         errors: [{ code }],
       }) + '\n',
     )
-    process.exitCode = code === 'VALIDATION' ? 2 : code === 'CANCELLED' ? 130 : 3
+    process.exitCode = errorExit(code)
   } finally {
     process.removeListener('SIGINT', cancel)
     process.removeListener('SIGTERM', cancel)
   }
+}
+export function errorExit(code) {
+  if (code === 'VALIDATION') return 2
+  if (['CANCELLED', 'RATE_LIMITED'].includes(code)) return 4
+  if (
+    [
+      'NOT_AVAILABLE',
+      'AUTH_REQUIRED',
+      'MEDIA_INVALID',
+      'OPERATION_REUSED',
+      'REVISION_CONFLICT',
+    ].includes(code)
+  )
+    return 5
+  return 3
 }
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) await main()

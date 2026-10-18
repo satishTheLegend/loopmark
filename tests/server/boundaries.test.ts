@@ -1,8 +1,19 @@
 import { readFile } from 'node:fs/promises'
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
 import { describe, it, expect } from 'vitest'
 import { z } from 'zod'
 import { createClient } from '@supabase/supabase-js'
-import { actor, command, createProject, localEnvironment, quote, request, sql } from './helpers'
+import {
+  actor,
+  command,
+  createProject,
+  localEnvironment,
+  project,
+  quote,
+  request,
+  sql,
+} from './helpers'
 import { canonicalHash } from '../../src/domain/canonical-json'
 import { commandSchema, parseSnapshot } from '../../src/domain/schema'
 
@@ -27,6 +38,47 @@ async function deliveredCode(email: string) {
 }
 
 describe('raw SQL authority, exact serialization and real authentication boundaries', () => {
+  it('keeps an Auth outage retryable and accepts the unchanged command after recovery', async () => {
+    const a = await actor(),
+      env = await localEnvironment(),
+      run = promisify(execFile)
+    const { assertLocalDocker } = await import('../../scripts/local.mjs')
+    await assertLocalDocker()
+    const container = `supabase_auth_${env.projectId}`
+    const cmd = await command(a, { kind: 'project.create', payload: { project: project() } })
+    await run('docker', ['pause', container])
+    try {
+      const response = await fetch(`${env.url}/functions/v1/sync-push`, {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${a.token}`,
+          apikey: env.publicKey,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(cmd),
+        signal: AbortSignal.timeout(20_000),
+      })
+      const unavailable = { status: response.status, body: await response.json() }
+      expect(unavailable.status).toBe(503)
+      expect(unavailable.body.error).toMatchObject({ code: 'SERVICE_UNAVAILABLE', retryable: true })
+      expect(
+        await sql(
+          `select count(*) from loopmark_private.operation_receipts where owner_id=${quote(a.id)}::uuid`,
+        ),
+      ).toBe('0')
+    } finally {
+      await run('docker', ['unpause', container])
+    }
+    expect((await request('invalid-token', 'sync-push', cmd)).status).toBe(401)
+    const saved = await request(a.token, 'sync-push', cmd)
+    expect(saved.status).toBe(200)
+    expect((await request(a.token, 'sync-push', cmd)).body).toEqual(saved.body)
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.operation_receipts where owner_id=${quote(a.id)}::uuid`,
+      ),
+    ).toBe('1')
+  }, 45_000)
   it('executes the SQL ownership and command suites against real roles', async () => {
     for (const name of ['ownership', 'commands', 'media', 'replacement', 'deletion'])
       await sql(await readFile(`supabase/tests/${name}.test.sql`, 'utf8'))

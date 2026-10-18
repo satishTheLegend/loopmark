@@ -108,13 +108,16 @@ describe('I03 independent review regressions on real services', () => {
     expect(pull.hasMore).toBe(true)
   })
   it('visits accounts beyond the batch limit on sequential compaction runs', async () => {
-    await actor()
-    await actor()
+    const targets = await Promise.all([actor(), actor(), actor()])
+    // Existing retained/load accounts keep their real progress. Exercise the new cohort's
+    // pending work, rather than resetting every account and scaling this small regression
+    // with all previously retained stress fixtures.
     const count = Number(
-      await sql("select count(*) from loopmark_private.accounts where state='active'"),
+      await sql(
+        "select count(*) from loopmark_private.accounts where state='active' and compacted_at is null",
+      ),
     )
     expect(count).toBeGreaterThan(2)
-    await sql('update loopmark_private.accounts set compacted_at=null')
     for (let index = 0; index < Math.ceil(count / 2); index++) {
       const processed = await sql(
         'begin;set local request.jwt.claims=\'{"role":"service_role"}\';select public.loopmark_compact(2);commit;',
@@ -123,7 +126,7 @@ describe('I03 independent review regressions on real services', () => {
     }
     expect(
       await sql(
-        "select count(*) from loopmark_private.accounts where state='active' and compacted_at is null",
+        `select count(*) from loopmark_private.accounts where id in (${targets.map((a) => quote(a.id) + '::uuid').join(',')}) and compacted_at is null`,
       ),
     ).toBe('0')
   })

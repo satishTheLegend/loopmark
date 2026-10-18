@@ -54,9 +54,22 @@ export async function run(
   })
 }
 export async function context() {
-  await assertLocalDocker()
-  const local = await localContext(),
-    credentials = await status(local)
+  try {
+    await assertLocalDocker()
+  } catch (error) {
+    throw new OpsError(
+      String(error?.message).startsWith('Local Docker socket required')
+        ? 'NOT_AVAILABLE'
+        : 'SERVICE_UNAVAILABLE',
+    )
+  }
+  let local
+  try {
+    local = await localContext()
+  } catch {
+    throw new OpsError('VALIDATION')
+  }
+  const credentials = await status(local)
   if (
     credentials.API_URL !== local.config.backendUrl ||
     new URL(credentials.API_URL).hostname !== '127.0.0.1'
