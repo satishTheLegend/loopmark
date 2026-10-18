@@ -32,6 +32,7 @@ import {
   mediaRefs,
   parseInfo,
   prepareResolution,
+  completeReplacementState,
   type ConflictResolution,
   type StoredCollection,
 } from '../../repositories/state'
@@ -217,13 +218,98 @@ export class NativeRepository implements Repository {
       if (atob(bytes.base64).length !== ref.bytes) throw new DomainError('MEDIA_INVALID')
       const fileKey = await canonicalHash({ scope: target, id: ref.id })
       await db.run(
-        'INSERT INTO prepared_files(file_key,scope,media_id,created_at) VALUES(?,?,?,?)',
+        'INSERT OR IGNORE INTO prepared_files(file_key,scope,media_id,created_at) VALUES(?,?,?,?)',
         [fileKey, scopeKey(target), ref.id, Date.now()],
       )
       await durableFiles.put({ key: fileKey, base64: bytes.base64, sha256: ref.sha256 })
       files.push({ ref, fileKey })
     }
     return files
+  }
+  async completeReplacement(
+    key: CollectionKey,
+    input: { operationId: string; receipt: Receipt; pages: SnapshotManifest[] },
+    generation: number,
+  ): Promise<SessionScope> {
+    input = structuredClone(input)
+    const fingerprint = await canonicalHash({
+      operationId: input.operationId,
+      receipt: input.receipt,
+    })
+    const receiptKey = `replacement-complete:${scopeKey(key)}:${input.operationId}`
+    const result = await this.database.serial(async (db) => {
+      const saved = (await db.query('SELECT body FROM metadata WHERE key=?', [receiptKey]))
+        .values?.[0]
+      if (saved) {
+        const prior = JSON.parse(saved.body as string) as {
+          fingerprint: string
+          value: SessionScope
+        }
+        if (prior.fingerprint !== fingerprint) throw new DomainError('OPERATION_REUSED')
+        if (canonicalJson(await activeScope(db)) !== canonicalJson(prior.value))
+          throw new DomainError('ACCOUNT_CHANGED')
+        return prior.value
+      }
+      await assertGeneration(db, key, generation, true)
+      const active = (await activeScope(db))!
+      const { old, next } = completeReplacementState(
+        await getState(db, key),
+        input.operationId,
+        input.receipt,
+        input.pages,
+        active.device,
+        Date.now(),
+      )
+      if (
+        (await db.query('SELECT key FROM collections WHERE key=?', [scopeKey(next.info.key)]))
+          .values?.length
+      )
+        throw new DomainError('REVISION_CONFLICT')
+      const scope = { ...active, key: next.info.key, generation: active.generation + 1 }
+      if (!Number.isSafeInteger(scope.generation)) throw new DomainError('INVARIANT_VIOLATION')
+      const cached: MediaRef[] = []
+      for (const ref of mediaRefs(next.checkpoints)) {
+        const row = (
+          await db.query('SELECT body FROM media WHERE scope=? AND id=?', [scopeKey(key), ref.id])
+        ).values?.[0]
+        if (row && canonicalJson(JSON.parse(row.body as string)) === canonicalJson(ref))
+          cached.push(ref)
+      }
+      // Missing remote media stays unavailable; known local bytes are verified and published first.
+      const files = await this.copyFiles(db, key, next.info.key, cached)
+      await db.beginTransaction()
+      try {
+        if (canonicalJson(await activeScope(db)) !== canonicalJson(active))
+          throw new DomainError('ACCOUNT_CHANGED')
+        await putState(db, old)
+        await putState(db, next)
+        for (const { ref, fileKey } of files) {
+          await db.run(
+            'INSERT INTO media(scope,id,body,file_key,prepared_at) VALUES(?,?,?,?,?)',
+            [scopeKey(next.info.key), ref.id, JSON.stringify(ref), fileKey, Date.now()],
+            false,
+          )
+          await db.run('DELETE FROM prepared_files WHERE file_key=?', [fileKey], false)
+        }
+        await db.run(
+          "UPDATE metadata SET body=? WHERE key='active'",
+          [JSON.stringify(scope)],
+          false,
+        )
+        await db.run(
+          'INSERT INTO metadata(key,body) VALUES(?,?)',
+          [receiptKey, JSON.stringify({ fingerprint, value: scope })],
+          false,
+        )
+        await db.commitTransaction()
+        return scope
+      } catch (error) {
+        await db.rollbackTransaction().catch(() => undefined)
+        throw error
+      }
+    })
+    this.publish()
+    return result
   }
   async resolvePending(
     key: CollectionKey,
@@ -489,15 +575,74 @@ export class NativeRepository implements Repository {
   }
   async importLocal(
     candidate: LocalCollectionCandidate,
-    options: { generation: number; replace?: { key: CollectionKey; revision: string } },
+    options: {
+      generation: number
+      replace?: { key: CollectionKey; revision: string }
+      mediaSource?: CollectionKey
+    },
   ) {
+    candidate = structuredClone(candidate)
+    options = structuredClone(options)
     parseInfo(candidate.info)
     assertRecords(candidate.projects, candidate.checkpoints)
     if (
       candidate.info.kind === 'connected' ||
-      (options.replace && scopeKey(options.replace.key) !== scopeKey(candidate.info.key))
+      (options.replace && scopeKey(options.replace.key) !== scopeKey(candidate.info.key)) ||
+      (options.mediaSource && options.replace)
     )
       throw new DomainError('VALIDATION')
+    if (options.mediaSource) {
+      const source = options.mediaSource
+      const result = await this.database.serial(async (db) => {
+        await assertGeneration(db, source, options.generation, true)
+        const absent = async () => {
+          if (
+            (
+              await db.query('SELECT key FROM collections WHERE key=?', [
+                scopeKey(candidate.info.key),
+              ])
+            ).values?.length
+          )
+            throw new DomainError('REVISION_CONFLICT')
+        }
+        await absent()
+        const files = await this.copyFiles(
+          db,
+          source,
+          candidate.info.key,
+          mediaRefs(candidate.checkpoints),
+        )
+        await db.beginTransaction()
+        try {
+          await assertGeneration(db, source, options.generation, true)
+          await absent()
+          const state = emptyCollection({ ...candidate.info, legacyAccess: false })
+          state.version = localRevision(
+            ...candidate.projects.map((p) => p.revision),
+            ...candidate.checkpoints.map((c) => c.revision),
+          )
+          state.projects = candidate.projects
+          state.checkpoints = candidate.checkpoints
+          state.provenance = candidate.provenance
+          for (const { ref, fileKey } of files) {
+            await db.run(
+              'INSERT INTO media(scope,id,body,file_key,prepared_at) VALUES(?,?,?,?,?)',
+              [scopeKey(candidate.info.key), ref.id, JSON.stringify(ref), fileKey, Date.now()],
+              false,
+            )
+            await db.run('DELETE FROM prepared_files WHERE file_key=?', [fileKey], false)
+          }
+          await putState(db, state)
+          await db.commitTransaction()
+          return viewOf(state)
+        } catch (error) {
+          await db.rollbackTransaction().catch(() => undefined)
+          throw error
+        }
+      })
+      this.publish()
+      return result
+    }
     const result = await this.database.transaction(async (db) => {
       await assertGeneration(db, candidate.info.key, options.generation)
       const previous = await getState(db, candidate.info.key)
@@ -657,7 +802,7 @@ export class NativeRepository implements Repository {
         [scopeKey(key)],
         false,
       )
-      for (const kind of ['draft', 'operation-plan', 'resolution'])
+      for (const kind of ['draft', 'operation-plan', 'resolution', 'replacement-complete'])
         await db.run(
           'DELETE FROM metadata WHERE substr(key,1,length(?))=?',
           [`${kind}:${scopeKey(key)}:`, `${kind}:${scopeKey(key)}:`],

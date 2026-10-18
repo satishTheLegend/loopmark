@@ -45,6 +45,14 @@
           "passed": true
         },
         {
+          "name": "native epoch replacement preserves old drafts and bytes through transaction failure and retry",
+          "passed": true
+        },
+        {
+          "name": "native recovered import publishes files and collection atomically after source staging",
+          "passed": true
+        },
+        {
           "name": "native transition rejects newly added drafts and stale identities; retained copy preserves draft media",
           "passed": true
         },
@@ -119,6 +127,14 @@
         },
         {
           "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native epoch replacement preserves old drafts and bytes through transaction failure and retry",
+          "passed": true
+        },
+        {
+          "name": "native recovered import publishes files and collection atomically after source staging",
           "passed": true
         },
         {

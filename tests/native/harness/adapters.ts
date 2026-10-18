@@ -5,7 +5,12 @@ import { scopeKey } from '../../../src/platform/native/recovery-journal'
 import { bytesToDataUrl } from '../../../src/services/media-codec'
 import { canonicalHash } from '../../../src/domain/canonical-json'
 import { DomainError } from '../../../src/domain/errors'
-import type { LocalIntent, SessionScope } from '../../../src/domain/contracts'
+import type {
+  LocalIntent,
+  SessionScope,
+  Receipt,
+  SnapshotManifest,
+} from '../../../src/domain/contracts'
 import { create, fixture, wave } from './persistence'
 
 const assert = (value: unknown) => {
@@ -28,6 +33,170 @@ const scopeFor = (key: SessionScope['key']): SessionScope => ({
 export async function adapterTests(
   test: (name: string, action: () => Promise<void>) => Promise<void>,
 ) {
+  await test('native epoch replacement preserves old drafts and bytes through transaction failure and retry', async () => {
+    const info = fixture(true),
+      scope = scopeFor(info.key),
+      name = `replace_${Date.now()}`
+    const repo = await openNativeRepository({ databaseName: name })
+    await repo.createCollection(info)
+    await repo.activate(scope)
+    const media = await repo.media.prepare({ kind: 'voice', bytes: wave() }, info.key, 1)
+    const mutation = create(info)
+    if (mutation.kind !== 'project.create') throw new Error('Fixture')
+    const snapshot: SnapshotManifest = {
+      protocolVersion: 2,
+      snapshotId: 'original',
+      collectionId: info.key.collectionId,
+      epoch: info.key.epoch,
+      cursor: '1',
+      revision: '1',
+      expiresAt: '2099-01-01T00:00:00.000Z',
+      after: null,
+      nextPage: null,
+      projects: [{ ...mutation.payload.project, revision: '1' }],
+      checkpoints: [
+        {
+          id: 'checkpoint',
+          projectId: 'native-project',
+          revision: '1',
+          createdAt: info.createdAt,
+          position: '1',
+          toolSize: '4mm',
+          nextStep: 'Original work',
+          notes: '',
+          voice: media.ref,
+        },
+      ],
+      media: [media.ref],
+    }
+    await repo.hydrate(info.key, [snapshot], 1)
+    await repo.drafts.save(
+      'checkpoint:native-project',
+      info.key,
+      1,
+      { nextStep: 'Keep unsaved work', voice: media.ref },
+      [media.ref],
+      null,
+    )
+    await repo.commitLocal(
+      info.key,
+      {
+        operationId: 'replace',
+        kind: 'collection.replace',
+        createdAt: info.createdAt,
+        base: { revision: '1' },
+        payload: {
+          reservationId: 'reservation',
+          candidateSha256: '1'.repeat(64),
+          nextEpoch: 'new-epoch',
+        },
+      },
+      1,
+    )
+    const pending = (await repo.pending(info.key))[0]
+    const receipt: Receipt = {
+      operationId: 'replace',
+      sha256: pending.command.sha256,
+      epoch: info.key.epoch,
+      revision: '2',
+      cursor: '2',
+      resultId: 'reservation',
+      changes: [{ kind: 'collection.replaced', nextEpoch: 'new-epoch' }],
+    }
+    const pages: SnapshotManifest[] = [
+      {
+        ...snapshot,
+        snapshotId: 'next',
+        epoch: 'new-epoch',
+        revision: '2',
+        cursor: '2',
+        projects: [{ ...snapshot.projects[0], name: 'Remote replacement', revision: '2' }],
+        checkpoints: [{ ...snapshot.checkpoints[0], revision: '2' }],
+      },
+    ]
+    const input = { operationId: 'replace', receipt, pages }
+    await rejects(() =>
+      repo.completeReplacement(
+        info.key,
+        { ...input, receipt: { ...receipt, sha256: '0'.repeat(64) } },
+        1,
+      ),
+    )
+    await repo.database.serial((db) =>
+      db.execute(
+        "CREATE TEMP TRIGGER fail_replacement BEFORE INSERT ON collections BEGIN SELECT RAISE(ABORT, 'synthetic failure'); END;",
+      ),
+    )
+    await rejects(() => repo.completeReplacement(info.key, input, 1))
+    assert(
+      (await repo.listCollections()).length === 1 && (await repo.pending(info.key)).length === 1,
+    )
+    assert((await repo.readActive())?.generation === 1)
+    await repo.database.serial((db) => db.execute('DROP TRIGGER fail_replacement;'))
+    const next = await repo.completeReplacement(info.key, input, 1)
+    assert(next.generation === 2 && next.key.epoch === 'new-epoch')
+    assert((await repo.readView(info.key)).info.kind === 'recovered')
+    assert((await repo.reviewLocal(info.key)).drafts.length === 1)
+    assert((await repo.readView(next.key)).projects[0].name === 'Remote replacement')
+    assert(
+      (await new Response(await repo.media.open(media.ref, next.key)).blob()).size === wave().size,
+    )
+    assert(
+      scopeKey((await repo.completeReplacement(info.key, input, 1)).key) === scopeKey(next.key),
+    )
+    await repo.close()
+  })
+  await test('native recovered import publishes files and collection atomically after source staging', async () => {
+    const info = fixture(),
+      target = fixture(),
+      name = `import_${Date.now()}`
+    const repo = await openNativeRepository({ databaseName: name })
+    await repo.createCollection(info)
+    await repo.activate(scopeFor(info.key))
+    const saved = await repo.commitLocal(info.key, create(info), 1)
+    const media = await repo.media.prepare({ kind: 'voice', bytes: wave() }, info.key, 1)
+    const candidate = {
+      info: { ...target, kind: 'recovered' as const },
+      projects: saved.view.projects,
+      checkpoints: [
+        {
+          id: 'restored-checkpoint',
+          projectId: 'native-project',
+          revision: '40',
+          createdAt: info.createdAt,
+          position: '5',
+          toolSize: '4mm',
+          nextStep: 'Keep going',
+          notes: '',
+          voice: media.ref,
+        },
+      ],
+      provenance: {
+        kind: 'backup' as const,
+        sourceId: 'synthetic-backup',
+        capturedAt: info.createdAt,
+      },
+    }
+    await repo.database.serial((db) =>
+      db.execute(
+        "CREATE TEMP TRIGGER fail_import BEFORE INSERT ON collections BEGIN SELECT RAISE(ABORT, 'synthetic failure'); END;",
+      ),
+    )
+    await rejects(() => repo.importLocal(candidate, { generation: 1, mediaSource: info.key }))
+    assert((await repo.listCollections()).length === 1)
+    assert((await repo.readView(info.key)).projects.length === 1)
+    await repo.database.serial((db) => db.execute('DROP TRIGGER fail_import;'))
+    await rejects(() => repo.importLocal(candidate, { generation: 0, mediaSource: info.key }))
+    const restored = await repo.importLocal(candidate, { generation: 1, mediaSource: info.key })
+    assert(restored.revision === '41' && !restored.info.legacyAccess)
+    assert(
+      (await new Response(await repo.media.open(media.ref, target.key)).blob()).size ===
+        wave().size,
+    )
+    assert(scopeKey((await repo.readActive())!.key) === scopeKey(info.key))
+    await rejects(() => repo.importLocal(candidate, { generation: 1, mediaSource: info.key }))
+    await repo.close()
+  })
   await test('native transition rejects newly added drafts and stale identities; retained copy preserves draft media', async () => {
     const info = fixture(),
       destination = fixture(),
