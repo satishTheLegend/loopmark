@@ -9,6 +9,7 @@ import type { AccountAuth } from '../auth/auth-service'
 import type { FunctionClient } from '../sync/http-client'
 import type { WorkflowRecord, WorkflowStore } from '../services/workflow-store'
 import {
+  billingStatusSchema,
   purchaseRecoveryWireResponseSchema,
   purchaseRecoveryWireRequestSchema,
 } from '../domain/remote-schema'
@@ -28,11 +29,33 @@ const schema = z
   })
   .strict()
 type Recovery = z.infer<typeof schema>
+const keyStatusSchema = z
+  .object({
+    type: z.literal('recovery-key-current'),
+    accountId: z.string(),
+    principalId: z.string(),
+    deletionGeneration: z.string(),
+    hash: hashSchema.nullable(),
+    checkedAt: timestamp,
+  })
+  .strict()
+type KeyStatus = z.infer<typeof keyStatusSchema>
+const identity = (session: AccountSession | null) =>
+  session
+    ? {
+        accountId: session.accountId,
+        principalId: session.billingPrincipalId,
+        deletionGeneration: session.deletionGeneration,
+      }
+    : null
+
 export interface SavedPurchaseRecovery {
   id: string
   mode: 'set-key' | 'claim'
   createdAt: string
   result: PurchaseRecoveryWireResponse | null
+  keyState?: 'last-confirmed' | 'current' | 'superseded'
+  keyCheckedAt?: string | null
 }
 /** Recovery keys are user-owned secrets: never a URL, log, ordinary snapshot, or server plaintext field. */
 export function createPurchaseRecoveryService(options: {
@@ -48,6 +71,42 @@ export function createPurchaseRecoveryService(options: {
     createdAt: row.value.createdAt,
     result: row.value.result,
   })
+  const statusId = async (session: AccountSession) =>
+    `recovery_key_${(await canonicalHash(identity(session))).slice(0, 48)}`
+  async function knownKeyStatus(session: AccountSession) {
+    const row = await options.workflows.read(await statusId(session))
+    if (canonicalJson(identity(options.current())) !== canonicalJson(identity(session)))
+      throw new DomainError('ACCOUNT_CHANGED')
+    if (!row) return null
+    const parsed = keyStatusSchema.safeParse(row.value)
+    if (
+      row.accountId !== session.accountId ||
+      !parsed.success ||
+      canonicalJson({
+        accountId: parsed.data.accountId,
+        principalId: parsed.data.principalId,
+        deletionGeneration: parsed.data.deletionGeneration,
+      }) !== canonicalJson(identity(session))
+    )
+      throw new DomainError('VALIDATION')
+    return parsed.data
+  }
+  const withStatus = (
+    row: WorkflowRecord<Recovery>,
+    status: KeyStatus | null,
+  ): SavedPurchaseRecovery => {
+    const result = row.value.result
+    return {
+      ...publicValue(row),
+      keyState:
+        !status || !result || result.status === 'pending'
+          ? 'last-confirmed'
+          : result.recoveryKeyHash === status.hash
+            ? 'current'
+            : 'superseded',
+      keyCheckedAt: status?.checkedAt ?? null,
+    }
+  }
   async function check(scope: SessionScope, signal: AbortSignal) {
     signal.throwIfAborted()
     const session = options.current(),
@@ -255,6 +314,40 @@ export function createPurchaseRecoveryService(options: {
     async refresh(id: string, scope: SessionScope, signal: AbortSignal) {
       return publicValue(await refresh(await read(id), scope, signal))
     },
+    async refreshKeyStatus(scope: SessionScope, signal: AbortSignal) {
+      const session = await check(scope, signal),
+        id = await statusId(session)
+      // Capture CAS before the request: a late response cannot overwrite a newer observation.
+      const previous = await options.workflows.read(id)
+      const parsed = billingStatusSchema.safeParse(
+        await options.client.post('purchase-restore', { action: 'status' }, signal),
+      )
+      await check(scope, signal)
+      if (
+        !parsed.success ||
+        parsed.data.entitlement.accountId !== session.accountId ||
+        parsed.data.entitlement.billingPrincipalId !== session.billingPrincipalId ||
+        canonicalJson(identity(options.current())) !== canonicalJson(identity(session))
+      )
+        throw new DomainError('ACCOUNT_CHANGED')
+      const value: KeyStatus = {
+        type: 'recovery-key-current',
+        ...identity(session)!,
+        hash: parsed.data.currentRecoveryKeyHash,
+        checkedAt: new Date().toISOString(),
+      }
+      await options.workflows.write(
+        id,
+        previous?.revision ?? null,
+        {
+          kind: 'purchase',
+          accountId: session.accountId,
+          collection: null,
+          value,
+        },
+        scope,
+      )
+    },
     async listKeys(): Promise<SavedPurchaseRecovery[]> {
       const session = options.current()
       if (!session) return []
@@ -263,11 +356,18 @@ export function createPurchaseRecoveryService(options: {
       )
       if (options.current()?.accountId !== session.accountId)
         throw new DomainError('ACCOUNT_CHANGED')
-      return rows.filter((row) => schema.safeParse(row.value).success).map(publicValue)
+      const status = await knownKeyStatus(session)
+      return rows
+        .filter((row) => schema.safeParse(row.value).success)
+        .map((row) => withStatus(row, status))
     },
     async exportKey(id: string): Promise<Blob> {
       const row = await read(id)
-      if (!row.value.result || row.value.result.status === 'pending')
+      if (
+        !row.value.result ||
+        row.value.result.status === 'pending' ||
+        withStatus(row, await knownKeyStatus(options.current()!)).keyState === 'superseded'
+      )
         throw new DomainError('NOT_AVAILABLE')
       return new Blob(
         [

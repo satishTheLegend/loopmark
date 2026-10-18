@@ -61,6 +61,7 @@ async function setup(platform: 'web' | 'ios' = 'web') {
             }
           : null,
         recoveryKeyConfigured: false,
+        currentRecoveryKeyHash: null,
       }
     }),
   }

@@ -22,6 +22,7 @@ export interface BillingState {
   access: AccessState
   attempts: PurchaseAttempt[]
   recoveryKeyConfigured: boolean
+  currentRecoveryKeyHash?: string | null
   error: SafeError | null
 }
 export function createBillingCoordinator(options: {
@@ -159,7 +160,11 @@ export function createBillingCoordinator(options: {
     await access.observe(parsed.data.entitlement, captured.session)
     check(captured)
     owner = identity(captured)
-    publish({ recoveryKeyConfigured: parsed.data.recoveryKeyConfigured, error: null })
+    publish({
+      recoveryKeyConfigured: parsed.data.recoveryKeyConfigured,
+      currentRecoveryKeyHash: parsed.data.currentRecoveryKeyHash,
+      error: null,
+    })
     if (row && row.value.phase !== 'continued') {
       const status = parsed.data.attempt?.state
       const phase = access.getSnapshot().projection?.upgraded

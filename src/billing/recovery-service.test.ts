@@ -201,3 +201,39 @@ it('a recovery key is unavailable to another account and a changed scope fences 
     f.client.post.mock.calls.filter(([, body]) => (body as { action: string }).action === 'claim'),
   ).toHaveLength(0)
 })
+
+it('a current-key refresh marks rotated historical keys superseded and fences their export without deleting them', async () => {
+  const f = await setup(),
+    signal = new AbortController().signal
+  const saved = await f.service.setKey({ operationToken: 'key' }, f.scope, signal)
+  expect((await f.service.listKeys())[0].keyState).toBe('last-confirmed')
+  const row = (await f.workflows.list<{ nextKey: string }>('purchase'))[0]
+  const hash = await sha256Bytes(new TextEncoder().encode(row.value.nextKey))
+  const status = (currentRecoveryKeyHash: string | null) => ({
+    entitlement: {
+      accountId: f.session.accountId,
+      billingPrincipalId: f.session.billingPrincipalId,
+      upgraded: true,
+      revision: '1',
+      verifiedAt: '2026-01-01T00:00:00.000Z',
+    },
+    attempt: null,
+    recoveryKeyConfigured: currentRecoveryKeyHash !== null,
+    currentRecoveryKeyHash,
+  })
+  f.client.post.mockResolvedValueOnce(status(hash))
+  await f.service.refreshKeyStatus(f.scope, signal)
+  expect((await f.service.listKeys())[0].keyState).toBe('current')
+  await expect(f.service.exportKey(saved.id)).resolves.toBeInstanceOf(Blob)
+  f.client.post.mockResolvedValueOnce(status('f'.repeat(64)))
+  await f.service.refreshKeyStatus(f.scope, signal)
+  expect((await f.service.listKeys())[0]).toMatchObject({
+    id: saved.id,
+    keyState: 'superseded',
+    keyCheckedAt: expect.any(String),
+  })
+  await expect(f.service.exportKey(saved.id)).rejects.toMatchObject({
+    detail: { code: 'NOT_AVAILABLE' },
+  })
+  expect(await f.workflows.read(saved.id)).not.toBeNull()
+})
