@@ -34,7 +34,11 @@ export interface Repository {
   createCollection(info: CollectionInfo): Promise<void>
   importLocal(
     candidate: LocalCollectionCandidate,
-    options: { generation: Generation; replace?: { key: CollectionKey; revision: string } },
+    options: {
+      generation: Generation
+      replace?: { key: CollectionKey; revision: string }
+      mediaSource?: CollectionKey
+    },
   ): Promise<CollectionView>
   retainLocal(
     key: CollectionKey,

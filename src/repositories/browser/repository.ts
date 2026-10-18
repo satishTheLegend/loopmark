@@ -48,7 +48,7 @@ import {
   type MediaRow,
   BROWSER_DATABASE,
 } from './schema'
-import { BrowserMediaStore, assertMediaPresent } from './media-store'
+import { BrowserMediaStore, assertMediaPresent, verifyBytes } from './media-store'
 
 export interface BrowserRepositoryOptions {
   databaseName?: string
@@ -473,13 +473,77 @@ export class BrowserRepository implements Repository {
   }
   async importLocal(
     candidate: LocalCollectionCandidate,
-    options: { generation: number; replace?: { key: CollectionKey; revision: string } },
+    options: {
+      generation: number
+      replace?: { key: CollectionKey; revision: string }
+      mediaSource?: CollectionKey
+    },
   ): Promise<CollectionView> {
     parseInfo(candidate.info)
     assertRecords(candidate.projects, candidate.checkpoints)
     if (candidate.info.kind === 'connected') throw new DomainError('VALIDATION')
     if (options.replace && keyOf(options.replace.key) !== keyOf(candidate.info.key))
       throw new DomainError('VALIDATION')
+    if (options.mediaSource) {
+      if (options.replace || keyOf(options.mediaSource) === keyOf(candidate.info.key))
+        throw new DomainError('VALIDATION')
+      const source = options.mediaSource,
+        refs = mediaRefs(candidate.checkpoints)
+      const prepared = await transaction(this.database, 'readonly', async (tx) => {
+        const scope = await assertGeneration(tx, source, options.generation)
+        const rows: MediaRow[] = []
+        for (const ref of refs) {
+          const row = await requestResult<MediaRow | undefined>(
+            tx.objectStore('media').get(mediaKey(source, ref.id)),
+          )
+          if (!row || canonicalJson(row.ref) !== canonicalJson(ref))
+            throw new DomainError('BACKUP_INCOMPLETE')
+          rows.push(row)
+        }
+        return { scope, rows }
+      })
+      for (const row of prepared.rows)
+        await verifyBytes(row.ref, new Blob([row.bytes], { type: row.ref.mimeType }))
+      const result = await transaction(this.database, 'readwrite', async (tx) => {
+        const scope = await assertGeneration(tx, source, options.generation)
+        if (canonicalJson(scope) !== canonicalJson(prepared.scope))
+          throw new DomainError('ACCOUNT_CHANGED')
+        if (await requestResult(tx.objectStore('collections').get(keyOf(candidate.info.key))))
+          throw new DomainError('REVISION_CONFLICT')
+        const next = emptyCollection({ ...candidate.info, legacyAccess: false })
+        next.projects = candidate.projects
+        next.checkpoints = candidate.checkpoints
+        next.provenance = candidate.provenance
+        next.version = localRevision(
+          ...candidate.projects.map((p) => p.revision),
+          ...candidate.checkpoints.map((c) => c.revision),
+        )
+        for (const row of prepared.rows) {
+          const current = await requestResult<MediaRow | undefined>(
+            tx.objectStore('media').get(mediaKey(source, row.ref.id)),
+          )
+          const before = new Uint8Array(row.bytes),
+            after = current ? new Uint8Array(current.bytes) : null
+          if (
+            !current ||
+            canonicalJson(current.ref) !== canonicalJson(row.ref) ||
+            !after ||
+            after.byteLength !== before.byteLength ||
+            before.some((byte, index) => byte !== after[index])
+          )
+            throw new DomainError('BACKUP_INCOMPLETE')
+          tx.objectStore('media').add({
+            ...row,
+            key: mediaKey(candidate.info.key, row.ref.id),
+            scope: candidate.info.key,
+          })
+        }
+        putState(tx, next)
+        return viewOf(next)
+      })
+      this.publish()
+      return result
+    }
     const result = await transaction(this.database, 'readwrite', async (tx) => {
       await assertGeneration(tx, candidate.info.key, options.generation, false)
       const previous = await getState(tx, candidate.info.key)

@@ -86,15 +86,17 @@ async function expandProject(
     checkpoints: children.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
   }
 }
-export async function normalizeBackup(
+export async function prepareBackupRecords(
   backup: Backup,
-  deps: Pick<LocalDataDependencies, 'repository' | 'media'>,
+  media: PlatformMedia,
   scope: SessionScope,
-): Promise<LocalCollectionCandidate> {
+): Promise<{
+  projects: ProjectRecord[]
+  checkpoints: CheckpointRecord[]
+  provenance: LocalCollectionCandidate['provenance']
+}> {
   const validated = parseBackup(JSON.stringify(backup))
   await validateBackupMedia(validated)
-  const view = await deps.repository.readView(scope.key)
-  if (view.info.kind === 'connected') throw new DomainError('SYNC_REBASE_REQUIRED')
   const projects: ProjectRecord[] = [],
     checkpoints: CheckpointRecord[] = []
   for (const project of validated.projects) {
@@ -102,8 +104,8 @@ export async function normalizeBackup(
     projects.push({ ...fields, revision: '0' })
     for (const checkpoint of children) {
       const { photo, voice, ...fields } = checkpoint
-      const p = photo ? await storeInline(photo, 'photo', deps.media, scope) : undefined
-      const v = voice ? await storeInline(voice, 'voice', deps.media, scope) : undefined
+      const p = photo ? await storeInline(photo, 'photo', media, scope) : undefined
+      const v = voice ? await storeInline(voice, 'voice', media, scope) : undefined
       checkpoints.push({
         ...fields,
         projectId: project.id,
@@ -114,7 +116,6 @@ export async function normalizeBackup(
     }
   }
   return {
-    info: view.info,
     projects,
     checkpoints,
     provenance: {
@@ -123,6 +124,15 @@ export async function normalizeBackup(
       capturedAt: validated.exportedAt,
     },
   }
+}
+export async function normalizeBackup(
+  backup: Backup,
+  deps: Pick<LocalDataDependencies, 'repository' | 'media'>,
+  scope: SessionScope,
+): Promise<LocalCollectionCandidate> {
+  const view = await deps.repository.readView(scope.key)
+  if (view.info.kind === 'connected') throw new DomainError('SYNC_REBASE_REQUIRED')
+  return { info: view.info, ...(await prepareBackupRecords(backup, deps.media, scope)) }
 }
 export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter {
   const { repository, media, plans } = deps
