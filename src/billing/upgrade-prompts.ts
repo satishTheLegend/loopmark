@@ -18,6 +18,13 @@ const schema = z
   })
   .strict()
 export type UpgradePrompt = z.infer<typeof schema>
+export function purchaseAction(value: PurchaseAction): PurchaseAction {
+  return {
+    returnAction: value.returnAction,
+    ...(value.draftKey ? { draftKey: value.draftKey } : {}),
+    ...(value.projectId ? { projectId: value.projectId } : {}),
+  }
+}
 
 /** Device-local navigation only. The local owner namespace is never an account or purchase grant. */
 export function createUpgradePrompts(options: { workflows: WorkflowStore; scope(): SessionScope }) {
@@ -45,7 +52,7 @@ export function createUpgradePrompts(options: { workflows: WorkflowStore; scope(
       const at = await location(),
         old = await options.workflows.read<UpgradePrompt>(at.id)
       const value = schema.parse({
-        ...action,
+        ...purchaseAction(action),
         type: 'upgrade-prompt',
         version: 1,
         collection: at.scope.key,

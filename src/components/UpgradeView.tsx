@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { AppRuntime } from '../runtime'
 import type { LocalizedProduct, CollectionKey } from '../domain/contracts'
 import type { PurchaseAction } from '../billing/coordinator'
-import type { UpgradePrompt } from '../billing/upgrade-prompts'
+import { purchaseAction, type UpgradePrompt } from '../billing/upgrade-prompts'
 import { canonicalJson } from '../domain/canonical-json'
 import { ErrorMessage, errorText, fullDate } from './ui'
 import { PurchaseRecovery } from './PurchaseRecovery'
@@ -80,22 +80,10 @@ export function UpgradeView({
               ['failed', 'refunded', 'revoked', 'disputed'].includes(item.serverState ?? ''))),
       )
     ) {
-      saved = await runtime.upgradePrompts.save({
-        returnAction: saved.returnAction,
-        draftKey: saved.draftKey,
-        projectId: saved.projectId,
-      })
+      saved = await runtime.upgradePrompts.save(purchaseAction(saved))
     }
     setPrompt(saved)
-    const id = await billing.purchase(
-      product.id,
-      {
-        returnAction: saved.returnAction,
-        draftKey: saved.draftKey,
-        projectId: saved.projectId,
-      },
-      saved.operationToken,
-    )
+    const id = await billing.purchase(product.id, purchaseAction(saved), saved.operationToken)
     await billing.resume(id)
     setMessage('Purchase status checked. Your project action still needs your review.')
   }

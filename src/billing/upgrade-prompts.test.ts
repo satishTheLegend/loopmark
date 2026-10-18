@@ -23,7 +23,11 @@ it('retains a pre-auth draft action across reload without claiming account owner
     const workflows = createBrowserWorkflowStore(repository),
       options = { workflows, scope: () => scope }
     const first = createUpgradePrompts(options)
-    const saved = await first.save({ returnAction: 'new-project', draftKey: 'new' })
+    const saved = await first.save({
+      returnAction: 'new-project',
+      draftKey: 'new',
+      projectId: undefined,
+    })
     expect(await createUpgradePrompts(options).read()).toEqual(saved)
     const row = (await workflows.list('purchase'))[0]
     expect(row.accountId).toMatch(/^local_/)
