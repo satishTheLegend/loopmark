@@ -4,6 +4,7 @@ import {
   candidateMetadataSchema,
   candidatePortableBytes,
   nativeBillingConfigSchema,
+  mergeCandidate,
   verifyCandidatePreparation,
 } from '../../src/domain/remote-schema'
 import type { CandidateMetadata, CandidatePreparation } from '../../src/domain/remote-contracts'
@@ -116,6 +117,21 @@ describe('remote candidate contracts', () => {
       }),
     ).rejects.toThrow()
     await expect(verifyCandidatePreparation({ ...value, nextEpoch: 'old' })).rejects.toThrow()
+  })
+  it('reproduces collision mappings without clocks or randomness for local and server preview', async () => {
+    const source = { ...candidate, projects: [{ ...candidate.projects[0], name: 'Changed' }] }
+    const first = await mergeCandidate('attach', 'stable-request', source, candidate)
+    const second = await mergeCandidate(
+      'attach',
+      'stable-request',
+      structuredClone(source),
+      structuredClone(candidate),
+    )
+    expect(first).toEqual(second)
+    expect(first).toMatchObject({ copies: 1, matches: 0, additions: 0 })
+    expect(first.candidate.projects).toHaveLength(2)
+    expect(first.candidate.checkpoints[1].projectId).toBe(first.mappings[0].destinationId)
+    expect((await mergeCandidate('attach', 'stable-request', candidate, candidate)).matches).toBe(1)
   })
   it('never accepts a native secret or key for the other platform', () => {
     expect(

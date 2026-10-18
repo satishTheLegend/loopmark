@@ -292,3 +292,115 @@ export async function verifyCandidatePreparation(input: unknown): Promise<Candid
     throw new DomainError('VALIDATION')
   return parsed
 }
+
+/** Pure preview, shared by device and server. No network, mutation, clock or randomness. */
+export async function mergeCandidate(
+  mode: 'attach' | 'replace',
+  requestId: string,
+  sourceInput: CandidateMetadata,
+  destinationInput: CandidateMetadata,
+): Promise<import('./remote-contracts').CandidateMerge> {
+  id.parse(requestId)
+  const source = candidateMetadataSchema.parse(sourceInput)
+  const destination = candidateMetadataSchema.parse(destinationInput)
+  const result: CandidateMetadata =
+    mode === 'attach' ? structuredClone(destination) : { projects: [], checkpoints: [] }
+  const refs = (candidate: CandidateMetadata) =>
+    new Map(
+      candidate.checkpoints
+        .flatMap((checkpoint) => [checkpoint.photo, checkpoint.voice].filter((ref) => !!ref))
+        .map((ref) => [ref.id, ref]),
+    )
+  const existingRefs =
+    mode === 'attach' ? refs(destination) : new Map<string, import('./contracts').MediaRef>()
+  const stableId = async (kind: string, sourceId: string, occupied: Set<string>) => {
+    for (let attempt = 0; attempt <= MAX_PROJECTS + MAX_CHECKPOINTS * 2; attempt++) {
+      const hash = await canonicalHash({ requestId, kind, sourceId, attempt })
+      const value = `lm_${hash.slice(0, 40)}`
+      if (!occupied.has(value)) return value
+    }
+    throw new DomainError('TECHNICAL_CAPACITY_REACHED')
+  }
+  const mediaMappings: import('./remote-contracts').MediaMapping[] = []
+  for (const ref of refs(source).values()) {
+    const existing = existingRefs.get(ref.id)
+    const mapped =
+      existing && canonicalJson(existing) !== canonicalJson(ref)
+        ? { ...ref, id: await stableId('media', ref.id, new Set(existingRefs.keys())) }
+        : ref
+    existingRefs.set(mapped.id, mapped)
+    mediaMappings.push({ sourceId: ref.id, destination: mapped })
+  }
+  const media = new Map(mediaMappings.map((entry) => [entry.sourceId, entry.destination]))
+  const ids = new Set([...result.projects, ...result.checkpoints].map((record) => record.id))
+  const codes = new Set(result.projects.map((project) => project.code))
+  const mappings: import('./remote-contracts').AttachPreview['mappings'] = []
+  let additions = 0,
+    matches = 0,
+    copies = 0
+  const compare = (candidate: CandidateMetadata, projectId: string) => ({
+    project: candidate.projects.find((project) => project.id === projectId),
+    checkpoints: candidate.checkpoints
+      .filter((checkpoint) => checkpoint.projectId === projectId)
+      .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)),
+  })
+  for (const project of source.projects) {
+    const prior = mode === 'attach' && destination.projects.find((value) => value.id === project.id)
+    if (
+      prior &&
+      canonicalJson(compare(source, project.id)) === canonicalJson(compare(destination, project.id))
+    ) {
+      matches++
+      mappings.push({
+        sourceId: project.id,
+        sourceCode: project.code,
+        destinationId: project.id,
+        destinationCode: project.code,
+      })
+      continue
+    }
+    const copied = !!prior || ids.has(project.id)
+    const destinationId = copied ? await stableId('project', project.id, ids) : project.id
+    let code = project.code
+    for (let attempt = 0; codes.has(code); attempt++) {
+      if (attempt > MAX_PROJECTS) throw new DomainError('TECHNICAL_CAPACITY_REACHED')
+      code = `LM-${(await canonicalHash({ requestId, kind: 'code', sourceId: project.id, attempt })).slice(0, 16).toUpperCase()}`
+    }
+    const suffix = ' (copy from this device)'
+    // Avoid splitting a surrogate pair when the readable suffix needs room.
+    let name = project.name
+    while (name.length > 100 - suffix.length) name = [...name].slice(0, -1).join('')
+    result.projects.push({
+      ...project,
+      id: destinationId,
+      code,
+      ...(copied ? { name: name + suffix } : {}),
+    })
+    ids.add(destinationId)
+    codes.add(code)
+    if (copied) copies++
+    else additions++
+    mappings.push({
+      sourceId: project.id,
+      sourceCode: project.code,
+      destinationId,
+      destinationCode: code,
+    })
+    for (const checkpoint of source.checkpoints.filter((value) => value.projectId === project.id)) {
+      const checkpointId =
+        copied || ids.has(checkpoint.id)
+          ? await stableId('checkpoint', checkpoint.id, ids)
+          : checkpoint.id
+      ids.add(checkpointId)
+      result.checkpoints.push({
+        ...checkpoint,
+        id: checkpointId,
+        projectId: destinationId,
+        ...(checkpoint.photo ? { photo: media.get(checkpoint.photo.id)! } : {}),
+        ...(checkpoint.voice ? { voice: media.get(checkpoint.voice.id)! } : {}),
+      })
+    }
+  }
+  candidateMetadataSchema.parse(result)
+  return { candidate: result, mediaMappings, additions, matches, copies, mappings }
+}

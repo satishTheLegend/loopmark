@@ -114,3 +114,12 @@ export interface NativeBillingConfig {
   productIds: string[]
   environment: 'sandbox' | 'production'
 }
+
+export interface CandidateMerge {
+  candidate: CandidateMetadata
+  mediaMappings: MediaMapping[]
+  additions: number
+  matches: number
+  copies: number
+  mappings: AttachPreview['mappings']
+}
