@@ -881,6 +881,18 @@ export class NativeRepository implements Repository {
       await assertGeneration(db, key, generation, true)
       const state = await getState(db, key)
       if (state.version !== revision) throw new DomainError('REVISION_CONFLICT')
+      const retainedWorkflows =
+        (await db.query("SELECT body FROM metadata WHERE key LIKE 'workflow:%'")).values ?? []
+      for (const row of retainedWorkflows) {
+        const workflow = JSON.parse(row.body as string)
+        if (
+          workflow.collection &&
+          scopeKey(workflow.collection) === scopeKey(key) &&
+          workflow.kind === 'candidate' &&
+          !['complete', 'cancelled'].includes(workflow.value?.phase)
+        )
+          throw new DomainError('SYNC_REBASE_REQUIRED')
+      }
       await db.run(
         "DELETE FROM pins WHERE scope=? AND (owner LIKE 'draft:%' OR owner LIKE 'operation-plan:%')",
         [scopeKey(key)],

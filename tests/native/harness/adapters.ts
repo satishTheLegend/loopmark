@@ -347,12 +347,34 @@ export async function adapterTests(
     await repo.createCollection(info)
     await repo.activate(scope)
     let drafts = createNativeDraftStore(repo, scope)
+    const emptyForm = {
+      key: 'checkpoint:empty',
+      revision: 'empty-revision',
+      baseRevision: '5',
+      value: {
+        nextStep: 'Text-only checkpoint',
+        position: '',
+        toolSize: '',
+        notes: '',
+        photo: undefined,
+        voice: undefined,
+      },
+    }
+    await drafts.write(emptyForm.key, undefined, emptyForm)
+    const textOnly = await drafts.read<{ nextStep: string; photo?: string; voice?: string }>(
+      emptyForm.key,
+    )
+    assert(
+      textOnly?.value.nextStep === 'Text-only checkpoint' &&
+        textOnly.value.photo === undefined &&
+        textOnly.value.voice === undefined,
+    )
     const voice = bytesToDataUrl(new Uint8Array(await wave().arrayBuffer()), 'audio/wav')
     const draft = {
       key: 'checkpoint:native-project',
       revision: 'caller-revision',
       baseRevision: '5',
-      value: { nextStep: 'Continue after restart', voice },
+      value: { nextStep: 'Continue after restart', voice, photo: undefined },
     }
     await drafts.write(draft.key, undefined, draft)
     const stored = await repo.drafts.read(draft.key, info.key)

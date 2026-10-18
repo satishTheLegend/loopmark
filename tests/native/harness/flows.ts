@@ -71,6 +71,29 @@ export async function capabilityTests(
       rejected = true
     }
     assert(rejected && (await store.read('candidate'))?.revision === saved.revision)
+    let protectedCandidate = await store.write(
+      'protected-candidate',
+      null,
+      { ...entry, value: { phase: 'queued' } },
+      next,
+    )
+    rejected = false
+    try {
+      await repo.removeLocal(info.key, (await repo.readView(info.key)).revision, next.generation)
+    } catch {
+      rejected = true
+    }
+    assert(
+      rejected &&
+        (await store.read('protected-candidate'))?.revision === protectedCandidate.revision,
+    )
+    protectedCandidate = await store.write(
+      protectedCandidate.id,
+      protectedCandidate.revision,
+      { ...entry, value: { phase: 'cancelled' } },
+      next,
+    )
+    await store.write('candidate', saved.revision, { ...entry, value: { phase: 'complete' } }, next)
     await repo.removeLocal(info.key, (await repo.readView(info.key)).revision, next.generation)
     assert(
       (await store.read('candidate')) === null &&
