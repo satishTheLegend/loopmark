@@ -44,19 +44,20 @@ export function SyncRecoveryReview({
   return (
     <Dialog
       title="Refresh this account safely"
+      initialFocus="heading"
       onClose={() => {
         if (!busy) onClose()
       }}
       wide
     >
-      <div className="readable-controls">
+      <div className="readable-controls sync-recovery">
         <p>This device needs a fresh account view before it can sync again.</p>
         <p>
           Keep the projects, saved checkpoints, drafts and available files from this device in a
           separate recovered collection. Then open the current account projects. Unsent changes stay
           in that device copy until you choose what to reconnect.
         </p>
-        <dl className="version-fields">
+        <dl className="version-fields recovery-counts">
           <div>
             <dt>Projects on this device</dt>
             <dd>{counts.projects}</dd>

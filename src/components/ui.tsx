@@ -8,18 +8,24 @@ export function Dialog({
   children,
   onClose,
   wide = false,
+  initialFocus = 'field',
 }: {
   title: string
   children: ReactNode
   onClose: () => void
   wide?: boolean
+  initialFocus?: 'field' | 'heading'
 }) {
   const ref = useRef<HTMLDialogElement>(null)
   useLayoutEffect(() => {
     const previous = document.activeElement as HTMLElement | null
     ref.current?.showModal()
     ref.current
-      ?.querySelector<HTMLElement>('input:not([type=file]):not([type=radio]), textarea, select')
+      ?.querySelector<HTMLElement>(
+        initialFocus === 'heading'
+          ? '#dialog-title'
+          : 'input:not([type=file]):not([type=radio]), textarea, select',
+      )
       ?.focus()
     return () => {
       ref.current?.close()
@@ -49,7 +55,9 @@ export function Dialog({
       }}
     >
       <div className="dialog-head">
-        <h2 id="dialog-title">{title}</h2>
+        <h2 id="dialog-title" tabIndex={initialFocus === 'heading' ? -1 : undefined}>
+          {title}
+        </h2>
         <button className="icon-button" aria-label="Close dialog" onClick={onClose}>
           <IconX />
         </button>

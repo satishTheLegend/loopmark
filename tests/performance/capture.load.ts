@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
-import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
+import { access, appendFile, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
-import { chooseAccount, createProject, origin, signIn } from '../cloud/helpers'
+import { chooseAccount, createProject, signIn } from '../cloud/helpers'
 
 // Explicit operator-run observer. It never creates backend load or modifies a
 // provider configuration. The separate load runner owns its own workload.
@@ -10,6 +10,7 @@ test('connected local capture remains durable during the independently timed ser
   page,
 }, info) => {
   test.setTimeout(720000)
+  page.setDefaultTimeout(30000)
   const duration = Number(process.env.LOOPMARK_LOAD_OBSERVER_MS ?? 600000)
   if (!Number.isInteger(duration) || duration < 30000 || duration > 600000)
     throw new Error('LOOPMARK_LOAD_OBSERVER_MS must be an integer from 30000 to 600000')
@@ -17,6 +18,7 @@ test('connected local capture remains durable during the independently timed ser
   await mkdir(directory, { recursive: true })
   const runId = crypto.randomUUID()
   const stopPath = resolve(directory, `${runId}.stop`)
+  const journalPath = resolve(directory, `${runId}.jsonl`)
   const samples: Array<{ startedAt: string; committedAt: string; saveMs: number }> = []
   const failures: string[] = []
   const responses: Record<string, number> = {}
@@ -38,7 +40,9 @@ test('connected local capture remains durable during the independently timed ser
     readyAt,
     stopPath,
     source: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+    journalPath,
   }
+  await appendFile(journalPath, JSON.stringify({ phase: 'ready', ...ready }) + '\n')
   await writeFile(resolve(directory, 'ready.json'), JSON.stringify(ready, null, 2) + '\n')
   console.log('LOOPMARK_CAPTURE_READY ' + JSON.stringify(ready))
   const deadline = Date.now() + duration
@@ -92,13 +96,25 @@ test('connected local capture remains durable during the independently timed ser
     )
     expect(saveMs).toBeDefined()
     samples.push({ startedAt, committedAt: new Date().toISOString(), saveMs: saveMs! })
+    await appendFile(journalPath, JSON.stringify({ phase: 'saved', ...samples.at(-1) }) + '\n')
     await page.waitForTimeout(1000)
   }
+  await appendFile(
+    journalPath,
+    JSON.stringify({ phase: 'reload', at: new Date().toISOString(), count: samples.length }) + '\n',
+  )
   await page.reload()
   await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
     `Load observer checkpoint ${samples.length}:`,
   )
-  await page.goto(origin + '/#backup')
+  await page.getByRole('button', { name: 'Backup & restore', exact: true }).click()
+  await expect(
+    page.getByRole('heading', { name: 'Backup & restore', exact: true, level: 1 }),
+  ).toBeVisible()
+  await appendFile(
+    journalPath,
+    JSON.stringify({ phase: 'export', at: new Date().toISOString() }) + '\n',
+  )
   const downloading = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Download full backup', exact: true }).click()
   const file = await (await downloading).path()
@@ -122,6 +138,10 @@ test('connected local capture remains durable during the independently timed ser
       'Actual Chromium app connected to the selected loopback backend. Match sample timestamps against the separate workload phases; this report alone does not prove overlap or load size.',
   }
   await writeFile(resolve(directory, 'result.json'), JSON.stringify(report, null, 2) + '\n')
+  await writeFile(
+    resolve(directory, `${runId}.result.json`),
+    JSON.stringify(report, null, 2) + '\n',
+  )
   await info.attach('capture-under-load.json', {
     body: JSON.stringify(report, null, 2),
     contentType: 'application/json',

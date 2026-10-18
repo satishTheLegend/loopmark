@@ -18,6 +18,7 @@ export function SyncDetails({
   onCapacity,
   onSync,
   onDiagnostics,
+  onRecovery,
 }: {
   summary: SyncSummary
   onClose: () => void
@@ -27,10 +28,14 @@ export function SyncDetails({
   onCapacity: () => void
   onSync?: () => Promise<void>
   onDiagnostics?: () => void
+  onRecovery?: () => void
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const retryable = summary.items.filter((item) => item.retryable)
+  const needsRecovery =
+    summary.error?.code === 'SYNC_REBASE_REQUIRED' ||
+    summary.items.some((item) => item.error?.code === 'SYNC_REBASE_REQUIRED')
   async function retry(items: SyncItem[]) {
     if (busy) return
     setBusy(true)
@@ -63,7 +68,12 @@ export function SyncDetails({
             device.
           </p>
         )}
-        {summary.kind === 'account' && (
+        {needsRecovery && onRecovery && (
+          <button className="button primary" disabled={busy} onClick={onRecovery}>
+            Refresh account projects
+          </button>
+        )}
+        {summary.kind === 'account' && !needsRecovery && (
           <button className="button primary" onClick={onSignIn}>
             Sign in to continue
           </button>

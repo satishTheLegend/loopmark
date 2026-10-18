@@ -41,7 +41,12 @@ import { Guide } from './components/Guide'
 import { sampleBackup } from './samples'
 import { useOfflineSupport } from './offline'
 import { captureDraftStore, deleteProjectDrafts } from './drafts'
-import type { AppController, AttachPreview, LocalWorkCounts } from './services/controller-contract'
+import type {
+  AppController,
+  AttachPreview,
+  LocalWorkCounts,
+  SyncRecoveryPreview,
+} from './services/controller-contract'
 import type { CollectionKey, CollectionView } from './domain/contracts'
 import { AccountView } from './components/AccountView'
 import { CollectionPicker } from './components/CollectionPicker'
@@ -50,6 +55,7 @@ import { SignOutReview } from './components/SignOutReview'
 import { ConflictReview } from './components/ConflictReview'
 import { SyncStatus } from './components/SyncStatus'
 import { SyncDetails } from './components/SyncDetails'
+import { SyncRecoveryReview } from './components/SyncRecoveryReview'
 import { summarizeSync, attachmentSyncItems, type SyncItem } from './components/sync-summary'
 import { AccountDeletion } from './components/AccountDeletion'
 import { PendingConnections } from './components/PendingConnections'
@@ -99,6 +105,7 @@ export default function App({
   const [attachmentState, setAttachmentState] = useState<ProjectMediaAvailability[]>([])
   const [attachmentQueue, setAttachmentQueue] = useState<SyncItem[]>([])
   const [syncDetails, setSyncDetails] = useState(false)
+  const [syncRecovery, setSyncRecovery] = useState<SyncRecoveryPreview | null>(null)
   const [diagnostics, setDiagnostics] = useState<DiagnosticReport | null>(null)
   const [reopenUpgrade, setReopenUpgrade] = useState<string | null>(null)
   const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
@@ -186,9 +193,10 @@ export default function App({
     let active = true
     const open = async (url: string) => {
       if (exitGuard.current && !(await exitGuard.current())) return
+      const requestedFrom = location.href
       try {
         const target = await runtime.openUrl(url)
-        if (active) {
+        if (active && location.href === requestedFrom) {
           setModal(null)
           history.replaceState(null, '', `/#${target}`)
           navigate(target)
@@ -504,6 +512,18 @@ export default function App({
       setBusy(false)
     }
   }
+  async function reviewSyncRecovery() {
+    if (!controller || busy) return
+    setBusy(true)
+    try {
+      setSyncRecovery(await controller.prepareSyncRecovery())
+      setSyncDetails(false)
+    } catch (error) {
+      notify(errorText(error), true)
+    } finally {
+      setBusy(false)
+    }
+  }
   async function reviewDeletion() {
     if (!controller || busy) return
     setBusy(true)
@@ -805,6 +825,24 @@ export default function App({
                 setDiagnostics(createDiagnosticReport(summary, Capacitor.getPlatform()))
               }
             >
+              {state?.view?.info.kind === 'connected' &&
+                (state.error?.code === 'SYNC_REBASE_REQUIRED' ||
+                  summary.items.some((item) => item.error?.code === 'SYNC_REBASE_REQUIRED')) && (
+                  <section className="account-section readable-controls">
+                    <h2>Refresh account projects</h2>
+                    <p>
+                      Keep this device’s work in a recovered collection before opening a fresh
+                      account view.
+                    </p>
+                    <button
+                      className="button primary"
+                      disabled={busy}
+                      onClick={() => void reviewSyncRecovery()}
+                    >
+                      Refresh account projects
+                    </button>
+                  </section>
+                )}
               {runtime && (
                 <UpgradeView
                   key={`upgrade:${state?.account?.accountId ?? 'guest'}`}
@@ -902,6 +940,7 @@ export default function App({
       {syncDetails && controller && (
         <SyncDetails
           summary={summary}
+          onRecovery={() => void reviewSyncRecovery()}
           onSync={() => controller.runSync()}
           onClose={() => setSyncDetails(false)}
           onDiagnostics={() => {
@@ -927,6 +966,32 @@ export default function App({
             setSyncDetails(false)
             navigate('account')
           }}
+        />
+      )}
+      {syncRecovery && controller && (
+        <SyncRecoveryReview
+          key={syncRecovery.recoveryId}
+          counts={syncRecovery.counts}
+          blockedByReplacement={syncRecovery.blockedByReplacement}
+          stale={
+            state?.scope?.generation !== syncRecovery.scope.generation ||
+            state?.view?.revision !== syncRecovery.review.revision
+          }
+          onRefresh={async () => setSyncRecovery(await controller.prepareSyncRecovery())}
+          onRecover={async (options) => {
+            // Publish the destination before the atomic scope change remounts App.
+            navigate('projects')
+            await controller.recoverSync(syncRecovery, options)
+          }}
+          onBackup={() => {
+            setSyncRecovery(null)
+            navigate('backup')
+          }}
+          onReviewReplacement={() => {
+            setSyncRecovery(null)
+            navigate('account')
+          }}
+          onClose={() => setSyncRecovery(null)}
         />
       )}
       {diagnostics && (
