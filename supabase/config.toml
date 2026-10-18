@@ -114,3 +114,19 @@ import_map = "./functions/import_map.json"
 [functions.account-usage]
 verify_jwt = false
 import_map = "./functions/import_map.json"
+
+[functions.checkout]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.billing-config]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.billing-webhook]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.purchase-restore]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.purchase-recovery]
+verify_jwt = false
+import_map = "./functions/import_map.json"

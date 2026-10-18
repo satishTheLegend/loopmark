@@ -4,6 +4,12 @@ import { resolve, dirname, relative } from 'node:path'
 import { createServer } from 'node:net'
 import { createHash, randomBytes } from 'node:crypto'
 import { loadOperatorConfig } from './lib/config.mjs'
+import {
+  configureBillingFixture,
+  fixtureEnvironment,
+  startBillingFixture,
+  stopBillingFixture,
+} from './billing-fixture.mjs'
 
 const root = process.cwd()
 export async function localContext() {
@@ -163,9 +169,10 @@ const child=spawn(${JSON.stringify(realDocker)},args,{stdio:'inherit'});child.on
     `LOOPMARK_ERASURE_LEDGER_KEY=${ledgerKey}\n`,
     { mode: 0o600 },
   )
+  const billingEnvironment = await fixtureEnvironment(context)
   await writeFile(
     resolve(context.runtime, 'supabase/functions/.env'),
-    `LOOPMARK_ENVIRONMENT=local\nLOOPMARK_PROJECT_ID=${context.config.projectId}\nLOOPMARK_APP_ORIGIN=${context.config.appOrigin}\nLOOPMARK_CLOUD_ENROLLED=true\nLOOPMARK_ERASURE_LEDGER_URL=http://erasure-ledger:8787\nLOOPMARK_ERASURE_LEDGER_KEY=${ledgerKey}\n`,
+    `LOOPMARK_ENVIRONMENT=local\nLOOPMARK_PROJECT_ID=${context.config.projectId}\nLOOPMARK_APP_ORIGIN=${context.config.appOrigin}\nLOOPMARK_CLOUD_ENROLLED=true\nLOOPMARK_ERASURE_LEDGER_URL=http://erasure-ledger:8787\nLOOPMARK_ERASURE_LEDGER_KEY=${ledgerKey}\n${billingEnvironment}`,
     { mode: 0o600 },
   )
 }
@@ -296,6 +303,7 @@ export async function main(args = process.argv.slice(2)) {
       'DEV_RUNTIME_UNAVAILABLE: Start Docker, then retry. Guest mode remains available.',
     )
   if (action === 'up' || action === 'prepare') {
+    await configureBillingFixture(context, args)
     await prepare(context)
     if (action === 'prepare') return
     let existing = await cli(['status', '--output', 'json'], context)
@@ -348,6 +356,7 @@ export async function main(args = process.argv.slice(2)) {
     } else if (inspect.stdout.trim() !== '127.0.0.1')
       throw new Error('Existing network is not configured for private loopback bindings.')
     await startLedger(context)
+    await startBillingFixture(context, execute)
     console.log(
       'Starting isolated Auth, database, Storage, gateway and Edge services; cold image downloads may take several minutes.',
     )
@@ -399,6 +408,7 @@ export async function main(args = process.argv.slice(2)) {
     ])
     if (!ledger.code && ledger.stdout.trim() === context.config.projectId)
       await execute('docker', ['stop', ledgerName])
+    await stopBillingFixture(context, execute)
     console.log('Stopped this project; database and independent erasure-ledger volumes retained.')
   } else if (action === 'reset') {
     if (

@@ -99,6 +99,8 @@ const schema = z
       .regex(/^proj[A-Za-z0-9]{4,100}$/)
       .optional(),
     LOOPMARK_PAYMENT_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
+    LOOPMARK_BILLING_FIXTURE_ENABLED: flag,
+    LOOPMARK_BILLING_FIXTURE_URL: z.literal('http://billing-fixture:8788').optional(),
     LOOPMARK_ERASURE_LEDGER_URL: z
       .union([origin, z.literal('http://erasure-ledger:8787')])
       .optional(),
@@ -131,6 +133,17 @@ const schema = z
     RAZORPAY_WEBHOOK_SECRET: secret.optional(),
   })
   .superRefine((value, context) => {
+    if (
+      value.LOOPMARK_BILLING_FIXTURE_ENABLED !== !!value.LOOPMARK_BILLING_FIXTURE_URL ||
+      (value.LOOPMARK_BILLING_FIXTURE_ENABLED &&
+        (value.LOOPMARK_ENVIRONMENT !== 'local' ||
+          value.LOOPMARK_PAYMENT_ENVIRONMENT !== 'sandbox'))
+    )
+      context.addIssue({
+        code: 'custom',
+        path: ['LOOPMARK_BILLING_FIXTURE_ENABLED'],
+        message: 'Provider fixture requires explicit local sandbox isolation.',
+      })
     if (!!value.LOOPMARK_ERASURE_LEDGER_URL !== !!value.LOOPMARK_ERASURE_LEDGER_KEY)
       context.addIssue({
         code: 'custom',
@@ -249,6 +262,7 @@ export type ServerConfig = Readonly<{
   revenueCatEnrolled: boolean
   revenueCatProjectId?: string
   paymentsEnrolled: boolean
+  billingFixtureUrl?: string
   paymentEnvironment: 'sandbox' | 'production'
   erasureLedgerUrl?: string
   nativeBilling: Readonly<{
@@ -310,6 +324,7 @@ export function parseServerConfig(environment: Readonly<Record<string, unknown>>
     revenueCatProjectId: value.LOOPMARK_REVENUECAT_PROJECT_ID,
     paymentsEnrolled: value.LOOPMARK_RAZORPAY_ENROLLED || value.LOOPMARK_REVENUECAT_ENROLLED,
     paymentEnvironment: value.LOOPMARK_PAYMENT_ENVIRONMENT,
+    billingFixtureUrl: value.LOOPMARK_BILLING_FIXTURE_URL,
     erasureLedgerUrl: value.LOOPMARK_ERASURE_LEDGER_URL,
     nativeBilling: Object.freeze({
       ios:

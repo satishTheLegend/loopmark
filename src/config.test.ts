@@ -265,6 +265,25 @@ describe('server configuration boundary', () => {
     ).toThrow()
   })
 
+  it('admits provider fixtures only with explicit exact local sandbox isolation', () => {
+    const fixture = {
+      LOOPMARK_BILLING_FIXTURE_ENABLED: 'true',
+      LOOPMARK_BILLING_FIXTURE_URL: 'http://billing-fixture:8788',
+    }
+    expect(parseServerConfig({ ...serverConfig, ...fixture }).billingFixtureUrl).toBe(
+      fixture.LOOPMARK_BILLING_FIXTURE_URL,
+    )
+    for (const overrides of [
+      { LOOPMARK_BILLING_FIXTURE_ENABLED: 'false' },
+      { LOOPMARK_BILLING_FIXTURE_URL: undefined },
+      { LOOPMARK_BILLING_FIXTURE_URL: 'http://evil:8788' },
+      { LOOPMARK_ENVIRONMENT: 'staging' },
+      { LOOPMARK_ENVIRONMENT: 'production' },
+      { LOOPMARK_PAYMENT_ENVIRONMENT: 'production' },
+    ])
+      expect(() => parseServerConfig({ ...serverConfig, ...fixture, ...overrides })).toThrow()
+  })
+
   it('allows the exact internal Edge gateway only for the local server, never public or remote configurations', () => {
     expect(
       parseServerConfig({ ...serverConfig, SUPABASE_URL: 'http://kong:8000' }).backendUrl,
