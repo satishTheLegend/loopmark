@@ -49,13 +49,14 @@ export function createPortableDraftStore(
       }
       const normalized = { ...value } as Record<string, unknown>,
         refs: MediaRef[] = []
-      for (const kind of ['photo', 'voice'] as const)
+      for (const kind of ['photo', 'voice'] as const) {
         if (normalized[kind] !== undefined) {
           if (typeof normalized[kind] !== 'string') throw new DomainError('MEDIA_INVALID')
           const ref = await storeInline(normalized[kind] as string, kind, media, bound)
           normalized[kind] = ref
           refs.push(ref)
-        }
+        } else delete normalized[kind]
+      }
       await storage.write(key, previous, { ...draft, value: normalized }, refs)
     },
     removeProjectDrafts: (projectId) => storage.removeProjectDrafts(projectId),
