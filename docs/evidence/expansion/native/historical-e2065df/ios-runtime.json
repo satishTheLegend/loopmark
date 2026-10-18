@@ -1,0 +1,215 @@
+{
+  "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "runs": [
+    {
+      "schemaVersion": 1,
+      "restartPhase": 2,
+      "platform": "ios",
+      "origin": "capacitor://localhost",
+      "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
+      "results": [
+        {
+          "name": "real native platform",
+          "passed": true
+        },
+        {
+          "name": "SQLite save, close, reopen, idempotence, stale generation, snapshot",
+          "passed": true
+        },
+        {
+          "name": "durable byte roundtrip, reopen, immutable rejection, hash rejection, removal",
+          "passed": true
+        },
+        {
+          "name": "actual device credential save, read, clear",
+          "passed": true
+        },
+        {
+          "name": "actual SQLite record/outbox atomicity and failed transaction preserves draft",
+          "passed": true
+        },
+        {
+          "name": "native validated media, draft pins, CAS, source isolation and cleanup protection",
+          "passed": true
+        },
+        {
+          "name": "native media promotion before SQL fault leaves recoverable journal and no visible ref",
+          "passed": true
+        },
+        {
+          "name": "snapshot pins survive source removal and media-preserving import stays revision fenced",
+          "passed": true
+        },
+        {
+          "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native reviewed retention keeps missing saved refs but refuses missing draft media",
+          "passed": true
+        },
+        {
+          "name": "native verified authentication resumes only matching-device auth failures",
+          "passed": true
+        },
+        {
+          "name": "native epoch replacement preserves old drafts and bytes through transaction failure and retry",
+          "passed": true
+        },
+        {
+          "name": "native recovered import publishes files and collection atomically after source staging",
+          "passed": true
+        },
+        {
+          "name": "native transition rejects newly added drafts and stale identities; retained copy preserves draft media",
+          "passed": true
+        },
+        {
+          "name": "native portable draft retains caller revision, normalized media, atomic pins and opening scope",
+          "passed": true
+        },
+        {
+          "name": "native operation plans survive restart and failed save with immutable identity and media pins",
+          "passed": true
+        },
+        {
+          "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native durable workflow CAS and scope fences preserve deletion continuation across local removal",
+          "passed": true
+        },
+        {
+          "name": "native billing remains unconfigured without an authenticated enrolled account",
+          "passed": true
+        },
+        {
+          "name": "native restored-camera staging survives reopen and applies only to its original draft revision",
+          "passed": true
+        },
+        {
+          "name": "native per-account device identity and verified offline label persist and clear",
+          "passed": true
+        },
+        {
+          "name": "native Web Locks exclude a second foreground sync owner until release",
+          "passed": true
+        },
+        {
+          "name": "actual native app/network subscriptions and microphone permission inspection",
+          "passed": true
+        },
+        {
+          "name": "native WebView normalizes a synthetic photo to resized JPEG pixels",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "restartPhase": 2,
+      "platform": "ios",
+      "origin": "capacitor://localhost",
+      "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
+      "results": [
+        {
+          "name": "real native platform",
+          "passed": true
+        },
+        {
+          "name": "SQLite save, close, reopen, idempotence, stale generation, snapshot",
+          "passed": true
+        },
+        {
+          "name": "durable byte roundtrip, reopen, immutable rejection, hash rejection, removal",
+          "passed": true
+        },
+        {
+          "name": "actual device credential save, read, clear",
+          "passed": true
+        },
+        {
+          "name": "actual SQLite record/outbox atomicity and failed transaction preserves draft",
+          "passed": true
+        },
+        {
+          "name": "native validated media, draft pins, CAS, source isolation and cleanup protection",
+          "passed": true
+        },
+        {
+          "name": "native media promotion before SQL fault leaves recoverable journal and no visible ref",
+          "passed": true
+        },
+        {
+          "name": "snapshot pins survive source removal and media-preserving import stays revision fenced",
+          "passed": true
+        },
+        {
+          "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native reviewed retention keeps missing saved refs but refuses missing draft media",
+          "passed": true
+        },
+        {
+          "name": "native verified authentication resumes only matching-device auth failures",
+          "passed": true
+        },
+        {
+          "name": "native epoch replacement preserves old drafts and bytes through transaction failure and retry",
+          "passed": true
+        },
+        {
+          "name": "native recovered import publishes files and collection atomically after source staging",
+          "passed": true
+        },
+        {
+          "name": "native transition rejects newly added drafts and stale identities; retained copy preserves draft media",
+          "passed": true
+        },
+        {
+          "name": "native portable draft retains caller revision, normalized media, atomic pins and opening scope",
+          "passed": true
+        },
+        {
+          "name": "native operation plans survive restart and failed save with immutable identity and media pins",
+          "passed": true
+        },
+        {
+          "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native durable workflow CAS and scope fences preserve deletion continuation across local removal",
+          "passed": true
+        },
+        {
+          "name": "native billing remains unconfigured without an authenticated enrolled account",
+          "passed": true
+        },
+        {
+          "name": "native restored-camera staging survives reopen and applies only to its original draft revision",
+          "passed": true
+        },
+        {
+          "name": "native per-account device identity and verified offline label persist and clear",
+          "passed": true
+        },
+        {
+          "name": "native Web Locks exclude a second foreground sync owner until release",
+          "passed": true
+        },
+        {
+          "name": "actual native app/network subscriptions and microphone permission inspection",
+          "passed": true
+        },
+        {
+          "name": "native WebView normalizes a synthetic photo to resized JPEG pixels",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}
