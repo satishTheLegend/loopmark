@@ -1,0 +1,12 @@
+Running 4 tests using 1 worker
+
+  ✘  1 [chromium] › tests/ui/app-navigation.ui.ts:3:1 › a late initial saved-link lookup cannot close a newly opened checkpoint form (8.9s)
+  ✘  2 [chromium] › tests/ui/app-navigation.ui.ts:13:1 › a newer form takes priority over a pending platform project link (8.6s)
+  ✘  3 [chromium] › tests/ui/app-navigation.ui.ts:24:1 › delayed equivalent and obsolete hash events do not dismiss a new project form (8.6s)
+  ✓  4 [chromium] › tests/ui/app-navigation.ui.ts:37:1 › a current project link still opens its project when no newer interaction supersedes it (539ms)
+
+  3 failed
+    [chromium] › tests/ui/app-navigation.ui.ts:3:1 › a late initial saved-link lookup cannot close a newly opened checkpoint form
+    [chromium] › tests/ui/app-navigation.ui.ts:13:1 › a newer form takes priority over a pending platform project link
+    [chromium] › tests/ui/app-navigation.ui.ts:24:1 › delayed equivalent and obsolete hash events do not dismiss a new project form
+  1 passed (28.9s)
