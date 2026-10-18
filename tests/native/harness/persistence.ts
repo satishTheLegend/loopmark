@@ -1,6 +1,8 @@
 import { openNativeRepository } from '../../../src/platform/native/repository'
 import type { CollectionInfo, LocalIntent } from '../../../src/domain/contracts'
 import { scopeKey } from '../../../src/platform/native/recovery-journal'
+import { canonicalJson } from '../../../src/domain/canonical-json'
+import type { MediaRef } from '../../../src/domain/contracts'
 
 type Test = (name: string, action: () => Promise<void>) => Promise<void>
 const assert = (value: unknown) => {
@@ -271,7 +273,9 @@ export async function persistenceTests(test: Test) {
     await repo.close()
   })
   await test('saved collection survives a full native app process restart', async () => {
-    const repo = await openNativeRepository({ databaseName: 'restart_fixture' })
+    // A new, fixture-owned database prevents the earlier project-only seed from
+    // satisfying this stronger acknowledged-voice restart assertion.
+    const repo = await openNativeRepository({ databaseName: 'restart_voice_fixture_v2' })
     const collections = await repo.listCollections()
     if (!collections.length) {
       const info = fixture()
@@ -281,13 +285,68 @@ export async function persistenceTests(test: Test) {
         generation: 1,
         device: { id: 'restart-device', generation: 'restart-generation' },
       })
-      await repo.commitLocal(info.key, create(info), 1)
+      const saved = await repo.commitLocal(info.key, create(info), 1)
+      const voice = await repo.media.prepare({ kind: 'voice', bytes: wave() }, info.key, 1)
+      const acknowledged = await repo.commitLocal(
+        info.key,
+        {
+          operationId: crypto.randomUUID(),
+          kind: 'checkpoint.create',
+          base: { revision: saved.view.projects[0].revision },
+          createdAt: info.createdAt,
+          payload: {
+            updatedAt: info.createdAt,
+            checkpoint: {
+              id: 'restart-voice-checkpoint',
+              projectId: 'native-project',
+              createdAt: info.createdAt,
+              position: 'Row 12',
+              toolSize: '4 mm',
+              nextStep: 'Listen, then continue at row 13',
+              notes: '',
+              voice: voice.ref,
+            },
+          },
+        },
+        1,
+      )
+      assert(acknowledged.view.checkpoints[0].voice?.sha256 === voice.ref.sha256)
       await repo.database.serial((db) =>
-        db.run("INSERT INTO metadata(key,body) VALUES('restart-phase','1')"),
+        db.run("INSERT INTO metadata(key,body) VALUES('restart-phase','1'),('restart-voice',?)", [
+          JSON.stringify(voice.ref),
+        ]),
       )
       restartPhase = 1
     } else {
-      assert((await repo.readView(collections[0].key)).projects[0].name === 'Durable scarf')
+      const view = await repo.readView(collections[0].key)
+      assert(view.projects[0].name === 'Durable scarf')
+      const checkpoint = view.checkpoints.find((item) => item.id === 'restart-voice-checkpoint')
+      const stored = await repo.database.serial((db) =>
+        db.query("SELECT body FROM metadata WHERE key='restart-voice'"),
+      )
+      const expectedRef = JSON.parse(String(stored.values?.[0]?.body)) as MediaRef
+      assert(
+        checkpoint?.projectId === 'native-project' &&
+          checkpoint.nextStep === 'Listen, then continue at row 13',
+      )
+      assert(checkpoint?.voice && canonicalJson(checkpoint.voice) === canonicalJson(expectedRef))
+      const actual = new Uint8Array(
+        await new Response(await repo.media.open(expectedRef, collections[0].key)).arrayBuffer(),
+      )
+      const expected = new Uint8Array(await wave().arrayBuffer())
+      const digest = Array.from(
+        new Uint8Array(await crypto.subtle.digest('SHA-256', actual)),
+        (n) => n.toString(16).padStart(2, '0'),
+      ).join('')
+      assert(
+        actual.length === expected.length &&
+          actual.every((byte, index) => byte === expected[index]),
+      )
+      assert(
+        digest === expectedRef.sha256 &&
+          expectedRef.bytes === actual.length &&
+          expectedRef.mimeType === 'audio/wav',
+      )
       await repo.database.serial((db) =>
         db.run("UPDATE metadata SET body='2' WHERE key='restart-phase'"),
       )

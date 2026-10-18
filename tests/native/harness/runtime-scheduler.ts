@@ -34,7 +34,7 @@ export async function nativeRuntimeScheduler() {
   const results: string[] = []
   for (const queuedGuestSwitch of [false, true]) {
     const repo = await openNativeRepository({
-        databaseName: `scheduler_${crypto.randomUUID().replaceAll('-', '')}`,
+        databaseName: `sched_${crypto.randomUUID().replaceAll('-', '')}`,
       }),
       guest = fixture(),
       connected = fixture(true),
