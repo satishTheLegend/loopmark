@@ -44,6 +44,9 @@ test('whole-project offline files can be downloaded, explicitly removed, and fet
     await expect(b.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
       'Use the photo to continue the border.',
     )
+    const nextStepBox = await b.locator('.next-instruction').boundingBox()
+    const filesBox = await panel.boundingBox()
+    expect(nextStepBox!.y).toBeLessThan(filesBox!.y)
     const attempts: string[] = []
     b.on('request', (request) => {
       if (request.method() === 'POST' && request.url().endsWith('/functions/v1/media-download'))

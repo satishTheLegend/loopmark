@@ -34,6 +34,9 @@ test('actual app previews the exact diagnostic bytes before explicit local downl
   expect(text).not.toMatch(/Private cardigan|private-maker|secret craft/)
   expect(downloads).toEqual([])
   expect(sent).toEqual([])
+  await dialog.evaluate(async (element) => {
+    await Promise.all(element.getAnimations().map((animation) => animation.finished))
+  })
   expect(
     (
       await new AxeBuilder({ page })

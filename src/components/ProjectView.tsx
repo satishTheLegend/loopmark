@@ -14,7 +14,7 @@ import {
 } from '@tabler/icons-react'
 import type { Project, Checkpoint } from '../types'
 import type { ProjectMediaAvailability } from '../data'
-import { Badge, CraftArt, fullDate, relativeTime } from './ui'
+import { Badge, CraftArt, errorText, fullDate, relativeTime } from './ui'
 export function ProjectView({
   project: p,
   onBack,
@@ -57,10 +57,8 @@ export function ProjectView({
     setDownloadError('')
     try {
       await onDownload(cp.id, kind)
-    } catch {
-      setDownloadError(
-        'This attachment could not be downloaded. Your checkpoint text is still here. Try again when connected.',
-      )
+    } catch (error) {
+      setDownloadError(`Your checkpoint text is still here. ${errorText(error)}`)
     } finally {
       setDownloading(null)
     }
@@ -114,7 +112,6 @@ export function ProjectView({
           Save a checkpoint
         </button>
       </header>
-      {downloads}
       <div className="project-detail-grid">
         <div className="detail-main">
           <section
@@ -257,6 +254,7 @@ export function ProjectView({
               Make a bag label
             </button>
           </section>
+          {downloads}
           <div className="project-actions">
             <button className="text-button" onClick={onStatus}>
               {p.status === 'active' ? (
