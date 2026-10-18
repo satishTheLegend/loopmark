@@ -45,6 +45,18 @@ export async function rpc(
 }
 export function endpoint(
   action: (body: unknown, identity: Awaited<ReturnType<typeof authenticated>>) => Promise<unknown>,
+  maximum = 256 * 1024,
+) {
+  return transportEndpoint(async (request, identity) =>
+    action(await boundedJson(request, maximum), identity!),
+  )
+}
+export function transportEndpoint(
+  action: (
+    request: Request,
+    identity: Awaited<ReturnType<typeof authenticated>> | null,
+  ) => Promise<unknown>,
+  requiresAuthentication = true,
 ) {
   return async (request: Request) => {
     const origin = request.headers.get('origin'),
@@ -60,7 +72,8 @@ export function endpoint(
     const allowedOrigins = new Set([allowedOrigin, 'capacitor://localhost', 'https://localhost'])
     if (origin && allowedOrigins.has(origin)) {
       headers['Access-Control-Allow-Origin'] = origin
-      headers['Access-Control-Allow-Headers'] = 'authorization, apikey, content-type, x-client-info'
+      headers['Access-Control-Allow-Headers'] =
+        'authorization, apikey, content-type, x-client-info, x-loopmark-reservation-id'
       headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
     }
     if (origin && !allowedOrigins.has(origin))
@@ -75,8 +88,13 @@ export function endpoint(
         headers,
       })
     try {
-      const identity = await authenticated(request)
-      const result = await action(await boundedJson(request), identity)
+      const identity = requiresAuthentication ? await authenticated(request) : null
+      const result = await action(request, identity)
+      if (result instanceof Response) {
+        const responseHeaders = new Headers(headers)
+        for (const [key, value] of result.headers) responseHeaders.set(key, value)
+        return new Response(result.body, { status: result.status, headers: responseHeaders })
+      }
       return new Response(JSON.stringify(result), { status: 200, headers })
     } catch (error) {
       const detail = safeError(error)

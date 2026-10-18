@@ -24,7 +24,7 @@ port = __STUDIO_PORT__
 enabled = true
 port = __MAIL_PORT__
 [realtime]
-enabled = false
+enabled = true
 [storage]
 enabled = true
 file_size_limit = "8MiB"
@@ -76,5 +76,41 @@ import_map = "./functions/import_map.json"
 verify_jwt = false
 import_map = "./functions/import_map.json"
 [functions.account-session]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.collection-attach]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.collection-replace]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.media-upload]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.media-download]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.media-finalize]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.account-delete]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.deletion-status]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.jobs]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+
+[functions.account-usage]
 verify_jwt = false
 import_map = "./functions/import_map.json"

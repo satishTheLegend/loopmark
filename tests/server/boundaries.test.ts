@@ -28,7 +28,7 @@ async function deliveredCode(email: string) {
 
 describe('raw SQL authority, exact serialization and real authentication boundaries', () => {
   it('executes the SQL ownership and command suites against real roles', async () => {
-    for (const name of ['ownership', 'commands'])
+    for (const name of ['ownership', 'commands', 'media', 'replacement', 'deletion'])
       await sql(await readFile(`supabase/tests/${name}.test.sql`, 'utf8'))
   })
   it('matches frozen cross-language hashes and the shared strict command schema', async () => {

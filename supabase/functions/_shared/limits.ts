@@ -1,5 +1,8 @@
 import { DomainError } from './generated/domain/errors.ts'
-export async function boundedJson(request: Request, maximum = 256 * 1024): Promise<unknown> {
+export async function boundedJson(
+  request: Pick<Request, 'headers' | 'body'>,
+  maximum = 256 * 1024,
+): Promise<unknown> {
   if (
     !request.headers
       .get('content-type')
