@@ -123,3 +123,35 @@ export interface CandidateMerge {
   copies: number
   mappings: AttachPreview['mappings']
 }
+
+export interface AccountUsageRequest {
+  collectionId: string
+  epoch: string
+}
+export interface AccountUsage {
+  collectionId: string
+  epoch: string
+  revision: Revision
+  observedAt: string
+  projects: number
+  activeProjects: number
+  checkpoints: number
+  portableBytes: number
+  /** Storage service metadata, including this owner's staged and orphan objects. */
+  storedBytes: number
+  storedObjects: number
+  /** Conservative physical admission meter, including allocated but not uploaded objects. */
+  allocatedBytes: number
+  unfinishedUploads: number
+  ordinaryStagedBytes: number
+  candidateMediaBytes: number
+  limits: {
+    projects: 200
+    checkpoints: 1000
+    portableBytes: 50331648
+    uploads: 4
+    ordinaryStagedBytes: 33554432
+    candidateMediaBytes: 41943040
+    allocatedBytes: 83886080
+  }
+}

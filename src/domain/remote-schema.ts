@@ -23,7 +23,14 @@ import {
   timestamp,
   uploadRequestSchema,
 } from './schema'
-import type { CandidateMetadata, CandidatePreparation } from './remote-contracts'
+import type {
+  AttachPreview,
+  CandidateMerge,
+  CandidateMetadata,
+  CandidatePreparation,
+  MediaMapping,
+} from './remote-contracts'
+import type { MediaRef } from './contracts'
 
 export function candidatePortableBytes(candidate: CandidateMetadata): number {
   let attachmentBytes = 0
@@ -299,7 +306,7 @@ export async function mergeCandidate(
   requestId: string,
   sourceInput: CandidateMetadata,
   destinationInput: CandidateMetadata,
-): Promise<import('./remote-contracts').CandidateMerge> {
+): Promise<CandidateMerge> {
   id.parse(requestId)
   const source = candidateMetadataSchema.parse(sourceInput)
   const destination = candidateMetadataSchema.parse(destinationInput)
@@ -311,8 +318,7 @@ export async function mergeCandidate(
         .flatMap((checkpoint) => [checkpoint.photo, checkpoint.voice].filter((ref) => !!ref))
         .map((ref) => [ref.id, ref]),
     )
-  const existingRefs =
-    mode === 'attach' ? refs(destination) : new Map<string, import('./contracts').MediaRef>()
+  const existingRefs = mode === 'attach' ? refs(destination) : new Map<string, MediaRef>()
   const stableId = async (kind: string, sourceId: string, occupied: Set<string>) => {
     for (let attempt = 0; attempt <= MAX_PROJECTS + MAX_CHECKPOINTS * 2; attempt++) {
       const hash = await canonicalHash({ requestId, kind, sourceId, attempt })
@@ -321,7 +327,7 @@ export async function mergeCandidate(
     }
     throw new DomainError('TECHNICAL_CAPACITY_REACHED')
   }
-  const mediaMappings: import('./remote-contracts').MediaMapping[] = []
+  const mediaMappings: MediaMapping[] = []
   for (const ref of refs(source).values()) {
     const existing = existingRefs.get(ref.id)
     const mapped =
@@ -334,7 +340,7 @@ export async function mergeCandidate(
   const media = new Map(mediaMappings.map((entry) => [entry.sourceId, entry.destination]))
   const ids = new Set([...result.projects, ...result.checkpoints].map((record) => record.id))
   const codes = new Set(result.projects.map((project) => project.code))
-  const mappings: import('./remote-contracts').AttachPreview['mappings'] = []
+  const mappings: AttachPreview['mappings'] = []
   let additions = 0,
     matches = 0,
     copies = 0
@@ -404,3 +410,33 @@ export async function mergeCandidate(
   candidateMetadataSchema.parse(result)
   return { candidate: result, mediaMappings, additions, matches, copies, mappings }
 }
+export const accountUsageRequestSchema = z.object({ collectionId: id, epoch: id }).strict()
+export const accountUsageSchema = z
+  .object({
+    collectionId: id,
+    epoch: id,
+    revision: revisionSchema,
+    observedAt: timestamp,
+    projects: count(MAX_PROJECTS),
+    activeProjects: count(MAX_PROJECTS),
+    checkpoints: count(MAX_CHECKPOINTS),
+    portableBytes: count(MAX_LIBRARY_BYTES),
+    storedBytes: z.number().int().nonnegative(),
+    storedObjects: z.number().int().nonnegative(),
+    allocatedBytes: z.number().int().nonnegative(),
+    unfinishedUploads: z.number().int().nonnegative(),
+    ordinaryStagedBytes: z.number().int().nonnegative(),
+    candidateMediaBytes: z.number().int().nonnegative(),
+    limits: z
+      .object({
+        projects: z.literal(200),
+        checkpoints: z.literal(1000),
+        portableBytes: z.literal(50331648),
+        uploads: z.literal(4),
+        ordinaryStagedBytes: z.literal(33554432),
+        candidateMediaBytes: z.literal(41943040),
+        allocatedBytes: z.literal(83886080),
+      })
+      .strict(),
+  })
+  .strict()
