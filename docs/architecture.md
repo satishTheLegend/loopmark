@@ -1,10 +1,10 @@
 # Loopmark architecture
 
-Design revision 1 — 18 October 2026. This document specifies implementation contracts and verification targets. Executed results belong in the final verification record.
+Design revision 2 — 18 October 2026. This document specifies the implemented local foundation's contracts and verification targets. Executed results belong in the final verification record. The subsequently accepted cloud, checkout and native scope is specified separately in [the expansion plan](expansion-plan.md); it is not implemented by this foundation.
 
 ## Product boundary
 
-Loopmark is a single-person craft restart notebook: choose a project, record current position/tool/next step with optional media, and return directly to the latest checkpoint. History, a printable bag label, and complete export/restore support that journey. Authentication, cloud sync, remote sharing, payments, inventory and pattern marketplaces are outside this release. No paywall should pretend that a payment integration exists.
+Loopmark is a single-person craft restart notebook: choose a project, record current position/tool/next step with optional media, and return directly to the latest checkpoint. History, a printable bag label, and complete export/restore support that journey. Authentication, cloud sync and payments are outside this local foundation and now accepted expansion work. Remote sharing, inventory and pattern marketplaces remain excluded. No paywall should pretend that a payment integration exists.
 
 ## Structure and dependencies
 
@@ -51,7 +51,7 @@ Opt-in example loading uses `seedSamples`, which checks that the library is empt
 
 ## Media and offline policy
 
-Photo capture uses the ordinary file input with mobile capture as a hint. Decode before acceptance; orient/resize to at most 1600 pixels on the longest edge and encode raster output. Limits: 15 MiB source photo, 4 MiB decoded saved photo, 8 MiB decoded voice attachment, 120 seconds per recording, 50 MiB backup, 200 projects and 1,000 total checkpoints. Imported media is checked for allowed MIME, base64 syntax and matching file-container signature; this is not a full codec decode. A metadata record tracks the library's serialized bytes/counts in the same transaction as each write. The library has a 48 MiB budget, leaving backup-envelope overhead beneath the import cap. Capacity errors preserve existing data and direct the user to export before removing older projects. Data URLs cost roughly one-third more than raw binary; revisit separate Blob stores if measured libraries make aggregate cloning slow.
+Photo capture uses the ordinary file input with mobile capture as a hint. Decode before acceptance; orient/resize to at most 1600 pixels on the longest edge and encode raster output. Limits: 15 MiB source photo, 4 MiB decoded saved photo, 8 MiB decoded voice attachment, 120 seconds per recording, 50 MiB backup, 200 projects and 1,000 total checkpoints. Imported media is checked for allowed MIME, base64 syntax and complete bounded container structure; imported photos are decoded before replacement while audio remains codec-independent structural validation, not a full-stream codec decode. A metadata record tracks the library's serialized bytes/counts in the same transaction as each write. The library has a 48 MiB budget, leaving backup-envelope overhead beneath the import cap. Capacity errors preserve existing data and direct the user to export before removing older projects. Data URLs cost roughly one-third more than raw binary; revisit separate Blob stores if measured libraries make aggregate cloning slow.
 
 Recording selects a supported MIME, ends tracks on stop/cancel/unmount, and reports denied/missing/unavailable microphone states. The next-step text remains the dependable cross-browser record. Stop recording cleanly if the UI is dismissed; do not leave a microphone running in the background.
 
@@ -83,10 +83,18 @@ Targets are acceptance budgets, not claimed measurements. Measure the actual bui
 
 **ADR-003 — Portable JSON with atomic replacement.** Accepted. A single self-contained file is inspectable and easy to transfer. It requires strict size limits and uses more memory than a streamed archive. Replace-only restore has clear semantics; multi-device sync/merge remains separate future work.
 
-**ADR-004 — Device-local privacy and QR shortcut.** Accepted. No account or backend keeps the first experiment focused. Browser retention is best effort; exports are essential. QR labels contain no embedded media or cloud claim. Reconsider sync only with validated demand and a dedicated ownership/conflict design.
+**ADR-004 — Device-local privacy and QR shortcut.** Accepted for the local foundation. No account or backend keeps the first experiment focused. Browser retention is best effort; exports are essential. QR labels contain no embedded media or cloud claim. The user's subsequent sync request requires the dedicated ownership/conflict design in the expansion plan; field demand remains unvalidated.
 
 ## Engineering review and test strategy
 
 The architecture's critical risks are data loss from stale writes, partial restore, browser eviction, unsupported media, and service-worker updates interrupting capture. Unit tests cover validators, limits, malformed backups, unknown versions and unique IDs. Repository tests exercise actual IndexedDB semantics through a browser-compatible fake, including simultaneous append, stale metadata edits and rollback. Browser tests cover project creation, checkpoint/history, reload persistence, search/filter, completion/reactivation, print, export/restore, permission failure, missing QR record and offline reload after installation.
 
 Visual/interaction checks cover narrow and wide layouts, long project names, dense histories, empty states, focus restoration, rapid clicks, busy states and reduced motion. Use real browser storage/worker tests for release claims; fake IndexedDB does not establish quota behavior or durable disk persistence. Real microphone/iOS testing and deployed-origin update checks remain explicitly unverified until executed. The selected test suite should focus on these risks rather than component internals.
+
+## Completion-pass decisions
+
+The current implementation adds an internal whole-library revision for restore confirmation, independent of timestamps. A preview made before another write cannot authorize deleting that later write. Explicit replacement can ignore unsupported legacy clock candidates while advancing beyond every supported existing/imported timestamp, preserving rollback and stale-token rejection.
+
+Unfinished form recovery uses a separate version1 IndexedDB database (`loopmark-drafts`). It keeps text and prepared local media; drafts are outside portable saved-record backups. Compare-and-swap draft revisions protect concurrent tabs. Discard locks further editing; route/close guards await queued writes and stopped-recording conversion. Project deletion clears its draft keys. Save receipts in the original repository make unchanged retries idempotent when cross-database cleanup fails. Hashes and operation IDs never leave the browser.
+
+Offline readiness is verified by a MessageChannel response from the active worker after checking every required asset. Generation guards ignore stale replies/timeouts. Failed installation and incomplete caches have explicit retry paths. A repair uses a new same-origin script URL to trigger installation; it does not force activation or clear project data. Waiting updates instruct users to save, close all app windows and reopen. Installation prompts appear only when the browser exposes an install event, with manual browser-menu guidance otherwise. See [MDN installation behavior](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt).

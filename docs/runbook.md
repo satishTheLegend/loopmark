@@ -4,7 +4,7 @@
 
 Development: `npm ci && npm run dev`. Production behavior: `npm run build && npm run preview -- --port 4173 --strictPort`. Node >=22.12.0, npm lockfile. Development omits the service worker so edits are immediately visible. Production uses a generated, content-addressed cache. Do not use `file://` for the application.
 
-All app dependencies are local build inputs; no secret configuration is needed. CI uses Node 24 LTS, `npm ci`, `npm run build`, `npm test`, `npx playwright install --with-deps chromium`, and `npm run test:e2e`. The local validation environment is recorded separately; do not infer a hosted CI run from a workflow file.
+All app dependencies are local build inputs; no secret configuration is needed. CI uses Node 24 LTS, `npm ci`, `npm run build`, `npm test`, `npx playwright install --with-deps chromium firefox webkit`, and `npm run test:e2e`. The local validation environment is recorded separately; do not infer a hosted CI run from a workflow file.
 
 ## Optional static deployment (prepared, not performed)
 
@@ -18,7 +18,7 @@ No public indexable marketing routes exist: app shell has noindex/nofollow, robo
 
 Build script precaches all shipped assets and uses an asset-content hash for cache identity. Install fails atomically if required assets fail to fetch. The new worker waits for old tabs to close; no forced skipWaiting reload can destroy an unsaved form. On activation, only older `loopmark-` caches are removed. Navigation attempts network then falls back to cached index; immutable assets use cache-first matching. No user data enters CacheStorage: craft data remains in IndexedDB.
 
-Keep previous hashed build assets available during deployment if existing tabs are expected to remain open. New users need one successful online load. If offline setup failed, reopen online before relying on it. Existing app windows may need to be closed and reopened to receive a new version. The SW cache is not a media backup.
+Keep previous hashed build assets available during deployment if existing tabs are expected to remain open. New users need one successful online load. The guide verifies every precached asset and reports readiness. If offline setup failed, reconnect and use Check offline readiness & updates. Missing files trigger a new worker install through an explicit repair script URL; project and draft databases remain intact. Existing app windows may need to be closed and reopened to receive a new version. The SW cache is not a media backup.
 
 Rollback: restore the previous complete static build at the same origin. Database schema version remains 1; deployment changes must never remove IndexedDB. Before a future schema migration, require a backup/recovery test and preserve old data until migration commit. Browser cache changes do not change craft data.
 
@@ -30,10 +30,18 @@ Storage protection uses the browser's optional persistent-storage request. Never
 
 ## Backups and labels
 
-Download current backup before restore. Validate backup on a separate browser profile if the original is especially valuable. Restore checks the entire envelope, IDs, content limits and permitted local media before mutation. A transaction failure rolls back the clear and every inserted record. Newest checkpoint ordering is normalized. Restored project update tokens refresh; original notes/media/IDs/checkpoint timestamps are preserved. Audio codecs may not play across all browser combinations, although bytes remain in the backup.
+Download current backup before restore. Validate backup on a separate browser profile if the original is especially valuable. Restore captures the current library revision before reading the file and compares it inside replacement. A later write requires reviewing the latest counts and explicitly confirming again. Restore checks the entire envelope, IDs, bounded timestamps, content limits and permitted local media before mutation. Photos decode before replacement; audio has codec-independent structural validation, not full-stream forensic validation. A valid backup can also recover a legacy out-of-range clock watermark atomically. A transaction failure rolls back the clear and every inserted record. Newest checkpoint ordering is normalized. Restored project update tokens refresh; original notes/media/IDs/checkpoint timestamps are preserved. Audio codecs may not play across all browser combinations, although bytes remain in the backup.
 
 A bag label's next step is a printed snapshot; print another after a material change. QR same-origin lookup needs the project data in that browser/profile. A readable code remains useful when QR is unavailable. Actual printer dimensions/contrast and scanners on physical devices need manual device testing before wider distribution.
 
 ## Pilot, support and future work
 
-Use the protocol in product.md, including the no-reminder week. The app deliberately has no hidden tracking; collect consented observations manually. Pricing is unvalidated and checkout is not implemented. Future scope: real device matrix, autosaved unfinished form drafts, optional encrypted sync, native distribution and an independently tested paid upgrade that never locks reading or export. Third-party libraries and browser compatibility need periodic review; the lockfile and dependency audit are point-in-time evidence.
+Use the protocol in product.md, including the no-reminder week. The app deliberately has no hidden tracking; collect consented observations manually. Pricing is unvalidated and checkout is not implemented. Cloud sync, native distribution and an independently tested paid upgrade are now accepted work in [the expansion plan](expansion-plan.md), while this runbook describes the local foundation. Reading and export must remain available. Physical-device checks remain open. Third-party libraries and browser compatibility need periodic review; the lockfile and dependency audit are point-in-time evidence.
+
+## Interrupted work
+
+`loopmark-drafts` version1 stores unfinished form values separately from the saved library. Writes compare draft revisions to protect another tab. Close/hash navigation waits for pending writes and asks before discarding unrecoverable input; photo processing must finish first. Closing an active recording stops and converts it before keeping the draft. Browser/process termination during capture cannot preserve an unfinished recording.
+
+Explicit draft discard temporarily locks editing and save until storage completes. Recovered metadata drafts retain their original project token; if another tab changed the project, copy any text you need, discard the stale draft, then reopen current details. Deleting a project clears its associated drafts. Full backups include saved records only.
+
+New-project and checkpoint writes may carry an internal operation token. The record and hashed-input receipt commit together; retrying the same token/input returns the committed result. Changed input cannot reuse a token. This protects a successful save whose separate draft cleanup fails. Receipts are private local metadata, cleared by project deletion or library replacement, and are not portable backup content.

@@ -2403,12 +2403,13 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-autoplan/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "reference-inspected",
+      "status": "workflow-executed",
       "relevant_phases": [
-        "planning-review"
+        "expansion-planning",
+        "review"
       ],
-      "actual_invocation": "Architecture agent read installed manifest; adapted applicable review order using native project agents. Full runtime and external-model wrapper not invoked.",
-      "selection_reason": "User requested inspection; product, design and engineering reviews coordinated in native workflow. No claim of full autoplan or outside-model consensus.",
+      "actual_invocation": "Expansion: actual CEO → Design → DX → Engineering pipeline, immutable snapshots/amendments/closes, fresh native reviewer voices, 104 decision rows and actual 26-task aggregation. Claude Code unavailable; no cross-model result. User master Section10 explicitly delegates implementation after the plan; no fabricated human approval. Historical foundation used an adapted review only.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -3977,10 +3978,11 @@
       "relevant_phases": [
         "intent",
         "scope",
-        "design"
+        "design",
+        "expansion-planning"
       ],
-      "actual_invocation": "Read default intent/design routing. Delegated decisions in the user master brief govern execution; no separate approval flow was invented.",
-      "selection_reason": "Selected guidance or execution for this project.",
+      "actual_invocation": "Intent, alternative approaches and architectural specification applied. User master explicitly delegates routine decisions and instructs implementation after planning; that direct instruction governs instead of an additional routine approval request.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -5587,10 +5589,12 @@
       "resolved_location": "/Users/lalaji/.codex/skills/codegraph/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "reference-inspected",
+      "relevant_phases": [
+        "review"
+      ],
+      "actual_invocation": "Routing read; native file/rg navigation used for this small repository. No graph initialization or graph-derived claim.",
+      "selection_reason": "Applicable completion cross-verification and local reliability repair; unrelated workflows remain unselected.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -6329,10 +6333,12 @@
       "resolved_location": "/Users/lalaji/.codex/skills/copilot-skills/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "guidance-applied",
+      "relevant_phases": [
+        "expansion-planning"
+      ],
+      "actual_invocation": "Collection router read by platform research owner; selected PostgreSQL review guidance for planned ownership, grants and RLS contracts.",
+      "selection_reason": "Relevant expansion architecture/research guidance; unrelated collection workflows were not executed.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -8177,10 +8183,12 @@
       "resolved_location": "/Users/lalaji/.codex/skill-libraries/addyosmani--agent-skills/skills/documentation-and-adrs/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "guidance-applied",
+      "relevant_phases": [
+        "expansion-planning"
+      ],
+      "actual_invocation": "Read canonical manifest and applied decision rationale, alternatives and evidence guidance to expansion planning/platform research; no hosted command claimed.",
+      "selection_reason": "Relevant expansion architecture/research guidance; unrelated collection workflows were not executed.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -8877,10 +8885,12 @@
       "resolved_location": "/Users/lalaji/.codex/skills/engineering-practices/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "guidance-applied",
+      "relevant_phases": [
+        "expansion-planning"
+      ],
+      "actual_invocation": "Collection router read; selected documentation-and-adrs for expansion decisions and operational evidence.",
+      "selection_reason": "Relevant expansion architecture/research guidance; unrelated collection workflows were not executed.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -11682,8 +11692,8 @@
         "routing",
         "review"
       ],
-      "actual_invocation": "Read workflow router. No gstack telemetry, publishing or deployment performed.",
-      "selection_reason": "Selected guidance or execution for this project.",
+      "actual_invocation": "Default router read; local QA adapted runtime and subsequent actual expansion autoplan selected. Local runtime records only; outbound telemetry disabled; no shipping or deployment.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -18435,10 +18445,12 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-plan-ceo-review/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "workflow-executed",
+      "relevant_phases": [
+        "expansion-product"
+      ],
+      "actual_invocation": "Expansion CEO methodology and native independent review executed; snapshot closed, user-facing result relayed. Earlier local foundation used an adapted native product review.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -18449,10 +18461,12 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-plan-design-review/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "workflow-executed",
+      "relevant_phases": [
+        "expansion-design"
+      ],
+      "actual_invocation": "Expansion design methodology and native independent review executed; state/screen specification and closed snapshot. Image generation attempted but unavailable without configured key; no generated mockup or rendered expansion QA claimed. Earlier foundation used adapted design review.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -18477,10 +18491,12 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-plan-devex-review/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "workflow-executed",
+      "relevant_phases": [
+        "expansion-developer-experience"
+      ],
+      "actual_invocation": "Actual DX phase executed with native review, documented contributor/operator contracts and closed snapshot. Human time-to-first-save remains unmeasured.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -18491,10 +18507,13 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-plan-eng-review/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "workflow-executed",
+      "relevant_phases": [
+        "expansion-architecture",
+        "test-planning"
+      ],
+      "actual_invocation": "Actual engineering phase executed with fresh native review and amendment checks; 46 new coverage groups, exact interfaces and 15 execution packages. Closed snapshot and tasks aggregated. New behavior remains to be implemented and tested.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -18855,10 +18874,12 @@
       "resolved_location": "/Users/lalaji/.codex/skill-libraries/github--awesome-copilot/skills/postgresql-code-review/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "guidance-applied",
+      "relevant_phases": [
+        "expansion-planning"
+      ],
+      "actual_invocation": "Read for expansion database planning: ownership, constraints, grants and RLS. No implemented SQL audit or executed database test is claimed.",
+      "selection_reason": "Relevant expansion architecture/research guidance; unrelated collection workflows were not executed.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -19488,10 +19509,12 @@
       "resolved_location": "/Users/lalaji/.codex/skills/pstack/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "reference-inspected",
+      "relevant_phases": [
+        "expansion-planning"
+      ],
+      "actual_invocation": "Router read to evaluate architecture/TypeScript workflows; gstack remained the coherent planning route, so no duplicate upstream workflow ran.",
+      "selection_reason": "Relevant expansion architecture/research guidance; unrelated collection workflows were not executed.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -19824,10 +19847,12 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-qa/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "adapted-workflow",
+      "relevant_phases": [
+        "verification"
+      ],
+      "actual_invocation": "Installed preamble executed; complete applicable QA methodology read; native Vitest/Playwright reproduce-repair-retest loop and local headless gstack browse orientation executed. Full wrapper choreography/score/template not claimed; missing installed template documented.",
+      "selection_reason": "Applicable completion cross-verification and local reliability repair; unrelated workflows remain unselected.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -21168,10 +21193,12 @@
       "resolved_location": "/Users/lalaji/.codex/vendor/gstack/.agents/skills/gstack-review/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "adapted-review",
+      "relevant_phases": [
+        "review"
+      ],
+      "actual_invocation": "Independent source/requirements review applied; five concrete final-judge defects plus voice-conversion race repaired and rechecked. No full pre-landing wrapper or outside-model invocation.",
+      "selection_reason": "Applicable completion cross-verification and local reliability repair; unrelated workflows remain unselected.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -26967,10 +26994,12 @@
       "resolved_location": "/Users/lalaji/.codex/skills/worktrunk/SKILL.md",
       "version": null,
       "availability": "readable",
-      "status": "not-selected",
-      "relevant_phases": [],
-      "actual_invocation": "None. Metadata cataloged only.",
-      "selection_reason": "Not needed for the focused local craft checkpoint release; related work covered by the selected routes. Availability does not authorize execution.",
+      "status": "guidance-applied",
+      "relevant_phases": [
+        "implementation-isolation"
+      ],
+      "actual_invocation": "Read installed workflow/switch reference; actual config inspection found no user/project hooks. Project-local worktrees use explicit base revisions, no-cd and no-hooks, with dependencies installed separately. No global config changed.",
+      "selection_reason": "Relevant to accepted cloud, checkout and native expansion; exact evidence in expansion-review.md and execution records.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
     },
@@ -27083,7 +27112,7 @@
       "relevant_phases": [
         "planning"
       ],
-      "actual_invocation": "Read and applied to docs/implementation-plan.md; no separately claimed hosted command.",
+      "actual_invocation": "Read and applied to docs/implementation-plan.md; no separately claimed hosted command. Expansion execution plan defines I01–I15, canonical T01–T46 coverage, ownership, dependencies and observable gates under explicit user delegation.",
       "selection_reason": "Selected guidance or execution for this project.",
       "metadata_source": "SKILL.md frontmatter; directory name used if name absent",
       "metadata_parse": "simple scalar/folded-field extraction; version null when unspecified"
@@ -27566,6 +27595,18 @@
     }
   ],
   "workflow_notes": [
-    "gstack-autoplan manifest was discovered and read by architecture agent. Applicable sequence informed native reviews; full autoplan runtime was not invoked. See docs/architecture.md."
-  ]
+    "Historical local foundation used adapted native reviews; later expansion ran the actual installed autoplan phase/snapshot/task pipeline. See docs/expansion-review.md for exact execution and unavailable outside-provider coverage.",
+    "The user master explicitly directs build-and-verify continuation after planning. No separate human plan approval, external activation authority or cross-model consensus is fabricated."
+  ],
+  "completion_pass_date": "2026-10-18",
+  "status_counts": {
+    "not-selected": 1935,
+    "guidance-applied": 18,
+    "workflow-executed": 5,
+    "reference-inspected": 2,
+    "partial-reference": 1,
+    "adapted-workflow": 1,
+    "adapted-review": 1,
+    "script-executed": 1
+  }
 }
