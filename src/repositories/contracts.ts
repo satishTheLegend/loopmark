@@ -74,6 +74,7 @@ export interface Repository {
   snapshot(key: CollectionKey): Promise<LocalSnapshot>
   releaseSnapshot(id: string): Promise<void>
   pending(key: CollectionKey): Promise<PendingIntent[]>
+  resumeAfterAuthentication(key: CollectionKey, generation: Generation): Promise<void>
   markAttempt(key: CollectionKey, operationId: string, generation: Generation): Promise<void>
   markFailure(
     key: CollectionKey,

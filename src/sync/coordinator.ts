@@ -110,29 +110,36 @@ export function createSyncCoordinator(options: {
           signal,
         ),
       )
-      for (let n = 0; ; n++) {
-        if (
-          n >= 200 ||
-          page.epoch !== scope.key.epoch ||
-          page.collectionId !== scope.key.collectionId
-        )
-          throw new DomainError('SYNC_PAGE_INVALID')
-        pages.push(page)
-        if (page.nextPage === null) break
-        if (seen.has(page.nextPage)) throw new DomainError('SYNC_PAGE_INVALID')
-        seen.add(page.nextPage)
-        const request = {
-          action: 'page' as const,
-          snapshotId: page.snapshotId,
-          after: page.nextPage,
+      const snapshotId = page.snapshotId
+      try {
+        for (let n = 0; ; n++) {
+          if (
+            n >= 200 ||
+            page.epoch !== scope.key.epoch ||
+            page.collectionId !== scope.key.collectionId
+          )
+            throw new DomainError('SYNC_PAGE_INVALID')
+          pages.push(page)
+          if (page.nextPage === null) break
+          if (seen.has(page.nextPage)) throw new DomainError('SYNC_PAGE_INVALID')
+          seen.add(page.nextPage)
+          const request = {
+            action: 'page' as const,
+            snapshotId: page.snapshotId,
+            after: page.nextPage,
+          }
+          page = await retry(() => transport.snapshot(request, signal))
         }
-        page = await retry(() => transport.snapshot(request, signal))
+        await check(scope, signal)
+        await repository.hydrate(scope.key, pages, scope.generation)
+      } finally {
+        // Releasing cannot roll back already applied metadata. Failed cleanup expires server-side.
+        await transport.releaseSnapshot(snapshotId, signal).catch(() => {})
       }
-      await check(scope, signal)
-      await repository.hydrate(scope.key, pages, scope.generation)
     }
     for (const item of pending) {
       if (time.now() >= deadline) break
+      if (item.intent.kind === 'collection.replace') continue
       if (!retryable(item) || (only && !only.includes(item.intent.operationId))) continue
       const latest = await repository.pending(scope.key)
       if (!latest.some((p) => p.intent.operationId === item.intent.operationId)) continue

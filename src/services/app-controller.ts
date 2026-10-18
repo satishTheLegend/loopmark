@@ -211,6 +211,15 @@ export function createAppController(options: AppControllerOptions): AppControlle
       await refresh(next)
     }).catch((error) => publish({ phase: 'error', error: safeError(error) }))
   })
+  async function resumeAuthenticated(scope: SessionScope) {
+    if (
+      session &&
+      state.auth === 'authenticated' &&
+      keyOf(scope.key) === keyOf(session.collection) &&
+      canonicalJson(scope.device) === canonicalJson(session.device)
+    )
+      await repository.resumeAfterAuthentication(scope.key, scope.generation)
+  }
   function authenticate(work: (auth: AccountAuth, signal: AbortSignal) => Promise<AccountSession>) {
     authVersion++
     return serial(async () => {
@@ -236,7 +245,10 @@ export function createAppController(options: AppControllerOptions): AppControlle
             device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
           })
         await refresh(next)
-      } else await refresh(scope)
+      } else {
+        await resumeAuthenticated(scope)
+        await refresh(scope)
+      }
     })
   }
   const api: AppController = {
@@ -305,6 +317,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
                     key: selected.key,
                     device: session.device,
                   })
+                await resumeAuthenticated(selected)
                 await refresh(selected)
               }),
             )
@@ -354,6 +367,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
           key,
           device: view.info.kind === 'connected' ? session!.device : previous.device,
         })
+        await resumeAuthenticated(scope)
         await refresh(scope)
       })
     },

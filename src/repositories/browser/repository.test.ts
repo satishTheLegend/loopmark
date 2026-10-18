@@ -764,3 +764,26 @@ it('rolls back retirement, recovery collection and fresh replacement together if
   expect(await repository.readView(key)).toEqual(before)
   expect(await repository.listCollections()).toHaveLength(1)
 })
+it('verified reauthentication requeues only auth-blocked immutable commands for the same device', async () => {
+  const { repository, key } = await setup(true)
+  await repository.commitLocal(key, create('auth', 'auth-op'), 1)
+  await repository.commitLocal(key, create('conflict', 'conflict-op'), 1)
+  await repository.markFailure(key, 'auth-op', new DomainError('AUTH_REQUIRED').detail, 1)
+  await repository.markFailure(key, 'conflict-op', new DomainError('REVISION_CONFLICT').detail, 1)
+  const before = await repository.pending(key)
+  await repository.resumeAfterAuthentication(key, 1)
+  const after = await repository.pending(key)
+  expect(after[0]).toMatchObject({ state: 'queued', command: before[0].command })
+  expect(after[0].error).toBeUndefined()
+  expect(after[1]).toEqual(before[1])
+  await repository.markFailure(key, 'auth-op', new DomainError('AUTH_REQUIRED').detail, 1)
+  const active = (await repository.readActive())!
+  const next = await repository.transition(active, {
+    key,
+    device: { id: 'new-device', generation: 'new-gen' },
+  })
+  await expect(repository.resumeAfterAuthentication(key, next.generation)).rejects.toMatchObject({
+    detail: { code: 'SYNC_REBASE_REQUIRED' },
+  })
+  expect((await repository.pending(key))[0].error?.code).toBe('AUTH_REQUIRED')
+})

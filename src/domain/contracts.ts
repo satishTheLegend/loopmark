@@ -119,6 +119,10 @@ export type SnapshotRequest =
   | { action: 'create'; collectionId: string; purpose: 'hydrate' | 'export' }
   | { action: 'page'; snapshotId: string; after: string | null }
   | { action: 'renew'; snapshotId: string }
+export interface SnapshotReleaseRequest {
+  action: 'release'
+  snapshotId: string
+}
 export interface SnapshotManifest {
   protocolVersion: 2
   snapshotId: string

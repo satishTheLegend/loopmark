@@ -38,6 +38,7 @@ async function setup() {
     media: [],
   }
   const transport = {
+    releaseSnapshot: vi.fn(async () => {}),
     snapshot: vi.fn(async () => snapshot),
     push: vi.fn(async (command: import('../domain/contracts').Command) =>
       receipt(command.operationId, command.sha256),
@@ -74,6 +75,7 @@ it('hydrates before selection use and reconciles the feed with no pending work',
   await coordinator.run(scope)
   expect((await repo.readView(scope.key)).hydration).toBe('ready')
   expect(transport.snapshot).toHaveBeenCalledTimes(1)
+  expect(transport.releaseSnapshot).toHaveBeenCalledWith('snapshot', expect.any(AbortSignal))
   expect(transport.pull).toHaveBeenCalledTimes(1)
   expect(coordinator.getSnapshot().state).toBe('idle')
 })

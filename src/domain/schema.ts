@@ -325,3 +325,8 @@ export function parsePullPage(input: unknown): PullPage {
 }
 export const parseSnapshot = (input: unknown): SnapshotManifest =>
   parse(snapshotManifestSchema, input)
+
+export const snapshotReleaseRequestSchema = z
+  .object({ action: z.literal('release'), snapshotId: id })
+  .strict()
+export const snapshotReleasedSchema = z.object({ released: z.literal(true) }).strict()

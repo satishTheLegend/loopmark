@@ -506,6 +506,21 @@ export class BrowserRepository implements Repository {
   async pending(key: CollectionKey) {
     return (await this.readView(key)).pending
   }
+  async resumeAfterAuthentication(key: CollectionKey, generation: number): Promise<void> {
+    await this.change(key, generation, async (state, tx) => {
+      const scope = await assertGeneration(tx, key, generation)
+      for (const pending of state.pending)
+        if (pending.error?.code === 'AUTH_REQUIRED') {
+          if (
+            pending.command.deviceId !== scope.device.id ||
+            pending.command.deviceGeneration !== scope.device.generation
+          )
+            throw new DomainError('SYNC_REBASE_REQUIRED')
+          pending.state = 'queued'
+          delete pending.error
+        }
+    })
+  }
   async markAttempt(key: CollectionKey, operationId: string, generation: number): Promise<void> {
     await this.change(key, generation, (state) => {
       const pending = state.pending.find((p) => p.command.operationId === operationId)

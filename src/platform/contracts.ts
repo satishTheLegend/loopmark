@@ -38,6 +38,7 @@ export interface PlatformMedia {
   release(ref: MediaRef, scope: CollectionKey, generation: Generation): Promise<void>
 }
 export interface SyncTransport {
+  releaseSnapshot(snapshotId: string, signal: AbortSignal): Promise<void>
   push(command: Command, signal: AbortSignal): Promise<Receipt>
   pull(input: PullRequest, signal: AbortSignal): Promise<PullPage>
   snapshot(input: SnapshotRequest, signal: AbortSignal): Promise<SnapshotManifest>

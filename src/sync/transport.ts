@@ -6,11 +6,22 @@ import {
   parseSnapshot,
   pullRequestSchema,
   snapshotRequestSchema,
+  snapshotReleaseRequestSchema,
+  snapshotReleasedSchema,
 } from '../domain/schema'
 import { DomainError } from '../domain/errors'
 import type { FunctionClient } from './http-client'
 export function createSyncTransport(client: FunctionClient): SyncTransport {
   return {
+    async releaseSnapshot(snapshotId, signal) {
+      const request = snapshotReleaseRequestSchema.safeParse({ action: 'release', snapshotId })
+      if (!request.success) throw new DomainError('VALIDATION')
+      if (
+        !snapshotReleasedSchema.safeParse(await client.post('sync-snapshot', request.data, signal))
+          .success
+      )
+        throw new DomainError('SYNC_PAGE_INVALID')
+    },
     async push(input, signal) {
       const command = await verifyCommand(input)
       const receipt = parseReceipt(await client.post('sync-push', command, signal))
