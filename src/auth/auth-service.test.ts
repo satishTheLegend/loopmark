@@ -214,3 +214,20 @@ it('a failed vault clear cannot report successful sign-out or discard the verifi
   await expect(auth.signOut()).rejects.toThrow('disk fault')
   expect(devices.clearVerified).not.toHaveBeenCalled()
 })
+it('cached verified identity is rejected when durable SDK credentials belong to another account', async () => {
+  const { methods, devices } = setup()
+  devices.readVerified.mockResolvedValue({
+    session,
+    identity: { accountId: 'owner', email: 'verified@example.test' },
+  } as never)
+  const other = JSON.stringify({
+    'loopmark-auth-v2': JSON.stringify({ user: { id: 'other-owner' } }),
+  })
+  const auth = createAccountAuth({
+    config,
+    client: { auth: methods } as unknown as SupabaseClient,
+    devices,
+    credentials: { read: async () => other, write: async () => {}, clear: async () => {} },
+  })
+  expect(await auth.cachedSession()).toBeNull()
+})

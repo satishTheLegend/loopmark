@@ -46,7 +46,8 @@ export function createAppController(options: AppControllerOptions): AppControlle
     queue: Promise<void> = Promise.resolve(),
     refreshVersion = 0,
     busy = false,
-    authenticating = false
+    authenticating = false,
+    authVersion = 0
   let cancel = new AbortController(),
     review: {
       accountId: string
@@ -188,6 +189,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
   })
   const unsubAuth = auth?.subscribeIdentity((accountId) => {
     if (disposed || authenticating || !session || session.accountId === accountId) return
+    authVersion++
     sync?.stop()
     cancel.abort()
     cancel = new AbortController()
@@ -220,16 +222,6 @@ export function createAppController(options: AppControllerOptions): AppControlle
             session = cached.session
             publish({ account: cached.identity, auth: 'expired' })
           }
-          try {
-            const value = await auth.currentSession(cancel.signal)
-            if (value) await acceptSession(value, cancel.signal)
-            else {
-              session = null
-              publish({ account: null, auth: 'guest' })
-            }
-          } catch (error) {
-            publish({ auth: 'expired', error: safeError(error) })
-          }
         }
         const selected = await repository.readView(scope.key)
         if (selected.info.kind === 'connected' && selected.info.accountId !== session?.accountId) {
@@ -245,6 +237,49 @@ export function createAppController(options: AppControllerOptions): AppControlle
         )
           scope = await repository.transition(scope, { key: scope.key, device: session.device })
         await refresh(scope)
+        if (auth) {
+          const version = authVersion,
+            signal = AbortSignal.any([cancel.signal, AbortSignal.timeout(10000)]),
+            initialScope = scope
+          // Local restart is ready before any network work. Late verification cannot change a new session.
+          void auth
+            .currentSession(signal)
+            .then((value) =>
+              serial(async () => {
+                if (disposed || signal.aborted || version !== authVersion) return
+                await check(initialScope)
+                if (value) await acceptSession(value, signal)
+                else {
+                  session = null
+                  publish({ account: null, auth: 'guest' })
+                }
+                let selected = initialScope
+                const current = await repository.readView(selected.key)
+                if (
+                  current.info.kind === 'connected' &&
+                  current.info.accountId !== session?.accountId
+                )
+                  selected = await repository.transition(selected, {
+                    key: (await guest()).key,
+                    device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
+                  })
+                else if (
+                  current.info.kind === 'connected' &&
+                  session &&
+                  canonicalJson(selected.device) !== canonicalJson(session.device)
+                )
+                  selected = await repository.transition(selected, {
+                    key: selected.key,
+                    device: session.device,
+                  })
+                await refresh(selected)
+              }),
+            )
+            .catch((error) => {
+              if (!disposed && version === authVersion)
+                publish({ auth: 'expired', error: safeError(error) })
+            })
+        }
       })
     },
     getSnapshot: () => state,
@@ -253,6 +288,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
       return () => listeners.delete(listener)
     },
     async requestCode(email) {
+      authVersion++
       if (!auth) throw new DomainError('CAPABILITY_UNAVAILABLE')
       publish({ auth: 'sending-code', error: null })
       try {
@@ -265,6 +301,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
       }
     },
     verifyCode(email, code) {
+      authVersion++
       return serial(async () => {
         if (!auth) throw new DomainError('CAPABILITY_UNAVAILABLE')
         const scope = state.scope
@@ -350,6 +387,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
       return structuredClone(counts)
     },
     signOut(settings) {
+      authVersion++
       sync?.stop()
       cancel.abort()
       cancel = new AbortController()
@@ -499,12 +537,18 @@ export function createAppController(options: AppControllerOptions): AppControlle
                 ? shadow.checkpoints.find((c) => c.id === intent.payload.checkpointId)
                 : project
             if (!target) throw new DomainError('REVISION_CONFLICT')
-            replacement = {
+            replacement = structuredClone({
               ...intent,
               operationId: crypto.randomUUID(),
               createdAt: timestamp,
               base: { revision: target.revision },
-            }
+            })
+            if (
+              replacement.kind === 'project.update' ||
+              replacement.kind === 'project.status' ||
+              replacement.kind === 'checkpoint.create'
+            )
+              replacement.payload.updatedAt = timestamp
           }
         }
         await repository.resolvePending(

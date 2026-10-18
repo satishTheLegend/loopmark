@@ -196,7 +196,8 @@ export function createSyncCoordinator(options: {
             ? 'pending'
             : 'idle',
       pending: remaining.length,
-      lastSyncedAt: new Date(time.now()).toISOString(),
+      lastSyncedAt:
+        remaining.length === 0 && !more ? new Date(time.now()).toISOString() : status.lastSyncedAt,
       error: remaining.find((p) => p.error)?.error ?? null,
     })
   }

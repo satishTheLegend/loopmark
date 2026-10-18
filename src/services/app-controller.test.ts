@@ -173,3 +173,13 @@ it('offline startup keeps only the previously verified connected cache editable 
   await repo.commitLocal(connected.key, create(), reopened.getSnapshot().scope!.generation)
   expect(await repo.pending(connected.key)).toHaveLength(1)
 })
+it('local initialization does not wait for a hung authentication request', async () => {
+  const { controller, repo, auth } = await setup()
+  await controller.dispose()
+  auth.currentSession = () => new Promise(() => {})
+  const local = createAppController({ repository: repo, auth })
+  controllers.push(local)
+  await local.initialize()
+  expect(local.getSnapshot().phase).toBe('ready')
+  expect(local.getSnapshot().view?.info.kind).toBe('guest')
+})

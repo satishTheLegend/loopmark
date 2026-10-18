@@ -202,7 +202,19 @@ export function createAccountAuth(options: {
   }
   return {
     functions,
-    cachedSession: () => options.devices.readVerified(),
+    async cachedSession() {
+      const cached = await options.devices.readVerified()
+      if (!cached) return null
+      if (credentials) {
+        const value = await credentialStorage(credentials).getItem('loopmark-auth-v2')
+        try {
+          if (!value || JSON.parse(value)?.user?.id !== cached.identity.accountId) return null
+        } catch {
+          return null
+        }
+      }
+      return cached
+    },
     subscribeIdentity(listener) {
       listeners.add(listener)
       return () => listeners.delete(listener)
