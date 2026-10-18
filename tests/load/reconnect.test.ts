@@ -109,6 +109,8 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
       success: false,
       measurementScope:
         'Shared local host; engineering fixture, not clean or hosted capacity qualification',
+      resourceMetricsScope:
+        'Memory, locks and queue peaks span the whole measured workload including post-pressure recovery and verification; request latency/status statistics are separated by phase.',
       hostAtStart: {
         loadAverage: loadavg(),
         freeMemoryBytes: freemem(),
@@ -221,7 +223,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
       )
     // Keep both immutable commands in memory through burst and bounded recovery.
     // No auth credentials or command bodies are written to load evidence.
-    return { a, value, cmd, checkpointCommand }
+    return { a, value, cmd, checkpoint, checkpointCommand }
   })
   const owners = credentials.map((a) => quote(a.id) + '::uuid').join(',')
   report.retainedActiveAccountsAtBurst = Number(
@@ -400,6 +402,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
     )
     report.burstElapsedMs = performance.now() - begin
     const recovery = await backup
+    report.burstAndBackupElapsedMs = performance.now() - begin
     report.concurrentBackupComplete = recovery.ok
     if (recovery.ok) report.concurrentRecoveryBytes = recovery.value.bytes
     else report.concurrentBackupError = recovery.code
@@ -464,7 +467,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
       expect(denied.status).toBe(404)
       expect(denied.body.error.code).toBe('NOT_AVAILABLE')
     })
-    report.burstAndBackupElapsedMs = performance.now() - begin
+    report.ownerDenialsVerifiedAt = new Date().toISOString()
     expect(
       Number(
         await sql(
@@ -503,6 +506,31 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
     })
     expect(report.committedInvariants.maximumPendingPerOwner).toBeLessThanOrEqual(2)
     report.crossOwnerDenials = count
+    // Compare every materialized entity and command receipt with the exact
+    // prepared owner intent, not merely aggregate counts or ownership FKs.
+    let mismatches = 0
+    for (let start = 0; start < prepared.length; start += 50) {
+      const expected = prepared
+        .slice(start, start + 50)
+        .map(
+          ({ a, value, checkpoint, cmd, checkpointCommand }) =>
+            `(${quote(a.id)}::uuid,${quote(value.id)},${quote(JSON.stringify({ ...value, updatedAt: checkpoint.createdAt, revision: '2' }))}::jsonb,${quote(checkpoint.id)},${quote(JSON.stringify({ ...checkpoint, revision: '2' }))}::jsonb,${quote(cmd.operationId)},${quote(cmd.sha256)},${quote(checkpointCommand.operationId)},${quote(checkpointCommand.sha256)})`,
+        )
+        .join(',')
+      mismatches += Number(
+        await sql(`with expected(owner_id,project_id,project_data,checkpoint_id,checkpoint_data,project_operation,project_hash,checkpoint_operation,checkpoint_hash) as (values ${expected})
+        select count(*) from expected e
+        left join loopmark_private.projects p on p.owner_id=e.owner_id and p.id=e.project_id
+        left join loopmark_private.checkpoints c on c.owner_id=e.owner_id and c.id=e.checkpoint_id
+        left join loopmark_private.operation_receipts r1 on r1.owner_id=e.owner_id and r1.operation_id=e.project_operation
+        left join loopmark_private.operation_receipts r2 on r2.owner_id=e.owner_id and r2.operation_id=e.checkpoint_operation
+        where p.data is distinct from e.project_data or c.data is distinct from e.checkpoint_data
+        or r1.sha256 is distinct from e.project_hash or r1.receipt->>'sha256' is distinct from e.project_hash or r1.receipt->>'resultId' is distinct from e.project_id
+        or r2.sha256 is distinct from e.checkpoint_hash or r2.receipt->>'sha256' is distinct from e.checkpoint_hash or r2.receipt->>'resultId' is distinct from e.checkpoint_id`),
+      )
+    }
+    report.committedInvariants.exactOwnerIntentMismatches = mismatches
+    expect(mismatches).toBe(0)
     report.phase = 'interrupted-media'
     await mapLimit(prepared.slice(0, 10), 2, async ({ a, value }, index) => {
       const media = audioFixture(index + 1, 65536),
