@@ -1,0 +1,66 @@
+{
+  "recordedAt": "2026-10-18T18:26:56.220830+00:00",
+  "productCommit": "b5151ea",
+  "testCommit": "3f9f61dac5fd9cdef464a05ecd40c3263bf28f7b",
+  "testSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c",
+  "typecheckExitCode": 0,
+  "runtimeVerification": "Not run in this worker; root coordinates focused actual browser qualification. No production code changed.",
+  "webkitCursor": {
+    "traceSha256": "8d7e4ad72f99ff59032d3ae1df2afd64d2f8893cd5278ea2252472f9637e807a",
+    "cause": "Fixture held only first attempt; request deadline expired and same immutable retry bypassed barrier before second device edit or cursor aging.",
+    "timeline": [
+      {
+        "at": "2026-10-18T18:18:18.263Z",
+        "event": "First checkpoint request held, canceled after15780.456ms"
+      },
+      {
+        "at": "2026-10-18T18:18:34.140Z",
+        "event": "Same operation retry reached server,200,revision2"
+      },
+      {
+        "at": "2026-10-18T18:18:37.550Z",
+        "event": "Reader project update base1 rejected409REVISION_CONFLICT against actual revision2; test fails waiting for reader sync before cursor-aging fixture"
+      }
+    ],
+    "readOnlySql": {
+      "retired": false,
+      "maxSequence": "3",
+      "floor": "0",
+      "revision": "3",
+      "cursor": "3",
+      "compactedCursor": "0",
+      "originalReceipts": 1,
+      "checkpoints": 1
+    }
+  },
+  "chromiumMobileRetired": {
+    "traceSha256": "e34a16904405976ac50cb485f0e0a059d1f570bf7769950b95cff5ef679970ce",
+    "observedFailure": "Playwright Response.json CDP getResponseBody failed after409headers. Trace records net::ERR_ABORTED, content size-1 and no body.",
+    "monotonicMilliseconds": {
+      "routeContinue": 481356.714,
+      "responseObserved": 481458.759,
+      "bodyRead": 481458.939,
+      "bodyReadFailed": 481466.004,
+      "contextClose": 482261.11
+    },
+    "limits": "No navigation occurred before failure; context closure followed it. Trace does not instrument cancellation source or prove why CDP lost the body. Earlier successful project.create200 also records aborted/missing body while subsequent pull contains its receipt.",
+    "readOnlySql": {
+      "retired": true,
+      "maxSequence": "1",
+      "floor": "0",
+      "revision": "1",
+      "cursor": "1",
+      "compactedCursor": "0",
+      "originalReceipts": 0,
+      "checkpoints": 0
+    }
+  },
+  "fixtureCorrection": [
+    "Capture first checkpoint operation, compare each retry canonical full command and sha256, hold every matching attempt until release",
+    "Skip already failed/canceled requests after release; closing flag prevents cleanup from forwarding pending requests",
+    "Forward unchanged actual route request with maxRedirects0,maxRetries0,timeout15000; capture bounded real response before fulfilling identical status/headers/body",
+    "Bind captured response by exact Playwright Request identity and verify operationId/hash/browser409 plus actual server code",
+    "Preserve recovery/no-replay/receipt absence/photo/draft/fresh command/other-device assertions"
+  ],
+  "mutations": "Only private isolated test-source/evidence files; database queries used BEGIN READ ONLY on two guarded synthetic owners. No backend lifecycle or product mutation."
+}
