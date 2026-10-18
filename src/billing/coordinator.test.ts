@@ -272,3 +272,42 @@ it('a fourth local project draft stays local through purchase; preparation binds
   ).rejects.toMatchObject({ detail: { code: 'UPGRADE_REQUIRED' } })
   expect((await f.repo.readView(guest.key)).projects).toHaveLength(4)
 })
+
+it('explicit hosted checkout resume reopens the same attempt in a fresh generation without rewriting its original draft intent', async () => {
+  const f = await setup(),
+    id = await f.coordinator.purchase(
+      'upgrade',
+      { returnAction: 'new-project', draftKey: 'original' },
+      'hosted',
+    )
+  Object.assign(
+    f.scope,
+    await f.repo.transition(f.scope, { key: f.scope.key, device: f.scope.device }),
+  )
+  await f.coordinator.resumeCheckout(id)
+  expect(f.adapter.purchase).toHaveBeenCalledTimes(2)
+  expect(f.adapter.purchase.mock.calls[1][0]).toMatchObject({
+    attemptId: id,
+    generation: 2,
+    draftKey: 'original',
+  })
+  expect(f.coordinator.getSnapshot().attempts[0].intent.generation).toBe(1)
+})
+it('native SDK cancellation best-effort releases server admission while preserving its draft continuation', async () => {
+  const f = await setup('ios')
+  f.adapter.purchase.mockResolvedValueOnce({ status: 'cancelled' } as never)
+  const id = await f.coordinator.purchase(
+    'upgrade',
+    { returnAction: 'new-project', draftKey: 'cancelled-draft' },
+    'cancel',
+  )
+  expect(
+    f.client.post.mock.calls.some(
+      ([, body]) =>
+        (body as { action: string; attemptId: string }).action === 'cancel' &&
+        (body as { attemptId: string }).attemptId === id,
+    ),
+  ).toBe(true)
+  expect(f.coordinator.getSnapshot().attempts[0].intent.draftKey).toBe('cancelled-draft')
+  expect(f.access.hasAccess(f.collection)).toBe(false)
+})

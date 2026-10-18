@@ -305,6 +305,22 @@ export function createBillingCoordinator(options: {
                   : 'pending',
             error: 'error' in outcome ? outcome.error : null,
           })
+          if (outcome.status === 'cancelled' && options.platform !== 'web') {
+            try {
+              await observe(
+                await options.client.post(
+                  'purchase-restore',
+                  { action: 'cancel', attemptId: row.value.intent.attemptId },
+                  AbortSignal.timeout(15000),
+                ),
+                captured,
+                await find(row.value.intent.attemptId),
+              )
+            } catch (error) {
+              check(captured)
+              publish({ error: safeError(error) })
+            }
+          }
           return row.value.intent.attemptId
         } catch (error) {
           check(captured)
@@ -313,6 +329,46 @@ export function createBillingCoordinator(options: {
         }
       }),
     resume: (attemptId: string) => run(() => status(attemptId)),
+    resumeCheckout: (attemptId: string) =>
+      run(async () => {
+        if (options.platform !== 'web') throw new DomainError('CAPABILITY_UNAVAILABLE')
+        const captured = bound()
+        let row = await find(attemptId)
+        if (
+          row.value.provider !== 'razorpay' ||
+          canonicalJson(row.value.intent.collection) !== canonicalJson(captured.scope.key)
+        )
+          throw new DomainError('ACCOUNT_CHANGED')
+        await status(attemptId)
+        check(captured)
+        if (access.getSnapshot().projection?.upgraded) return attemptId
+        row = await find(attemptId)
+        row = await save(row, { phase: 'launched' })
+        try {
+          // This explicit user action reauthorizes execution in the current generation. The original
+          // durable intent remains unchanged; the adapter reopens the same server-owned payment link.
+          const outcome = await options.adapter.purchase({
+            ...row.value.intent,
+            generation: captured.scope.generation,
+          })
+          check(captured)
+          if (
+            (outcome.status === 'submitted' || outcome.status === 'pending') &&
+            outcome.attemptId !== attemptId
+          )
+            throw new DomainError('SYNC_PAGE_INVALID')
+          await save(row, {
+            phase: outcome.status === 'cancelled' ? 'cancelled' : 'pending',
+            outcome,
+            error: 'error' in outcome ? outcome.error : null,
+          })
+          return attemptId
+        } catch (error) {
+          check(captured)
+          await save(row, { phase: 'pending', error: safeError(error) })
+          throw error
+        }
+      }),
     verifyReturn: (input: Extract<CheckoutRequest, { action: 'verify' }>) =>
       run(async () => {
         const captured = bound(),
