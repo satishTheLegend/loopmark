@@ -26,6 +26,7 @@ const schema = z
     nextKey: hashSchema,
     createdAt: timestamp,
     result: purchaseRecoveryWireResponseSchema.nullable(),
+    ignoreKeyStatusRevision: z.string().nullable().optional(),
   })
   .strict()
 type Recovery = z.infer<typeof schema>
@@ -89,17 +90,20 @@ export function createPurchaseRecoveryService(options: {
       }) !== canonicalJson(identity(session))
     )
       throw new DomainError('VALIDATION')
-    return parsed.data
+    return { ...parsed.data, localRevision: row.revision }
   }
   const withStatus = (
     row: WorkflowRecord<Recovery>,
-    status: KeyStatus | null,
+    status: (KeyStatus & { localRevision: string }) | null,
   ): SavedPurchaseRecovery => {
     const result = row.value.result
     return {
       ...publicValue(row),
       keyState:
-        !status || !result || result.status === 'pending'
+        !status ||
+        !result ||
+        result.status === 'pending' ||
+        row.value.ignoreKeyStatusRevision === status.localRevision
           ? 'last-confirmed'
           : result.recoveryKeyHash === status.hash
             ? 'current'
@@ -157,10 +161,25 @@ export function createPurchaseRecoveryService(options: {
       result.data.entitlement.accountId !== session.accountId
     )
       throw new DomainError('ACCOUNT_CHANGED')
+    const firstConfirmation =
+      result.data.status !== 'pending' &&
+      (!row.value.result || row.value.result.status === 'pending')
+    const observation = firstConfirmation
+      ? await options.workflows.read(await statusId(session))
+      : null
+    if (canonicalJson(identity(options.current())) !== canonicalJson(identity(session)))
+      throw new DomainError('ACCOUNT_CHANGED')
     return options.workflows.write(
       row.id,
       row.revision,
-      { ...row, value: { ...row.value, result: result.data } },
+      {
+        ...row,
+        value: {
+          ...row.value,
+          result: result.data,
+          ...(firstConfirmation ? { ignoreKeyStatusRevision: observation?.revision ?? null } : {}),
+        },
+      },
       scope,
     )
   }

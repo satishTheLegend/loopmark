@@ -237,3 +237,40 @@ it('a current-key refresh marks rotated historical keys superseded and fences th
   })
   expect(await f.workflows.read(saved.id)).not.toBeNull()
 })
+
+it('an older cached hash cannot reject a newly confirmed key when the follow-up status is offline', async () => {
+  const f = await setup(),
+    signal = new AbortController().signal
+  f.client.post.mockResolvedValueOnce({
+    entitlement: {
+      accountId: f.session.accountId,
+      billingPrincipalId: f.session.billingPrincipalId,
+      upgraded: true,
+      revision: '1',
+      verifiedAt: '2026-01-01T00:00:00.000Z',
+    },
+    attempt: null,
+    recoveryKeyConfigured: true,
+    currentRecoveryKeyHash: 'e'.repeat(64),
+  })
+  await f.service.refreshKeyStatus(f.scope, signal)
+  const saved = await f.service.setKey({ operationToken: 'new-key' }, f.scope, signal)
+  expect((await f.service.listKeys())[0].keyState).toBe('last-confirmed')
+  await expect(f.service.exportKey(saved.id)).resolves.toBeInstanceOf(Blob)
+  // A historical receipt refresh must not repeatedly invalidate newer key status.
+  f.client.post.mockResolvedValueOnce({
+    entitlement: {
+      accountId: f.session.accountId,
+      billingPrincipalId: f.session.billingPrincipalId,
+      upgraded: true,
+      revision: '1',
+      verifiedAt: '2026-01-01T00:00:00.000Z',
+    },
+    attempt: null,
+    recoveryKeyConfigured: true,
+    currentRecoveryKeyHash: 'd'.repeat(64),
+  })
+  await f.service.refreshKeyStatus(f.scope, signal)
+  await f.service.refresh(saved.id, f.scope, signal)
+  expect((await f.service.listKeys())[0].keyState).toBe('superseded')
+})

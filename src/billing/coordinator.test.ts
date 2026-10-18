@@ -309,6 +309,14 @@ it('native SDK cancellation best-effort releases server admission while preservi
         (body as { attemptId: string }).attemptId === id,
     ),
   ).toBe(true)
+  const normal = f.client.post.getMockImplementation()!
+  f.client.post.mockImplementation(async (...args) => {
+    const result = await normal(...args)
+    if ('attempt' in result && result.attempt) result.attempt.state = 'failed'
+    return result
+  })
+  await f.coordinator.resume(id)
+  expect(f.coordinator.getSnapshot().attempts[0].phase).toBe('cancelled')
   expect(f.coordinator.getSnapshot().attempts[0].intent.draftKey).toBe('cancelled-draft')
   expect(f.access.hasAccess(f.collection)).toBe(false)
 })

@@ -169,11 +169,13 @@ export function createBillingCoordinator(options: {
       const status = parsed.data.attempt?.state
       const phase = access.getSnapshot().projection?.upgraded
         ? 'verified'
-        : status && ['failed', 'disputed', 'refunded', 'revoked'].includes(status)
-          ? 'failed'
-          : row.value.phase === 'cancelled'
-            ? 'cancelled'
-            : 'pending'
+        : status === 'failed' && row.value.phase === 'cancelled'
+          ? 'cancelled'
+          : status && ['failed', 'disputed', 'refunded', 'revoked'].includes(status)
+            ? 'failed'
+            : row.value.phase === 'cancelled'
+              ? 'cancelled'
+              : 'pending'
       await save(row, { phase, error: null, serverState: parsed.data.attempt?.state ?? null })
     }
     return parsed.data
