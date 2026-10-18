@@ -1,5 +1,6 @@
 import type { CollectionView, PendingIntent } from '../domain/contracts'
 import type { SafeError } from '../domain/errors'
+import type { AttachmentItem } from '../services/attachment-queue'
 
 export type SyncCategory = 'account' | 'conflict' | 'quota' | 'failed' | 'waiting'
 export interface SyncItem {
@@ -55,6 +56,33 @@ function category(pending: PendingIntent): SyncCategory {
     return 'quota'
   return pending.error && code !== 'OFFLINE' ? 'failed' : 'waiting'
 }
+export function attachmentSyncItems(items: AttachmentItem[], view: CollectionView): SyncItem[] {
+  return items
+    .filter((item) => !['complete', 'cancelled'].includes(item.state))
+    .map((item) => {
+      const checkpoint = view.checkpoints.find((cp) => cp.id === item.checkpointId)
+      const error = item.error ?? undefined
+      const code = error?.code
+      return {
+        id: item.id,
+        kind: 'attachment',
+        title: `${view.projects.find((project) => project.id === checkpoint?.projectId)?.name ?? 'Saved checkpoint'} · ${item.kind === 'photo' ? 'Photo' : 'Voice note'}`,
+        createdAt: checkpoint?.createdAt ?? view.info.createdAt,
+        category:
+          code === 'AUTH_REQUIRED' || code === 'ACCOUNT_CHANGED'
+            ? 'account'
+            : ['UPGRADE_REQUIRED', 'TECHNICAL_CAPACITY_REACHED', 'MEDIA_CAPACITY_REACHED'].includes(
+                  code ?? '',
+                )
+              ? 'quota'
+              : error && code !== 'OFFLINE'
+                ? 'failed'
+                : 'waiting',
+        error,
+        retryable: false,
+      }
+    })
+}
 export function summarizeSync({
   view,
   online,
@@ -77,6 +105,7 @@ export function summarizeSync({
   syncError?: SafeError
 }): SyncSummary {
   const items: SyncItem[] = (view?.pending ?? [])
+    .filter((pending) => !attachments.some((item) => item.id === pending.command.operationId))
     .map((pending) => {
       const intent = pending.intent
       const projectId =

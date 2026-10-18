@@ -14,6 +14,8 @@ import type { DeviceStore } from './auth/auth-service'
 import type { NativeLifecycleEvent } from './platform/native/lifecycle'
 import type { NativeAudioOptions } from './platform/native/audio'
 import type { NativeCaptureRecovery, NativeCaptureSource } from './platform/native/capture-recovery'
+import type { AppController } from './services/controller-contract'
+import type { ReplacementService } from './services/replacement-service'
 import type { WorkflowStore } from './services/workflow-store'
 import { createAppController } from './services/app-controller'
 import { createLocalDataAdapter } from './services/local-data-service'
@@ -24,6 +26,8 @@ import { createSyncCoordinator } from './sync/coordinator'
 import { createSyncTransport } from './sync/transport'
 import { createTabLease } from './sync/tab-lease'
 import { parseProjectLink, resolveProjectLink } from './links/link-service'
+import { mapBounded } from './services/concurrency'
+import { mediaRefs } from './repositories/state'
 
 interface Storage {
   repository: Repository
@@ -97,15 +101,118 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         credentials: storage.credentials,
       })
     : undefined
-  const sync = auth
+  let controller: AppController
+  const current = () => controller?.getSession() ?? null
+  const transport = auth ? createSyncTransport(auth.functions) : undefined
+  const cloudModules = auth
+    ? await Promise.all([
+        import('./sync/media-transport'),
+        import('./services/media-service'),
+        import('./services/replacement-service'),
+        import('./sync/realtime-hints'),
+        import('./services/attachment-queue'),
+      ])
+    : undefined
+  const remoteMedia =
+    auth && config.cloud.enabled && cloudModules
+      ? cloudModules[1].createRemoteMediaService({
+          repository,
+          media: storage.media,
+          workflows: storage.workflows,
+          current,
+          mediaConcurrency: config.mediaConcurrency,
+          transport: cloudModules[0].createMediaTransport({
+            url: config.cloud.url,
+            publicKey: config.cloud.publicKey,
+            token: auth.accessToken,
+            client: auth.functions,
+          }),
+        })
+      : undefined
+  const replacement =
+    auth && transport && cloudModules && remoteMedia
+      ? cloudModules[2].createReplacementService({
+          repository,
+          transport,
+          client: auth.functions,
+          media: remoteMedia,
+          workflows: storage.workflows,
+          current,
+          mediaConcurrency: config.mediaConcurrency,
+        })
+      : undefined
+  const connectionListeners = new Set<() => void>()
+  const connectionChanged = () => {
+    for (const listener of connectionListeners) listener()
+  }
+  const connections: ReplacementService | undefined = replacement
+    ? {
+        ...replacement,
+        async preview(...args) {
+          try {
+            return await replacement.preview(...args)
+          } finally {
+            connectionChanged()
+          }
+        },
+        async previewReplacement(...args) {
+          try {
+            return await replacement.previewReplacement(...args)
+          } finally {
+            connectionChanged()
+          }
+        },
+        async confirm(...args) {
+          try {
+            return await replacement.confirm(...args)
+          } finally {
+            connectionChanged()
+          }
+        },
+        async resume(...args) {
+          try {
+            return (await replacement.resume?.(...args)) ?? null
+          } finally {
+            connectionChanged()
+          }
+        },
+        async cancel(...args) {
+          try {
+            await replacement.cancel(...args)
+          } finally {
+            connectionChanged()
+          }
+        },
+      }
+    : undefined
+  const attachments =
+    transport && remoteMedia && cloudModules
+      ? cloudModules[4].createAttachmentQueue({
+          repository,
+          transport,
+          media: remoteMedia,
+          workflows: storage.workflows,
+          current,
+        })
+      : undefined
+  const sync = transport
     ? createSyncCoordinator({
         repository,
-        transport: createSyncTransport(auth.functions),
+        transport,
         lease: createTabLease(),
         online: () => online,
+        currentAccountId: () => current()?.accountId ?? null,
+        attachments,
       })
     : undefined
-  const controller = createAppController({ repository, auth, sync, media: storage.media })
+  controller = createAppController({
+    repository,
+    auth,
+    sync,
+    connections,
+    attachments,
+    media: storage.media,
+  })
   await controller.initialize()
   const scope = () => {
     const value = controller.getSnapshot().scope
@@ -117,9 +224,15 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     scope,
     mediaConcurrency: config.mediaConcurrency,
   })
-  installDataAdapter(data)
   installDraftStoreFactory(() => storage.drafts(scope()))
-  const backups = createBackupService({ ...storage, data, scope })
+  const backups = createBackupService({
+    ...storage,
+    data,
+    scope,
+    mediaConcurrency: config.mediaConcurrency,
+    remote: remoteMedia && transport ? { media: remoteMedia, transport, current } : undefined,
+  })
+  installDataAdapter({ ...data, exportBackup: backups.exportComplete })
   const deletion = createDeletionService({
     repository,
     auth,
@@ -140,6 +253,39 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     disposed = false,
     running = false,
     lastWork = ''
+  const hints =
+    auth && cloudModules
+      ? cloudModules[3].createRealtimeHints({
+          config,
+          token: auth.accessToken,
+          current: () => {
+            const session = current(),
+              selected = controller.getSnapshot().scope
+            return session && selected ? { session, scope: selected } : null
+          },
+          onHint: () => schedule(),
+        })
+      : undefined
+  let hintBinding = ''
+  function updateHints() {
+    const state = controller.getSnapshot()
+    const binding =
+      !disposed &&
+      foreground &&
+      online &&
+      state.phase === 'ready' &&
+      state.auth === 'authenticated' &&
+      state.view?.info.kind === 'connected'
+        ? JSON.stringify([state.scope, state.account?.accountId])
+        : ''
+    if (binding === hintBinding) return
+    hintBinding = binding
+    hints?.stop()
+    if (binding)
+      void hints?.start().catch(() => {
+        /* Authoritative polling remains available. */
+      })
+  }
   function schedule(delay = 150) {
     clearTimeout(timer)
     if (disposed || !foreground || !sync) return
@@ -172,10 +318,11 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
           'CAPABILITY_UNAVAILABLE',
         ].includes(error.code)
       )
-        schedule(4000)
+        schedule(45_000)
     }
   }
   const unsubscribe = controller.subscribe(() => {
+    updateHints()
     const state = controller.getSnapshot()
     const work = JSON.stringify([
       state.scope,
@@ -189,10 +336,12 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   })
   const onNetwork = () => {
     online = navigator.onLine
+    updateHints()
     schedule()
   }
   const onVisibility = () => {
     foreground = document.visibilityState !== 'hidden'
+    updateHints()
     if (!foreground) {
       clearTimeout(timer)
       sync?.stop()
@@ -207,6 +356,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     removeNative = await subscribeNativeLifecycle((event) => {
       if (event.type === 'active') {
         foreground = event.active
+        updateHints()
         if (!foreground) {
           clearTimeout(timer)
           sync?.stop()
@@ -214,6 +364,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       }
       if (event.type === 'network') {
         online = event.connected
+        updateHints()
         schedule()
       }
       if (event.type === 'url' && !events.size) queuedUrl = event
@@ -221,11 +372,36 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     })
   }
   schedule()
+  updateHints()
   return {
     native,
     config,
     controller,
     backups,
+    async ensureCheckpointMedia(
+      checkpointId: string,
+      signal: AbortSignal,
+      kind?: 'photo' | 'voice',
+    ) {
+      const selected = scope(),
+        view = await repository.readView(selected.key)
+      if (!remoteMedia || view.info.kind !== 'connected' || !current()) return
+      const checkpoint = view.checkpoints.find((item) => item.id === checkpointId)
+      if (!checkpoint) throw new DomainError('NOT_AVAILABLE')
+      const refs = mediaRefs([checkpoint]).filter((ref) => !kind || ref.kind === kind)
+      await mapBounded(
+        refs,
+        (ref) => remoteMedia.ensureAvailable(ref, selected, signal),
+        config.mediaConcurrency,
+      )
+    },
+    connections,
+    subscribeConnections(listener: () => void) {
+      connectionListeners.add(listener)
+      return () => {
+        connectionListeners.delete(listener)
+      }
+    },
     deletion,
     subscribeDeletion(listener: () => void) {
       deletionListeners.add(listener)
@@ -361,6 +537,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     },
     async dispose() {
       disposed = true
+      hints?.dispose()
       clearTimeout(timer)
       unsubscribe()
       window.removeEventListener('online', onNetwork)
@@ -370,6 +547,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       await removeCapture?.()
       captureListeners.clear()
       deletionListeners.clear()
+      connectionListeners.clear()
       await controller.dispose()
       events.clear()
     },

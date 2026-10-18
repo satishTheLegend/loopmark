@@ -76,3 +76,32 @@ test('keyboard can cancel a destructive review without committing it', async ({
   await expect(page.getByRole('dialog')).toHaveCount(0)
   await expect(page.getByLabel('Action result')).toHaveText('')
 })
+
+test('account replacement requires its own review acknowledgment', async ({ page }) => {
+  await page.goto('/tests/ui/index.html?scenario=connection&mode=replace')
+  const confirm = page.getByRole('button', { name: 'Confirm account replacement' })
+  await expect(confirm).toBeDisabled()
+  await page.getByRole('checkbox', { name: /Replace the account collection/ }).check()
+  await confirm.click()
+  await expect(page.getByLabel('Action result')).toContainText('"id":"preview"')
+})
+
+test('an unconfirmed connection close cancels its source pin', async ({ page }) => {
+  await page.goto('/tests/ui/index.html?scenario=connection')
+  await page.getByRole('button', { name: 'Close dialog' }).click()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(page.getByLabel('Action result')).toContainText('request-cancelled')
+})
+
+test('an already confirmed request can continue later or be explicitly cancelled', async ({
+  page,
+}) => {
+  await page.goto('/tests/ui/index.html?scenario=connection&mode=replace&phase=queued')
+  await expect(page.getByRole('button', { name: 'Resume request' })).toBeEnabled()
+  await expect(page.getByRole('checkbox')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Continue later' }).click()
+  await expect(page.getByLabel('Action result')).toHaveText('')
+  await page.reload()
+  await page.getByRole('button', { name: 'Cancel unfinished request' }).click()
+  await expect(page.getByLabel('Action result')).toContainText('request-cancelled')
+})

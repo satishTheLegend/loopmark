@@ -573,7 +573,9 @@ test('@chromium-media voice capture stops at the simulated time limit, removes a
 
 test('blocked storage shows recovery instead of claiming a saved collection', async ({ page }) => {
   await page.addInitScript(() => {
-    indexedDB.open = () => {
+    // WebKit may expose a fresh IDBFactory wrapper on each window.indexedDB access.
+    // Fault the platform method so the actual repository open is denied on every engine.
+    IDBFactory.prototype.open = () => {
       throw new DOMException('Storage blocked by browser', 'SecurityError')
     }
   })

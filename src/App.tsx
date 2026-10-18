@@ -45,8 +45,9 @@ import { SignOutReview } from './components/SignOutReview'
 import { ConflictReview } from './components/ConflictReview'
 import { SyncStatus } from './components/SyncStatus'
 import { SyncDetails } from './components/SyncDetails'
-import { summarizeSync } from './components/sync-summary'
+import { summarizeSync, attachmentSyncItems, type SyncItem } from './components/sync-summary'
 import { AccountDeletion } from './components/AccountDeletion'
+import { PendingConnections } from './components/PendingConnections'
 import { AccountCapacity } from './components/AccountCapacity'
 import { AccountReceipts } from './components/AccountReceipts'
 import { NativeCaptureNotice } from './components/NativeCaptureNotice'
@@ -88,8 +89,13 @@ export default function App({
     [editSnapshot, setEditSnapshot] = useState<Project>()
   const [openedProject, setOpenedProject] = useState<Project | null>(null)
   const [attachmentState, setAttachmentState] = useState<ProjectMediaAvailability[]>([])
+  const [attachmentQueue, setAttachmentQueue] = useState<SyncItem[]>([])
   const [syncDetails, setSyncDetails] = useState(false)
   const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
+  const [connectionMode, setConnectionMode] = useState<'attach' | 'replace'>('attach')
+  const [connectionPhase, setConnectionPhase] = useState<'preview' | 'prepared' | 'queued'>(
+    'preview',
+  )
   const [signOutReview, setSignOutReview] = useState<LocalWorkCounts | null>(null)
   const [deletionReview, setDeletionReview] = useState<{
     counts: LocalWorkCounts
@@ -144,6 +150,27 @@ export default function App({
   useEffect(() => {
     void refreshRef.current()
   }, [route, state?.scope?.generation])
+  const latestCheckpointId = openedProject?.checkpoints[0]?.id
+  useEffect(() => {
+    if (
+      !runtime ||
+      !route.startsWith('project=') ||
+      !latestCheckpointId ||
+      offline ||
+      state?.view?.info.kind !== 'connected'
+    )
+      return
+    const abort = new AbortController()
+    void runtime
+      .ensureCheckpointMedia(latestCheckpointId, abort.signal)
+      .then(() => {
+        if (!abort.signal.aborted) void refreshRef.current()
+      })
+      .catch(() => {
+        /* Text remains visible; each missing attachment offers an explicit retry. */
+      })
+    return () => abort.abort()
+  }, [runtime, route, latestCheckpointId, offline, state?.view?.revision, state?.view?.info.kind])
   useEffect(() => {
     if (!runtime) return
     let active = true
@@ -209,7 +236,12 @@ export default function App({
       setRoute(next)
       setModal(null)
       setMobileOpen(false)
-      requestAnimationFrame(() => main.current?.focus())
+      const previousFocus = document.activeElement
+      requestAnimationFrame(() => {
+        // Route focus must not steal a field the maker focused while the frame was pending.
+        if (document.activeElement === previousFocus || document.activeElement === document.body)
+          main.current?.focus()
+      })
     }
     const connection = () => setOffline(!navigator.onLine)
     window.addEventListener('hashchange', change)
@@ -274,7 +306,27 @@ export default function App({
     lastSyncedAt: state?.sync.lastSyncedAt,
     syncState: state?.sync.state,
     syncError: state?.error ?? undefined,
+    attachments: attachmentQueue,
   })
+  useEffect(() => {
+    if (!controller || !state?.view || state.view.info.kind !== 'connected') {
+      setAttachmentQueue([])
+      return
+    }
+    let active = true
+    const view = state.view
+    void controller
+      .listAttachments()
+      .then((items) => {
+        if (active) setAttachmentQueue(attachmentSyncItems(items, view))
+      })
+      .catch(() => {
+        /* A scope transition owns the next refresh. */
+      })
+    return () => {
+      active = false
+    }
+  }, [controller, state?.view, state?.sync])
   useEffect(() => {
     document.title = project
       ? `${project.name} · Loopmark`
@@ -370,11 +422,28 @@ export default function App({
     navigate('projects')
     await controller.chooseCollection(key)
   }
-  async function previewConnection(key: CollectionKey) {
+  async function previewConnection(key: CollectionKey, mode: 'attach' | 'replace' = 'attach') {
     if (!controller || busy) return
     setBusy(true)
     try {
-      setConnectionPreview(await controller.previewAttach(key))
+      const session = controller.getSession()
+      const preview =
+        mode === 'replace' && session && runtime?.connections
+          ? await runtime.connections.previewReplacement(
+              key,
+              session,
+              state?.account?.email || 'your account',
+              runtime.scope(),
+            )
+          : await controller.previewAttach(key)
+      setConnectionMode(mode)
+      const saved = (await runtime?.connections?.list())?.find(
+        (item) => item.preview.id === preview.id,
+      )
+      setConnectionPhase(
+        saved?.phase === 'prepared' || saved?.phase === 'queued' ? saved.phase : 'preview',
+      )
+      setConnectionPreview(preview)
     } catch (error) {
       notify(errorText(error), true)
     } finally {
@@ -617,6 +686,18 @@ export default function App({
               mediaAvailability={openedProject?.id === projectId ? attachmentState : []}
               mediaLoading={openedProject?.id !== projectId}
               online={!offline}
+              onDownload={
+                runtime && state?.view?.info.kind === 'connected'
+                  ? async (checkpointId, kind) => {
+                      await runtime.ensureCheckpointMedia(
+                        checkpointId,
+                        AbortSignal.timeout(60_000),
+                        kind,
+                      )
+                      await refreshRef.current()
+                    }
+                  : undefined
+              }
               onBack={() => navigate(project.status === 'finished' ? 'finished' : 'projects')}
               onCheckpoint={() => setModal('checkpoint')}
               onEdit={() => {
@@ -688,8 +769,30 @@ export default function App({
                     >
                       {busy ? 'Checking collections…' : 'Review connection'}
                     </button>
+                    {state.view?.info.kind === 'recovered' && (
+                      <button
+                        className="button secondary"
+                        disabled={busy}
+                        onClick={() => {
+                          if (state.view) void previewConnection(state.view.info.key, 'replace')
+                        }}
+                      >
+                        Review replacing account from this copy
+                      </button>
+                    )}
                   </section>
                 )}
+              {runtime && state?.auth === 'authenticated' && (
+                <PendingConnections
+                  key={state.account?.accountId}
+                  runtime={runtime}
+                  onReview={(saved) => {
+                    setConnectionMode(saved.mode)
+                    setConnectionPhase(saved.phase)
+                    setConnectionPreview(saved.preview)
+                  }}
+                />
+              )}
               {runtime && state?.view && (
                 <AccountCapacity
                   key={`${state.account?.accountId ?? 'guest'}:${state.view.info.key.collectionId}:${state.view.info.key.epoch}`}
@@ -735,7 +838,14 @@ export default function App({
           onSync={() => controller.runSync()}
           onClose={() => setSyncDetails(false)}
           onRetry={async (items) => {
-            await controller.retryOperations(items.map((item) => item.id))
+            const mediaIds = items
+              .filter((item) => item.kind === 'attachment')
+              .map((item) => item.id)
+            const operationIds = items
+              .filter((item) => item.kind !== 'attachment')
+              .map((item) => item.id)
+            if (operationIds.length) await controller.retryOperations(operationIds)
+            if (mediaIds.length) await controller.retryAttachments(mediaIds)
           }}
           onReview={(operationId) => void reviewConflict(operationId)}
           onSignIn={() => {
@@ -750,18 +860,39 @@ export default function App({
       )}
       {connectionPreview && controller && (
         <ConnectionPreview
+          key={connectionPreview.id}
           preview={connectionPreview}
+          mode={connectionMode}
+          phase={connectionPhase}
           stale={
             state?.view?.info.key.collectionId === connectionPreview.source.key.collectionId &&
             state.view.revision !== connectionPreview.source.revision
           }
-          onRefresh={() => previewConnection(connectionPreview.source.key)}
+          onRefresh={async () => {
+            await runtime?.connections?.cancel(
+              connectionPreview.id,
+              runtime.scope(),
+              AbortSignal.timeout(30_000),
+            )
+            setConnectionPreview(null)
+            await previewConnection(connectionPreview.source.key, connectionMode)
+          }}
+          onCancel={
+            runtime?.connections
+              ? async () => {
+                  await runtime.connections!.cancel(
+                    connectionPreview.id,
+                    runtime.scope(),
+                    AbortSignal.timeout(30_000),
+                  )
+                  setConnectionPreview(null)
+                }
+              : undefined
+          }
           onClose={() => setConnectionPreview(null)}
           onConfirm={async (preview) => {
-            await controller.confirmAttach(preview)
-            setConnectionPreview(null)
             navigate('projects')
-            notify('Collection connected. Your original local collection is still here.')
+            await controller.confirmAttach(preview)
           }}
         />
       )}
@@ -785,6 +916,10 @@ export default function App({
           counts={deletionReview.counts}
           missingAttachments={deletionReview.counts.missingAttachments}
           accountEmail={state?.account?.email || 'your account'}
+          onRefreshReview={async () => {
+            const counts = await controller!.prepareSignOut()
+            setDeletionReview((previous) => (previous ? { ...previous, counts } : null))
+          }}
           onRequestCode={() =>
             runtime.deletion.requestCode(runtime.scope(), AbortSignal.timeout(30_000))
           }

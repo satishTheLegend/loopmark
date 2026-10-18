@@ -302,7 +302,7 @@ test.describe('Measured library budgets', () => {
       combinedWorkMs: validationMs + commitMs,
       targetMs: 5000,
       roundtrip:
-        'Every project/checkpoint/media field equal except renewed project concurrency tokens.',
+        'Every portable project/checkpoint/media field preserved in the separate restored collection.',
     })
     if (info.project.name === 'chromium') expect(validationMs + commitMs).toBeLessThan(5000)
   })

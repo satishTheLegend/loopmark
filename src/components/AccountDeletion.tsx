@@ -13,6 +13,7 @@ export function AccountDeletion({
   counts,
   missingAttachments,
   onRequestCode,
+  onRefreshReview,
   onDelete,
   onBackup,
   onClose,
@@ -20,6 +21,7 @@ export function AccountDeletion({
   accountEmail: string
   counts: LocalWorkCounts
   missingAttachments: number | null
+  onRefreshReview?: () => Promise<void>
   onRequestCode: () => Promise<{ retryAt: string }>
   onDelete: (choice: DeletionChoice) => Promise<void>
   onBackup: () => void
@@ -32,7 +34,7 @@ export function AccountDeletion({
     [code, setCode] = useState(''),
     [sent, setSent] = useState(false),
     [error, setError] = useState(''),
-    [busy, setBusy] = useState<'sending' | 'deleting' | null>(null),
+    [busy, setBusy] = useState<'sending' | 'deleting' | 'reviewing' | null>(null),
     [retryAt, setRetryAt] = useState(0),
     [now, setNow] = useState(Date.now())
   const unique =
@@ -258,6 +260,28 @@ export function AccountDeletion({
           </span>
         </label>
         <ErrorMessage message={error} />
+        {error && onRefreshReview && (
+          <button
+            className="button secondary"
+            disabled={!!busy}
+            onClick={async () => {
+              setBusy('reviewing')
+              try {
+                await onRefreshReview()
+                setConfirmed(false)
+                setDiscard(false)
+                setAllowMissing(false)
+                setError('')
+              } catch (failure) {
+                setError(errorText(failure))
+              } finally {
+                setBusy(null)
+              }
+            }}
+          >
+            Review device copies again
+          </button>
+        )}
         <div className="dialog-actions">
           <button className="button secondary" disabled={!!busy} onClick={onClose}>
             Keep my account

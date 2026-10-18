@@ -175,3 +175,33 @@ test('unavailable storage shows recovery guidance without creating an empty work
   await expect(page.getByRole('button', { name: 'Reopen Loopmark' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'New project', exact: true })).toHaveCount(0)
 })
+
+test('delayed route focus preserves a field the maker has already focused', async ({ page }) => {
+  await page.goto('/#guide')
+  await expect(
+    page.getByRole('heading', { name: 'Leave a note. Find your rhythm.', exact: true }),
+  ).toBeVisible()
+  await page.evaluate(() => {
+    const original = window.requestAnimationFrame.bind(window)
+    const queued: FrameRequestCallback[] = []
+    window.requestAnimationFrame = (callback) => {
+      queued.push(callback)
+      return queued.length
+    }
+    Object.assign(window, {
+      releaseRouteFrames: () => {
+        window.requestAnimationFrame = original
+        for (const callback of queued) callback(performance.now())
+      },
+    })
+    location.hash = 'projects'
+  })
+  const search = page.getByRole('textbox', { name: 'Search projects' })
+  await search.fill('Keep this input')
+  await expect(search).toBeFocused()
+  await page.evaluate(() =>
+    (window as unknown as { releaseRouteFrames(): void }).releaseRouteFrames(),
+  )
+  await expect(search).toBeFocused()
+  await expect(search).toHaveValue('Keep this input')
+})

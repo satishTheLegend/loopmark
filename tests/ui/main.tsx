@@ -144,8 +144,15 @@ function Harness() {
         <ConnectionPreview
           preview={preview}
           stale={false}
+          mode={
+            new URLSearchParams(location.search).get('mode') === 'replace' ? 'replace' : 'attach'
+          }
+          phase={
+            new URLSearchParams(location.search).get('phase') === 'queued' ? 'queued' : 'preview'
+          }
           onRefresh={async () => {}}
           onConfirm={done}
+          onCancel={() => done('request-cancelled')}
           onClose={() => setOpen(false)}
         />
       )}

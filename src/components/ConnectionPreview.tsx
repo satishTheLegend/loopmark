@@ -9,13 +9,21 @@ export function ConnectionPreview({
   onRefresh,
   onConfirm,
   onClose,
+  onCancel,
+  mode = 'attach',
+  phase = 'preview',
 }: {
   preview: AttachPreview
   stale: boolean
   onRefresh: () => Promise<void>
   onConfirm: (preview: AttachPreview) => Promise<void>
   onClose: () => void
+  onCancel?: () => Promise<void>
+  mode?: 'attach' | 'replace'
+  phase?: 'preview' | 'prepared' | 'queued'
 }) {
+  const [replaceConfirmed, setReplaceConfirmed] = useState(false)
+  const resumed = phase !== 'preview'
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const overCapacity =
@@ -37,19 +45,37 @@ export function ConnectionPreview({
   }
   return (
     <Dialog
-      title="Connect this collection?"
+      title={mode === 'replace' ? 'Replace this account collection?' : 'Connect this collection?'}
       wide
       onClose={() => {
-        if (!busy) onClose()
+        if (!busy) {
+          if (!resumed && onCancel) void act(onCancel)
+          else onClose()
+        }
       }}
     >
       <div className="readable-controls">
         <p>
-          Copy <strong>{preview.source.name}</strong> from this device into{' '}
+          {mode === 'replace' ? 'Replace' : 'Add projects to'}{' '}
           <strong>{preview.destination.name}</strong>, belonging to{' '}
-          <strong>{preview.destination.email}</strong>.
+          <strong>{preview.destination.email}</strong>, using <strong>{preview.source.name}</strong>{' '}
+          on this device.
         </p>
-        <p>The source stays on this device. Nothing is uploaded until you confirm.</p>
+        {resumed ? (
+          <p>
+            You already confirmed this request. Resume it to check the saved outcome and finish any
+            remaining work. The original local collection remains separate.
+          </p>
+        ) : (
+          <p>The source stays on this device. Nothing is uploaded until you confirm.</p>
+        )}
+        {mode === 'replace' && (
+          <p>
+            The account will contain the recovered collection shown here. The previous account
+            records and files already on this device remain in a separate recovered collection.
+            Download a complete backup first if you need every old attachment offline.
+          </p>
+        )}
         <dl className="review-counts">
           <div>
             <dt>Projects to add</dt>
@@ -111,6 +137,20 @@ export function ConnectionPreview({
             New changes arrived. Refresh this preview before connecting.
           </p>
         )}
+        {mode === 'replace' && !resumed && (
+          <label className="confirm-choice">
+            <input
+              type="checkbox"
+              checked={replaceConfirmed}
+              disabled={busy}
+              onChange={(event) => setReplaceConfirmed(event.target.checked)}
+            />
+            <span>
+              Replace the account collection with this recovered collection. I have reviewed what
+              will remain on this device.
+            </span>
+          </label>
+        )}
         <ErrorMessage message={error} />
         <p className="hint">
           Preview valid until{' '}
@@ -118,21 +158,41 @@ export function ConnectionPreview({
           are checked again when you confirm.
         </p>
         <div className="dialog-actions">
-          <button className="button secondary" disabled={busy} onClick={onClose}>
-            Keep using this device
+          <button
+            className="button secondary"
+            disabled={busy}
+            onClick={() => {
+              if (!resumed && onCancel) void act(onCancel)
+              else onClose()
+            }}
+          >
+            {resumed ? 'Continue later' : 'Keep using this device'}
           </button>
-          {(stale || !!error) && (
+          {resumed && onCancel && (
+            <button className="button secondary" disabled={busy} onClick={() => void act(onCancel)}>
+              Cancel unfinished request
+            </button>
+          )}
+          {!resumed && (stale || !!error) && (
             <button className="button primary" disabled={busy} onClick={() => void act(onRefresh)}>
               {busy ? 'Checking collections…' : 'Refresh preview'}
             </button>
           )}
-          {!stale && (
+          {(!stale || resumed) && (
             <button
               className="button primary"
-              disabled={busy || overCapacity}
+              disabled={
+                busy || overCapacity || (mode === 'replace' && !resumed && !replaceConfirmed)
+              }
               onClick={() => void act(() => onConfirm(preview))}
             >
-              {busy ? 'Connecting collection…' : 'Confirm connection'}
+              {busy
+                ? 'Checking and saving…'
+                : resumed
+                  ? 'Resume request'
+                  : mode === 'replace'
+                    ? 'Confirm account replacement'
+                    : 'Confirm connection'}
             </button>
           )}
         </div>

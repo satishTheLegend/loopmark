@@ -24,7 +24,9 @@
     "native:ios:build": "node scripts/native/build-ios.mjs",
     "native:android:build": "node scripts/native/build-android.mjs",
     "test:native:ios": "node scripts/native/test-ios.mjs",
-    "test:native:android": "node scripts/native/test-android.mjs"
+    "test:native:android": "node scripts/native/test-android.mjs",
+    "test:release": "node scripts/test-release.mjs",
+    "test:release:contracts": "node --test tests/release/*.test.mjs"
   },
   "engines": {
     "node": ">=22.12.0"
