@@ -15,6 +15,7 @@ export type FunctionName =
   | 'collection-replace'
   | 'account-delete'
   | 'deletion-status'
+  | 'billing-config'
   | 'checkout'
   | 'purchase-restore'
   | 'purchase-recovery'

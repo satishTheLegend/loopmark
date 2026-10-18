@@ -29,6 +29,7 @@ export interface LocalDataDependencies {
   repository: Repository
   media: PlatformMedia
   plans: OperationPlanStore
+  mediaConcurrency?: number
   /** Capture a copy at action start. Every persistence port fences this exact scope. */
   scope: () => SessionScope
 }
@@ -137,7 +138,7 @@ export async function normalizeBackup(
 export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter {
   const { repository, media, plans } = deps
   const scope = () => structuredClone(deps.scope())
-  const limit = limiter(2)
+  const limit = limiter(deps.mediaConcurrency ?? 2)
   const list = async (bound: SessionScope) => {
     const view = await repository.readView(bound.key)
     return view.projects

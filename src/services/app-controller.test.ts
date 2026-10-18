@@ -193,3 +193,20 @@ it('a validated native/web callback follows the same verified guest-preserving a
   expect(controller.getSnapshot().account?.email).toBe('verified@example.test')
   expect(controller.getSnapshot().scope?.key).toEqual(guest.key)
 })
+it('secure credential read failure leaves existing local projects usable without a plaintext fallback', async () => {
+  const { controller, repo, auth, scope } = await setup()
+  await controller.dispose()
+  await repo.commitLocal(scope.key, create(), scope.generation)
+  auth.cachedSession = async () => {
+    throw new DomainError('LOCAL_STORAGE_FAILED')
+  }
+  auth.currentSession = async () => {
+    throw new DomainError('AUTH_REQUIRED')
+  }
+  const local = createAppController({ repository: repo, auth })
+  controllers.push(local)
+  await local.initialize()
+  expect(local.getSnapshot().phase).toBe('ready')
+  expect(local.getSnapshot().view?.projects).toHaveLength(1)
+  expect(local.getSnapshot().account).toBeNull()
+})

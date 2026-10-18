@@ -245,10 +245,15 @@ export function createAppController(options: AppControllerOptions): AppControlle
         let scope = await repository.readActive()
         if (!scope) throw new DomainError('LOCAL_STORAGE_FAILED')
         if (auth) {
-          const cached = await auth.cachedSession()
-          if (cached) {
-            session = cached.session
-            publish({ account: cached.identity, auth: 'expired' })
+          try {
+            const cached = await auth.cachedSession()
+            if (cached) {
+              session = cached.session
+              publish({ account: cached.identity, auth: 'expired' })
+            }
+          } catch (error) {
+            session = null
+            publish({ account: null, auth: 'expired', error: safeError(error) })
           }
         }
         const selected = await repository.readView(scope.key)
