@@ -91,6 +91,12 @@ try {
   const before = await countCollections(page)
   await send('valid')
   const notice = () => page.getByRole('region', { name: 'Incoming backup file' })
+  async function dismissNotice() {
+    await notice().getByRole('button', { name: 'Dismiss backup file', exact: true }).click()
+    // A click does not await the asynchronous durable finish. Do not kill the
+    // process or send the next fixture until the product acknowledges dismissal.
+    await notice().waitFor({ state: 'hidden' })
+  }
   await notice().getByRole('button', { name: 'Review backup file', exact: true }).click()
   await page.getByRole('dialog', { name: 'Restore this little collection?' }).waitFor()
   check(
@@ -109,7 +115,7 @@ try {
   await page.getByRole('button', { name: /^My projects/ }).click()
   await page.getByRole('button', { name: `Pick up External valid ${tag}`, exact: true }).waitFor()
   await notice().getByText('This incoming file could not be prepared.', { exact: false }).waitFor()
-  await notice().getByRole('button', { name: 'Dismiss backup file', exact: true }).click()
+  await dismissNotice()
   check(
     (await countCollections(page)) === before + 1,
     'Restore did not create exactly one separate collection',
@@ -118,7 +124,7 @@ try {
   await notice()
     .getByRole('heading', { name: 'Backup file already handled', exact: true })
     .waitFor()
-  await notice().getByRole('button', { name: 'Dismiss backup file', exact: true }).click()
+  await dismissNotice()
   page = await restart()
   await page.getByRole('button', { name: `Pick up External valid ${tag}`, exact: true }).waitFor()
   check(
@@ -142,10 +148,10 @@ try {
     (await page.getByRole('dialog').count()) === 0,
     'Malformed backup opened a restore confirmation',
   )
-  await notice().getByRole('button', { name: 'Dismiss backup file', exact: true }).click()
+  await dismissNotice()
   await send('oversized')
   await notice().getByText('This incoming file could not be prepared.', { exact: false }).waitFor()
-  await notice().getByRole('button', { name: 'Dismiss backup file', exact: true }).click()
+  await dismissNotice()
   check((await countCollections(page)) === before + 1, 'Rejected external file changed collections')
   await writeFile(
     `${await evidenceDirectory()}/android-inbox-product.json`,
