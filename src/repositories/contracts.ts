@@ -1,4 +1,5 @@
 import type {
+  AccountSession,
   CollectionInfo,
   CollectionKey,
   CollectionView,
@@ -21,7 +22,25 @@ export interface LocalCollectionReview {
   revision: string
   drafts: Array<{ key: string; revision: string }>
 }
+export interface RebaseInput {
+  session: AccountSession
+  pages: SnapshotManifest[]
+  recoveryId: string
+  recoveryName: string
+  allowMissingMedia?: boolean
+}
+export interface RebaseResult {
+  scope: SessionScope
+  recovered: CollectionKey
+}
 export interface Repository {
+  rebaseBlocked(key: CollectionKey): Promise<boolean>
+  completeRebase(
+    expected: SessionScope,
+    review: LocalCollectionReview,
+    input: RebaseInput,
+  ): Promise<RebaseResult>
+
   readActive(): Promise<SessionScope | null>
   reviewLocal(key: CollectionKey): Promise<LocalCollectionReview>
   /** Atomic complete-scope CAS, optional collection/draft-set CAS, and generation increment. */

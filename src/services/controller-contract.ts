@@ -6,6 +6,7 @@ import type {
   ProjectFields,
   SessionScope,
 } from '../domain/contracts'
+import type { LocalCollectionReview, RebaseResult } from '../repositories/contracts'
 import type { AttachmentItem } from './attachment-queue'
 import type { SafeError } from '../domain/errors'
 export interface LocalWorkCounts {
@@ -45,7 +46,26 @@ export type ConflictChoice =
   | { action: 'device' }
   | { action: 'merged'; fields: ProjectFields }
   | { action: 'later' }
+export interface SyncRecoveryPreview {
+  scope: SessionScope
+  review: LocalCollectionReview
+  recoveryId: string
+  counts: {
+    projects: number
+    checkpoints: number
+    drafts: number
+    unsent: number
+    missingAttachments: number | null
+  }
+  blockedByReplacement: boolean
+}
 export interface AppController {
+  prepareSyncRecovery(): Promise<SyncRecoveryPreview>
+  recoverSync(
+    preview: SyncRecoveryPreview,
+    options?: { allowMissingAttachments?: boolean },
+  ): Promise<RebaseResult>
+
   initialize(): Promise<void>
   getSnapshot(): ControllerState
   getSession(): AccountSession | null
