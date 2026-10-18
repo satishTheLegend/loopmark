@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "sourceRun": "5187e940-6da2-4a1a-98e6-6562557663df",
+  "startedAt": "2026-10-18T17:04:14.939Z",
+  "originalBurstSuccess": false,
+  "originalBurstFailurePreserved": true,
+  "readOnly": false,
+  "success": true,
+  "auxiliaryResponses": {
+    "account-session:200": 12,
+    "media-reserve:200": 20,
+    "media-upload:400": 10,
+    "media-upload:200": 10,
+    "sync-push:200": 10,
+    "media-download:200": 10,
+    "checkout:200": 1,
+    "webhook:200": 20,
+    "jobs:200": 1,
+    "controlled-overload:429": 25,
+    "compacted-replay:409": 1
+  },
+  "auxiliaryRetries": 0,
+  "committedInvariants": {
+    "feed": 2000,
+    "pending": 0,
+    "projects": 1000,
+    "receipts": 2000,
+    "checkpoints": 1000,
+    "receiptFeedMismatch": 0,
+    "maximumPendingPerOwner": 0,
+    "crossOwnerCollectionMismatch": 0
+  },
+  "reconstructedOriginalCommandHashesVerified": 2000,
+  "exactMaterializedEntitiesVerified": 2000,
+  "ownerCohortSha256": "ef08105403961728cba4031496f9f4029a3bd0bf6287d4df246c0c46cfeb91c4",
+  "finishedAt": "2026-10-18T17:04:19.730Z",
+  "auxiliaryStartedAt": "2026-10-18T17:04:15.273Z",
+  "auxiliaryScope": {
+    "existingSyntheticOwnersReauthenticated": 11,
+    "additionalSyntheticRateLimitOwners": 1,
+    "profileWideOperations": [
+      "synthetic billing seed",
+      "bounded purchase reconciliation",
+      "fair retention compaction"
+    ],
+    "originalMutationRecoveryReplays": 0,
+    "postCompactionOriginalCommandRefusalProbes": 1
+  },
+  "phase": "complete",
+  "remainingStagedObjects": 10,
+  "controlledTypedOverloadResponses": 25,
+  "dormantRetainedAccounts": 500,
+  "interruptedMediaRecovered": 10,
+  "duplicateWebhookDeliveries": 20,
+  "compactionRounds": 33,
+  "recoveryAndInvariantsComplete": true,
+  "sourceCommit": "2511d2c",
+  "command": "node scripts/test-load.mjs --continue 5187e940-6da2-4a1a-98e6-6562557663df --execute",
+  "elapsedSeconds": 5.4,
+  "harnessSourceSha256": "b4ec34c72f0ba4e44dbe3c84c22a933e7d5cd3b4b36f7b59ffcc0f6f79019d5f"
+}
