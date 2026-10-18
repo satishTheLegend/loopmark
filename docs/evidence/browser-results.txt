@@ -1,0 +1,33 @@
+
+> loopmark@1.0.0 test:e2e
+> playwright test
+
+
+Running 18 tests using 3 workers
+
+(node:20577) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20579) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20578) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [chromium] › tests/journeys.spec.ts:128:1 › search, craft filter and no-results recovery operate on opt-in samples (1.8s)
+  ✓   1 [chromium] › tests/journeys.spec.ts:62:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete (4.6s)
+  ✓   4 [chromium] › tests/journeys.spec.ts:213:1 › invalid or hostile imports preserve current data; valid replacement needs confirmation (3.5s)
+  ✓   2 [chromium] › tests/journeys.spec.ts:144:1 › simulated microphone recording and photo survive a full export and isolated-browser restore (5.5s)
+  ✓   5 [chromium] › tests/journeys.spec.ts:248:1 › browser storage write failures retain form values and leave existing checkpoints intact (2.2s)
+  ✓   6 [chromium] › tests/journeys.spec.ts:279:1 › failed restore rolls back the entire transaction (2.1s)
+  ✓   7 [chromium] › tests/journeys.spec.ts:303:1 › two tabs retain concurrent checkpoints and reject stale detail edits (3.5s)
+  ✓   8 [chromium] › tests/journeys.spec.ts:333:1 › bag label renders QR and print-only content, then opens the saved local project (2.6s)
+  ✓   9 [chromium] › tests/journeys.spec.ts:373:1 › production cache permits offline reload, capture, and later reload without remote requests (2.1s)
+  ✓  10 [chromium] › tests/journeys.spec.ts:409:1 › dialog traps keyboard focus and returns it to the opener (1.3s)
+  ✓  11 [chromium] › tests/journeys.spec.ts:424:1 › microphone permission denial and invalid photo have actionable recovery (2.1s)
+  ✓  12 [chromium] › tests/journeys.spec.ts:451:1 › a large photo is resized to the documented bound before saving (2.7s)
+  ✓  14 [chromium] › tests/journeys.spec.ts:528:1 › blocked storage shows recovery instead of claiming a saved collection (912ms)
+  ✓  13 [chromium] › tests/journeys.spec.ts:481:1 › voice capture stops at the simulated time limit, removes audio, and releases tracks on close (3.0s)
+  ✓  15 [chromium] › tests/journeys.spec.ts:543:1 › imported markup remains literal text and cannot execute scripts (2.2s)
+  ✓  16 [chromium] › tests/journeys.spec.ts:566:3 › mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation (2.6s)
+  ✓  17 [chromium] › tests/journeys.spec.ts:566:3 › mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation (2.7s)
+  ✓  18 [chromium] › tests/journeys.spec.ts:612:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (6.8s)
+
+  18 passed (24.0s)

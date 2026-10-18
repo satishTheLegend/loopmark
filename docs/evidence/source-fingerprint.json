@@ -1,0 +1,29 @@
+{
+  "sha256": "033e9cce2ea2817272932f9b7b7156584784a16594eac97977f3b2a1ba4b7542",
+  "files": [
+    "index.html",
+    "package-lock.json",
+    "package.json",
+    "playwright.config.ts",
+    "scripts/build-sw.mjs",
+    "src/App.tsx",
+    "src/components/BackupView.tsx",
+    "src/components/BagLabel.tsx",
+    "src/components/Forms.tsx",
+    "src/components/Guide.tsx",
+    "src/components/ProjectView.tsx",
+    "src/components/Shelf.tsx",
+    "src/components/VoiceNote.tsx",
+    "src/components/ui.tsx",
+    "src/data.test.ts",
+    "src/data.ts",
+    "src/main.tsx",
+    "src/media.ts",
+    "src/samples.ts",
+    "src/styles.css",
+    "src/types.ts",
+    "tests/journeys.spec.ts",
+    "tsconfig.json",
+    "vite.config.ts"
+  ]
+}

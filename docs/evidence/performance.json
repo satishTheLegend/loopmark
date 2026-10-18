@@ -1,0 +1,55 @@
+{
+  "measuredAt": "2026-10-18T08:11:17.940Z",
+  "cacheVersion": "loopmark-4d77b5f3b157",
+  "environment": "Chromium 156 headless on macOS ARM64, localhost, fresh contexts, no CPU/network throttling; 3 local lab samples, not field CWV. CLS observed through fonts/entry animation +500ms. No INP measurement.",
+  "samples": [
+    {
+      "fcp": 56,
+      "load": 24.200000002980232,
+      "cls": 0.004732798032407407,
+      "resources": 9,
+      "externalRequests": []
+    },
+    {
+      "fcp": 52,
+      "load": 26.700000002980232,
+      "cls": 0.004732798032407407,
+      "resources": 9,
+      "externalRequests": []
+    },
+    {
+      "fcp": 48,
+      "load": 27,
+      "cls": 0.0008348249421296296,
+      "resources": 9,
+      "externalRequests": []
+    }
+  ],
+  "assets": [
+    {
+      "file": "index-DxC3HXFs.js",
+      "bytes": 384112,
+      "gzip": 117205
+    },
+    {
+      "file": "index-P-4wcMPg.css",
+      "bytes": 37231,
+      "gzip": 8391
+    }
+  ],
+  "totalDistBytes": 667792,
+  "responsiveWidths": [
+    {
+      "viewport": 320,
+      "content": 320
+    },
+    {
+      "viewport": 390,
+      "content": 390
+    },
+    {
+      "viewport": 768,
+      "content": 768
+    }
+  ]
+}
