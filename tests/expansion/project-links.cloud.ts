@@ -48,7 +48,9 @@ test('a fresh bag link survives reload and OTP, opens only the explicitly select
     await b.getByRole('button', { name: 'Open in selected collection', exact: true }).click()
     await expect(b.getByRole('heading', { name: title, exact: true, level: 1 })).toBeVisible()
     await expect(b.getByRole('region', { name: 'Latest checkpoint' })).toContainText(next)
-    expect(await b.locator('body').innerText()).not.toContain('This saved link is no longer available')
+    expect(await b.locator('body').innerText()).not.toContain(
+      'This saved link is no longer available',
+    )
 
     // A different account can try the same public project code without learning its contents.
     await c.goto(`${origin}/p/${projectId}`)
