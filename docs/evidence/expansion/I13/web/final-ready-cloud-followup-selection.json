@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+  "productSourceCommit": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+  "files": [
+    "tests/expansion/auth-errors.cloud.ts",
+    "tests/expansion/rebase.cloud.ts",
+    "tests/expansion/media-export.cloud.ts"
+  ],
+  "titles": [
+    "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+    "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+    "actual complete export names the missing checkpoint and retries only its absent bytes",
+    "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+    "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+    "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command"
+  ],
+  "args": [
+    "run",
+    "test:sync",
+    "--",
+    "tests/expansion/auth-errors.cloud.ts",
+    "tests/expansion/rebase.cloud.ts",
+    "tests/expansion/media-export.cloud.ts",
+    "--workers=1"
+  ],
+  "startedAt": "2026-10-18T18:30:16.811Z",
+  "finishedAt": "2026-10-18T18:35:25.222Z",
+  "exitCode": 1,
+  "signal": null
+}

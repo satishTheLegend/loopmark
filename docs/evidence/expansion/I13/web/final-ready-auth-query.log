@@ -1,0 +1,28 @@
+
+> loopmark@1.0.0 test:sync
+> node scripts/test-sync-smoke.mjs tests/expansion/auth-errors.cloud.ts --grep reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy --workers=1
+
+[WebServer] (node:86730) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:86752) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:86754) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.5s)
+(node:86811) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [firefox] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.0s)
+(node:86886) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [webkit] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.5s)
+(node:86972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.4s)
+(node:87030) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.2s)
+
+  5 passed (11.1s)

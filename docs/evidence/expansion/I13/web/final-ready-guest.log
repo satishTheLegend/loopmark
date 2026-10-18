@@ -1,0 +1,61 @@
+
+> loopmark@1.0.0 test:e2e
+> playwright test tests/expansion/app-startup.spec.ts tests/draft-recovery.spec.ts --workers=1
+
+[WebServer] (node:79864) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 40 tests using 1 worker
+
+(node:79866) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.7s)
+  ✓   2 [chromium] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (645ms)
+  ✓   3 [chromium] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (295ms)
+  ✓   4 [chromium] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (1.5s)
+  ✓   5 [chromium] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (637ms)
+  ✓   6 [chromium] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.0s)
+  ✓   7 [chromium] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (129ms)
+  ✓   8 [chromium] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (183ms)
+(node:79932) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.7s)
+  ✓  10 [firefox] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (744ms)
+  ✓  11 [firefox] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (431ms)
+  ✓  12 [firefox] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (1.6s)
+  ✓  13 [firefox] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (856ms)
+  ✓  14 [firefox] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.5s)
+  ✓  15 [firefox] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (201ms)
+  ✓  16 [firefox] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (308ms)
+(node:80050) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [webkit] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.8s)
+  ✓  18 [webkit] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (767ms)
+  ✓  19 [webkit] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (404ms)
+  ✓  20 [webkit] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (1.5s)
+  ✓  21 [webkit] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (779ms)
+  ✓  22 [webkit] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.4s)
+  ✓  23 [webkit] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (302ms)
+  ✓  24 [webkit] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (586ms)
+(node:80143) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  25 [chromium-mobile] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.9s)
+  ✓  26 [chromium-mobile] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (687ms)
+  ✓  27 [chromium-mobile] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (302ms)
+  ✓  28 [chromium-mobile] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (1.6s)
+  ✓  29 [chromium-mobile] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (663ms)
+  ✓  30 [chromium-mobile] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.3s)
+  ✓  31 [chromium-mobile] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (155ms)
+  ✓  32 [chromium-mobile] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (199ms)
+(node:80211) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [webkit-mobile] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.7s)
+  ✓  34 [webkit-mobile] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (727ms)
+  ✓  35 [webkit-mobile] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (374ms)
+  ✓  36 [webkit-mobile] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (1.5s)
+  ✓  37 [webkit-mobile] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (703ms)
+  ✓  38 [webkit-mobile] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.0s)
+  ✓  39 [webkit-mobile] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (271ms)
+  ✓  40 [webkit-mobile] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (329ms)
+
+  40 passed (44.1s)

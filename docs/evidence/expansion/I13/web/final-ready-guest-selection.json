@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "bc661da53127f4d53c70244d267885899190d36c",
+  "files": [
+    "tests/expansion/app-startup.spec.ts",
+    "tests/draft-recovery.spec.ts"
+  ],
+  "titles": [
+    "production startup migrates legacy saved work and draft, then uses the normalized repository",
+    "complete backup restores separately and collection selection preserves source projects and drafts",
+    "unavailable storage shows recovery guidance without creating an empty workbasket",
+    "delayed route focus preserves a field the maker has already focused",
+    "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+    "a recovered draft can be discarded without creating a project",
+    "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+    "discard serializes against further typing and save until draft storage finishes"
+  ],
+  "args": [
+    "run",
+    "test:e2e",
+    "--",
+    "tests/expansion/app-startup.spec.ts",
+    "tests/draft-recovery.spec.ts",
+    "--workers=1"
+  ],
+  "startedAt": "2026-10-18T18:28:33.467Z",
+  "finishedAt": "2026-10-18T18:29:17.946Z",
+  "exitCode": 0,
+  "signal": null
+}

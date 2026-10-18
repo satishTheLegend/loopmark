@@ -1,0 +1,205 @@
+
+> loopmark@1.0.0 test:sync
+> node scripts/test-sync-smoke.mjs tests/expansion/auth-errors.cloud.ts tests/expansion/rebase.cloud.ts tests/expansion/media-export.cloud.ts --workers=1
+
+[WebServer] (node:80624) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:80650) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 30 tests using 1 worker
+
+(node:80661) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/expansion/auth-errors.cloud.ts:73:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (3.7s)
+  ✘   2 [chromium] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.3s)
+(node:80815) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [chromium] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (13.7s)
+  ✓   4 [chromium] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.1s)
+  ✓   5 [chromium] › tests/expansion/rebase.cloud.ts:95:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (9.8s)
+  ✓   6 [chromium] › tests/expansion/rebase.cloud.ts:95:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (17.1s)
+(node:81796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [firefox] › tests/expansion/auth-errors.cloud.ts:73:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (3.5s)
+  ✘   8 [firefox] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.7s)
+(node:81957) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [firefox] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (12.8s)
+  ✓  10 [firefox] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.3s)
+  ✓  11 [firefox] › tests/expansion/rebase.cloud.ts:95:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (10.6s)
+  ✓  12 [firefox] › tests/expansion/rebase.cloud.ts:95:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (16.5s)
+(node:83238) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [webkit] › tests/expansion/auth-errors.cloud.ts:73:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (2.9s)
+  ✘  14 [webkit] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.4s)
+(node:83363) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 [webkit] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (12.6s)
+  ✓  16 [webkit] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (14.1s)
+  ✓  17 [webkit] › tests/expansion/rebase.cloud.ts:95:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (11.7s)
+  ✓  18 [webkit] › tests/expansion/rebase.cloud.ts:95:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (23.8s)
+(node:84457) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  19 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:73:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (3.8s)
+  ✘  20 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.4s)
+(node:84542) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  21 [chromium-mobile] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (14.3s)
+  ✓  22 [chromium-mobile] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (12.8s)
+  ✓  23 [chromium-mobile] › tests/expansion/rebase.cloud.ts:95:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (10.0s)
+  ✓  24 [chromium-mobile] › tests/expansion/rebase.cloud.ts:95:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (16.0s)
+(node:85306) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  25 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:73:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (3.0s)
+  ✘  26 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.3s)
+(node:85413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  27 [webkit-mobile] › tests/expansion/media-export.cloud.ts:59:1 › actual complete export names the missing checkpoint and retries only its absent bytes (11.8s)
+  ✓  28 [webkit-mobile] › tests/expansion/media-export.cloud.ts:152:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.2s)
+  ✓  29 [webkit-mobile] › tests/expansion/rebase.cloud.ts:95:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (9.5s)
+  ✓  30 [webkit-mobile] › tests/expansion/rebase.cloud.ts:95:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (15.7s)
+
+
+  1) [chromium] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+
+    Error: Synthetic resend fixture was not prepared
+
+      141 |   const responseAt = performance.now()
+      142 |   const captured = marker as FixtureSendMarker | null
+    > 143 |   if (!captured) throw new Error('Synthetic resend fixture was not prepared')
+          |                        ^
+      144 |   const databaseAge = Date.parse(captured.observedAt) - Date.parse(captured.sentAt)
+      145 |   const ageLowerBoundMs = databaseAge + responseAt - captured.sqlFinishedAt
+      146 |   const ageUpperBoundMs = databaseAge + responseAt - captured.sqlStartedAt
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/auth-errors.cloud.ts:143:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [firefox] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+
+    Error: Synthetic resend fixture was not prepared
+
+      141 |   const responseAt = performance.now()
+      142 |   const captured = marker as FixtureSendMarker | null
+    > 143 |   if (!captured) throw new Error('Synthetic resend fixture was not prepared')
+          |                        ^
+      144 |   const databaseAge = Date.parse(captured.observedAt) - Date.parse(captured.sentAt)
+      145 |   const ageLowerBoundMs = databaseAge + responseAt - captured.sqlFinishedAt
+      146 |   const ageUpperBoundMs = databaseAge + responseAt - captured.sqlStartedAt
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/auth-errors.cloud.ts:143:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [webkit] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+
+    Error: Synthetic resend fixture was not prepared
+
+      141 |   const responseAt = performance.now()
+      142 |   const captured = marker as FixtureSendMarker | null
+    > 143 |   if (!captured) throw new Error('Synthetic resend fixture was not prepared')
+          |                        ^
+      144 |   const databaseAge = Date.parse(captured.observedAt) - Date.parse(captured.sentAt)
+      145 |   const ageLowerBoundMs = databaseAge + responseAt - captured.sqlFinishedAt
+      146 |   const ageUpperBoundMs = databaseAge + responseAt - captured.sqlStartedAt
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/auth-errors.cloud.ts:143:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+
+    Error: Synthetic resend fixture was not prepared
+
+      141 |   const responseAt = performance.now()
+      142 |   const captured = marker as FixtureSendMarker | null
+    > 143 |   if (!captured) throw new Error('Synthetic resend fixture was not prepared')
+          |                        ^
+      144 |   const databaseAge = Date.parse(captured.observedAt) - Date.parse(captured.sentAt)
+      145 |   const ageLowerBoundMs = databaseAge + responseAt - captured.sqlFinishedAt
+      146 |   const ageUpperBoundMs = databaseAge + responseAt - captured.sqlStartedAt
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/auth-errors.cloud.ts:143:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-chromium-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+
+    Error: Synthetic resend fixture was not prepared
+
+      141 |   const responseAt = performance.now()
+      142 |   const captured = marker as FixtureSendMarker | null
+    > 143 |   if (!captured) throw new Error('Synthetic resend fixture was not prepared')
+          |                        ^
+      144 |   const databaseAge = Date.parse(captured.observedAt) - Date.parse(captured.sentAt)
+      145 |   const ageLowerBoundMs = databaseAge + responseAt - captured.sqlFinishedAt
+      146 |   const ageUpperBoundMs = databaseAge + responseAt - captured.sqlStartedAt
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/auth-errors.cloud.ts:143:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-webkit-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5 failed
+    [chromium] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+    [firefox] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+    [webkit] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+    [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+    [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:112:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+  25 passed (5.1m)

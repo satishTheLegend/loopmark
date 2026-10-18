@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+  "productSourceCommit": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+  "files": [
+    "tests/expansion/auth-errors.cloud.ts"
+  ],
+  "titles": [
+    "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy"
+  ],
+  "args": [
+    "run",
+    "test:sync",
+    "--",
+    "tests/expansion/auth-errors.cloud.ts",
+    "--grep",
+    "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+    "--workers=1"
+  ],
+  "startedAt": "2026-10-18T18:36:56.790Z",
+  "finishedAt": "2026-10-18T18:37:08.286Z",
+  "exitCode": 0,
+  "signal": null
+}
