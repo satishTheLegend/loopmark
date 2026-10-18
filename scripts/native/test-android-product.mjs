@@ -100,6 +100,34 @@ try {
   await page
     .getByText('Account connection is unavailable in this copy of Loopmark.', { exact: false })
     .waitFor()
+  await page.getByRole('button', { name: 'Preview diagnostic report', exact: true }).click()
+  const preview = await page
+    .getByRole('dialog')
+    .getByLabel('Diagnostic JSON', { exact: true })
+    .inputValue()
+  const report = JSON.parse(preview)
+  if (
+    report.format !== 'loopmark-diagnostics' ||
+    report.platform !== 'android' ||
+    preview.includes(name) ||
+    preview.includes(nextStep)
+  )
+    throw new Error('Diagnostic preview is not the redacted native report.')
+  await page.getByRole('button', { name: 'Share diagnostic file', exact: true }).click()
+  await adb('shell', 'uiautomator', 'dump', '/sdcard/loopmark-product-share.xml')
+  const { stdout: shareSheet } = await adb('shell', 'cat', '/sdcard/loopmark-product-share.xml')
+  if (
+    !shareSheet.includes('loopmark-diagnostics.json') &&
+    !shareSheet.includes('Save or share this file')
+  )
+    throw new Error('Diagnostic file did not reach the OS share sheet.')
+  await adb('shell', 'input', 'keyevent', '4')
+  await page
+    .getByRole('dialog')
+    .getByRole('status')
+    .filter({ hasText: /Sharing cancelled|handed to the share sheet/ })
+    .waitFor()
+  await page.getByRole('button', { name: 'Close dialog', exact: true }).click()
   await adb('shell', 'input', 'keyevent', '4')
   await page
     .getByRole('heading', { name: 'Your projects, patiently waiting.', exact: true })
@@ -124,6 +152,7 @@ try {
           'checkpoint save',
           'process relaunch and saved next step',
           'account unavailable without configuration',
+          'redacted native diagnostic preview and OS share-sheet cancellation',
           'hardware back to workbasket',
         ],
       },

@@ -80,7 +80,7 @@ export class NativeShare implements SharePort {
       directory = staged.directory
       await Share.share({
         title: input.name,
-        dialogTitle: 'Save or share your complete backup',
+        dialogTitle: 'Save or share this file',
         files: [staged.uri],
       })
       completed = true

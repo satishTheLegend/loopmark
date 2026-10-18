@@ -67,6 +67,7 @@ await writeFile(
         'checkpoint save',
         'terminate and relaunch with saved next step',
         'account navigation',
+        'redacted native diagnostic preview and OS share-sheet cancellation',
       ],
     },
     null,

@@ -86,5 +86,16 @@ final class ProductFlows: XCTestCase {
         tap(app.buttons["Open navigation"], app: app)
         tap(app.buttons["Account & device"], app: app)
         XCTAssertTrue(app.staticTexts["Your account"].waitForExistence(timeout: 10), app.debugDescription)
+        tap(app.buttons["Preview diagnostic report"], app: app)
+        let diagnostic = app.textViews.firstMatch
+        XCTAssertTrue(diagnostic.waitForExistence(timeout: 10), app.debugDescription)
+        let report = diagnostic.value as? String ?? ""
+        XCTAssertTrue(report.contains("loopmark-diagnostics") && report.contains("ios"), app.debugDescription)
+        XCTAssertFalse(report.contains("iOS native QA scarf") || report.contains("Start row 24"))
+        tap(app.buttons["Share diagnostic file"], app: app)
+        XCTAssertTrue(dismiss.waitForExistence(timeout: 10), app.debugDescription)
+        dismiss.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2)).tap()
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Sharing cancelled")).firstMatch.waitForExistence(timeout: 10), app.debugDescription)
+        tap(app.buttons["Close dialog"], app: app)
     }
 }
