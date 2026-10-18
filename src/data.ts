@@ -17,6 +17,37 @@ const DATABASE = 'loopmark'
 const VERSION = 1
 const encoder = new TextEncoder()
 
+/** Installed once by application startup after the destination repository is verified. */
+export interface DataAdapter {
+  listProjects(): Promise<Project[]>
+  getLibraryState(): Promise<LibraryState>
+  createProject(input: ProjectInput, operationToken?: string): Promise<Project>
+  updateProject(id: string, input: ProjectInput, expectedUpdatedAt: string): Promise<Project>
+  setProjectStatus(
+    id: string,
+    status: Project['status'],
+    expectedUpdatedAt: string,
+  ): Promise<Project>
+  deleteProject(id: string, expectedUpdatedAt: string): Promise<void>
+  addCheckpoint(id: string, input: CheckpointInput, operationToken?: string): Promise<Project>
+  exportBackup(): Promise<Backup>
+  restoreBackup(backup: Backup, expectedRevision?: string): Promise<void>
+  seedSamples(backup: Backup): Promise<void>
+  subscribe(listener: () => void): () => void
+}
+let adapter: DataAdapter | undefined
+export function installDataAdapter(destination: DataAdapter): void {
+  if (adapter && adapter !== destination) throw new Error('The data adapter is already installed.')
+  adapter = destination
+}
+
+/** Migration owns the version barrier; close our legacy handle before requesting that barrier. */
+export async function closeLegacyDatabase(): Promise<void> {
+  const previous = database
+  database = undefined
+  if (previous) (await previous).close()
+}
+
 interface Stats {
   key: 'library'
   bytes: number
@@ -151,6 +182,7 @@ function publish() {
   channel?.postMessage('changed')
 }
 export function subscribe(listener: () => void): () => void {
+  if (adapter) return adapter.subscribe(listener)
   listeners.add(listener)
   if (listeners.size === 1 && typeof window !== 'undefined') {
     window.addEventListener('focus', dispatch)
@@ -231,6 +263,7 @@ function writeProject(
 }
 
 export async function listProjects(): Promise<Project[]> {
+  if (adapter) return adapter.listProjects()
   return transaction('readonly', (tx, done) => {
     const request = tx.objectStore('projects').getAll()
     request.onsuccess = () =>
@@ -249,6 +282,7 @@ export interface LibraryState {
 }
 const revisionOf = (stats?: Stats) => stats?.revision ?? stats?.lastUpdatedAt ?? 'empty'
 export async function getLibraryState(): Promise<LibraryState> {
+  if (adapter) return adapter.getLibraryState()
   return transaction('readonly', (tx, done) => {
     const request = tx.objectStore('meta').get('library')
     request.onsuccess = () => {
@@ -350,6 +384,7 @@ export async function createProject(
   input: ProjectInput,
   operationToken?: string,
 ): Promise<Project> {
+  if (adapter) return adapter.createProject(input, operationToken)
   const clean = validated(projectInputSchema, input)
   clean.name = clean.name.trim()
   const operation = operationToken ? await operationFor('create', operationToken, clean) : undefined
@@ -440,6 +475,7 @@ export async function updateProject(
   input: ProjectInput,
   expectedUpdatedAt: string,
 ): Promise<Project> {
+  if (adapter) return adapter.updateProject(idValue, input, expectedUpdatedAt)
   const clean = validated(projectInputSchema, input)
   return (await mutateProject(
     idValue,
@@ -458,6 +494,7 @@ export async function setProjectStatus(
   status: Project['status'],
   expectedUpdatedAt: string,
 ): Promise<Project> {
+  if (adapter) return adapter.setProjectStatus(idValue, status, expectedUpdatedAt)
   const clean = validated(z.enum(['active', 'finished']), status)
   return (await mutateProject(
     idValue,
@@ -467,6 +504,7 @@ export async function setProjectStatus(
 }
 
 export async function deleteProject(idValue: string, expectedUpdatedAt: string): Promise<void> {
+  if (adapter) return adapter.deleteProject(idValue, expectedUpdatedAt)
   await mutateProject(idValue, () => undefined, expectedUpdatedAt)
 }
 
@@ -475,6 +513,7 @@ export async function addCheckpoint(
   input: CheckpointInput,
   operationToken?: string,
 ): Promise<Project> {
+  if (adapter) return adapter.addCheckpoint(idValue, input, operationToken)
   const clean = validated(checkpointInputSchema, input)
   clean.nextStep = clean.nextStep.trim()
   const operation = operationToken
@@ -501,6 +540,7 @@ export async function addCheckpoint(
 }
 
 export async function exportBackup(): Promise<Backup> {
+  if (adapter) return adapter.exportBackup()
   return {
     format: 'loopmark',
     version: 1,
@@ -603,10 +643,12 @@ async function applyBackup(
 
 /** UI callers must pass the revision shown in their confirmation. Omission is for trusted reset/test callers. */
 export async function restoreBackup(backup: Backup, expectedRevision?: string): Promise<void> {
+  if (adapter) return adapter.restoreBackup(backup, expectedRevision)
   await applyBackup(backup, false, expectedRevision)
 }
 
 /** Adds opt-in examples only if the library is still empty when the write transaction runs. */
 export async function seedSamples(backup: Backup): Promise<void> {
+  if (adapter) return adapter.seedSamples(backup)
   await applyBackup(backup, true)
 }
