@@ -1,0 +1,67 @@
+{
+  "frozen_product_source": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+  "original_trace_path": "test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/trace.zip",
+  "original_trace_sha256": "1631285d43df1967def3453dd520e4484e3825bc9c6f2fbdd51d5982ba7ca8a1",
+  "profile": "firefox",
+  "time_basis": "seconds relative to Before Hooks start",
+  "configured_auth_email_max_frequency_seconds": 5,
+  "configuration_source": "supabase/config.toml:53",
+  "requests_to_real_auth_otp": [
+    {
+      "started_seconds": 2.836,
+      "finished_seconds": 2.99,
+      "status": 200
+    },
+    {
+      "started_seconds": 10.631,
+      "finished_seconds": 10.691,
+      "status": 200
+    }
+  ],
+  "request_start_gap_seconds": 7.795,
+  "ui_timeline": [
+    {
+      "event": "first send click",
+      "start_seconds": 2.653,
+      "finish_seconds": 2.831
+    },
+    {
+      "event": "resend-disabled assertion passes",
+      "seconds": 3.15
+    },
+    {
+      "event": "reload",
+      "start_seconds": 3.158,
+      "finish_seconds": 7.848
+    },
+    {
+      "event": "email fill after reload",
+      "start_seconds": 7.875,
+      "finish_seconds": 8.655
+    },
+    {
+      "event": "second send click",
+      "start_seconds": 8.813,
+      "finish_seconds": 10.63
+    }
+  ],
+  "original_assertion": {
+    "expected_status": 429,
+    "received_status": 200
+  },
+  "diagnosis": "The second request arrived after the configured resend interval expired. HTTP 200 was consistent with the real policy. The test incorrectly assumed reload and typing always finish inside five seconds.",
+  "fixture_change": "Keep initial real delivery, disabled resend control and reload. At the second POST boundary, guard the exact UUID example.invalid user and local Docker/profile, atomically require one matched auth.users row, set only its confirmation/recovery last-send timestamps to database clock plus one minute, then continue the unmocked request. The future fixture window is bounded by the existing total 60-second test timeout. Real HTTP429 and timed UI remedy assertions remain unchanged.",
+  "not_claimed": "This controlled fixture verifies real Auth throttled-state handling after reload; it does not measure the exact wall-clock five-second boundary or provider latency.",
+  "verification": {
+    "format_check": "PASS",
+    "git_diff_check": "PASS",
+    "browser_tests": "NOT RUN: root full cloud matrix active",
+    "backend_mutation": "NONE during preparation",
+    "product_changes": "NONE"
+  },
+  "test_blobs": {
+    "before": "bdea342689f01e6d4380452dc485eeb7403976d1",
+    "after": "ee6678aa9237cb6e60a0bd1c1970f6fc86e10180"
+  },
+  "privacy": "Only request timing/status and generic UI action names are retained. No email address, OTP, request/response body, token, credential or session data copied."
+}

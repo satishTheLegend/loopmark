@@ -6,17 +6,32 @@ import { assertLocalDocker } from '../../scripts/local.mjs'
 import { createProject, deliveredCode, origin } from '../cloud/helpers'
 
 const execute = promisify(execFile)
-async function expireFixtureCode(email: string) {
-  if (!/^loopmark-auth-[a-f0-9-]+@example\.invalid$/.test(email))
-    throw new Error('Only a generated local Auth fixture may be aged')
+async function prepareFixtureAuth(email: string, state: 'expired' | 'throttled') {
+  if (
+    !/^loopmark-auth-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}@example\.invalid$/.test(
+      email,
+    )
+  )
+    throw new Error('Only a generated local Auth fixture may be changed')
   const config = parseOperatorConfig(process.env, process.cwd())
   await assertLocalDocker()
-  // Advance only this synthetic fixture beyond the configured OTP lifetime.
-  // Auth's real verification endpoint remains the expiry authority.
-  const statement = `begin;
-    update auth.users set confirmation_sent_at=now()-interval '1 day',recovery_sent_at=now()-interval '1 day' where email='${email}';
-    update auth.one_time_tokens set created_at=now()-interval '1 day' where user_id in (select id from auth.users where email='${email}');
-    commit;`
+  // Auth's real HTTP endpoints remain the expiry and throttling authority.
+  const statement =
+    state === 'expired'
+      ? `begin;
+        update auth.users set confirmation_sent_at=now()-interval '1 day',recovery_sent_at=now()-interval '1 day' where email='${email}';
+        update auth.one_time_tokens set created_at=now()-interval '1 day' where user_id in (select id from auth.users where email='${email}');
+        commit;`
+      : `do $$
+        declare affected integer;
+        begin
+          update auth.users
+            set confirmation_sent_at=clock_timestamp()+interval '1 minute',
+                recovery_sent_at=clock_timestamp()+interval '1 minute'
+            where email='${email}';
+          get diagnostics affected = row_count;
+          if affected <> 1 then raise exception 'Expected one synthetic Auth fixture'; end if;
+        end $$;`
   await execute('docker', [
     'exec',
     `supabase_db_${config.projectId}`,
@@ -45,7 +60,7 @@ test('expired delivered code is rejected by actual Auth and a fresh code restore
   const oldCode = await deliveredCode(email, () =>
     page.getByRole('button', { name: 'Send sign-in code' }).click(),
   )
-  await expireFixtureCode(email)
+  await prepareFixtureAuth(email, 'expired')
   await page.getByLabel('Sign-in code', { exact: true }).fill(oldCode)
   const rejected = page.waitForResponse(
     (response) =>
@@ -83,6 +98,17 @@ test('reload cannot bypass actual Auth resend throttling and the UI offers a tim
   await expect(page.getByRole('button', { name: /Resend in/ })).toBeDisabled()
   await page.reload()
   await page.getByLabel('Email address', { exact: true }).fill(email)
+  // Reload/typing can outlast the local server's five-second interval under load.
+  // Pin only this user's last-send marker at the outgoing POST boundary. The
+  // controlled window exceeds the test's remaining total budget; this tests
+  // real server rejection and UI handling, not browser wall-clock speed.
+  await page.route('**/auth/v1/otp', async (route) => {
+    if (route.request().method() !== 'POST') return route.continue()
+    if (route.request().postDataJSON()?.email !== email)
+      throw new Error('Unexpected user in the synthetic resend request')
+    await prepareFixtureAuth(email, 'throttled')
+    await route.continue()
+  })
   const limited = page.waitForResponse(
     (response) =>
       new URL(response.url()).pathname === '/auth/v1/otp' && response.request().method() === 'POST',
