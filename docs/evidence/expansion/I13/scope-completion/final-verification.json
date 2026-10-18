@@ -1,0 +1,68 @@
+{
+  "final_product_commit": "89ad01e86400ad405324ff41a5641feef2630e54",
+  "initial_product_commit": "3a71ace64db611db4a92fcda3da3727f2f30fa18",
+  "source_blobs": {
+    "src/services/app-controller.ts": "9028651749b9a8040cad5b2b8bb91b5c272a9932",
+    "src/sync/coordinator.ts": "eea09d3019ebfe90ca1f0312685eaede7fa74b3a",
+    "src/services/app-controller.test.ts": "c95340423fa4ee8f749fa97005d61b9a6ebab669",
+    "src/sync/coordinator.test.ts": "5f74434b6f4253f96154370dd7415ba60902756c"
+  },
+  "review_finding": "An awaited scope check can finish before a queued stop() microtask, then the caller can resume after cancellation and publish. Synchronous signal checks now run immediately after the awaited checks and before initial/final publication.",
+  "controlled_red": {
+    "failed": 2,
+    "passed": 11,
+    "source_coordinator_blob": "0018b63e79ae0cad102f474ea3e3f26794007a4f",
+    "note": "Two new tests schedule the cancellation with nested microtasks around readActive, between check completion and publication. Prettier formatted their source afterward; exact pre-format red test blob not separately captured."
+  },
+  "final_verification": {
+    "focused": {
+      "passed": 50,
+      "files": 4
+    },
+    "all_unit": {
+      "passed": 373,
+      "files": 46,
+      "duration_ms": 2030
+    },
+    "typecheck": {
+      "exit_code": 0
+    }
+  },
+  "commands": {
+    "microtask-red": "npx vitest run src/sync/coordinator.test.ts > .gstack/scope-microtask-red.log 2>&1",
+    "final-focused-green": "npx vitest run src/services/app-controller.test.ts src/sync/coordinator.test.ts src/sync/offline-chain.test.ts src/repositories/browser/transition.test.ts > .gstack/scope-completion-final-focused.log 2>&1",
+    "final-all-unit-green": "npm test > .gstack/scope-completion-final-all-unit.log 2>&1",
+    "final-typecheck": "npx tsc -b --pretty false > .gstack/scope-completion-final-typecheck.log 2>&1"
+  },
+  "logs": {
+    "microtask-red": {
+      "source_path": ".gstack/scope-microtask-red.log",
+      "original_sha256": "3d5e58c759c360517fcd694fd18291009ada52a8df361c7b1e8d436f51639337",
+      "preserved_sha256": "2aa29bd2bbf25105560429ab697907db8d91239a7d8b38f9c5f4f2a1f9907b8a",
+      "exit_code": 1,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "final-focused-green": {
+      "source_path": ".gstack/scope-completion-final-focused.log",
+      "original_sha256": "ab7ee6ba4d2ab5a53c4ee01ce84f8600ee0f3ec6e1294b443eec6847caf6c6b1",
+      "preserved_sha256": "1ddd08fa8c91b90cf31e71445743215b5a0b268f4314c2b0fb24d9758bea8fa5",
+      "exit_code": 0,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "final-all-unit-green": {
+      "source_path": ".gstack/scope-completion-final-all-unit.log",
+      "original_sha256": "fffef811e20dc93fa07adc0af6748a1ca9f9b27f020ccf9ebefe1431c2c7aa01",
+      "preserved_sha256": "27762a0158f551c3f2e755d5e4434b15a96104f2fc09e114b9406f9c0ddbdfd2",
+      "exit_code": 0,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "final-typecheck": {
+      "source_path": ".gstack/scope-completion-final-typecheck.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    }
+  },
+  "runtime_qualification": "Not performed in this lane; root/native agent own integration cloud and native checks."
+}

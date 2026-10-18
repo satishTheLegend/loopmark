@@ -82,5 +82,6 @@
       "transformation": "Only absolute repository root replaced by <project-root>."
     }
   },
-  "scope": "Isolated client worktree only. No integration product edits, runtime tests or builds during the running cloud matrix. Actual cloud and native qualification owned separately by root/native agent."
+  "scope": "Isolated client worktree only. No integration product edits, runtime tests or builds during the running cloud matrix. Actual cloud and native qualification owned separately by root/native agent.",
+  "candidate_stage": "Intermediate correction; superseded by final product89ad01e. See final-verification.json for final source and results."
 }

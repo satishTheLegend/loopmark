@@ -1,0 +1,16 @@
+
+> loopmark@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.5 <project-root>
+
+
+ Test Files  46 passed (46)
+      Tests  373 passed (373)
+   Start at  23:04:33
+   Duration  2.03s (tests 58%, import 36%, transform 5%, worker 1%)
+
+    Isolate  46 workers spawned · ~132ms startup each (spawn + environment, per file)
+             at least ~544ms faster with isolate: false — reuses workers across files instead of one per file
+

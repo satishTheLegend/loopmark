@@ -1,0 +1,38 @@
+
+ RUN  v5.0.5 <project-root>
+
+ ❯ src/sync/coordinator.test.ts (13 tests | 2 failed) 149ms
+   × stop in the initial scope-check completion microtask prevents publication 3ms
+   × stop in the final scope-check completion microtask prevents publication 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/sync/coordinator.test.ts > stop in the initial scope-check completion microtask prevents publication
+ FAIL  src/sync/coordinator.test.ts > stop in the final scope-check completion microtask prevents publication
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array []
+
+
+Number of calls: 1
+
+ ❯ src/sync/coordinator.test.ts:167:25
+    165|     })
+    166|     await coordinator.run(scope)
+    167|     expect(changed).not.toHaveBeenCalled()
+       |                         ^
+    168|     coordinator.dispose()
+    169|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  23:04:19
+   Duration  607ms (import 51%, tests 28%, transform 20%)
+
