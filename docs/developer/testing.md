@@ -10,8 +10,8 @@ Run checks from the project directory. A missing runtime is a failing prerequisi
 | `npm run test:examples` | The contributor examples below execute against actual repository/service contracts |
 | `npm run test:docs` | Documented scripts, file links, configuration names and required setup paths remain present |
 | `npm run test:dx` | Read-only doctor failures, destructive-command refusal and bundled secret exclusion |
-| `npm run test:server -- --suite all` | Actual isolated SQL/Edge/Auth/Storage boundary tests; requires local stack |
-| `npm run test:sync` | Actual OTP, multi-browser conflict/media/replacement/deletion and app cloud UI; requires explicit `LOOPMARK_SYNC_PUBLIC_ENV` |
+| `npm run test:server -- --suite all` | Actual isolated SQL/Edge/Auth/Storage boundary tests; requires the local stack started with `--billing-fixture` |
+| `npm run test:sync` | Actual OTP, multi-browser conflict/media/replacement/deletion and app cloud UI; requires the local synthetic billing fixture and explicit `LOOPMARK_SYNC_PUBLIC_ENV` |
 | `npm run test:ui` | Synthetic component pages with real services/IDB where applicable and controlled provider I/O; no backend required |
 | `npm run test:load -- --accounts 100` / `--accounts 1000` | Actual isolated reconnect, interrupted-media, webhook, compaction and encrypted-backup workload; preserves burst failures separately from bounded recovery |
 | `npm run test:load:capture` | Independently timed actual App checkpoint saves, reload and full export; overlap must be matched to a separate load report |

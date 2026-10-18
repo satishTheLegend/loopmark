@@ -35,11 +35,12 @@ The initial doctor may report the local project is not prepared. `local:up` crea
 Use synthetic email addresses. Read OTP codes in the profile's local Mailpit, at the `mail` port shown by doctor. Sign in, explicitly connect a local collection after reviewing the preview, then open a second independent browser profile and sign in. Save a checkpoint offline on the first, reconnect, and verify it appears exactly once on the second. Text and attachment status are separate; wait for attachment completion before claiming the photo is available on both devices.
 
 ```sh
+npm run local:up -- --billing-fixture
 npm run test:server -- --suite all
 LOOPMARK_SYNC_PUBLIC_ENV="$PWD/.env.local" npm run test:sync
 ```
 
-Stop the interactive Vite server before the sync runner starts its own server on that exact app port. The public env path must be explicit; only the three public Vite values are read. The sync runner uses the selected profile, validates the public API/app origin and requires the local stack. It fails when prerequisites are absent. Never point it at a shared or production account. Do not run it while another operator is resetting the same profile.
+Stop the interactive Vite server before running these checks; the sync runner starts its own server on that exact app port. The `--billing-fixture` flag enables the isolated synthetic payment provider required by the full backend and cloud purchase suites. It does not enroll a merchant, contact a real payment provider or qualify real purchases. The public env path must be explicit; only the three public Vite values are read. The sync runner uses the selected profile, validates the public API/app origin and requires the local stack. It fails when prerequisites are absent. Never point it at a shared or production account. Do not run it while another operator is resetting the same profile.
 
 Stop this profile without erasing data:
 
