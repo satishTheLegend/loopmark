@@ -59,7 +59,7 @@ The native dependency inventory records 115 resolved Maven runtime modules, twel
 **FINAL LOCAL ADJUDICATION PENDING.** Required remaining local evidence is finite:
 
 1. Bind the current native legacy harness, challenge-guarded audio restart, scheduler/controller proof, Android synthetic audio and four production journeys to retained exact artifacts; verify the recorded source/assets/bytes.
-2. Adjudicate every accepted requirement/branch using its specific source, assertions, execution and limits. Browser/operator source qualification is complete; its historical failures and preflight records remain retained.
+2. Finish the twenty-five branches awaiting current native binding and their higher-level requirement decisions. The other branches now carry explicit contract, rendered, actual-runtime, source-review, measurement or external decisions. Browser/operator source qualification is complete; historical failures and preflight records remain retained.
 
 Real merchant/store transactions, signed distribution/domain association, submitted privacy declarations, physical VoiceOver/TalkBack/camera/HEIC/memory-pressure/full-volume behavior, human cold setup and the consented fifteen-person pilot with actual 10/8/5 outcomes remain **external and unqualified**. Funding, named operational responsibility and release authorization remain activation gates. Fixtures and simulator/emulator results cannot substitute for them.
 
