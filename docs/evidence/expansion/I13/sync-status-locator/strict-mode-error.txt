@@ -1,0 +1,12 @@
+Error: expect(locator).toBeVisible() failed
+
+Locator: getByText('Synced to your account', { exact: true })
+Expected: visible
+Error: strict mode violation: getByText('Synced to your account', { exact: true }) resolved to 2 elements:
+    1) <span>…</span> aka getByText('Synced to your account').first()
+    2) <span role="status" class="sr-only" aria-live="polite" aria-atomic="true">Synced to your account</span> aka getByRole('status').filter({ hasText: 'Synced to your account' })
+
+Call log:
+  - Expect "toBeVisible" getByText('Synced to your account', { exact: true }) with timeout 20000ms
+  - waiting for getByText('Synced to your account', { exact: true })
+
