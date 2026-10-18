@@ -1,0 +1,9 @@
+
+ RUN  v5.0.5 <client-worktree>
+
+
+ Test Files  3 passed (3)
+      Tests  60 passed (60)
+   Start at  00:09:58
+   Duration  931ms (tests 81%, transform 9%, import 9%)
+

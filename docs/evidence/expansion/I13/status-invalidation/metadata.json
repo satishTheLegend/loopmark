@@ -1,6 +1,5 @@
 {
   "base_source": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
-  "candidate_source": "a01778045aa8d816590ac6346dd7764ad54f832f",
   "requirements": [
     "C01: distinct local, pending and synced state",
     "D02: cloud acknowledgement is separate from local durability"
@@ -15,15 +14,15 @@
   "green": {
     "focused": {
       "command": "vitest run src/services/app-controller.test.ts src/components/sync-summary.test.ts src/sync/runtime-scheduler.test.ts",
-      "passed": 54,
+      "passed": 60,
       "files": 3,
-      "duration_ms": 556
+      "duration_ms": 931
     },
     "all_units": {
       "command": "vitest run",
-      "passed": 387,
+      "passed": 393,
       "files": 47,
-      "duration_ms": 1610
+      "duration_ms": 1770
     },
     "typescript": {
       "command": "tsc -b --pretty false",
@@ -32,19 +31,42 @@
     "format": "Prettier and git diff --check PASS"
   },
   "production_file_blobs": {
-    "src/services/app-controller.ts": "a3d47dea3ef5c43e5d4d9c25b2008a12fa98b501",
+    "src/services/app-controller.ts": "4a4f32269a7af122a3ade6f40a49d8fb5acc82c5",
     "src/services/controller-contract.ts": "49aad32a386589eeaf9f1e377355bf855770eafd",
-    "src/components/sync-summary.ts": "4d41ce86de4467089a25f7d4e2876929c2cfd2f6"
+    "src/components/sync-summary.ts": "b94a10aa24108b57593edf97b008047ae0146eb0"
   },
   "preserved_evidence_sha256": {
     "red.log": "21222219de0cba0fa8a02f3b68a9d4f2db0e3dd2140a6aa190cbf2a7a2cfc401",
     "focused-green.log": "130a4d2252669556f919797f627811f669a4dd4a7c73dcdf7e6b2a041d12467f",
     "all-units-green.log": "d655a15ab12e5e35171880f2cc24428fc0b50b012c3ed61d0bc33b38f3046125",
     "typescript.log": "11ca1ccc49ba625ec196e14fc83c5f503174ab1fb46ae6274ef58cfbe6a64f9d",
-    "original-red-test.patch": "a387562b1f3504825d67c866a9fef2fb21f13156daa7cef22b05d92d3cbbb222"
+    "original-red-test.patch": "a387562b1f3504825d67c866a9fef2fb21f13156daa7cef22b05d92d3cbbb222",
+    "priority-red.log": "9c9e7fa6cc74ec58896b99711a519b1d50ae29aa1e1a63fb3c832c5f4f9782df",
+    "priority-focused-green.log": "fca99721f031c987b7718bc609c5bbe95867832497dc2a7f51fa5328ce7c3bd1",
+    "final-units-green.log": "166d09f7ab1be623c456b3ba8e980fb8111cd5cf4d1e24d0e4f3263cc5cad6ef",
+    "final-typescript.log": "11ca1ccc49ba625ec196e14fc83c5f503174ab1fb46ae6274ef58cfbe6a64f9d"
   },
   "scope": "Controller status freshness and summary label only. No App, runtime scheduler, repository, protocol, auth, payment, server or native adapter production change.",
   "runtime_verification": "No browser, native, backend or service execution in this lane. Independent review and root-coordinated affected runtime qualification pending.",
   "red_test_model": "Real BrowserRepository with fake-indexeddb; real local facade and actual coordinator with deterministic transport; hold only controller notification readActive. Facade creation, list/get/media reads and durable pending query all finish before held read releases. No network or timer makes this test fail.",
-  "privacy": "No credentials, OTPs, account records or provider payloads. Test output paths are replaced with <client-worktree>; other stdout unchanged."
+  "privacy": "No credentials, OTPs, account records or provider payloads. Test output paths are replaced with <client-worktree>; other stdout unchanged.",
+  "initial_candidate_source": "a01778045aa8d816590ac6346dd7764ad54f832f",
+  "candidate_source": "099f2b13ba283d5c41d357cd453823e753a8ac2e",
+  "independent_review_refinement": {
+    "finding": "New coordinator conflict/quota was not yet represented in held view.pending; the checking projection could hide the known actionable category.",
+    "controlled_red": {
+      "product_source": "a017780",
+      "command": "vitest run src/services/app-controller.test.ts -t 'a newly known'",
+      "failed": 4,
+      "passed": 2,
+      "skipped": 39
+    },
+    "correction": "Preserve coordinator conflict state and map known conflict/quota error categories in summary before checking/failure. No counts synthesized.",
+    "rendered_test": {
+      "file": "tests/ui/account-states.ui.ts",
+      "title": "known saved-change checking replaces current without repeated announcements and preserves new remedies",
+      "scenario": "sync-checking",
+      "execution": "NOT RUN in this lane; root-coordinated five-profile run pending"
+    }
+  }
 }

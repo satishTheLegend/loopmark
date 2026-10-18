@@ -1,0 +1,51 @@
+
+ RUN  v5.0.5 <client-worktree>
+
+ ❯ src/services/app-controller.test.ts (45 tests | 4 failed | 39 skipped) 148ms
+   × a newly known REVISION_CONFLICT remains actionable while the old view is held 17ms
+   × a newly known UPGRADE_REQUIRED remains actionable while the old view is held 6ms
+   × a newly known TECHNICAL_CAPACITY_REACHED remains actionable while the old view is held 5ms
+   × a newly known MEDIA_CAPACITY_REACHED remains actionable while the old view is held 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/app-controller.test.ts > a newly known REVISION_CONFLICT remains actionable while the old view is held
+AssertionError: expected 'Checking saved changes' to be 'Changes need your review' // Object.is equality
+
+Expected: "Changes need your review"
+Received: "Checking saved changes"
+
+ ❯ src/services/app-controller.test.ts:270:29
+    268|       notifySync()
+    269|       const summary = currentSummary(controller)
+    270|       expect(summary.label).toBe(expected)
+       |                             ^
+    271|       expect(summary.actionable).toBe(true)
+    272|       expect(summary.items).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/services/app-controller.test.ts > a newly known UPGRADE_REQUIRED remains actionable while the old view is held
+ FAIL  src/services/app-controller.test.ts > a newly known TECHNICAL_CAPACITY_REACHED remains actionable while the old view is held
+ FAIL  src/services/app-controller.test.ts > a newly known MEDIA_CAPACITY_REACHED remains actionable while the old view is held
+AssertionError: expected 'Sync needs your attention' to be 'Capacity needs your attention' // Object.is equality
+
+Expected: "Capacity needs your attention"
+Received: "Sync needs your attention"
+
+ ❯ src/services/app-controller.test.ts:270:29
+    268|       notifySync()
+    269|       const summary = currentSummary(controller)
+    270|       expect(summary.label).toBe(expected)
+       |                             ^
+    271|       expect(summary.actionable).toBe(true)
+    272|       expect(summary.items).toEqual([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 2 passed | 39 skipped (45)
+   Start at  00:10:24
+   Duration  268ms (tests 71%, import 20%, transform 9%, worker 1%)
+
