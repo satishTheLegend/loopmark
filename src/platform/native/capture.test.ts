@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { IDBFactory } from 'fake-indexeddb'
 const fixture = vi.hoisted(() => ({
   check: vi.fn(),
   request: vi.fn(),
@@ -38,6 +39,10 @@ vi.mock('@capacitor/camera', () => ({
 }))
 import { NativeAudio } from './audio'
 import { NativeCamera, type CameraContinuation } from './camera'
+import type { NativeCaptureSource } from './capture-recovery'
+import { openBrowserRepository } from '../../repositories/browser/repository'
+import { createBrowserDraftStore } from '../../repositories/browser/draft-store'
+import { info } from '../../repositories/browser/fixtures.test-support'
 describe('supplemental native capture dispatch guards (not device evidence)', () => {
   beforeEach(() => {
     vi.resetAllMocks()
@@ -147,5 +152,89 @@ describe('supplemental native capture dispatch guards (not device evidence)', ()
       status: 'cancelled',
       mayHaveCommitted: false,
     })
+  })
+  it('camera permission denial preserves the stored source draft, clears only its continuation, and releases busy state', async () => {
+    // Supplemental dispatch unit proof: real draft persistence via fake IndexedDB,
+    // a narrow recovery port double, and a mocked native Camera permission response.
+    // Actual native recovery/SQLite behavior is qualified separately by the device harness.
+    const repository = await openBrowserRepository({
+      factory: new IDBFactory(),
+      databaseName: 'camera-denial-draft',
+    })
+    const collection = info(),
+      scope = {
+        key: collection.key,
+        generation: 1,
+        device: { id: 'camera-device', generation: 'initial' },
+      }
+    await repository.createCollection(collection)
+    await repository.activate(scope)
+    const drafts = createBrowserDraftStore(repository, scope)
+    const before = {
+      key: 'checkpoint:source',
+      revision: 'original-revision',
+      baseRevision: '3',
+      value: {
+        nextStep: 'Keep the original instruction',
+        position: 'Row 12',
+        toolSize: '4 mm',
+        notes: 'Original draft',
+      },
+    }
+    await drafts.write(before.key, undefined, before)
+    const source = { scope, draftKey: before.key, draftRevision: before.revision }
+    let pending: { id: string; source: NativeCaptureSource } | undefined,
+      sequence = 0
+    const recovery = {
+      begin: vi.fn(async (input: NativeCaptureSource) => {
+        expect(input).toEqual(source)
+        expect((await drafts.read(input.draftKey))?.revision).toBe(input.draftRevision)
+        const id = `capture-${++sequence}`
+        pending = { id, source: structuredClone(input) }
+        return id
+      }),
+      finish: vi.fn(async (id: string) => {
+        if (pending?.id === id) pending = undefined
+      }),
+      restore: vi.fn(),
+      photo: vi.fn(),
+    }
+    const camera = new NativeCamera(() => true, {
+      source,
+      recovery,
+    } as unknown as CameraContinuation)
+    try {
+      fixture.photo.mockRejectedValueOnce(new Error('Camera permission denied'))
+      expect(await camera.photo()).toMatchObject({
+        status: 'rejected',
+        error: { code: 'PERMISSION_DENIED' },
+      })
+      expect(await drafts.read(before.key)).toEqual(before)
+      expect(pending).toBeUndefined()
+      expect(recovery.finish).toHaveBeenNthCalledWith(1, 'capture-1')
+      expect(camera.capturedPhotoId()).toBeUndefined()
+
+      fixture.photo.mockImplementationOnce(async () => {
+        // A newer continuation must survive cleanup of an older rejected callback.
+        expect(pending?.id).toBe('capture-2')
+        pending = { id: 'newer-capture', source: structuredClone(source) }
+        throw new Error('Camera permission denied')
+      })
+      expect(await camera.photo()).toMatchObject({
+        status: 'rejected',
+        error: { code: 'PERMISSION_DENIED' },
+      })
+      expect(fixture.photo).toHaveBeenCalledTimes(2)
+      expect(recovery.finish).toHaveBeenNthCalledWith(2, 'capture-2')
+      expect(pending?.id).toBe('newer-capture')
+      expect(recovery.restore).not.toHaveBeenCalled()
+      expect(recovery.photo).not.toHaveBeenCalled()
+      const after = await drafts.read(before.key)
+      expect(after).toEqual(before)
+      expect(after?.value).not.toHaveProperty('photo')
+      expect(camera.capturedPhotoId()).toBeUndefined()
+    } finally {
+      await repository.close()
+    }
   })
 })
