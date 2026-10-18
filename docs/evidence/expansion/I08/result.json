@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "scope": "I08 real local SQL/Auth/Storage/Edge with explicitly synthetic provider network fixture",
+  "observedAt": "2026-10-18T19:37:30.780478+05:30",
+  "sourceCommit": "7f1f161",
+  "sharedContractCommit": "ea81d56",
+  "profile": "loopmark-loopmark-expansi-eeac3023",
+  "executions": [
+    {
+      "command": "node scripts/test-server.mjs --suite billing",
+      "tests": 22,
+      "passed": 22,
+      "skipped": 0,
+      "durationSeconds": 42.09,
+      "startedAt": "2026-10-18T19:34:12+05:30"
+    },
+    {
+      "command": "node scripts/test-server.mjs --suite all",
+      "files": 13,
+      "tests": 63,
+      "passed": 63,
+      "skipped": 0,
+      "durationSeconds": 58.1,
+      "startedAt": "2026-10-18T19:35:14+05:30"
+    },
+    {
+      "command": "npx vitest run src/config.test.ts",
+      "tests": 38,
+      "passed": 38,
+      "skipped": 0
+    },
+    {
+      "command": "npx tsc -b",
+      "exitCode": 0
+    }
+  ],
+  "setup": "Actual fresh migrations001\u2013014. A first reset after Docker recovery failed during upstream service schema initialization; the clean retry completed before tests. Full suite ran against the same clean migrated stack after the focused billing suite.",
+  "earlierFailedRun": "An earlier complete server run was interrupted with exit130 after host free space fell to239MiB and Docker became unresponsive. It is not PASS evidence. Root-authorized build cache cleanup and Docker Desktop restart recovered the host; all reported final tests ran afterward.",
+  "boundaries": [
+    "Only deterministic synthetic Razorpay/RevenueCat HTTP contract behavior was exercised; no provider accounts, real charges, store purchase sheets or provider sandbox qualification.",
+    "The fixture is an exact local-only Docker alias, separately enabled; staging/production or non-sandbox fixture configuration is rejected. No host port is published.",
+    "Current official API shapes were checked; real provider ownership, refund/dispute delivery and jurisdiction retention remain release gates.",
+    "I11 recovery retention, operational schedules and I13 load are separate work."
+  ],
+  "reviewRegressions": [
+    "four cancelled or expired native intents permit new purchase while late verified outcomes remain authoritative",
+    "provider creation after deletion cannot repopulate erased checkout URL",
+    "original store receipt resolves uniquely to canonical RevenueCat purchase; ambiguity denies and saved status can resume",
+    "support-verified pending case progresses via status without raw-key resubmission",
+    "current owned recovery key hash detects rotation; historical operation receipt remains stable",
+    "global purchase lease concurrency capped at four with durable deferred identities"
+  ],
+  "images": [
+    {
+      "container": "supabase_db_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/postgres:17.11.0.004",
+      "imageId": "sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706"
+    },
+    {
+      "container": "loopmark_billing_fixture_loopmark-loopmark-expansi-eeac3023",
+      "image": "node:26.8.2-alpine@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868",
+      "imageId": "sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868"
+    },
+    {
+      "container": "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/edge-runtime:v1.77.4",
+      "imageId": "sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8"
+    },
+    {
+      "container": "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/storage-api:v1.82.1",
+      "imageId": "sha256:ec2ad41411eac8fc2b769b4bb00d1af32ae37eca3745c15bdb329db27d218934"
+    },
+    {
+      "container": "supabase_rest_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/postgrest:v16.4",
+      "imageId": "sha256:d155c6718ed9a9f990d159a2ab7c0a3f16944dbb6d0a0344557421042acfe0df"
+    },
+    {
+      "container": "supabase_realtime_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/realtime:v2.143.4",
+      "imageId": "sha256:35e99d3f1cbba5aa5585e8ac3cf70ecc54909ee4aee0626effed93c60fb41439"
+    },
+    {
+      "container": "supabase_inbucket_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/mailpit:v1.31.3",
+      "imageId": "sha256:ed9b00c609e77e99c79b93f1178255ebc271868920f2c69a8d166bd5634ed10d"
+    },
+    {
+      "container": "supabase_auth_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/gotrue:v2.197.0",
+      "imageId": "sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b"
+    },
+    {
+      "container": "supabase_kong_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/kong:2.8.1",
+      "imageId": "sha256:1b53405d8680a09d6f44494b7990bf7da2ea43f84a258c59717d4539abf09f6d"
+    },
+    {
+      "container": "loopmark_erasure_ledger_loopmark-loopmark-expansi-eeac3023",
+      "image": "node:26.8.2-alpine@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868",
+      "imageId": "sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868"
+    }
+  ],
+  "sha256": {
+    ".env.example": "628027cb3073270d1b47bcb328a4c9b3a058441fb769021d8996ce3ff1448f74",
+    "scripts/billing-fixture.mjs": "97e67c4f9746f466ed97e0d7c37cfcea6683002459485fe7f66ee9b6bf177615",
+    "scripts/local.mjs": "74c052570e5317b97501db4703b63752cde38c95c360620a9be64b255041c72a",
+    "src/config.test.ts": "e69e0bab8011605abb93acb9be72819245e89957b2f06d15fd7adaea31be47d8",
+    "src/domain/remote-contracts.ts": "f644481c6f2de8e27347dea830b6faa6b3e5ea8f034b175c3e5732e724193f8d",
+    "src/domain/remote-schema.ts": "6b99634c96cd6fb7e8d8d199b5571a5aad2b56c7af884318a9bd6eea1d475869",
+    "supabase/I08-wire.md": "3acacad39fa3162914ad3811ddc3cbe5cb15abbbafeeee29949fb60d9a836a31",
+    "supabase/billing-fixture/server.mjs": "48eab2f1c67e6c95a0816dbe8d27f823720a420d9d55683c7f3fe67b2f01d5a9",
+    "supabase/config.toml": "e903bd0d069d723458853c43679bf4360d0718f982dd3ec5d802e2d75724d7fc",
+    "supabase/functions/_shared/billing.ts": "953f352bb8daade7c162ece5b717073b8fd70ee02827487bd76f178bae0219b6",
+    "supabase/functions/_shared/config.ts": "55738f5457802a1d0fe2fb9e338b750c5c4e34b5c3525fc1f7a4381816930f92",
+    "supabase/functions/_shared/providers/http.ts": "fd65ca1bebcc68400f623556a2ccc0e2d6be29a737c98e62d62d086dcff2c525",
+    "supabase/functions/_shared/providers/razorpay.ts": "af3f5b429108387070bca4c69b041827705e2dc89514b92b577c90cd6cd3b5b3",
+    "supabase/functions/_shared/providers/revenuecat.ts": "91577b41b1b9bbf8e53f6791accc61f9b96c63596d47d60339555f3667e0aede",
+    "supabase/functions/_shared/raw-body.ts": "95ae6de1c12e62c6978aafe4db12c39b881b87c694ac9c279c8f244d41aa238e",
+    "supabase/functions/billing-config/index.ts": "7259cf7071664001a1bc7e17578292ca4ff1ab3b2c9b48490a42a69b9aaaeae2",
+    "supabase/functions/billing-webhook/index.ts": "fb29cd3e84185d34dbb8e4990d13a07cfe6631a555a6d00414e21253739ee859",
+    "supabase/functions/checkout/index.ts": "dd0775f93df8ac223dcc741f59f9d4aac7edc71d9074c0c601985a4481d9f836",
+    "supabase/functions/jobs/index.ts": "ef1552b9c81acf4d2e405c9d418aae9258e66836ca0528905b0a818028505d3d",
+    "supabase/functions/jobs/reconcile-purchases.ts": "638b00c8656973b24849b05981a2b17a59c5dd8c0af8fd3ae749d152b22260d3",
+    "supabase/functions/purchase-recovery/index.ts": "e10e59c29833828d66d3df87a6b68deb4415ef395c65ec04cec2f4a1eedb4344",
+    "supabase/functions/purchase-restore/index.ts": "9d5a6fc869c009082e87e1b493f83798c9b614bf7737019adb9d6af4edb2135d",
+    "supabase/migrations/202610180012_billing_ledger.sql": "2fb1b3df1f2aa88b556c88f6ff6b1d654085f3cefab05c8ad40aaa446c63f029",
+    "supabase/migrations/202610180013_billing_recovery.sql": "93b248455a9d5dc4be4a229baf8ea402b5cbcaf2bfb5d47523bd85e0f85a8d30",
+    "supabase/migrations/202610180014_billing_jobs.sql": "654892383a9065d9a5960202bdddb4aee43602648ac5167361583016ea4d3928",
+    "tests/server/billing-contract.test.ts": "c608da6d062052c80038dd0d29902cc9256b769d7a79dcdd2e9785fdc9d9ddf5",
+    "tests/server/billing-fixtures.ts": "a80ac213acaa396a73acc93090b0122bff84e0b7541b2683e74d3fd7846c293e",
+    "tests/server/billing.test.ts": "444ef5ce875fa8b1587f7a6ac1ac1a7465aaae5dea167ea1af08695adf9a30bc"
+  },
+  "sources": [
+    "https://razorpay.com/docs/api/payments/payment-links/create-standard/",
+    "https://razorpay.com/docs/api/payments/payment-links/fetch-all-standard/",
+    "https://razorpay.com/docs/api/payments/fetch-with-id/",
+    "https://razorpay.com/docs/api/disputes/fetch-all/",
+    "https://razorpay.com/docs/webhooks/validate-test/",
+    "https://www.revenuecat.com/docs/api-v2/purchase",
+    "https://www.revenuecat.com/docs/api-v2/customer/resources",
+    "https://github.com/razorpay/razorpay-node/blob/master/lib/utils/razorpay-utils.js"
+  ]
+}
