@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "bb8f05184d2759f7f3d9ae624bda627f7e8c3ec0",
+  "scope": "automated fresh checkout; existing host toolchain and warm npm download cache; no provider accounts",
+  "checkout": "loopmark.expansion-clean-contributor",
+  "initialState": {
+    "nodeModules": false,
+    "envLocal": false,
+    "dist": false
+  },
+  "install": {
+    "command": "npm ci",
+    "exitCode": 0,
+    "elapsedSeconds": 5.81,
+    "packages": 227,
+    "auditVulnerabilities": 0,
+    "node": "26.8.2"
+  },
+  "doctor": {
+    "capability": "guest",
+    "status": "ready",
+    "appPort": 42200
+  },
+  "checks": {
+    "developerDocuments": 10,
+    "browserAdapterExamples": 4
+  },
+  "walkthrough": {
+    "passed": true,
+    "startedAt": "2026-10-18T14:36:37.706Z",
+    "completedAt": "2026-10-18T14:36:41.584Z",
+    "browser": "156.0.8078.4",
+    "checks": [
+      "fresh guest project and checkpoint",
+      "reload next-step and photo",
+      "complete backup bytes",
+      "explicit separate collection restore",
+      "restored checkpoint and photo reload"
+    ],
+    "backupBytes": 1606,
+    "pageErrors": []
+  },
+  "humanFiveMinuteWalkthrough": "UNMEASURED",
+  "notes": [
+    "Two automation selectors expected an exact accessible name while the card includes nested text. The final run selects the visible project article and its button. No product change was required.",
+    "The four adapter examples are also exercised separately in actual iOS and Android native fixture runs."
+  ]
+}

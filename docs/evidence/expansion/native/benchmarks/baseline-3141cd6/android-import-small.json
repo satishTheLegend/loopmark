@@ -1,0 +1,3123 @@
+{
+  "schemaVersion": 1,
+  "measurementWindow": "loopmark-team-coordinated; host contention observed",
+  "target": "emulator-5580",
+  "platform": "android",
+  "runtimeVersion": "16",
+  "sourceCommit": "3141cd6586e4783b4f7ab1ba1a9f2f10363c8e81",
+  "manifestFileSha256": "c2b8923dc1bd7afb246b97bd3f4f4b36578c91d19a2e4d88a7247ecd13a74c42",
+  "artifactSha256": "5b5259a7f412ed5f3e7c5ca81b80727e68da109cd86d9339f57cfb821adab90a",
+  "host": {
+    "platform": "darwin",
+    "release": "27.0.0",
+    "arch": "arm64",
+    "model": "Apple M5",
+    "memoryBytes": 17179869184
+  },
+  "memoryMetric": "sampled sum of RSS KiB for isolated app host and its WebView processes; shared pages may be counted twice; peaks between samples may be missed",
+  "sampleIntervalRequestedMs": 100,
+  "runs": [
+    {
+      "sample": 1,
+      "launchedAt": 1792334643064,
+      "completedAt": 1792334654660,
+      "processToRepositoryReadyMs": 2660,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "android",
+        "origin": "https://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "5dcdc47d-26c5-4b0f-9a49-7efdd82aba4c",
+        "action": "import",
+        "dataset": "small",
+        "repositoryReadyMs": 816.4000000000233,
+        "repositoryReadyWallTime": 1792334645724,
+        "startingProjects": 0,
+        "startingCheckpoints": 0,
+        "fixtureBytes": 8214758,
+        "expectedProjects": 10,
+        "expectedCheckpoints": 100,
+        "importMs": 7507.900000000023,
+        "passed": true,
+        "completedAt": "2026-10-18T14:44:14.275Z"
+      },
+      "peak": {
+        "at": 1792334647542,
+        "stage": "importing",
+        "hostKiB": 265344,
+        "webContentKiB": 366000,
+        "webSupportKiB": 0,
+        "totalRssKiB": 631344,
+        "processes": [
+          {
+            "pid": 4440,
+            "rssKiB": 265344,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 4500,
+            "rssKiB": 366000,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792334647542,
+        "stage": "importing",
+        "hostKiB": 265344,
+        "webContentKiB": 366000,
+        "webSupportKiB": 0,
+        "totalRssKiB": 631344,
+        "processes": [
+          {
+            "pid": 4440,
+            "rssKiB": 265344,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 4500,
+            "rssKiB": 366000,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792334644958,
+          "stage": "launching",
+          "hostKiB": 251976,
+          "webContentKiB": 224328,
+          "webSupportKiB": 0,
+          "totalRssKiB": 476304,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 251976,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 224328,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334645542,
+          "stage": "launching",
+          "hostKiB": 256584,
+          "webContentKiB": 226632,
+          "webSupportKiB": 0,
+          "totalRssKiB": 483216,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 256584,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 226632,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334646023,
+          "stage": "generating",
+          "hostKiB": 267720,
+          "webContentKiB": 238756,
+          "webSupportKiB": 0,
+          "totalRssKiB": 506476,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 267720,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 238756,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334646309,
+          "stage": "generating",
+          "hostKiB": 271560,
+          "webContentKiB": 249376,
+          "webSupportKiB": 0,
+          "totalRssKiB": 520936,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 271560,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 249376,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334646603,
+          "stage": "generating",
+          "hostKiB": 265344,
+          "webContentKiB": 296724,
+          "webSupportKiB": 0,
+          "totalRssKiB": 562068,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265344,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 296724,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334646886,
+          "stage": "generating",
+          "hostKiB": 265344,
+          "webContentKiB": 297192,
+          "webSupportKiB": 0,
+          "totalRssKiB": 562536,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265344,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 297192,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334647155,
+          "stage": "importing",
+          "hostKiB": 265344,
+          "webContentKiB": 295720,
+          "webSupportKiB": 0,
+          "totalRssKiB": 561064,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265344,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 295720,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334647360,
+          "stage": "importing",
+          "hostKiB": 265344,
+          "webContentKiB": 298376,
+          "webSupportKiB": 0,
+          "totalRssKiB": 563720,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265344,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 298376,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334647542,
+          "stage": "importing",
+          "hostKiB": 265344,
+          "webContentKiB": 366000,
+          "webSupportKiB": 0,
+          "totalRssKiB": 631344,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265344,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 366000,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334647738,
+          "stage": "importing",
+          "hostKiB": 265472,
+          "webContentKiB": 329408,
+          "webSupportKiB": 0,
+          "totalRssKiB": 594880,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265472,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 329408,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334647912,
+          "stage": "importing",
+          "hostKiB": 265472,
+          "webContentKiB": 334220,
+          "webSupportKiB": 0,
+          "totalRssKiB": 599692,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265472,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 334220,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334648084,
+          "stage": "importing",
+          "hostKiB": 267760,
+          "webContentKiB": 279224,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546984,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 267760,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 279224,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334648254,
+          "stage": "importing",
+          "hostKiB": 271984,
+          "webContentKiB": 282240,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554224,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 271984,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 282240,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334648424,
+          "stage": "importing",
+          "hostKiB": 275472,
+          "webContentKiB": 281880,
+          "webSupportKiB": 0,
+          "totalRssKiB": 557352,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 275472,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 281880,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334648608,
+          "stage": "importing",
+          "hostKiB": 279028,
+          "webContentKiB": 284564,
+          "webSupportKiB": 0,
+          "totalRssKiB": 563592,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 279028,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284564,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334648781,
+          "stage": "importing",
+          "hostKiB": 282236,
+          "webContentKiB": 287012,
+          "webSupportKiB": 0,
+          "totalRssKiB": 569248,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 282236,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 287012,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334648947,
+          "stage": "importing",
+          "hostKiB": 286180,
+          "webContentKiB": 292520,
+          "webSupportKiB": 0,
+          "totalRssKiB": 578700,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 286180,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 292520,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334649117,
+          "stage": "importing",
+          "hostKiB": 289508,
+          "webContentKiB": 292132,
+          "webSupportKiB": 0,
+          "totalRssKiB": 581640,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 289508,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 292132,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334649291,
+          "stage": "importing",
+          "hostKiB": 292836,
+          "webContentKiB": 295116,
+          "webSupportKiB": 0,
+          "totalRssKiB": 587952,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 292836,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 295116,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334649465,
+          "stage": "importing",
+          "hostKiB": 292956,
+          "webContentKiB": 280080,
+          "webSupportKiB": 0,
+          "totalRssKiB": 573036,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 292956,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 280080,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334649653,
+          "stage": "importing",
+          "hostKiB": 296556,
+          "webContentKiB": 283932,
+          "webSupportKiB": 0,
+          "totalRssKiB": 580488,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 296556,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 283932,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334649834,
+          "stage": "importing",
+          "hostKiB": 300012,
+          "webContentKiB": 286236,
+          "webSupportKiB": 0,
+          "totalRssKiB": 586248,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 300012,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 286236,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334650010,
+          "stage": "importing",
+          "hostKiB": 303084,
+          "webContentKiB": 288308,
+          "webSupportKiB": 0,
+          "totalRssKiB": 591392,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 303084,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 288308,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334650200,
+          "stage": "importing",
+          "hostKiB": 266956,
+          "webContentKiB": 280572,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547528,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 266956,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 280572,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334650380,
+          "stage": "importing",
+          "hostKiB": 270284,
+          "webContentKiB": 282408,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552692,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 270284,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 282408,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334650559,
+          "stage": "importing",
+          "hostKiB": 265904,
+          "webContentKiB": 284596,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550500,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265904,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284596,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334650746,
+          "stage": "importing",
+          "hostKiB": 267320,
+          "webContentKiB": 279752,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547072,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 267320,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 279752,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334650929,
+          "stage": "importing",
+          "hostKiB": 266320,
+          "webContentKiB": 282236,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548556,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 266320,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 282236,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334651117,
+          "stage": "importing",
+          "hostKiB": 269520,
+          "webContentKiB": 289144,
+          "webSupportKiB": 0,
+          "totalRssKiB": 558664,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 269520,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 289144,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334651307,
+          "stage": "importing",
+          "hostKiB": 262072,
+          "webContentKiB": 302796,
+          "webSupportKiB": 0,
+          "totalRssKiB": 564868,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 262072,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 302796,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334651491,
+          "stage": "importing",
+          "hostKiB": 261952,
+          "webContentKiB": 304012,
+          "webSupportKiB": 0,
+          "totalRssKiB": 565964,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 261952,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 304012,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334651675,
+          "stage": "importing",
+          "hostKiB": 265072,
+          "webContentKiB": 304952,
+          "webSupportKiB": 0,
+          "totalRssKiB": 570024,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265072,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 304952,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334651859,
+          "stage": "importing",
+          "hostKiB": 266476,
+          "webContentKiB": 307140,
+          "webSupportKiB": 0,
+          "totalRssKiB": 573616,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 266476,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 307140,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334652057,
+          "stage": "importing",
+          "hostKiB": 265584,
+          "webContentKiB": 309316,
+          "webSupportKiB": 0,
+          "totalRssKiB": 574900,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265584,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 309316,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334652256,
+          "stage": "importing",
+          "hostKiB": 266196,
+          "webContentKiB": 281600,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547796,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 266196,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 281600,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334652452,
+          "stage": "importing",
+          "hostKiB": 265076,
+          "webContentKiB": 282928,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548004,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265076,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 282928,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334652637,
+          "stage": "importing",
+          "hostKiB": 263672,
+          "webContentKiB": 283700,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547372,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 263672,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 283700,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334652830,
+          "stage": "importing",
+          "hostKiB": 264036,
+          "webContentKiB": 283700,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547736,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 264036,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 283700,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334653033,
+          "stage": "importing",
+          "hostKiB": 264188,
+          "webContentKiB": 284168,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548356,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 264188,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284168,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334653217,
+          "stage": "importing",
+          "hostKiB": 263200,
+          "webContentKiB": 284028,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547228,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 263200,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284028,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334653398,
+          "stage": "importing",
+          "hostKiB": 264248,
+          "webContentKiB": 284028,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548276,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 264248,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284028,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334653617,
+          "stage": "importing",
+          "hostKiB": 263996,
+          "webContentKiB": 284028,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548024,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 263996,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284028,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334653825,
+          "stage": "importing",
+          "hostKiB": 262104,
+          "webContentKiB": 284004,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546108,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 262104,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284004,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334654016,
+          "stage": "importing",
+          "hostKiB": 264792,
+          "webContentKiB": 284132,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548924,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 264792,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284132,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334654203,
+          "stage": "importing",
+          "hostKiB": 265540,
+          "webContentKiB": 284084,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549624,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 265540,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 284084,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334654393,
+          "stage": "importing",
+          "hostKiB": 264556,
+          "webContentKiB": 282368,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546924,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 264556,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 282368,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334654579,
+          "stage": "complete",
+          "hostKiB": 264284,
+          "webContentKiB": 282256,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546540,
+          "processes": [
+            {
+              "pid": 4440,
+              "rssKiB": 264284,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4500,
+              "rssKiB": 282256,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "launchedAt": 1792334655105,
+      "completedAt": 1792334666917,
+      "processToRepositoryReadyMs": 2513,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "android",
+        "origin": "https://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "c4ebaf59-ba2a-4e42-89ad-5fb54b78a92c",
+        "action": "import",
+        "dataset": "small",
+        "repositoryReadyMs": 658.4000000000233,
+        "repositoryReadyWallTime": 1792334657618,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "fixtureBytes": 8214758,
+        "expectedProjects": 10,
+        "expectedCheckpoints": 100,
+        "importMs": 8132.29999999993,
+        "passed": true,
+        "completedAt": "2026-10-18T14:44:26.452Z"
+      },
+      "peak": {
+        "at": 1792334659682,
+        "stage": "importing",
+        "hostKiB": 272480,
+        "webContentKiB": 340420,
+        "webSupportKiB": 0,
+        "totalRssKiB": 612900,
+        "processes": [
+          {
+            "pid": 4882,
+            "rssKiB": 272480,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 4906,
+            "rssKiB": 340420,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792334659682,
+        "stage": "importing",
+        "hostKiB": 272480,
+        "webContentKiB": 340420,
+        "webSupportKiB": 0,
+        "totalRssKiB": 612900,
+        "processes": [
+          {
+            "pid": 4882,
+            "rssKiB": 272480,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 4906,
+            "rssKiB": 340420,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792334657064,
+          "stage": "launching",
+          "hostKiB": 250504,
+          "webContentKiB": 218348,
+          "webSupportKiB": 0,
+          "totalRssKiB": 468852,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 250504,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 218348,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334657348,
+          "stage": "launching",
+          "hostKiB": 254216,
+          "webContentKiB": 225772,
+          "webSupportKiB": 0,
+          "totalRssKiB": 479988,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 254216,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 225772,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334657631,
+          "stage": "opening",
+          "hostKiB": 259976,
+          "webContentKiB": 229356,
+          "webSupportKiB": 0,
+          "totalRssKiB": 489332,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 259976,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 229356,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334657937,
+          "stage": "generating",
+          "hostKiB": 262624,
+          "webContentKiB": 245612,
+          "webSupportKiB": 0,
+          "totalRssKiB": 508236,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 262624,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 245612,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334658334,
+          "stage": "generating",
+          "hostKiB": 268768,
+          "webContentKiB": 310860,
+          "webSupportKiB": 0,
+          "totalRssKiB": 579628,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 268768,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 310860,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334658638,
+          "stage": "importing",
+          "hostKiB": 270432,
+          "webContentKiB": 294312,
+          "webSupportKiB": 0,
+          "totalRssKiB": 564744,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 270432,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 294312,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334659011,
+          "stage": "importing",
+          "hostKiB": 272224,
+          "webContentKiB": 298544,
+          "webSupportKiB": 0,
+          "totalRssKiB": 570768,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 272224,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 298544,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334659266,
+          "stage": "importing",
+          "hostKiB": 272224,
+          "webContentKiB": 300736,
+          "webSupportKiB": 0,
+          "totalRssKiB": 572960,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 272224,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 300736,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334659472,
+          "stage": "importing",
+          "hostKiB": 272480,
+          "webContentKiB": 332892,
+          "webSupportKiB": 0,
+          "totalRssKiB": 605372,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 272480,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 332892,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334659682,
+          "stage": "importing",
+          "hostKiB": 272480,
+          "webContentKiB": 340420,
+          "webSupportKiB": 0,
+          "totalRssKiB": 612900,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 272480,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 340420,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334659868,
+          "stage": "importing",
+          "hostKiB": 272480,
+          "webContentKiB": 313984,
+          "webSupportKiB": 0,
+          "totalRssKiB": 586464,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 272480,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 313984,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334660047,
+          "stage": "importing",
+          "hostKiB": 271840,
+          "webContentKiB": 299464,
+          "webSupportKiB": 0,
+          "totalRssKiB": 571304,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 271840,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 299464,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334660226,
+          "stage": "importing",
+          "hostKiB": 280452,
+          "webContentKiB": 302744,
+          "webSupportKiB": 0,
+          "totalRssKiB": 583196,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 280452,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 302744,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334660402,
+          "stage": "importing",
+          "hostKiB": 289100,
+          "webContentKiB": 308508,
+          "webSupportKiB": 0,
+          "totalRssKiB": 597608,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 289100,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 308508,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334660583,
+          "stage": "importing",
+          "hostKiB": 293736,
+          "webContentKiB": 282172,
+          "webSupportKiB": 0,
+          "totalRssKiB": 575908,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 293736,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 282172,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334660760,
+          "stage": "importing",
+          "hostKiB": 265932,
+          "webContentKiB": 285116,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551048,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 265932,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 285116,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334660945,
+          "stage": "importing",
+          "hostKiB": 267888,
+          "webContentKiB": 289280,
+          "webSupportKiB": 0,
+          "totalRssKiB": 557168,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 267888,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 289280,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334661129,
+          "stage": "importing",
+          "hostKiB": 263608,
+          "webContentKiB": 281044,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544652,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263608,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 281044,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334661308,
+          "stage": "importing",
+          "hostKiB": 268132,
+          "webContentKiB": 286472,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554604,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 268132,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286472,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334661483,
+          "stage": "importing",
+          "hostKiB": 266064,
+          "webContentKiB": 282508,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548572,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 266064,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 282508,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334661658,
+          "stage": "importing",
+          "hostKiB": 265820,
+          "webContentKiB": 286568,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552388,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 265820,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286568,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334661834,
+          "stage": "importing",
+          "hostKiB": 264740,
+          "webContentKiB": 281724,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546464,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264740,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 281724,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334662025,
+          "stage": "importing",
+          "hostKiB": 264148,
+          "webContentKiB": 287520,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551668,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264148,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 287520,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334662205,
+          "stage": "importing",
+          "hostKiB": 263576,
+          "webContentKiB": 289648,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553224,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263576,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 289648,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334662390,
+          "stage": "importing",
+          "hostKiB": 264576,
+          "webContentKiB": 282836,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547412,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264576,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 282836,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334662573,
+          "stage": "importing",
+          "hostKiB": 264400,
+          "webContentKiB": 286400,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550800,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264400,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286400,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334662761,
+          "stage": "importing",
+          "hostKiB": 262716,
+          "webContentKiB": 304488,
+          "webSupportKiB": 0,
+          "totalRssKiB": 567204,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 262716,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 304488,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334662947,
+          "stage": "importing",
+          "hostKiB": 264324,
+          "webContentKiB": 305228,
+          "webSupportKiB": 0,
+          "totalRssKiB": 569552,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264324,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 305228,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334663153,
+          "stage": "importing",
+          "hostKiB": 261048,
+          "webContentKiB": 306024,
+          "webSupportKiB": 0,
+          "totalRssKiB": 567072,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 261048,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 306024,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334663348,
+          "stage": "importing",
+          "hostKiB": 264348,
+          "webContentKiB": 306864,
+          "webSupportKiB": 0,
+          "totalRssKiB": 571212,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264348,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 306864,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334663537,
+          "stage": "importing",
+          "hostKiB": 264036,
+          "webContentKiB": 308196,
+          "webSupportKiB": 0,
+          "totalRssKiB": 572232,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264036,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 308196,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334663722,
+          "stage": "importing",
+          "hostKiB": 263472,
+          "webContentKiB": 309192,
+          "webSupportKiB": 0,
+          "totalRssKiB": 572664,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263472,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 309192,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334663907,
+          "stage": "importing",
+          "hostKiB": 261372,
+          "webContentKiB": 282256,
+          "webSupportKiB": 0,
+          "totalRssKiB": 543628,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 261372,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 282256,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334664091,
+          "stage": "importing",
+          "hostKiB": 263024,
+          "webContentKiB": 283120,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546144,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263024,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 283120,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334664288,
+          "stage": "importing",
+          "hostKiB": 261916,
+          "webContentKiB": 283808,
+          "webSupportKiB": 0,
+          "totalRssKiB": 545724,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 261916,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 283808,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334664482,
+          "stage": "importing",
+          "hostKiB": 264264,
+          "webContentKiB": 284040,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548304,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264264,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 284040,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334664676,
+          "stage": "importing",
+          "hostKiB": 264900,
+          "webContentKiB": 284380,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549280,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264900,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 284380,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334664878,
+          "stage": "importing",
+          "hostKiB": 266360,
+          "webContentKiB": 284340,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550700,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 266360,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 284340,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334665069,
+          "stage": "importing",
+          "hostKiB": 264168,
+          "webContentKiB": 286120,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550288,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 264168,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286120,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334665264,
+          "stage": "importing",
+          "hostKiB": 263848,
+          "webContentKiB": 286252,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550100,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263848,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286252,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334665462,
+          "stage": "importing",
+          "hostKiB": 265296,
+          "webContentKiB": 285672,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550968,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 265296,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 285672,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334665659,
+          "stage": "importing",
+          "hostKiB": 263428,
+          "webContentKiB": 286232,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549660,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263428,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286232,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334665844,
+          "stage": "importing",
+          "hostKiB": 262636,
+          "webContentKiB": 286220,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548856,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 262636,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286220,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334666029,
+          "stage": "importing",
+          "hostKiB": 265400,
+          "webContentKiB": 286020,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551420,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 265400,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286020,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334666225,
+          "stage": "importing",
+          "hostKiB": 261680,
+          "webContentKiB": 285772,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547452,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 261680,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 285772,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334666424,
+          "stage": "importing",
+          "hostKiB": 266076,
+          "webContentKiB": 286216,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552292,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 266076,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 286216,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334666610,
+          "stage": "cleanup",
+          "hostKiB": 261512,
+          "webContentKiB": 285812,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547324,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 261512,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 285812,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334666821,
+          "stage": "complete",
+          "hostKiB": 263768,
+          "webContentKiB": 285404,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549172,
+          "processes": [
+            {
+              "pid": 4882,
+              "rssKiB": 263768,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 4906,
+              "rssKiB": 285404,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "launchedAt": 1792334667490,
+      "completedAt": 1792334679769,
+      "processToRepositoryReadyMs": 2590,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "android",
+        "origin": "https://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "50ea3aae-42ea-4cd2-b731-ab4884422fec",
+        "action": "import",
+        "dataset": "small",
+        "repositoryReadyMs": 281.20000000006985,
+        "repositoryReadyWallTime": 1792334670080,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "fixtureBytes": 8214758,
+        "expectedProjects": 10,
+        "expectedCheckpoints": 100,
+        "importMs": 8462.599999999977,
+        "passed": true,
+        "completedAt": "2026-10-18T14:44:39.368Z"
+      },
+      "peak": {
+        "at": 1792334673178,
+        "stage": "importing",
+        "hostKiB": 307148,
+        "webContentKiB": 294796,
+        "webSupportKiB": 0,
+        "totalRssKiB": 601944,
+        "processes": [
+          {
+            "pid": 5287,
+            "rssKiB": 307148,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 5311,
+            "rssKiB": 294796,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792334673178,
+        "stage": "importing",
+        "hostKiB": 307148,
+        "webContentKiB": 294796,
+        "webSupportKiB": 0,
+        "totalRssKiB": 601944,
+        "processes": [
+          {
+            "pid": 5287,
+            "rssKiB": 307148,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 5311,
+            "rssKiB": 294796,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792334669280,
+          "stage": "launching",
+          "hostKiB": 253020,
+          "webContentKiB": 221128,
+          "webSupportKiB": 0,
+          "totalRssKiB": 474148,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 253020,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 221128,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334669836,
+          "stage": "launching",
+          "hostKiB": 259676,
+          "webContentKiB": 228860,
+          "webSupportKiB": 0,
+          "totalRssKiB": 488536,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 259676,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 228860,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334670326,
+          "stage": "generating",
+          "hostKiB": 264616,
+          "webContentKiB": 237376,
+          "webSupportKiB": 0,
+          "totalRssKiB": 501992,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264616,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 237376,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334670607,
+          "stage": "generating",
+          "hostKiB": 271400,
+          "webContentKiB": 271012,
+          "webSupportKiB": 0,
+          "totalRssKiB": 542412,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 271400,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 271012,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334670835,
+          "stage": "generating",
+          "hostKiB": 265636,
+          "webContentKiB": 270344,
+          "webSupportKiB": 0,
+          "totalRssKiB": 535980,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265636,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 270344,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334671180,
+          "stage": "importing",
+          "hostKiB": 265636,
+          "webContentKiB": 303000,
+          "webSupportKiB": 0,
+          "totalRssKiB": 568636,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265636,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 303000,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334671432,
+          "stage": "importing",
+          "hostKiB": 265636,
+          "webContentKiB": 306272,
+          "webSupportKiB": 0,
+          "totalRssKiB": 571908,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265636,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 306272,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334671659,
+          "stage": "importing",
+          "hostKiB": 265636,
+          "webContentKiB": 308488,
+          "webSupportKiB": 0,
+          "totalRssKiB": 574124,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265636,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 308488,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334671864,
+          "stage": "importing",
+          "hostKiB": 265892,
+          "webContentKiB": 331832,
+          "webSupportKiB": 0,
+          "totalRssKiB": 597724,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265892,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 331832,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334672077,
+          "stage": "importing",
+          "hostKiB": 265892,
+          "webContentKiB": 329668,
+          "webSupportKiB": 0,
+          "totalRssKiB": 595560,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265892,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 329668,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334672258,
+          "stage": "importing",
+          "hostKiB": 265892,
+          "webContentKiB": 333648,
+          "webSupportKiB": 0,
+          "totalRssKiB": 599540,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265892,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 333648,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334672438,
+          "stage": "importing",
+          "hostKiB": 270788,
+          "webContentKiB": 280556,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551344,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 270788,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 280556,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334672617,
+          "stage": "importing",
+          "hostKiB": 279552,
+          "webContentKiB": 284020,
+          "webSupportKiB": 0,
+          "totalRssKiB": 563572,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 279552,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 284020,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334672789,
+          "stage": "importing",
+          "hostKiB": 288936,
+          "webContentKiB": 288584,
+          "webSupportKiB": 0,
+          "totalRssKiB": 577520,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 288936,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 288584,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334672988,
+          "stage": "importing",
+          "hostKiB": 295884,
+          "webContentKiB": 291528,
+          "webSupportKiB": 0,
+          "totalRssKiB": 587412,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 295884,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 291528,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334673178,
+          "stage": "importing",
+          "hostKiB": 307148,
+          "webContentKiB": 294796,
+          "webSupportKiB": 0,
+          "totalRssKiB": 601944,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 307148,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 294796,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334673379,
+          "stage": "importing",
+          "hostKiB": 264500,
+          "webContentKiB": 283396,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547896,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264500,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 283396,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334673565,
+          "stage": "importing",
+          "hostKiB": 267636,
+          "webContentKiB": 287772,
+          "webSupportKiB": 0,
+          "totalRssKiB": 555408,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 267636,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 287772,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334673763,
+          "stage": "importing",
+          "hostKiB": 263744,
+          "webContentKiB": 285296,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549040,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 263744,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285296,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334673958,
+          "stage": "importing",
+          "hostKiB": 267204,
+          "webContentKiB": 289148,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556352,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 267204,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 289148,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334674177,
+          "stage": "importing",
+          "hostKiB": 266928,
+          "webContentKiB": 284936,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551864,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 266928,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 284936,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334674381,
+          "stage": "importing",
+          "hostKiB": 262984,
+          "webContentKiB": 287952,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550936,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262984,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 287952,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334674575,
+          "stage": "importing",
+          "hostKiB": 264332,
+          "webContentKiB": 284852,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549184,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264332,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 284852,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334674767,
+          "stage": "importing",
+          "hostKiB": 263000,
+          "webContentKiB": 287464,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550464,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 263000,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 287464,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334674957,
+          "stage": "importing",
+          "hostKiB": 266204,
+          "webContentKiB": 289172,
+          "webSupportKiB": 0,
+          "totalRssKiB": 555376,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 266204,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 289172,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334675141,
+          "stage": "importing",
+          "hostKiB": 264864,
+          "webContentKiB": 292004,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556868,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264864,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 292004,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334675340,
+          "stage": "importing",
+          "hostKiB": 267932,
+          "webContentKiB": 295072,
+          "webSupportKiB": 0,
+          "totalRssKiB": 563004,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 267932,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 295072,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334675533,
+          "stage": "importing",
+          "hostKiB": 262480,
+          "webContentKiB": 332696,
+          "webSupportKiB": 0,
+          "totalRssKiB": 595176,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262480,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 332696,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334675715,
+          "stage": "importing",
+          "hostKiB": 264776,
+          "webContentKiB": 306608,
+          "webSupportKiB": 0,
+          "totalRssKiB": 571384,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264776,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 306608,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334675901,
+          "stage": "importing",
+          "hostKiB": 261296,
+          "webContentKiB": 307468,
+          "webSupportKiB": 0,
+          "totalRssKiB": 568764,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 261296,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 307468,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334676093,
+          "stage": "importing",
+          "hostKiB": 265820,
+          "webContentKiB": 308632,
+          "webSupportKiB": 0,
+          "totalRssKiB": 574452,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265820,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 308632,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334676278,
+          "stage": "importing",
+          "hostKiB": 264880,
+          "webContentKiB": 309516,
+          "webSupportKiB": 0,
+          "totalRssKiB": 574396,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264880,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 309516,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334676460,
+          "stage": "importing",
+          "hostKiB": 264092,
+          "webContentKiB": 310856,
+          "webSupportKiB": 0,
+          "totalRssKiB": 574948,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264092,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 310856,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334676643,
+          "stage": "importing",
+          "hostKiB": 262892,
+          "webContentKiB": 281728,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544620,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262892,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 281728,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334676838,
+          "stage": "importing",
+          "hostKiB": 262384,
+          "webContentKiB": 283080,
+          "webSupportKiB": 0,
+          "totalRssKiB": 545464,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262384,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 283080,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334677022,
+          "stage": "importing",
+          "hostKiB": 263180,
+          "webContentKiB": 283440,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546620,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 263180,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 283440,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334677205,
+          "stage": "importing",
+          "hostKiB": 266812,
+          "webContentKiB": 283640,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550452,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 266812,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 283640,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334677395,
+          "stage": "importing",
+          "hostKiB": 267356,
+          "webContentKiB": 283476,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550832,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 267356,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 283476,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334677589,
+          "stage": "importing",
+          "hostKiB": 266300,
+          "webContentKiB": 284312,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550612,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 266300,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 284312,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334677777,
+          "stage": "importing",
+          "hostKiB": 265180,
+          "webContentKiB": 284868,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550048,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265180,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 284868,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334677977,
+          "stage": "importing",
+          "hostKiB": 263680,
+          "webContentKiB": 284688,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548368,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 263680,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 284688,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334678181,
+          "stage": "importing",
+          "hostKiB": 265232,
+          "webContentKiB": 285180,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550412,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265232,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285180,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334678375,
+          "stage": "importing",
+          "hostKiB": 264908,
+          "webContentKiB": 285500,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550408,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264908,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285500,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334678566,
+          "stage": "importing",
+          "hostKiB": 263280,
+          "webContentKiB": 285148,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548428,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 263280,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285148,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334678753,
+          "stage": "importing",
+          "hostKiB": 264596,
+          "webContentKiB": 285780,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550376,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 264596,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285780,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334678939,
+          "stage": "importing",
+          "hostKiB": 265172,
+          "webContentKiB": 285636,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550808,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 265172,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285636,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334679121,
+          "stage": "importing",
+          "hostKiB": 262048,
+          "webContentKiB": 285460,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547508,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262048,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285460,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334679305,
+          "stage": "importing",
+          "hostKiB": 263928,
+          "webContentKiB": 285548,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549476,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 263928,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285548,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334679483,
+          "stage": "importing",
+          "hostKiB": 262056,
+          "webContentKiB": 285556,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547612,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262056,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285556,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792334679670,
+          "stage": "complete",
+          "hostKiB": 262380,
+          "webContentKiB": 285716,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548096,
+          "processes": [
+            {
+              "pid": 5287,
+              "rssKiB": 262380,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5311,
+              "rssKiB": 285716,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "hostQualification": "Unrelated host build/browser workloads were observed, with 17.6 GiB swap at 14:52 UTC and disk pressure. No hardware isolation or physical-device claim."
+}
