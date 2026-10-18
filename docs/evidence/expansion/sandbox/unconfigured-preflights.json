@@ -1,0 +1,47 @@
+{
+  "scope": "Actual CLI invocation without supplied operator accounts/configuration; no external request performed",
+  "results": [
+    {
+      "exitCode": 2,
+      "schemaVersion": 1,
+      "status": "blocked",
+      "platform": "web",
+      "checks": [
+        {
+          "id": "arguments",
+          "status": "blocked",
+          "message": "Usage: node scripts/sandbox/PLATFORM.mjs --config <private-config.json> [--probe]"
+        }
+      ],
+      "performedTransactions": false
+    },
+    {
+      "exitCode": 2,
+      "schemaVersion": 1,
+      "status": "blocked",
+      "platform": "ios",
+      "checks": [
+        {
+          "id": "arguments",
+          "status": "blocked",
+          "message": "Usage: node scripts/sandbox/PLATFORM.mjs --config <private-config.json> [--probe]"
+        }
+      ],
+      "performedTransactions": false
+    },
+    {
+      "exitCode": 2,
+      "schemaVersion": 1,
+      "status": "blocked",
+      "platform": "android",
+      "checks": [
+        {
+          "id": "arguments",
+          "status": "blocked",
+          "message": "Usage: node scripts/sandbox/PLATFORM.mjs --config <private-config.json> [--probe]"
+        }
+      ],
+      "performedTransactions": false
+    }
+  ]
+}
