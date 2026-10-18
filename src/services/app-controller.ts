@@ -67,6 +67,14 @@ export function createAppController(options: AppControllerOptions): AppControlle
     authenticating = false,
     authVersion = 0
   let recoveryReview: SyncRecoveryPreview | null = null
+  let invalidatedScope: SessionScope | null = null
+  const visibleSync = (value: ControllerState['sync']): ControllerState['sync'] =>
+    invalidatedScope &&
+    state.view?.info.kind === 'connected' &&
+    canonicalJson(invalidatedScope) === canonicalJson(state.scope) &&
+    !['error', 'syncing', 'pending'].includes(value.state)
+      ? { ...value, state: 'checking' }
+      : value
   let cancel = new AbortController(),
     review: {
       accountId: string
@@ -155,6 +163,8 @@ export function createAppController(options: AppControllerOptions): AppControlle
       if (view.info.kind === 'connected' && view.info.accountId !== session?.accountId)
         throw new DomainError('ACCOUNT_CHANGED')
       const syncStatus = sync?.getSnapshot()
+      // Only this latest, fully scoped read may make the visible view authoritative again.
+      invalidatedScope = null
       publish({
         scope,
         collections: summaries,
@@ -249,13 +259,23 @@ export function createAppController(options: AppControllerOptions): AppControlle
     publish({ account: identity, auth: 'authenticated', error: null })
   }
   const unsubscribe = repository.subscribe(() => {
-    if (!busy && !disposed)
-      void refresh(state.scope, true).catch((error) => publish({ error: safeError(error) }))
+    const scope = state.scope
+    if (!scope || !ownsSelection(scope)) return
+    // A known durable change invalidates the old current label immediately. The
+    // local save need not wait for this controller's separate metadata reads.
+    invalidatedScope = structuredClone(scope)
+    publish({ sync: visibleSync(state.sync) })
+    const reading = refresh(scope, true)
+    const version = refreshVersion
+    void reading.catch((error) => {
+      if (version === refreshVersion && ownsSelection(scope))
+        publish({ error: safeError(error), sync: { ...state.sync, state: 'error' } })
+    })
   })
   const unsubSync = sync?.subscribe(() => {
     if (!disposed) {
       const value = sync.getSnapshot()
-      publish({ sync: value, error: value.error })
+      publish({ sync: visibleSync(value), error: value.error })
     }
   })
   const unsubAuth = auth?.subscribeIdentity((accountId) => {

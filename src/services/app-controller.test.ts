@@ -16,6 +16,9 @@ import type { AccountAuth } from '../auth/auth-service'
 import { createAppController } from './app-controller'
 import { DomainError } from '../domain/errors'
 import { createSyncCoordinator } from '../sync/coordinator'
+import { createLocalDataAdapter } from './local-data-service'
+import { createBrowserOperationPlanStore } from '../repositories/browser/operation-plans'
+import { summarizeSync } from '../components/sync-summary'
 const repos: BrowserRepository[] = [],
   controllers: ReturnType<typeof createAppController>[] = []
 afterEach(async () => {
@@ -116,6 +119,14 @@ async function setup(withMedia = false, withRecovery = false) {
         },
       })
     : undefined
+  let syncNotification: (() => void) | undefined
+  if (sync) {
+    const subscribe = sync.subscribe.bind(sync)
+    vi.spyOn(sync, 'subscribe').mockImplementation((listener) => {
+      syncNotification = listener
+      return subscribe(listener)
+    })
+  }
   const controller = createAppController({
     repository: repo,
     auth,
@@ -126,6 +137,7 @@ async function setup(withMedia = false, withRecovery = false) {
   await controller.initialize()
   return {
     sync,
+    notifySync: () => syncNotification?.(),
     repo,
     recoveryTransport,
     controller,
@@ -146,6 +158,178 @@ function deferred<T = void>() {
   })
   return { promise, resolve, reject }
 }
+function currentSummary(controller: ReturnType<typeof createAppController>) {
+  const state = controller.getSnapshot()
+  return summarizeSync({
+    view: state.view,
+    online: true,
+    working: state.sync.state === 'syncing',
+    syncState: state.sync.state,
+    lastSyncedAt: state.sync.lastSyncedAt,
+    syncError: state.error ?? undefined,
+  })
+}
+async function currentConnected() {
+  const fixture = await setup(false, true)
+  const { controller, connected, recoveryTransport } = fixture
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  recoveryTransport.pull.mockResolvedValue({
+    protocolVersion: 2,
+    collectionId: connected.key.collectionId,
+    epoch: connected.key.epoch,
+    afterCursor: '20',
+    nextCursor: '20',
+    hasMore: false,
+    entries: [],
+  })
+  await controller.runSync()
+  expect(currentSummary(controller).label).toBe('Synced to your account')
+  return fixture
+}
+it('a completed local save cannot retain a prior Synced claim while its controller refresh is held', async () => {
+  const { controller, repo, notifySync } = await currentConnected()
+  const scope = controller.getSnapshot().scope!
+  const adapter = createLocalDataAdapter({
+    repository: repo,
+    media: repo.media,
+    plans: createBrowserOperationPlanStore(repo),
+    scope: () => scope,
+  })
+  const entered = deferred(),
+    finish = deferred()
+  const read = repo.readActive.bind(repo)
+  vi.spyOn(repo, 'readActive').mockImplementationOnce(async () => {
+    entered.resolve()
+    await finish.promise
+    return read()
+  })
+  let whileHeld: ReturnType<typeof summarizeSync>
+  try {
+    const saved = await adapter.createProject(
+      {
+        name: 'New locally committed scarf',
+        craft: 'Crochet',
+        color: 'sage',
+        yarn: 'DK',
+        toolSize: '4 mm',
+        notes: '',
+      },
+      'held-controller-save',
+    )
+    await entered.promise
+    // These are the independent reads awaited by App.refresh after a local save.
+    // They finish while the controller's repository notification is still held.
+    expect((await adapter.listProjects()).some((p) => p.id === saved.id)).toBe(true)
+    expect((await adapter.getProject(saved.id))?.name).toBe('New locally committed scarf')
+    expect(await adapter.mediaAvailability(saved.id)).toEqual([])
+    expect(await repo.pending(scope.key)).toHaveLength(1)
+    expect(currentSummary(controller).label).toBe('Checking saved changes')
+    // Even an unchanged idle publication cannot erase an outstanding view invalidation.
+    notifySync()
+    whileHeld = currentSummary(controller)
+  } finally {
+    finish.resolve()
+    await vi.waitFor(() => expect(controller.getSnapshot().view?.pending).toHaveLength(1))
+  }
+  expect(currentSummary(controller).kind).toBe('waiting')
+  expect(whileHeld!.kind).not.toBe('current')
+  expect(whileHeld!.label).not.toBe('Synced to your account')
+})
+for (const rejects of [false, true]) {
+  it(`an older refresh cannot clear a newer checking state (rejects: ${rejects})`, async () => {
+    const { controller, repo } = await currentConnected()
+    const scope = controller.getSnapshot().scope!
+    const read = repo.readActive.bind(repo)
+    const firstEntered = deferred(),
+      firstFinish = deferred(),
+      firstReturned = deferred()
+    const secondEntered = deferred(),
+      secondFinish = deferred()
+    vi.spyOn(repo, 'readActive')
+      .mockImplementationOnce(async () => {
+        firstEntered.resolve()
+        await firstFinish.promise
+        try {
+          if (rejects) throw new DomainError('SERVICE_UNAVAILABLE')
+          return await read()
+        } finally {
+          firstReturned.resolve()
+        }
+      })
+      .mockImplementationOnce(async () => {
+        secondEntered.resolve()
+        await secondFinish.promise
+        return read()
+      })
+    try {
+      await repo.commitLocal(scope.key, create('first'), scope.generation)
+      await firstEntered.promise
+      await repo.commitLocal(scope.key, create('second'), scope.generation)
+      await secondEntered.promise
+      const newer = controller.getSnapshot()
+      expect(currentSummary(controller).label).toBe('Checking saved changes')
+      firstFinish.resolve()
+      await firstReturned.promise
+      await new Promise<void>((resolve) => setImmediate(resolve))
+      expect(controller.getSnapshot()).toBe(newer)
+      expect(controller.getSnapshot().error).toBeNull()
+    } finally {
+      firstFinish.resolve()
+      secondFinish.resolve()
+    }
+    await vi.waitFor(() => expect(controller.getSnapshot().view?.pending).toHaveLength(2))
+    expect(currentSummary(controller).kind).toBe('waiting')
+  })
+}
+it('an old account refresh cannot clear checking after a guest switch and same-account return', async () => {
+  const { controller, repo, connected, guest } = await currentConnected()
+  const original = controller.getSnapshot().scope!
+  const read = repo.readActive.bind(repo)
+  const oldEntered = deferred(),
+    oldFinish = deferred(),
+    oldReturned = deferred()
+  const newestEntered = deferred(),
+    newestFinish = deferred()
+  const activeRead = vi.spyOn(repo, 'readActive').mockImplementationOnce(async () => {
+    oldEntered.resolve()
+    await oldFinish.promise
+    try {
+      return await read()
+    } finally {
+      oldReturned.resolve()
+    }
+  })
+  try {
+    await repo.commitLocal(original.key, create('before-switch'), original.generation)
+    await oldEntered.promise
+    await controller.chooseCollection(guest.key)
+    expect(currentSummary(controller).kind).toBe('local')
+    await controller.chooseCollection(connected.key)
+    const selected = controller.getSnapshot().scope!
+    expect(selected.generation).toBeGreaterThan(original.generation)
+    activeRead.mockImplementationOnce(async () => {
+      newestEntered.resolve()
+      await newestFinish.promise
+      return read()
+    })
+    await repo.commitLocal(selected.key, create('after-switch'), selected.generation)
+    await newestEntered.promise
+    const newest = controller.getSnapshot()
+    oldFinish.resolve()
+    await oldReturned.promise
+    await new Promise<void>((resolve) => setImmediate(resolve))
+    expect(controller.getSnapshot()).toBe(newest)
+    expect(controller.getSnapshot().scope).toEqual(selected)
+    expect(currentSummary(controller).label).toBe('Checking saved changes')
+    expect(controller.getSnapshot().error).toBeNull()
+  } finally {
+    oldFinish.resolve()
+    newestFinish.resolve()
+  }
+  await vi.waitFor(() => expect(controller.getSnapshot().view?.pending).toHaveLength(2))
+  expect(currentSummary(controller).kind).toBe('waiting')
+})
 const asyncActions = ['runSync', 'retryOperations', 'retryAttachments'] as const
 for (const action of asyncActions) {
   for (const duringSelection of [false, true]) {

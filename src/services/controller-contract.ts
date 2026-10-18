@@ -35,7 +35,7 @@ export interface ControllerState {
   account: { accountId: string; email: string } | null
   auth: 'guest' | 'sending-code' | 'code-sent' | 'authenticated' | 'expired'
   sync: {
-    state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
+    state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error' | 'checking'
     pending: number
     pendingAttachments?: number
     failedAttachments?: number

@@ -121,6 +121,26 @@ describe('sync status preserves independent work and priority', () => {
       }).kind,
     ).toBe('local')
   })
+  it('keeps an invalidated view checking without hiding known actionable or offline state', () => {
+    const input = {
+      view: view(),
+      online: true,
+      working: false,
+      syncState: 'checking' as const,
+      lastSyncedAt: now,
+    }
+    expect(summarizeSync(input)).toMatchObject({
+      kind: 'working',
+      label: 'Checking saved changes',
+      lastSyncedAt: now,
+    })
+    expect(summarizeSync({ ...input, authRequired: true }).kind).toBe('account')
+    expect(summarizeSync({ ...input, view: view([pending('REVISION_CONFLICT')]) }).kind).toBe(
+      'conflict',
+    )
+    expect(summarizeSync({ ...input, online: false }).kind).toBe('offline')
+    expect(summarizeSync({ ...input, view: { ...view(), info: info() } }).kind).toBe('local')
+  })
   it('never retries permanent remedies even if an upstream error incorrectly marks them retryable', () => {
     for (const code of [
       'AUTH_REQUIRED',

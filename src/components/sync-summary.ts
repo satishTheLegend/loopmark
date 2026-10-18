@@ -101,7 +101,7 @@ export function summarizeSync({
   disabled?: boolean
   lastSyncedAt?: string | null
   attachments?: SyncItem[]
-  syncState?: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
+  syncState?: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error' | 'checking'
   syncError?: SafeError
 }): SyncSummary {
   const items: SyncItem[] = (view?.pending ?? [])
@@ -171,6 +171,7 @@ export function summarizeSync({
       'working',
       view.hydration !== 'ready' ? 'Loading your projects' : 'Syncing with your account',
     )
+  if (syncState === 'checking') return result('working', 'Checking saved changes')
   if (items.length)
     return result(
       'waiting',
