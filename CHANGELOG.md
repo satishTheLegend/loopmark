@@ -10,6 +10,7 @@
 - Fixed first-install update-banner movement, unchanged sync polls invalidating reviews, and obsolete sync completions replacing a newly selected collection.
 - Fixed initial sync scheduling after delayed sign-in recovery while preserving queued action order and account ownership.
 - Invalidated the previous cloud acknowledgement immediately after local changes while their new sync state is being checked.
+- Preserved screen-reader completion announcements through the final sync step, with announcement state scoped to the selected collection.
 - Added public help and explicit account/storage states while preserving private-route indexing protections.
 - Added executable contributor examples and separate guest, local backend, native and provider setup guides.
 
