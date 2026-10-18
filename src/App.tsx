@@ -31,7 +31,7 @@ import { BagLabel } from './components/BagLabel'
 import { Guide } from './components/Guide'
 import { sampleBackup } from './samples'
 import { useOfflineSupport } from './offline'
-import { deleteProjectDrafts } from './drafts'
+import { captureDraftStore, deleteProjectDrafts } from './drafts'
 type Route = 'projects' | 'finished' | 'backup' | 'guide' | `project=${string}`
 type Modal = 'new' | 'edit' | 'checkpoint' | 'label' | 'delete' | null
 function readRoute(): Route {
@@ -200,13 +200,14 @@ export default function App() {
   }
   async function remove() {
     if (!editSnapshot || busy) return
+    const draftStore = captureDraftStore()
     setBusy(true)
     setActionError('')
     try {
       await deleteProject(editSnapshot.id, editSnapshot.updatedAt)
       let warning = ''
       try {
-        await deleteProjectDrafts(editSnapshot.id)
+        await deleteProjectDrafts(editSnapshot.id, draftStore)
       } catch (e) {
         warning = errorText(e)
       }

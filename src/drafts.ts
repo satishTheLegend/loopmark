@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
+import type { DraftRecord as Draft, DraftStore } from './repositories/drafts'
 
-interface Draft<T> {
-  key: string
-  value: T
-  revision: string
-  baseRevision?: string
+let storeFactory: (() => DraftStore) | undefined
+export function installDraftStoreFactory(factory: () => DraftStore): void {
+  if (storeFactory && storeFactory !== factory)
+    throw new Error('Draft storage is already installed.')
+  storeFactory = factory
+}
+export function captureDraftStore(): DraftStore {
+  return storeFactory?.() ?? { read, write, removeProjectDrafts: removeLegacyProjectDrafts }
 }
 const open = () =>
   new Promise<IDBDatabase>((resolve, reject) => {
@@ -73,7 +77,7 @@ async function write<T>(key: string, previous: string | undefined, draft?: Draft
   }
 }
 
-export async function deleteProjectDrafts(projectId: string) {
+async function removeLegacyProjectDrafts(projectId: string) {
   const db = await open()
   try {
     await new Promise<void>((resolve, reject) => {
@@ -93,8 +97,14 @@ export async function deleteProjectDrafts(projectId: string) {
   }
 }
 
+export async function deleteProjectDrafts(projectId: string, store = captureDraftStore()) {
+  await store.removeProjectDrafts(projectId)
+}
+
 /** Drafts are separate from saved records and exports; writes never replace another tab's draft. */
 export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
+  // Capture once: a delayed save or clear must never follow a later account/collection switch.
+  const [store] = useState(captureDraftStore)
   const [value, setValue] = useState(initial)
   const [ready, setReady] = useState(false)
   const [recovered, setRecovered] = useState(false)
@@ -113,7 +123,8 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
   const initialValue = useRef(initial)
   useEffect(() => {
     let alive = true
-    read<T>(key)
+    store
+      .read<T>(key)
       .then((draft) => {
         if (!alive) return
         if (draft) {
@@ -160,7 +171,7 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
       .then(async () => {
         if (blocked.current) return
         const nextRevision = crypto.randomUUID()
-        await write(key, revision.current, {
+        await store.write(key, revision.current, {
           key,
           value: updated,
           revision: nextRevision,
@@ -187,7 +198,7 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
   }
   async function clear() {
     await flush()
-    await write(key, revision.current)
+    await store.write(key, revision.current)
     revision.current = undefined
   }
   async function discard() {
