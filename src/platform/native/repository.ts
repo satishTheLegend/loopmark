@@ -557,6 +557,26 @@ export class NativeRepository implements Repository {
   async pending(key: CollectionKey) {
     return (await this.readView(key)).pending
   }
+  async resumeAfterAuthentication(key: CollectionKey, generation: number): Promise<void> {
+    await this.database.transaction(async (db) => {
+      await assertGeneration(db, key, generation, true)
+      const scope = (await activeScope(db))!,
+        state = await getState(db, key)
+      for (const pending of state.pending) {
+        if (pending.error?.code !== 'AUTH_REQUIRED') continue
+        if (
+          pending.command.deviceId !== scope.device.id ||
+          pending.command.deviceGeneration !== scope.device.generation
+        )
+          throw new DomainError('SYNC_REBASE_REQUIRED')
+        pending.state = 'queued'
+        delete pending.error
+      }
+      state.version = nextRevision(state.version)
+      await putState(db, state)
+    })
+    this.publish()
+  }
   async markAttempt(key: CollectionKey, operationId: string, generation: number) {
     await this.change(key, generation, (state) => {
       const pending = state.pending.find((p) => p.command.operationId === operationId)

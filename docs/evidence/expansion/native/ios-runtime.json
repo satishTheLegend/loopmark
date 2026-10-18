@@ -45,6 +45,10 @@
           "passed": true
         },
         {
+          "name": "native verified authentication resumes only matching-device auth failures",
+          "passed": true
+        },
+        {
           "name": "native epoch replacement preserves old drafts and bytes through transaction failure and retry",
           "passed": true
         },
@@ -127,6 +131,10 @@
         },
         {
           "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native verified authentication resumes only matching-device auth failures",
           "passed": true
         },
         {

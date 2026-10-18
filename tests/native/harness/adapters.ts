@@ -33,6 +33,30 @@ const scopeFor = (key: SessionScope['key']): SessionScope => ({
 export async function adapterTests(
   test: (name: string, action: () => Promise<void>) => Promise<void>,
 ) {
+  await test('native verified authentication resumes only matching-device auth failures', async () => {
+    const info = fixture(true),
+      scope = scopeFor(info.key),
+      repo = await openNativeRepository({ databaseName: `reauth_${Date.now()}` })
+    await repo.createCollection(info)
+    await repo.activate(scope)
+    const intent = create(info)
+    await repo.commitLocal(info.key, intent, 1)
+    await repo.markFailure(info.key, intent.operationId, new DomainError('AUTH_REQUIRED').detail, 1)
+    const hash = (await repo.pending(info.key))[0].command.sha256
+    await repo.resumeAfterAuthentication(info.key, 1)
+    assert(
+      (await repo.pending(info.key))[0].state === 'queued' &&
+        (await repo.pending(info.key))[0].command.sha256 === hash,
+    )
+    await repo.markFailure(info.key, intent.operationId, new DomainError('AUTH_REQUIRED').detail, 1)
+    const next = await repo.transition(scope, {
+      key: info.key,
+      device: { id: 'changed', generation: 'changed' },
+    })
+    await rejects(() => repo.resumeAfterAuthentication(info.key, next.generation))
+    assert((await repo.pending(info.key))[0].state === 'rejected')
+    await repo.close()
+  })
   await test('native epoch replacement preserves old drafts and bytes through transaction failure and retry', async () => {
     const info = fixture(true),
       scope = scopeFor(info.key),
