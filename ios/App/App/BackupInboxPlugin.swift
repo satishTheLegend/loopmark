@@ -23,8 +23,14 @@ public class BackupInboxPlugin: CAPPlugin, CAPBridgedPlugin {
         BackupInbox.queue.async {
             let item: [String: Any]?
             do { item = try BackupInbox().pending() } catch { item = BackupInbox.storageFailure() }
-            if let item = item, let value = item as? JSObject { call.resolve(["item": value]) }
-            else { call.resolve(["item": NSNull()]) }
+            guard let item = item else { call.resolve(["item": NSNull()]); return }
+            // JSONSerialization returns Foundation class clusters. Capacitor requires
+            // explicit coercion: casting their values directly to JSValue can fail.
+            guard let value = JSTypes.coerceDictionaryToJSObject(item) else {
+                call.reject("Private backup inbox metadata could not be read", "LOCAL_STORAGE_FAILED")
+                return
+            }
+            call.resolve(["item": value])
         }
     }
     @objc func read(_ call: CAPPluginCall) {
