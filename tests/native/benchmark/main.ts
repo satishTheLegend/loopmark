@@ -13,6 +13,7 @@ import { nativeMediaRepair } from '../harness/media-repair'
 import { nativeRebase } from '../harness/rebase'
 import { nativeDownloads } from '../harness/downloads'
 import { nativeInbox } from '../harness/inbox'
+import { nativePullNoop } from '../harness/pull-noop'
 import { stageNativeExport } from '../../../src/platform/native/share'
 import { decodeBase64Bytes } from '../../../src/media-validation'
 import { backupInboxBridge } from '../../../src/platform/native/backup-inbox'
@@ -85,6 +86,7 @@ try {
       'rebase',
       'downloads',
       'inbox',
+      'pull',
     ].includes(command.action) ||
     !['small', 'limit'].includes(command.dataset)
   )
@@ -289,6 +291,7 @@ try {
   if (command.action === 'rebase') report.rebase = await nativeRebase()
   if (command.action === 'downloads') report.downloads = await nativeDownloads()
   if (command.action === 'inbox') report.inbox = await nativeInbox()
+  if (command.action === 'pull') report.pull = await nativePullNoop()
   if (command.action === 'profile') {
     const decoding = []
     for (const size of [60 * 1024, 6 * 1024 * 1024]) {

@@ -10,6 +10,7 @@ import { durableFiles } from '../../../src/platform/native/files-bridge'
 import { nativeMediaRepair } from './media-repair'
 import { nativeRebase } from './rebase'
 import { nativeDownloads } from './downloads'
+import { nativePullNoop } from './pull-noop'
 
 const results: { name: string; passed: boolean; error?: string }[] = []
 const assert = (value: unknown) => {
@@ -71,6 +72,9 @@ await test('native source-preserving rebase validates review and archives drafts
 await adapterTests(test)
 await test('native downloaded cache eviction preserves protected/source bytes and retries physical cleanup', async () => {
   await nativeDownloads()
+})
+await test('empty unchanged-cursor pull preserves real SQLite state, subscriptions and review CAS', async () => {
+  await nativePullNoop()
 })
 await capabilityTests(test)
 const report = {
