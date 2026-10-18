@@ -3,6 +3,7 @@ import { build } from 'vite'
 import { fileURLToPath } from 'node:url'
 import { readFile } from 'node:fs/promises'
 import type * as Harness from './sync-smoke-harness'
+import { parseOperatorConfig } from '../../scripts/lib/config.mjs'
 declare global {
   interface Window {
     LoopmarkSyncHarness: typeof Harness
@@ -10,8 +11,8 @@ declare global {
 }
 let bundle = '',
   environment: Record<string, string>,
-  mailpit: string
-const origin = 'http://127.0.0.1:56620'
+  mailpit: string,
+  origin: string
 test.beforeAll(async () => {
   const file = process.env.LOOPMARK_SYNC_PUBLIC_ENV
   if (!file)
@@ -29,12 +30,16 @@ test.beforeAll(async () => {
     if (!line) throw new Error('Missing local public configuration')
     environment[key] = line.slice(key.length + 1).replace(/^['"]|['"]$/g, '')
   }
+  const config = parseOperatorConfig(process.env, process.cwd())
+  origin = config.appOrigin
   if (
     environment.VITE_LOOPMARK_APP_ORIGIN !== origin ||
-    environment.VITE_LOOPMARK_SUPABASE_URL !== 'http://127.0.0.1:56621'
+    environment.VITE_LOOPMARK_SUPABASE_URL !== config.backendUrl
   )
-    throw new Error('Refusing a non-authorized loopback target')
-  mailpit = 'http://127.0.0.1:56624'
+    throw new Error(
+      'Refusing public configuration that does not match the explicitly selected local profile',
+    )
+  mailpit = `http://127.0.0.1:${config.ports.mail}`
   const output = await build({
     configFile: false,
     logLevel: 'error',
