@@ -64,6 +64,16 @@ const flag = z
   .enum(['true', 'false'])
   .default('false')
   .transform((value) => value === 'true')
+const productIds = z
+  .string()
+  .transform((value) => value.split(','))
+  .pipe(
+    z
+      .array(z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/))
+      .min(1)
+      .max(10)
+      .refine((values) => new Set(values).size === values.length),
+  )
 const duration = (fallback: number, maximum: number) =>
   z
     .string()
@@ -85,6 +95,24 @@ const schema = z
     LOOPMARK_RAZORPAY_ENROLLED: flag,
     LOOPMARK_REVENUECAT_ENROLLED: flag,
     LOOPMARK_PAYMENT_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
+    LOOPMARK_ERASURE_LEDGER_URL: z
+      .union([origin, z.literal('http://erasure-ledger:8787')])
+      .optional(),
+    LOOPMARK_ERASURE_LEDGER_KEY: z
+      .string()
+      .regex(/^[a-f0-9]{64}$/)
+      .transform((value) => Object.freeze(new Secret(value)))
+      .optional(),
+    LOOPMARK_REVENUECAT_IOS_KEY: z
+      .string()
+      .regex(/^appl_[A-Za-z0-9]{16,}$/)
+      .optional(),
+    LOOPMARK_REVENUECAT_ANDROID_KEY: z
+      .string()
+      .regex(/^goog_[A-Za-z0-9]{16,}$/)
+      .optional(),
+    LOOPMARK_REVENUECAT_IOS_PRODUCTS: productIds.optional(),
+    LOOPMARK_REVENUECAT_ANDROID_PRODUCTS: productIds.optional(),
     LOOPMARK_SYNC_ALERT_MS: duration(300_000, 86_400_000),
     LOOPMARK_WEBHOOK_ALERT_MS: duration(300_000, 86_400_000),
     LOOPMARK_DELETION_ALERT_MS: duration(86_400_000, 604_800_000),
@@ -99,6 +127,40 @@ const schema = z
     RAZORPAY_WEBHOOK_SECRET: secret.optional(),
   })
   .superRefine((value, context) => {
+    if (!!value.LOOPMARK_ERASURE_LEDGER_URL !== !!value.LOOPMARK_ERASURE_LEDGER_KEY)
+      context.addIssue({
+        code: 'custom',
+        path: ['LOOPMARK_ERASURE_LEDGER_URL'],
+        message: 'Ledger URL and credential are required together.',
+      })
+    if (value.LOOPMARK_ERASURE_LEDGER_URL) {
+      const ledger = new URL(value.LOOPMARK_ERASURE_LEDGER_URL)
+      const local = value.LOOPMARK_ENVIRONMENT === 'local'
+      if (
+        (local &&
+          value.LOOPMARK_ERASURE_LEDGER_URL !== 'http://erasure-ledger:8787' &&
+          !['localhost', '127.0.0.1', '[::1]'].includes(ledger.hostname)) ||
+        (!local && ledger.protocol !== 'https:') ||
+        ledger.origin === value.SUPABASE_URL
+      )
+        context.addIssue({
+          code: 'custom',
+          path: ['LOOPMARK_ERASURE_LEDGER_URL'],
+          message:
+            'Use an independent HTTPS ledger, or the exact local service/loopback origin in a local environment.',
+        })
+    }
+    for (const platform of ['IOS', 'ANDROID'] as const) {
+      if (
+        !!value[`LOOPMARK_REVENUECAT_${platform}_KEY`] !==
+        !!value[`LOOPMARK_REVENUECAT_${platform}_PRODUCTS`]
+      )
+        context.addIssue({
+          code: 'custom',
+          path: [`LOOPMARK_REVENUECAT_${platform}_KEY`],
+          message: 'A public platform key and approved product IDs are required together.',
+        })
+    }
     if (
       value.LOOPMARK_ENVIRONMENT === 'local' &&
       value.SUPABASE_URL !== 'http://kong:8000' &&
@@ -182,6 +244,11 @@ export type ServerConfig = Readonly<{
   revenueCatEnrolled: boolean
   paymentsEnrolled: boolean
   paymentEnvironment: 'sandbox' | 'production'
+  erasureLedgerUrl?: string
+  nativeBilling: Readonly<{
+    ios?: Readonly<{ publicSdkKey: string; productIds: readonly string[] }>
+    android?: Readonly<{ publicSdkKey: string; productIds: readonly string[] }>
+  }>
   alerts: Readonly<{ syncMs: number; webhookMs: number; deletionMs: number; backupMs: number }>
   secrets: Readonly<{
     serviceRole: Readonly<Secret>
@@ -190,6 +257,7 @@ export type ServerConfig = Readonly<{
     razorpayKeyId?: Readonly<Secret>
     razorpayKey?: Readonly<Secret>
     razorpayWebhook?: Readonly<Secret>
+    erasureLedger?: Readonly<Secret>
   }>
 }>
 
@@ -203,8 +271,6 @@ export function parseServerConfig(environment: Readonly<Record<string, unknown>>
     'LOOPMARK_DEV_STUDIO_PORT',
     'LOOPMARK_DEV_MAIL_PORT',
     'LOOPMARK_LOCAL_URL',
-    'LOOPMARK_REVENUECAT_IOS_KEY',
-    'LOOPMARK_REVENUECAT_ANDROID_KEY',
   ])
   if (
     Object.keys(environment).some(
@@ -237,6 +303,23 @@ export function parseServerConfig(environment: Readonly<Record<string, unknown>>
     revenueCatEnrolled: value.LOOPMARK_REVENUECAT_ENROLLED,
     paymentsEnrolled: value.LOOPMARK_RAZORPAY_ENROLLED || value.LOOPMARK_REVENUECAT_ENROLLED,
     paymentEnvironment: value.LOOPMARK_PAYMENT_ENVIRONMENT,
+    erasureLedgerUrl: value.LOOPMARK_ERASURE_LEDGER_URL,
+    nativeBilling: Object.freeze({
+      ios:
+        value.LOOPMARK_REVENUECAT_IOS_KEY && value.LOOPMARK_REVENUECAT_IOS_PRODUCTS
+          ? Object.freeze({
+              publicSdkKey: value.LOOPMARK_REVENUECAT_IOS_KEY,
+              productIds: Object.freeze(value.LOOPMARK_REVENUECAT_IOS_PRODUCTS),
+            })
+          : undefined,
+      android:
+        value.LOOPMARK_REVENUECAT_ANDROID_KEY && value.LOOPMARK_REVENUECAT_ANDROID_PRODUCTS
+          ? Object.freeze({
+              publicSdkKey: value.LOOPMARK_REVENUECAT_ANDROID_KEY,
+              productIds: Object.freeze(value.LOOPMARK_REVENUECAT_ANDROID_PRODUCTS),
+            })
+          : undefined,
+    }),
     alerts: Object.freeze({
       syncMs: value.LOOPMARK_SYNC_ALERT_MS,
       webhookMs: value.LOOPMARK_WEBHOOK_ALERT_MS,
@@ -250,6 +333,7 @@ export function parseServerConfig(environment: Readonly<Record<string, unknown>>
       razorpayKeyId: value.RAZORPAY_KEY_ID ? new Secret(value.RAZORPAY_KEY_ID) : undefined,
       razorpayKey: value.RAZORPAY_KEY_SECRET,
       razorpayWebhook: value.RAZORPAY_WEBHOOK_SECRET,
+      erasureLedger: value.LOOPMARK_ERASURE_LEDGER_KEY,
     }),
   })
 }

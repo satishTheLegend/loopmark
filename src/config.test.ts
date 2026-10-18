@@ -130,6 +130,43 @@ describe('public configuration boundary', () => {
 })
 
 describe('server configuration boundary', () => {
+  it('keeps the erasure ledger credential private and separate from primary database configuration', () => {
+    const ledger = {
+      LOOPMARK_ERASURE_LEDGER_URL: 'http://erasure-ledger:8787',
+      LOOPMARK_ERASURE_LEDGER_KEY: 'a'.repeat(64),
+    }
+    const config = parseServerConfig({ ...serverConfig, ...ledger })
+    expect(config.erasureLedgerUrl).toBe(ledger.LOOPMARK_ERASURE_LEDGER_URL)
+    expect(config.secrets.erasureLedger?.reveal()).toBe(ledger.LOOPMARK_ERASURE_LEDGER_KEY)
+    expect(JSON.stringify(config)).not.toContain(ledger.LOOPMARK_ERASURE_LEDGER_KEY)
+    expect(inspect(config)).not.toContain(ledger.LOOPMARK_ERASURE_LEDGER_KEY)
+    expect(config.cloudEnrolled).toBe(false)
+    for (const overrides of [
+      { ...ledger, LOOPMARK_ERASURE_LEDGER_KEY: undefined },
+      { ...ledger, LOOPMARK_ERASURE_LEDGER_URL: serverConfig.SUPABASE_URL },
+      { ...ledger, LOOPMARK_ERASURE_LEDGER_URL: 'http://erasure-ledger:9999' },
+      { ...ledger, LOOPMARK_ERASURE_LEDGER_URL: 'https://unintended-remote.example.test' },
+      { ...ledger, LOOPMARK_ENVIRONMENT: 'staging' },
+    ])
+      expect(() => parseServerConfig({ ...serverConfig, ...overrides })).toThrow()
+  })
+  it('requires public store keys and approved IDs as a pair without activating payments', () => {
+    const native = {
+      LOOPMARK_REVENUECAT_IOS_KEY: 'appl_syntheticpublickey1234',
+      LOOPMARK_REVENUECAT_IOS_PRODUCTS: 'loopmark.one_time',
+    }
+    const config = parseServerConfig({ ...serverConfig, ...native })
+    expect(config.nativeBilling.ios?.productIds).toEqual(['loopmark.one_time'])
+    expect(config.nativeBilling.ios?.publicSdkKey).toBe(native.LOOPMARK_REVENUECAT_IOS_KEY)
+    expect(config.paymentsEnrolled).toBe(false)
+    for (const overrides of [
+      { ...native, LOOPMARK_REVENUECAT_IOS_PRODUCTS: undefined },
+      { ...native, LOOPMARK_REVENUECAT_IOS_KEY: 'goog_syntheticpublickey1234' },
+      { ...native, LOOPMARK_REVENUECAT_IOS_PRODUCTS: 'same,same' },
+      { ...native, LOOPMARK_REVENUECAT_IOS_PRODUCTS: 'not a product' },
+    ])
+      expect(() => parseServerConfig({ ...serverConfig, ...overrides })).toThrow()
+  })
   it('requires explicit enrollment and redacts secrets during ordinary serialization and inspection', () => {
     const config = parseServerConfig(serverConfig)
     expect(config.cloudEnrolled).toBe(false)
