@@ -112,6 +112,7 @@ export function createSyncCoordinator(options: {
     const view = await repository.readView(scope.key)
     if (view.info.kind !== 'connected') return
     const pending = await repository.pending(scope.key)
+    await check(scope, signal)
     if (
       only &&
       (new Set(only).size !== only.length ||
@@ -237,6 +238,7 @@ export function createSyncCoordinator(options: {
       ).length,
       failedAttachments = attachments.filter((item) => item.state === 'failed').length
     const remaining = await repository.pending(scope.key)
+    await check(scope, signal)
     publish({
       pendingAttachments,
       failedAttachments,
@@ -269,6 +271,11 @@ export function createSyncCoordinator(options: {
       return
     }
     const controller = new AbortController()
+    const cancelledForSelection = () =>
+      disposed ||
+      (controller.signal.aborted &&
+        controller.signal.reason instanceof DomainError &&
+        controller.signal.reason.detail.code === 'ACCOUNT_CHANGED')
     current = controller
     const timeout = setTimeout(
       () => controller.abort(new DomainError('SERVICE_UNAVAILABLE')),
@@ -280,14 +287,13 @@ export function createSyncCoordinator(options: {
           cycle(scope, only, controller.signal, attachmentOnly),
         )
       } catch (error) {
-        if (
-          controller.signal.aborted &&
-          controller.signal.reason instanceof DomainError &&
-          controller.signal.reason.detail.code === 'ACCOUNT_CHANGED'
-        )
-          return
+        if (cancelledForSelection()) return
         const detail = safeError(controller.signal.aborted ? controller.signal.reason : error)
         const attachments = (await options.attachments?.list(scope.key).catch(() => [])) ?? []
+        if (cancelledForSelection()) return
+        const active = await repository.readActive()
+        if (cancelledForSelection()) return
+        if (canonicalJson(active) !== canonicalJson(scope)) throw new DomainError('ACCOUNT_CHANGED')
         publish({
           pendingAttachments: attachments.filter((item) =>
             ['pending', 'queued'].includes(item.state),

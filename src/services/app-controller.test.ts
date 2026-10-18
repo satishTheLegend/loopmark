@@ -125,6 +125,7 @@ async function setup(withMedia = false, withRecovery = false) {
   controllers.push(controller)
   await controller.initialize()
   return {
+    sync,
     repo,
     recoveryTransport,
     controller,
@@ -136,6 +137,201 @@ async function setup(withMedia = false, withRecovery = false) {
     event: (accountId: string | null) => event?.(accountId),
   }
 }
+function deferred<T = void>() {
+  let resolve!: (value: T | PromiseLike<T>) => void
+  let reject!: (reason?: unknown) => void
+  const promise = new Promise<T>((yes, no) => {
+    resolve = yes
+    reject = no
+  })
+  return { promise, resolve, reject }
+}
+const asyncActions = ['runSync', 'retryOperations', 'retryAttachments'] as const
+for (const action of asyncActions) {
+  for (const duringSelection of [false, true]) {
+    it(`${action} completion cannot replace a deliberately selected collection (transition in flight: ${duringSelection})`, async () => {
+      const { controller, repo, connected, guest, sync } = await setup(false, true)
+      await controller.verifyCode('maker@example.test', '123456')
+      await controller.chooseCollection(connected.key)
+      const started = deferred(),
+        finish = deferred(),
+        selecting = deferred(),
+        publishSelection = deferred()
+      vi.spyOn(
+        sync!,
+        action === 'retryAttachments' ? 'retryAttachments' : 'run',
+      ).mockImplementationOnce(async () => {
+        started.resolve()
+        await finish.promise
+      })
+      const pending = action === 'runSync' ? controller.runSync() : controller[action]([])
+      await started.promise
+      if (duringSelection) {
+        const list = repo.listCollections.bind(repo)
+        vi.spyOn(repo, 'listCollections').mockImplementationOnce(async () => {
+          selecting.resolve()
+          await publishSelection.promise
+          return list()
+        })
+      }
+      const selection = controller.chooseCollection(guest.key)
+      if (duringSelection) await selecting.promise
+      else await selection
+      finish.resolve()
+      await pending
+      publishSelection.resolve()
+      await selection
+      expect(controller.getSnapshot()).toMatchObject({
+        phase: 'ready',
+        scope: { key: guest.key },
+        view: { info: { key: guest.key } },
+        error: null,
+      })
+      expect(controller.getSnapshot().scope).toEqual(await repo.readActive())
+    })
+  }
+  it(`${action} ignores a late rejection belonging to the prior collection`, async () => {
+    const { controller, connected, guest, sync } = await setup(false, true)
+    await controller.verifyCode('maker@example.test', '123456')
+    await controller.chooseCollection(connected.key)
+    const started = deferred(),
+      finish = deferred()
+    vi.spyOn(
+      sync!,
+      action === 'retryAttachments' ? 'retryAttachments' : 'run',
+    ).mockImplementationOnce(async () => {
+      started.resolve()
+      await finish.promise
+    })
+    const pending = action === 'runSync' ? controller.runSync() : controller[action]([])
+    await started.promise
+    await controller.chooseCollection(guest.key)
+    finish.reject(new DomainError('SERVICE_UNAVAILABLE'))
+    await expect(pending).resolves.toBeUndefined()
+    expect(controller.getSnapshot()).toMatchObject({
+      phase: 'ready',
+      scope: { key: guest.key },
+      error: null,
+    })
+  })
+}
+it('a late run from an earlier generation cannot invalidate an account selected again', async () => {
+  const { controller, connected, guest, sync } = await setup(false, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const original = controller.getSnapshot().scope!,
+    started = deferred(),
+    finish = deferred()
+  vi.spyOn(sync!, 'run').mockImplementationOnce(async () => {
+    started.resolve()
+    await finish.promise
+  })
+  const pending = controller.runSync()
+  await started.promise
+  await controller.chooseCollection(guest.key)
+  await controller.chooseCollection(connected.key)
+  const selected = controller.getSnapshot().scope!
+  expect(selected.generation).toBeGreaterThan(original.generation)
+  finish.resolve()
+  await pending
+  expect(controller.getSnapshot()).toMatchObject({ phase: 'ready', scope: selected, error: null })
+})
+it('runSync does not start an obsolete request after its initial repository read settles', async () => {
+  const { controller, repo, connected, guest, sync } = await setup(false, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const read = repo.readView.bind(repo),
+    started = deferred(),
+    finish = deferred()
+  vi.spyOn(repo, 'readView').mockImplementationOnce(async (key) => {
+    const view = await read(key)
+    started.resolve()
+    await finish.promise
+    return view
+  })
+  const run = vi.spyOn(sync!, 'run')
+  const pending = controller.runSync()
+  await started.promise
+  await controller.chooseCollection(guest.key)
+  finish.resolve()
+  await pending
+  expect(run).not.toHaveBeenCalled()
+  expect(controller.getSnapshot()).toMatchObject({
+    phase: 'ready',
+    scope: { key: guest.key },
+    error: null,
+  })
+})
+it('a still-current completion fails closed when durable scope changed externally', async () => {
+  const { controller, repo, connected, sync } = await setup(false, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const scope = controller.getSnapshot().scope!,
+    started = deferred(),
+    finish = deferred()
+  vi.spyOn(sync!, 'run').mockImplementationOnce(async () => {
+    started.resolve()
+    await finish.promise
+  })
+  const pending = controller.runSync()
+  await started.promise
+  vi.spyOn(repo, 'readActive').mockResolvedValueOnce({ ...scope, generation: scope.generation + 1 })
+  finish.resolve()
+  await pending
+  expect(controller.getSnapshot()).toMatchObject({
+    phase: 'error',
+    scope: null,
+    view: null,
+    error: { code: 'ACCOUNT_CHANGED' },
+  })
+})
+it('an older refresh failure cannot overwrite a newer successful refresh in the same scope', async () => {
+  const { controller, repo, connected, sync } = await setup(false, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  vi.spyOn(sync!, 'run').mockResolvedValue(undefined)
+  const started = deferred(),
+    finish = deferred()
+  vi.spyOn(repo, 'listCollections').mockImplementationOnce(async () => {
+    started.resolve()
+    await finish.promise
+    throw new DomainError('LOCAL_STORAGE_FAILED')
+  })
+  const older = controller.runSync()
+  await started.promise
+  await controller.runSync()
+  const newest = controller.getSnapshot()
+  finish.resolve()
+  await expect(older).resolves.toBeUndefined()
+  expect(controller.getSnapshot()).toBe(newest)
+})
+it('a refresh already reading storage cannot cancel or publish over a later selection', async () => {
+  const { controller, repo, connected, guest, sync } = await setup(false, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  vi.spyOn(sync!, 'run').mockResolvedValueOnce(undefined)
+  const stopped = vi.spyOn(sync!, 'stop'),
+    read = repo.readActive.bind(repo)
+  const started = deferred(),
+    finish = deferred()
+  vi.spyOn(repo, 'readActive').mockImplementationOnce(async () => {
+    started.resolve()
+    await finish.promise
+    return read()
+  })
+  const older = controller.runSync()
+  await started.promise
+  await controller.chooseCollection(guest.key)
+  stopped.mockClear()
+  finish.resolve()
+  await older
+  expect(stopped).not.toHaveBeenCalled()
+  expect(controller.getSnapshot()).toMatchObject({
+    phase: 'ready',
+    scope: { key: guest.key },
+    error: null,
+  })
+})
 it('login retains guest selection, exposes verified identity and switches only deliberately', async () => {
   const { controller, guest, connected } = await setup()
   await controller.verifyCode('typed@example.test', '123456')

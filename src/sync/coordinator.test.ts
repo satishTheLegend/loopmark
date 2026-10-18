@@ -5,11 +5,12 @@ import { info, create, now, project, receipt } from '../repositories/browser/fix
 import type { SessionScope, SnapshotManifest } from '../domain/contracts'
 import { DomainError } from '../domain/errors'
 import { createSyncCoordinator } from './coordinator'
+import type { AttachmentQueue } from '../services/attachment-queue'
 const opened: BrowserRepository[] = []
 afterEach(async () => {
   for (const r of opened.splice(0)) await r.close()
 })
-async function setup() {
+async function setup(attachments?: AttachmentQueue) {
   const repo = await openBrowserRepository({
     factory: new IDBFactory(),
     databaseName: crypto.randomUUID(),
@@ -67,9 +68,73 @@ async function setup() {
       },
     },
     clock: { now: () => nowMs, random: () => 0.5, sleep },
+    attachments,
   })
   return { repo, scope, snapshot, transport, coordinator, sleep }
 }
+it.each(['initial-pending', 'final-pending', 'final-attachments', 'catch-attachments'] as const)(
+  'stopped sync cannot publish or reject after its deferred %s read',
+  async (stage) => {
+    let release!: () => void, entered!: () => void
+    const gate = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    const waiting = new Promise<void>((resolve) => {
+      entered = resolve
+    })
+    const attachments: AttachmentQueue = {
+      owns: () => false,
+      prepareCommand: async () => {},
+      run: async () => {},
+      resumeAfterAuthentication: async () => {},
+      list: vi.fn(async () => []),
+    }
+    const { repo, scope, snapshot, transport, coordinator } = await setup(attachments)
+    await repo.hydrate(scope.key, [snapshot], scope.generation)
+    const guest = info(false, 'other')
+    await repo.createCollection(guest)
+    if (stage.endsWith('pending')) {
+      const pending = repo.pending.bind(repo)
+      let calls = 0
+      vi.spyOn(repo, 'pending').mockImplementation(async (key) => {
+        if (++calls === (stage === 'initial-pending' ? 1 : 2)) {
+          entered()
+          await gate
+        }
+        return pending(key)
+      })
+    } else {
+      vi.mocked(attachments.list).mockImplementationOnce(async () => {
+        entered()
+        await gate
+        return [
+          {
+            id: 'old-attachment',
+            checkpointId: 'old-checkpoint',
+            kind: 'photo',
+            state: 'failed',
+            error: new DomainError('MEDIA_INVALID').detail,
+          },
+        ]
+      })
+      if (stage === 'catch-attachments')
+        transport.pull.mockRejectedValueOnce(new DomainError('VALIDATION'))
+    }
+    const changed = vi.fn()
+    coordinator.subscribe(changed)
+    const pending = coordinator.run(scope)
+    await waiting
+    coordinator.stop()
+    await repo.transition(scope, { key: guest.key, device: scope.device })
+    const previous = coordinator.getSnapshot()
+    changed.mockClear()
+    release()
+    await expect(pending).resolves.toBeUndefined()
+    expect(changed).not.toHaveBeenCalled()
+    expect(coordinator.getSnapshot()).toEqual(previous)
+    coordinator.dispose()
+  },
+)
 it('hydrates before selection use and reconciles the feed with no pending work', async () => {
   const { repo, scope, coordinator, transport } = await setup()
   await coordinator.run(scope)

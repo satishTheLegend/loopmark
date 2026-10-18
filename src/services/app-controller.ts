@@ -105,59 +105,79 @@ export function createAppController(options: AppControllerOptions): AppControlle
       throw new DomainError('ACCOUNT_CHANGED')
     if (disposed) throw new DomainError('ACCOUNT_CHANGED')
   }
-  async function refresh(scope = state.scope) {
+  const ownsSelection = (scope: SessionScope) =>
+    !disposed && !busy && canonicalJson(state.scope) === canonicalJson(scope)
+  async function refresh(scope = state.scope, selectedOnly = false) {
+    if (!scope || (selectedOnly && !ownsSelection(scope))) return
     const version = ++refreshVersion
-    if (!scope) return
-    const active = await repository.readActive()
-    if (canonicalJson(active) !== canonicalJson(scope)) {
-      sync?.stop()
-      cancel.abort()
-      cancel = new AbortController()
-      if (version === refreshVersion && !busy)
-        publish({
-          phase: 'error',
-          view: null,
-          scope: null,
-          error: new DomainError('ACCOUNT_CHANGED').detail,
+    const obsolete = () =>
+      disposed || version !== refreshVersion || (selectedOnly && !ownsSelection(scope))
+    try {
+      const active = await repository.readActive()
+      if (obsolete()) return
+      if (canonicalJson(active) !== canonicalJson(scope)) {
+        sync?.stop()
+        cancel.abort()
+        cancel = new AbortController()
+        if (version === refreshVersion && !busy)
+          publish({
+            phase: 'error',
+            view: null,
+            scope: null,
+            error: new DomainError('ACCOUNT_CHANGED').detail,
+          })
+        return
+      }
+      const all = await repository.listCollections(),
+        summaries: CollectionSummary[] = []
+      for (const info of all) {
+        if (info.kind === 'connected' && info.accountId !== session?.accountId) continue
+        const view = await repository.readView(info.key),
+          local = await repository.reviewLocal(info.key)
+        summaries.push({
+          ...info,
+          projects: view.projects.length,
+          checkpoints: view.checkpoints.length,
+          drafts: local.drafts.length,
         })
-      return
-    }
-    const all = await repository.listCollections(),
-      summaries: CollectionSummary[] = []
-    for (const info of all) {
-      if (info.kind === 'connected' && info.accountId !== session?.accountId) continue
-      const view = await repository.readView(info.key),
-        local = await repository.reviewLocal(info.key)
-      summaries.push({
-        ...info,
-        projects: view.projects.length,
-        checkpoints: view.checkpoints.length,
-        drafts: local.drafts.length,
+      }
+      const view = await repository.readView(scope.key)
+      if (obsolete()) return
+      await check(scope)
+      if (obsolete()) return
+      if (view.info.kind === 'connected' && view.info.accountId !== session?.accountId)
+        throw new DomainError('ACCOUNT_CHANGED')
+      const syncStatus = sync?.getSnapshot()
+      publish({
+        scope,
+        collections: summaries,
+        view,
+        phase: 'ready',
+        sync: syncStatus
+          ? { ...syncStatus, pending: view.pending.length }
+          : {
+              state: view.pending.some((p) => p.state === 'conflict')
+                ? 'conflict'
+                : view.pending.length
+                  ? 'pending'
+                  : 'idle',
+              pending: view.pending.length,
+              lastSyncedAt: null,
+            },
       })
+    } catch (error) {
+      if (!obsolete()) throw error
     }
-    const view = await repository.readView(scope.key)
-    await check(scope)
-    if (version !== refreshVersion) return
-    if (view.info.kind === 'connected' && view.info.accountId !== session?.accountId)
-      throw new DomainError('ACCOUNT_CHANGED')
-    const syncStatus = sync?.getSnapshot()
-    publish({
-      scope,
-      collections: summaries,
-      view,
-      phase: 'ready',
-      sync: syncStatus
-        ? { ...syncStatus, pending: view.pending.length }
-        : {
-            state: view.pending.some((p) => p.state === 'conflict')
-              ? 'conflict'
-              : view.pending.length
-                ? 'pending'
-                : 'idle',
-            pending: view.pending.length,
-            lastSyncedAt: null,
-          },
-    })
+  }
+  async function completeSelectedSync(scope: SessionScope, work: () => Promise<void>) {
+    if (!ownsSelection(scope)) return
+    try {
+      await work()
+      await refresh(scope, true)
+    } catch (error) {
+      // A cancelled old request must not report an error into the newly selected collection.
+      if (ownsSelection(scope)) throw error
+    }
   }
   async function guest() {
     const all = await repository.listCollections(),
@@ -222,7 +242,8 @@ export function createAppController(options: AppControllerOptions): AppControlle
     publish({ account: identity, auth: 'authenticated', error: null })
   }
   const unsubscribe = repository.subscribe(() => {
-    if (!busy && !disposed) void refresh().catch((error) => publish({ error: safeError(error) }))
+    if (!busy && !disposed)
+      void refresh(state.scope, true).catch((error) => publish({ error: safeError(error) }))
   })
   const unsubSync = sync?.subscribe(() => {
     if (!disposed) {
@@ -730,21 +751,23 @@ export function createAppController(options: AppControllerOptions): AppControlle
     async runSync() {
       const scope = bound()
       if (!sync) throw new DomainError('CAPABILITY_UNAVAILABLE')
-      if (
-        session &&
-        (await repository.readView(scope.key)).info.kind === 'connected' &&
-        (keyOf(scope.key) !== keyOf(session.collection) ||
-          canonicalJson(scope.device) !== canonicalJson(session.device))
-      )
-        throw new DomainError('SYNC_REBASE_REQUIRED')
-      await sync.run(scope)
-      await refresh(scope)
+      await completeSelectedSync(scope, async () => {
+        const view = await repository.readView(scope.key)
+        if (!ownsSelection(scope)) return
+        if (
+          session &&
+          view.info.kind === 'connected' &&
+          (keyOf(scope.key) !== keyOf(session.collection) ||
+            canonicalJson(scope.device) !== canonicalJson(session.device))
+        )
+          throw new DomainError('SYNC_REBASE_REQUIRED')
+        await sync.run(scope)
+      })
     },
     async retryOperations(ids) {
       const scope = bound()
       if (!sync) throw new DomainError('CAPABILITY_UNAVAILABLE')
-      await sync.run(scope, ids)
-      await refresh(scope)
+      await completeSelectedSync(scope, () => sync.run(scope, ids))
     },
     async listAttachments() {
       const scope = bound()
@@ -753,8 +776,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
     async retryAttachments(ids) {
       const scope = bound()
       if (!sync) throw new DomainError('CAPABILITY_UNAVAILABLE')
-      await sync.retryAttachments(scope, ids)
-      await refresh(scope)
+      await completeSelectedSync(scope, () => sync.retryAttachments(scope, ids))
     },
     async loadConflict(operationId) {
       const scope = bound(),
