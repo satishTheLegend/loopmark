@@ -39,6 +39,7 @@ import { ProjectForm, CheckpointForm } from './components/Forms'
 import { BackupView } from './components/BackupView'
 import { NativeBackupNotice } from './components/NativeBackupNotice'
 import type { IncomingBackup } from './platform/native/backup-inbox'
+import { canonicalJson } from './domain/canonical-json'
 import { BagLabel } from './components/BagLabel'
 import { Guide } from './components/Guide'
 import { sampleBackup } from './samples'
@@ -836,21 +837,26 @@ export default function App({
               restoreRecovered={
                 runtime
                   ? async (backup, token) => {
+                      const source = runtime.scope()
+                      if (
+                        incomingReview &&
+                        token === incomingReview.item.operationToken &&
+                        canonicalJson(incomingReview.item.source ?? null) !== canonicalJson(source)
+                      )
+                        throw new DomainError('ACCOUNT_CHANGED')
                       const key = await runtime.backups.restoreAsRecovered(
                         backup,
                         `Restored ${new Date().toLocaleDateString()}`,
                         token,
                       )
                       if (incomingReview && token === incomingReview.item.operationToken) {
-                        const source = incomingReview.item.source
-                        if (!source || !runtime.incomingBackups)
-                          throw new DomainError('ACCOUNT_CHANGED')
+                        if (!runtime.incomingBackups) throw new DomainError('ACCOUNT_CHANGED')
                         await runtime.incomingBackups.finish(incomingReview.item.id, source, {
                           state: 'imported',
                           collection: key,
                         })
                       }
-                      await controller!.chooseCollection(key)
+                      await controller!.chooseCollection(key, source)
                     }
                   : undefined
               }
