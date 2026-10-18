@@ -902,7 +902,7 @@
       "historicalSourceQualified": true
     },
     "unitFinal382": {
-      "path": "docs/evidence/expansion/I13/web/unit-qualification.json",
+      "path": "docs/evidence/expansion/I13/web/unit-qualification-b5151ea.json",
       "sha256": "a0dd816199a9708dc5a2dbe33f37ab81d4635f3bcd10ab4cbd99564c30cedbab",
       "sourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
       "reviewedAgainstRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
@@ -60243,7 +60243,7 @@
       ],
       "finding": "App acknowledges new local work after its own refresh while controller sync status refresh can still hold the prior empty-pending view and lastSyncedAt. A held read may leave a stale Synced to your account label alongside newly committed unsent work. Ordinary render latency is not prohibited; bounded status freshness is under controlled investigation.",
       "owner": "client controller/status",
-      "status": "Unconfirmed source-supported concern; controlled reproduction requested. No source defect or final requirement failure claimed yet.",
+      "status": "Controlled local-save/held-controller-read reproduction confirms stale prior Synced label. Candidate a017780 source reviewed for scope/version ownership; one known-conflict/quota priority refinement remains under review. Final exact unit/browser/native source qualification pending.",
       "proofRefs": [
         "webCloudB515"
       ]
@@ -60256,7 +60256,7 @@
       ],
       "finding": "Two selected assertion anchors overstate their specific branch: T30 photo permission rejection currently maps late-result/cancellation tests; T31 process-kill maps a project-only restart fixture, without audio reference/bytes.",
       "owner": "native/client assertion fixtures",
-      "status": "Assigned narrow assertion additions: denied Camera.getPhoto maps PERMISSION_DENIED and preserves draft/continuation; existing two-phase native restart verifies acknowledged synthetic audio bytes/hash/reference. Physical camera/audio fidelity remains separately external.",
+      "status": "Source/assertion review approved: camera47582b3 rereads actual stored draft and typed denial/busy/continuation boundaries; audio a32dca6 verifies full ref/hash/bytes after process restart, with b7a2cce fresh per-invocation UUID and required phase1→phase2. Final integrated unit and native execution pending; physical fidelity remains external.",
       "proofRefs": []
     }
   ],
