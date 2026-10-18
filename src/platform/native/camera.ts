@@ -32,6 +32,10 @@ export async function normalizeNativePhoto(value: unknown): Promise<MediaInput> 
   return { kind: 'photo', bytes: converted }
 }
 export class NativeCamera {
+  private capturedId?: string
+  capturedPhotoId() {
+    return this.capturedId
+  }
   constructor(
     private isCurrent: () => boolean,
     private continuation?: CameraContinuation,
@@ -59,31 +63,26 @@ export class NativeCamera {
         promptLabelPhoto: 'Choose photo',
         promptLabelPicture: 'Take photo',
       })
-      if (!this.isCurrent()) {
-        if (continuationId && this.continuation) {
-          await this.continuation.recovery.restore({
-            pluginId: 'Camera',
-            methodName: 'getPhoto',
-            success: true,
-            data: photo,
-          })
-          continuationId = undefined
-        }
-        return cancelled()
+      let value: MediaInput
+      if (continuationId && this.continuation) {
+        await this.continuation.recovery.restore({
+          pluginId: 'Camera',
+          methodName: 'getPhoto',
+          success: true,
+          data: photo,
+        })
+        this.capturedId = continuationId
+        continuationId = undefined
+        if (!this.isCurrent()) return cancelled()
+        value = await this.continuation.recovery.photo(
+          this.capturedId,
+          this.continuation.source.scope,
+        )
+      } else {
+        if (!this.isCurrent()) return cancelled()
+        value = await normalizeNativePhoto(photo)
       }
-      const value = await normalizeNativePhoto(photo)
-      if (!this.isCurrent()) {
-        if (continuationId && this.continuation) {
-          await this.continuation.recovery.restore({
-            pluginId: 'Camera',
-            methodName: 'getPhoto',
-            success: true,
-            data: photo,
-          })
-          continuationId = undefined
-        }
-        return cancelled()
-      }
+      if (!this.isCurrent()) return cancelled()
       return { status: 'ok', value }
     } catch (error) {
       return nativeFailure(error)

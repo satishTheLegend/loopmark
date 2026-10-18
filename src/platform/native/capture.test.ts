@@ -110,6 +110,25 @@ describe('supplemental native capture dispatch guards (not device evidence)', ()
     )
     expect(recovery.finish).not.toHaveBeenCalled()
   })
+  it('normal camera success stays durably recoverable until the caller acknowledges its saved draft', async () => {
+    const bytes = new Blob(['synthetic'])
+    const recovery = {
+      begin: vi.fn(async () => 'capture'),
+      restore: vi.fn(async () => 'capture'),
+      photo: vi.fn(async () => ({ kind: 'photo', bytes })),
+      finish: vi.fn(),
+    }
+    fixture.photo.mockResolvedValue({ format: 'jpeg', base64String: 'fixture' })
+    const continuation = {
+      recovery,
+      source: { scope: {}, draftKey: 'draft' },
+    } as unknown as CameraContinuation
+    const camera = new NativeCamera(() => true, continuation)
+    expect(await camera.photo()).toMatchObject({ status: 'ok', value: { bytes } })
+    expect(camera.capturedPhotoId()).toBe('capture')
+    expect(recovery.photo).toHaveBeenCalledWith('capture', continuation.source.scope)
+    expect(recovery.finish).not.toHaveBeenCalled()
+  })
   it('separate form instances cannot start or cancel each other’s recorder', async () => {
     fixture.check.mockResolvedValue({ recordAudio: 'granted' })
     const first = new NativeAudio({ isCurrent: () => true, onInterrupted: () => undefined })
