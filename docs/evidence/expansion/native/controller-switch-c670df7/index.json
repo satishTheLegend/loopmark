@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+  "productSourceEquivalent": "a1a3b72",
+  "testFixtureCommit": "f3c0e83",
+  "scope": "Actual AppController, SyncCoordinator, Web Locks, native SQLite and process-local callbacks. Synthetic account identity and network replies; no real provider or store authority claim.",
+  "performanceClaim": false,
+  "assertions": [
+    "valid snapshot hydrated into actual SQLite before held releaseSnapshot barrier",
+    "deliberate guest switch completes while old sync cleanup is waiting",
+    "late old completion leaves guest ready with exact current scope and saved project, no ACCOUNT_CHANGED fatal",
+    "guest remains editable after late completion",
+    "guest records and selection survive real SQLite close/reopen"
+  ],
+  "qualificationArtifactsRetained": true,
+  "files": {
+    "bundle.json": "bb013674cbf6684c379d53979301c43ee57b6af2a4b9fb947d2730fb260aa223",
+    "ios-controller.json": "c3eef48bd5c58d9d22ae0df49014e029a750373dedbe4aae6c023a469d12e08a",
+    "android-controller.json": "7930f8f079ed3c68eb51aedb0a0c9bc5ef165574e77c774e423bf7da7007d4de",
+    "ios-runtime.log": "d06915e68bd196888d6e29461dc1897eb115fc887a815c7e3988420db37101bb",
+    "android-runtime.log": "a454b091011fd4d6edd8529473d8c277b49f6a467076d006d807ea1284fedbc5",
+    "artifacts.json": "948f42d2bb04df58e6a963be47d19f57ad642fad66f64c86bd76fabb428ca481"
+  }
+}

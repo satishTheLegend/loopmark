@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "purpose": "synthetic actual-native controller/SQLite qualification; not production or store distribution",
+  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+  "productSourceEquivalent": "a1a3b72",
+  "ios": {
+    "file": "loopmark-ios-controller-c670df7.tar.gz",
+    "sha256": "7eaa835ad330a46b21e916ecac13581c8a31bc87b4ee001c832e38cd609ebeaa",
+    "appDirectorySha256": "843c799151e6ba50dd9025de43718a96eadd1f4cc23519e97cf192cce59d896d"
+  },
+  "android": {
+    "file": "loopmark-android-controller-c670df7.apk",
+    "sha256": "67ae93e7cc77f654c930807e70fe21eb389e93cb83853e4cb1caa4ec90b9261f"
+  }
+}
