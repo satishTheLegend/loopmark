@@ -156,7 +156,7 @@
     "Historical proof is explicitly non-final; no passing counts substitute for missing assertions.",
     "Synthetic provider callbacks are separate from live/sandbox purchases; simulator/emulator results are separate from physical-device results.",
     "Registry keys are stable identifiers; the line field is the current source location. Native adapter evidence does not imply product UI, signed release, physical hardware, or a latency/memory budget pass.",
-    "All implementation entries and oracle frozenSource entries bind immutable a07b014 bytes. frozenExecutions links exact backend case names, not suite totals. Branch source locations identify subassertions when one phased test covers several obligations. Pending final runtime is never inferred from source presence."
+    "Implementation entries bind the reviewed immutable product revision; each oracle frozenSource and each execution preserve their separately recorded immutable revision. Historical execution is not silently rebound to current source. frozenExecutions records exact named cases where available and explicitly identifies class/file-suite reporting when individual objects are unavailable. Branch source locations identify subassertions when one phased test covers several obligations. Pending final runtime is never inferred from source presence."
   ],
   "proofs": {
     "foundation": {
