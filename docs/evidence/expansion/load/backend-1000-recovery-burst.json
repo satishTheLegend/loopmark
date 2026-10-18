@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "id": "5187e940-6da2-4a1a-98e6-6562557663df",
+  "accounts": 1000,
+  "concurrency": 1000,
+  "startedAt": "2026-10-18T16:40:10.322Z",
+  "synthetic": true,
+  "hardware": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M5",
+    "cores": 10,
+    "hostMemoryBytes": 17179869184
+  },
+  "responseCodes": {
+    "0": 6168,
+    "200": 574,
+    "500": 29,
+    "503": 1822
+  },
+  "responseKinds": {
+    "sync-push:0:TRANSPORT": 5847,
+    "sync-push:503:SERVICE_UNAVAILABLE": 1569,
+    "sync-push:200:OK": 477,
+    "sync-pull:503:SERVICE_UNAVAILABLE": 84,
+    "sync-pull:200:OK": 97,
+    "sync-push:500:UNTYPED": 29,
+    "sync-push:503:UNTYPED": 169,
+    "sync-pull:0:TRANSPORT": 321
+  },
+  "retryCount": 8019,
+  "auxiliaryResponses": {
+    "account-session:200": 1000,
+    "cross-owner-pull:404": 1000
+  },
+  "auxiliaryRetries": 0,
+  "phase": "bounded-post-pressure-recovery",
+  "queueAgeSeconds": 98,
+  "maximumWaitingLocks": 0,
+  "peakContainerBytes": {
+    "supabase_db": 357983846.4,
+    "supabase_edge_runtime": 1627792605.184,
+    "supabase_auth": 38734397.44
+  },
+  "peakHarnessRss": 275464192,
+  "success": false,
+  "measurementScope": "Shared local host; engineering fixture, not clean or hosted capacity qualification",
+  "resourceMetricsScope": "Memory, locks and queue peaks span the whole measured workload including post-pressure recovery and verification; request latency/status statistics are separated by phase.",
+  "hostAtStart": {
+    "loadAverage": [
+      3.1982421875,
+      7.96044921875,
+      12.3837890625
+    ],
+    "freeMemoryBytes": 244940800,
+    "swapUsage": "total = 18432.00M  used = 17403.06M  free = 1028.94M  (encrypted)",
+    "dockerMemoryBytes": 8319504384
+  },
+  "retainedActiveAccountsAtBurst": 3048,
+  "burstStartedAt": "2026-10-18T16:53:44.411Z",
+  "transportErrors": {
+    "ECONNRESET": 116,
+    "UND_ERR_SOCKET": 6052
+  },
+  "burstElapsedMs": 85066.24745899998,
+  "burstAndBackupElapsedMs": 85066.256834,
+  "concurrentBackupComplete": false,
+  "concurrentBackupError": "UNCLASSIFIED",
+  "failedAccounts": 903,
+  "failureKinds": {
+    "LOAD_RETRY_EXHAUSTED": 903
+  },
+  "burstSuccess": false,
+  "burstFinishedAt": "2026-10-18T16:55:09.477Z",
+  "postPressure": {
+    "responseCodes": {
+      "200": 3000,
+      "503": 2
+    },
+    "responseKinds": {
+      "sync-push:200:OK": 2000,
+      "sync-pull:200:OK": 1000,
+      "sync-push:503:UNTYPED": 2
+    },
+    "retryCount": 2,
+    "requests": 3002,
+    "p50Ms": 25.163625000044703,
+    "p95Ms": 130.29741700005252
+  },
+  "recoveryStartedAt": "2026-10-18T16:55:09.478Z",
+  "recoveryFailureKinds": {},
+  "recoveryFinishedAt": "2026-10-18T16:55:23.470Z",
+  "recoveredAccounts": 1000,
+  "recoveryConcurrency": 8,
+  "recoveryDeadlineMs": 300000,
+  "postPressureBackupComplete": true,
+  "postPressureRecoveryBytes": 145322609,
+  "ownerDenialsVerifiedAt": "2026-10-18T16:55:29.951Z",
+  "requests": 8593,
+  "p50Ms": 2.353624999988824,
+  "p95Ms": 1219.7425829999847,
+  "errorRate": 0.9332014430350285,
+  "elapsedMs": 107729.26716699998,
+  "finishedAt": "2026-10-18T16:55:32.140Z",
+  "sourceCommit": "bf5709d",
+  "harnessSourceSha256": "08896fc29ad1b03051ba856070db7168b925fa70d1bc0a5a93038349f4a4086e",
+  "executionOutcome": "FAIL: original simultaneous burst exceeded local capacity; all accounts subsequently recovered; auxiliary phases interrupted by harness argv limit.",
+  "harnessFailure": {
+    "location": "tests/load/reconnect.test.ts:503",
+    "queryBytes": 315787,
+    "dockerExitCode": 255,
+    "verifiedCause": "argument list too long",
+    "correction": "Send SQL over stdin; same query verified on same cohort. No product or original command change."
+  }
+}

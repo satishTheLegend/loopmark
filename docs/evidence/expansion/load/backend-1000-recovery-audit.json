@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "sourceRun": "5187e940-6da2-4a1a-98e6-6562557663df",
+  "startedAt": "2026-10-18T17:00:41.918Z",
+  "originalBurstSuccess": false,
+  "originalBurstFailurePreserved": true,
+  "readOnly": true,
+  "success": true,
+  "auxiliaryResponses": {},
+  "auxiliaryRetries": 0,
+  "committedInvariants": {
+    "feed": 2000,
+    "pending": 0,
+    "projects": 1000,
+    "receipts": 2000,
+    "checkpoints": 1000,
+    "receiptFeedMismatch": 0,
+    "maximumPendingPerOwner": 0,
+    "crossOwnerCollectionMismatch": 0
+  },
+  "reconstructedOriginalCommandHashesVerified": 2000,
+  "exactMaterializedEntitiesVerified": 2000,
+  "ownerCohortSha256": "ef08105403961728cba4031496f9f4029a3bd0bf6287d4df246c0c46cfeb91c4",
+  "finishedAt": "2026-10-18T17:00:42.531Z",
+  "sourceCommit": "4aba6e6",
+  "command": "node scripts/test-load.mjs --continue 5187e940-6da2-4a1a-98e6-6562557663df",
+  "elapsedSeconds": 1.67
+}
