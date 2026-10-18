@@ -1,0 +1,86 @@
+{
+  "before_commit": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+  "fixed_commit": "3a71ace64db611db4a92fcda3da3727f2f30fa18",
+  "source_blobs": {
+    "src/services/app-controller.ts": {
+      "before": "bd859f46e6da8f383030787ba55a227bf4e2707e",
+      "after": "9028651749b9a8040cad5b2b8bb91b5c272a9932"
+    },
+    "src/sync/coordinator.ts": {
+      "before": "d285f81a78dcd79090fb75729da3f6b917c894d2",
+      "after": "0018b63e79ae0cad102f474ea3e3f26794007a4f"
+    }
+  },
+  "green_test_blobs": {
+    "src/services/app-controller.test.ts": "c95340423fa4ee8f749fa97005d61b9a6ebab669",
+    "src/sync/coordinator.test.ts": "c59247c52a0d448923b349182096b68cf0ebab03"
+  },
+  "red_test_note": "Controller red ran the first12new race tests:11failed and the genuine durable mismatch guard passed, plus21existing tests. Two additional refresh-ownership tests were added before green. Prettier formatted tests before green; exact pre-format red test blobs were not separately saved. Coordinator red ran all4new deferred-status tests, each failed, plus7passing existing tests.",
+  "commands": {
+    "controller-red": "npx vitest run src/services/app-controller.test.ts > .gstack/scope-completion-red.log 2>&1",
+    "coordinator-red": "npx vitest run src/sync/coordinator.test.ts > .gstack/scope-status-red.log 2>&1",
+    "focused-green": "npx vitest run src/services/app-controller.test.ts src/sync/coordinator.test.ts src/sync/offline-chain.test.ts src/repositories/browser/transition.test.ts > .gstack/scope-completion-green.log 2>&1",
+    "all-unit-green": "npm test > .gstack/scope-completion-all-unit.log 2>&1",
+    "typecheck": "npx tsc -b --pretty false > .gstack/scope-completion-typecheck.log 2>&1"
+  },
+  "outcomes": {
+    "controller-red": {
+      "failed": 11,
+      "passed": 22
+    },
+    "coordinator-red": {
+      "failed": 4,
+      "passed": 7
+    },
+    "focused-green": {
+      "passed": 48,
+      "files": 4
+    },
+    "all-unit-green": {
+      "passed": 371,
+      "files": 46,
+      "duration_ms": 2140
+    },
+    "typecheck": {
+      "exit_code": 0
+    }
+  },
+  "logs": {
+    "controller-red": {
+      "source_path": ".gstack/scope-completion-red.log",
+      "original_sha256": "bf7603ec2eb08e574096e814410a62680488269a8d1980bfcc05f130b636e42f",
+      "preserved_sha256": "4f3a45b94c9e6da09aa3fe4f437695c9b92a6a52cf96bbdb79b21faa0e38c8bf",
+      "exit_code": 1,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "coordinator-red": {
+      "source_path": ".gstack/scope-status-red.log",
+      "original_sha256": "1df077539fb536dccdf91a44e865a9d30016c8ba0464efe0803dcde65cd1a7bd",
+      "preserved_sha256": "7245d02d9935a704010e314d3e43d6ffc0ae775b1da7c14db3d5401ad88f9239",
+      "exit_code": 1,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "focused-green": {
+      "source_path": ".gstack/scope-completion-green.log",
+      "original_sha256": "5439c0537ef44b955f47515b2f082f7cab68ff4cc8152fad00a42fb172cff2e7",
+      "preserved_sha256": "f2e876eaf10cce3212f3b5f0abd6b10f44d0ff1c168056c7e91f05819b9a3e9f",
+      "exit_code": 0,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "all-unit-green": {
+      "source_path": ".gstack/scope-completion-all-unit.log",
+      "original_sha256": "65194e0716109f8e88f2fde4ae6d6868770a65127859c79b6e286109db62eebb",
+      "preserved_sha256": "907341c1e6f9c26a25f6ee73c053ca57e2535ac92ad87eb99de1379b677954f4",
+      "exit_code": 0,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    },
+    "typecheck": {
+      "source_path": ".gstack/scope-completion-typecheck.log",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "transformation": "Only absolute repository root replaced by <project-root>."
+    }
+  },
+  "scope": "Isolated client worktree only. No integration product edits, runtime tests or builds during the running cloud matrix. Actual cloud and native qualification owned separately by root/native agent."
+}

@@ -1,0 +1,340 @@
+{
+  "product_source": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+  "cases": [
+    {
+      "case": "account-switch",
+      "raw_trace_path": ".gstack/cloud-candidate-0b518fa/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-chromium-mobile/trace.zip",
+      "raw_trace_sha256": "5dd237841de3dd8855055f03c6bf9161a2a841c8ec752bba563eb25035cc2e69",
+      "time_unit": "milliseconds relative to Before Hooks start",
+      "timeline": [
+        {
+          "event": "Expect \"toContainText\"",
+          "test_line": 62,
+          "start_ms": 4808.6,
+          "end_ms": 4813.945,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toHaveCount\"",
+          "test_line": 64,
+          "start_ms": 5324.865,
+          "end_ms": 5338.75,
+          "failed": false
+        },
+        {
+          "event": "Click",
+          "test_line": 65,
+          "start_ms": 5339.453,
+          "end_ms": 5560.425,
+          "failed": false
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "1-trace.network",
+          "start_ms": 5502.524,
+          "duration_ms": 272.225,
+          "status": 200,
+          "action": "create"
+        },
+        {
+          "event": "Click",
+          "test_line": 69,
+          "start_ms": 5561.09,
+          "end_ms": 5865.052,
+          "failed": false
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "1-trace.network",
+          "start_ms": 5744.196,
+          "duration_ms": 131.424,
+          "status": 200,
+          "action": "release"
+        },
+        {
+          "event": "Expect \"toBeVisible\"",
+          "test_line": 70,
+          "start_ms": 5868.223,
+          "end_ms": 13891.93,
+          "failed": true
+        }
+      ]
+    },
+    {
+      "case": "purchase-collection-switch",
+      "raw_trace_path": ".gstack/cloud-candidate-0b518fa/purchases.cloud.ts-actual--ea7d4-efore-explicit-continuation-webkit/trace.zip",
+      "raw_trace_sha256": "20daa025b77ecc906f1e84d7d64381df13f0966341b6ae1d2323454f76b666d6",
+      "time_unit": "milliseconds relative to Before Hooks start",
+      "timeline": [
+        {
+          "event": "Reload",
+          "test_line": 43,
+          "start_ms": 14426.389,
+          "end_ms": 15875.333,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toBeVisible\"",
+          "test_line": 44,
+          "start_ms": 15876.015,
+          "end_ms": 16452.843,
+          "failed": false
+        },
+        {
+          "event": "Click",
+          "test_line": 45,
+          "start_ms": 16453.422,
+          "end_ms": 16681.276,
+          "failed": false
+        },
+        {
+          "event": "Click",
+          "test_line": 50,
+          "start_ms": 16976.847,
+          "end_ms": 17108.619,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toBeVisible\"",
+          "test_line": 53,
+          "start_ms": 17109.709,
+          "end_ms": 17264.911,
+          "failed": false
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "1-trace.network",
+          "start_ms": 18195.008,
+          "duration_ms": 62.980000000000004,
+          "status": 200,
+          "action": "create"
+        },
+        {
+          "event": "Expect \"toHaveCount\"",
+          "test_line": 55,
+          "start_ms": 18200.934,
+          "end_ms": 18212.216,
+          "failed": false
+        },
+        {
+          "event": "Click",
+          "test_line": 56,
+          "start_ms": 18212.863,
+          "end_ms": 18274.322,
+          "failed": false
+        },
+        {
+          "event": "Click",
+          "test_line": 60,
+          "start_ms": 18276.595,
+          "end_ms": 18560.631,
+          "failed": false
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "1-trace.network",
+          "start_ms": 18299.584,
+          "duration_ms": 93.687,
+          "status": 200,
+          "action": "release"
+        },
+        {
+          "event": "sync-pull",
+          "stream": "1-trace.network",
+          "start_ms": 18423.182,
+          "duration_ms": 56.859,
+          "status": 200,
+          "entries": 0
+        },
+        {
+          "event": "Expect \"toBeVisible\"",
+          "test_line": 61,
+          "start_ms": 18561.423,
+          "end_ms": 26630.731,
+          "failed": true
+        }
+      ]
+    },
+    {
+      "case": "early-conflict-review",
+      "raw_trace_path": ".gstack/cloud-candidate-0b518fa/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/trace.zip",
+      "raw_trace_sha256": "b5e95bf1db7fa570b280dc55487e2a8493a9dd45ffbdb5f961e1402d6ef9d531",
+      "time_unit": "milliseconds relative to Before Hooks start",
+      "timeline": [
+        {
+          "event": "sync-snapshot",
+          "stream": "1-trace.network",
+          "start_ms": 3014.222,
+          "duration_ms": 47.370999999999995,
+          "status": 200,
+          "action": "create"
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "1-trace.network",
+          "start_ms": 3069.539,
+          "duration_ms": 87.271,
+          "status": 200,
+          "action": "release"
+        },
+        {
+          "event": "sync-pull",
+          "stream": "1-trace.network",
+          "start_ms": 3161.769,
+          "duration_ms": 70.458,
+          "status": 200,
+          "entries": 0
+        },
+        {
+          "event": "sync-push",
+          "stream": "1-trace.network",
+          "start_ms": 4326.271,
+          "duration_ms": 542.971,
+          "status": 200
+        },
+        {
+          "event": "sync-pull",
+          "stream": "1-trace.network",
+          "start_ms": 4878.431,
+          "duration_ms": 101.743,
+          "status": 200,
+          "entries": 1
+        },
+        {
+          "event": "sync-pull",
+          "stream": "1-trace.network",
+          "start_ms": 5259.069,
+          "duration_ms": 35.184,
+          "status": 200,
+          "entries": 0
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "3-trace.network",
+          "start_ms": 11885.735,
+          "duration_ms": 23.416,
+          "status": 200,
+          "action": "create"
+        },
+        {
+          "event": "sync-snapshot",
+          "stream": "3-trace.network",
+          "start_ms": 11912.65,
+          "duration_ms": 20.916999999999998,
+          "status": 200,
+          "action": "release"
+        },
+        {
+          "event": "sync-pull",
+          "stream": "3-trace.network",
+          "start_ms": 11936.272,
+          "duration_ms": 17.779999999999998,
+          "status": 200,
+          "entries": 0
+        },
+        {
+          "event": "sync-push",
+          "stream": "3-trace.network",
+          "start_ms": 12926.393,
+          "duration_ms": 155.295,
+          "status": 200
+        },
+        {
+          "event": "sync-pull",
+          "stream": "3-trace.network",
+          "start_ms": 13088.204,
+          "duration_ms": 60.152,
+          "status": 200,
+          "entries": 1
+        },
+        {
+          "event": "sync-pull",
+          "stream": "3-trace.network",
+          "start_ms": 13349.934,
+          "duration_ms": 34.363,
+          "status": 200,
+          "entries": 0
+        },
+        {
+          "event": "sync-pull",
+          "stream": "3-trace.network",
+          "start_ms": 13566.014,
+          "duration_ms": 69.102,
+          "status": 200,
+          "entries": 0
+        },
+        {
+          "event": "Set offline mode",
+          "test_line": 50,
+          "start_ms": 14084.221,
+          "end_ms": 14090.821,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toContainText\"",
+          "test_line": 51,
+          "start_ms": 14092.256,
+          "end_ms": 14934.424,
+          "failed": false
+        },
+        {
+          "event": "sync-push",
+          "stream": "1-trace.network",
+          "start_ms": 14284.088,
+          "duration_ms": 353.672,
+          "status": 409,
+          "error_code": "REVISION_CONFLICT"
+        },
+        {
+          "event": "sync-pull",
+          "stream": "1-trace.network",
+          "start_ms": 14656.27,
+          "duration_ms": 1000.711,
+          "status": 200,
+          "entries": 1
+        },
+        {
+          "event": "Click",
+          "test_line": 54,
+          "start_ms": 14936.855,
+          "end_ms": 15092.932,
+          "failed": false
+        },
+        {
+          "event": "Click",
+          "test_line": 55,
+          "start_ms": 15094.224,
+          "end_ms": 15347.496,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toContainText\"",
+          "test_line": 57,
+          "start_ms": 15348.43,
+          "end_ms": 15377.451,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toContainText\"",
+          "test_line": 60,
+          "start_ms": 15378.573,
+          "end_ms": 15389.355,
+          "failed": false
+        },
+        {
+          "event": "Expect \"toContainText\"",
+          "test_line": 61,
+          "start_ms": 15390.62,
+          "end_ms": 23418.729,
+          "failed": true
+        },
+        {
+          "event": "stale-review alert visible",
+          "stream": "1-trace.trace",
+          "start_ms": 23407.467
+        }
+      ]
+    }
+  ],
+  "privacy": "Selected event types/test lines/timing/status only; no account/device identifiers, emails, codes, craft content, tokens, headers or full response bodies."
+}

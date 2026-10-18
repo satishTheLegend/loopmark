@@ -1,0 +1,58 @@
+
+ RUN  v5.0.5 <project-root>
+
+ ❯ src/sync/coordinator.test.ts (11 tests | 4 failed) 84ms
+   × stopped sync cannot publish or reject after its deferred initial-pending read 10ms
+   × stopped sync cannot publish or reject after its deferred final-pending read 2ms
+   × stopped sync cannot publish or reject after its deferred final-attachments read 1ms
+   × stopped sync cannot publish or reject after its deferred catch-attachments read 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/sync/coordinator.test.ts > stopped sync cannot publish or reject after its deferred initial-pending read
+ FAIL  src/sync/coordinator.test.ts > stopped sync cannot publish or reject after its deferred final-pending read
+ FAIL  src/sync/coordinator.test.ts > stopped sync cannot publish or reject after its deferred final-attachments read
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array []
+
+
+Number of calls: 1
+
+ ❯ src/sync/coordinator.test.ts:121:25
+    119|     release()
+    120|     await expect(pending).resolves.toBeUndefined()
+    121|     expect(changed).not.toHaveBeenCalled()
+       |                         ^
+    122|     expect(coordinator.getSnapshot()).toEqual(previous)
+    123|     coordinator.dispose()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/sync/coordinator.test.ts > stopped sync cannot publish or reject after its deferred catch-attachments read
+AssertionError: promise rejected "DomainError: Check the highlighted inform… { detail: { …(7) } }" instead of resolving
+ ❯ src/sync/coordinator.test.ts:120:26
+    118|     changed.mockClear()
+    119|     release()
+    120|     await expect(pending).resolves.toBeUndefined()
+       |                          ^
+    121|     expect(changed).not.toHaveBeenCalled()
+    122|     expect(coordinator.getSnapshot()).toEqual(previous)
+
+Caused by: DomainError: Check the highlighted information.
+ ❯ src/sync/coordinator.test.ts:109:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { detail: { code: 'VALIDATION', problem: 'Check the highlighted information.', cause: 'A value is missing or unsupported.', nextAction: 'Correct it and try again.', helpRef: 'forms#validation', retryable: false, correlationId: '80b4b54a-b363-49dc-8d45-f7611a814815' } }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 7 passed (11)
+   Start at  23:00:45
+   Duration  246ms (tests 53%, import 26%, transform 20%, worker 1%)
+

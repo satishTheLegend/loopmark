@@ -1,0 +1,295 @@
+
+ RUN  v5.0.5 <project-root>
+
+ ❯ src/services/app-controller.test.ts (33 tests | 11 failed) 395ms
+   × runSync completion cannot replace a deliberately selected collection (transition in flight: false) 32ms
+   × runSync completion cannot replace a deliberately selected collection (transition in flight: true) 9ms
+   × runSync ignores a late rejection belonging to the prior collection 11ms
+   × retryOperations completion cannot replace a deliberately selected collection (transition in flight: false) 7ms
+   × retryOperations completion cannot replace a deliberately selected collection (transition in flight: true) 8ms
+   × retryOperations ignores a late rejection belonging to the prior collection 7ms
+   × retryAttachments completion cannot replace a deliberately selected collection (transition in flight: false) 8ms
+   × retryAttachments completion cannot replace a deliberately selected collection (transition in flight: true) 9ms
+   × retryAttachments ignores a late rejection belonging to the prior collection 12ms
+   × a late run from an earlier generation cannot invalidate an account selected again 11ms
+   × runSync does not start an obsolete request after its initial repository read settles 14ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/app-controller.test.ts > runSync completion cannot replace a deliberately selected collection (transition in flight: false)
+AssertionError: expected { phase: 'error', scope: null, …(6) } to match object { phase: 'ready', …(3) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": null,
+-   "phase": "ready",
+-   "scope": {
+-     "key": {
+-       "collectionId": "collection",
+-       "epoch": "epoch",
+-       "namespace": "guest_fixture",
++   "error": {
++     "cause": "This action belongs to a different session.",
++     "code": "ACCOUNT_CHANGED",
++     "correlationId": "2facbd63-8761-4a68-9c6a-cbeb4b005f1b",
++     "helpRef": "account#collections",
++     "nextAction": "Return to the original collection to continue.",
++     "problem": "The selected account changed.",
++     "retryable": false,
+    },
+-   },
+-   "view": {
+-     "info": {
+-       "key": {
+-         "collectionId": "collection",
+-         "epoch": "epoch",
+-         "namespace": "guest_fixture",
+-       },
+-     },
+-   },
++   "phase": "error",
++   "scope": null,
++   "view": null,
+  }
+
+ ❯ src/services/app-controller.test.ts:178:40
+    176|       publishSelection.resolve()
+    177|       await selection
+    178|       expect(controller.getSnapshot()).toMatchObject({
+       |                                        ^
+    179|         phase: 'ready', scope: { key: guest.key }, view: { info: { key…
+    180|       })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  src/services/app-controller.test.ts > runSync completion cannot replace a deliberately selected collection (transition in flight: true)
+ FAIL  src/services/app-controller.test.ts > retryOperations completion cannot replace a deliberately selected collection (transition in flight: true)
+ FAIL  src/services/app-controller.test.ts > retryAttachments completion cannot replace a deliberately selected collection (transition in flight: true)
+AssertionError: expected { phase: 'ready', …(7) } to match object { phase: 'ready', …(3) }
+(25 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "error": null,
+    "phase": "ready",
+    "scope": {
+      "key": {
+-       "collectionId": "collection",
++       "collectionId": "collectionconnected",
+        "epoch": "epoch",
+-       "namespace": "guest_fixture",
++       "namespace": "account_account",
+      },
+    },
+    "view": {
+      "info": {
+        "key": {
+-         "collectionId": "collection",
++         "collectionId": "collectionconnected",
+          "epoch": "epoch",
+-         "namespace": "guest_fixture",
++         "namespace": "account_account",
+        },
+      },
+    },
+  }
+
+ ❯ src/services/app-controller.test.ts:178:40
+    176|       publishSelection.resolve()
+    177|       await selection
+    178|       expect(controller.getSnapshot()).toMatchObject({
+       |                                        ^
+    179|         phase: 'ready', scope: { key: guest.key }, view: { info: { key…
+    180|       })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  src/services/app-controller.test.ts > runSync ignores a late rejection belonging to the prior collection
+ FAIL  src/services/app-controller.test.ts > retryOperations ignores a late rejection belonging to the prior collection
+ FAIL  src/services/app-controller.test.ts > retryAttachments ignores a late rejection belonging to the prior collection
+AssertionError: promise rejected "DomainError: The service is temporarily u… { detail: { …(7) } }" instead of resolving
+ ❯ src/services/app-controller.test.ts:197:26
+    195|     await controller.chooseCollection(guest.key)
+    196|     finish.reject(new DomainError('SERVICE_UNAVAILABLE'))
+    197|     await expect(pending).resolves.toBeUndefined()
+       |                          ^
+    198|     expect(controller.getSnapshot()).toMatchObject({ phase: 'ready', s…
+    199|   })
+
+Caused by: DomainError: The service is temporarily unavailable.
+ ❯ src/services/app-controller.test.ts:196:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { detail: { code: 'SERVICE_UNAVAILABLE', problem: 'The service is temporarily unavailable.', cause: 'The request could not be completed.', nextAction: 'Keep your local work and retry later.', helpRef: 'sync#retry', retryable: true, correlationId: '9586fc49-1278-4573-b7b0-2f6dcc053661' } }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  src/services/app-controller.test.ts > retryOperations completion cannot replace a deliberately selected collection (transition in flight: false)
+AssertionError: expected { phase: 'error', scope: null, …(6) } to match object { phase: 'ready', …(3) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": null,
+-   "phase": "ready",
+-   "scope": {
+-     "key": {
+-       "collectionId": "collection",
+-       "epoch": "epoch",
+-       "namespace": "guest_fixture",
++   "error": {
++     "cause": "This action belongs to a different session.",
++     "code": "ACCOUNT_CHANGED",
++     "correlationId": "10cc2dac-b055-466e-ac2e-9682a843c3ee",
++     "helpRef": "account#collections",
++     "nextAction": "Return to the original collection to continue.",
++     "problem": "The selected account changed.",
++     "retryable": false,
+    },
+-   },
+-   "view": {
+-     "info": {
+-       "key": {
+-         "collectionId": "collection",
+-         "epoch": "epoch",
+-         "namespace": "guest_fixture",
+-       },
+-     },
+-   },
++   "phase": "error",
++   "scope": null,
++   "view": null,
+  }
+
+ ❯ src/services/app-controller.test.ts:178:40
+    176|       publishSelection.resolve()
+    177|       await selection
+    178|       expect(controller.getSnapshot()).toMatchObject({
+       |                                        ^
+    179|         phase: 'ready', scope: { key: guest.key }, view: { info: { key…
+    180|       })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  src/services/app-controller.test.ts > retryAttachments completion cannot replace a deliberately selected collection (transition in flight: false)
+AssertionError: expected { phase: 'error', scope: null, …(6) } to match object { phase: 'ready', …(3) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": null,
+-   "phase": "ready",
+-   "scope": {
+-     "key": {
+-       "collectionId": "collection",
+-       "epoch": "epoch",
+-       "namespace": "guest_fixture",
++   "error": {
++     "cause": "This action belongs to a different session.",
++     "code": "ACCOUNT_CHANGED",
++     "correlationId": "3d72375e-b4d5-4065-a86d-d27690d34046",
++     "helpRef": "account#collections",
++     "nextAction": "Return to the original collection to continue.",
++     "problem": "The selected account changed.",
++     "retryable": false,
+    },
+-   },
+-   "view": {
+-     "info": {
+-       "key": {
+-         "collectionId": "collection",
+-         "epoch": "epoch",
+-         "namespace": "guest_fixture",
+-       },
+-     },
+-   },
++   "phase": "error",
++   "scope": null,
++   "view": null,
+  }
+
+ ❯ src/services/app-controller.test.ts:178:40
+    176|       publishSelection.resolve()
+    177|       await selection
+    178|       expect(controller.getSnapshot()).toMatchObject({
+       |                                        ^
+    179|         phase: 'ready', scope: { key: guest.key }, view: { info: { key…
+    180|       })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  src/services/app-controller.test.ts > a late run from an earlier generation cannot invalidate an account selected again
+AssertionError: expected { phase: 'error', scope: null, …(6) } to match object { phase: 'ready', …(2) }
+(11 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": null,
+-   "phase": "ready",
+-   "scope": {
+-     "device": {
+-       "generation": "account-gen",
+-       "id": "account-device",
+-     },
+-     "generation": 4,
+-     "key": {
+-       "collectionId": "collectionconnected",
+-       "epoch": "epoch",
+-       "namespace": "account_account",
++   "error": {
++     "cause": "This action belongs to a different session.",
++     "code": "ACCOUNT_CHANGED",
++     "correlationId": "c18b8fea-d17c-4d99-bbde-f1adfe19a7a2",
++     "helpRef": "account#collections",
++     "nextAction": "Return to the original collection to continue.",
++     "problem": "The selected account changed.",
++     "retryable": false,
+    },
+-   },
++   "phase": "error",
++   "scope": null,
+  }
+
+ ❯ src/services/app-controller.test.ts:215:36
+    213|   finish.resolve()
+    214|   await pending
+    215|   expect(controller.getSnapshot()).toMatchObject({ phase: 'ready', sco…
+       |                                    ^
+    216| })
+    217| it('runSync does not start an obsolete request after its initial repos…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  src/services/app-controller.test.ts > runSync does not start an obsolete request after its initial repository read settles
+DomainError: The selected account changed.
+ ❯ check src/sync/coordinator.ts:81:13
+     79|     signal.throwIfAborted()
+     80|     if (canonicalJson(await repository.readActive()) !== canonicalJson…
+     81|       throw new DomainError('ACCOUNT_CHANGED')
+       |             ^
+     82|     signal.throwIfAborted()
+     83|   }
+ ❯ retry src/sync/coordinator.ts:96:9
+ ❯ cycle src/sync/coordinator.ts:130:18
+ ❯ Object.run src/services/app-controller.test.ts:113:13
+ ❯ src/sync/coordinator.ts:279:9
+ ❯ Object.run src/sync/coordinator.ts:305:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 22 passed (33)
+   Start at  22:59:00
+   Duration  719ms (tests 67%, transform 17%, import 15%, worker 1%)
+
