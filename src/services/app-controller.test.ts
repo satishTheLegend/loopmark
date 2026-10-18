@@ -360,3 +360,20 @@ it('secure credential read failure leaves existing local projects usable without
   expect(local.getSnapshot().view?.projects).toHaveLength(1)
   expect(local.getSnapshot().account).toBeNull()
 })
+
+it('fresh authentication accepts a recovered billing principal only for the already selected account', async () => {
+  const { controller, auth, session, guest } = await setup()
+  await controller.verifyCode('typed@example.test', '123456')
+  vi.spyOn(auth, 'currentSession').mockResolvedValueOnce({
+    ...session,
+    billingPrincipalId: 'recovered-principal',
+  })
+  await controller.refreshAuthentication()
+  expect(controller.getSession()?.billingPrincipalId).toBe('recovered-principal')
+  expect(controller.getSnapshot().scope?.key).toEqual(guest.key)
+  vi.spyOn(auth, 'currentSession').mockResolvedValueOnce({ ...session, accountId: 'different' })
+  await expect(controller.refreshAuthentication()).rejects.toMatchObject({
+    detail: { code: 'ACCOUNT_CHANGED' },
+  })
+  expect(controller.getSession()?.accountId).toBe(session.accountId)
+})

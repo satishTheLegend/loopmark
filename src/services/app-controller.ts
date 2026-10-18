@@ -486,6 +486,15 @@ export function createAppController(options: AppControllerOptions): AppControlle
       listeners.add(listener)
       return () => listeners.delete(listener)
     },
+    refreshAuthentication() {
+      const expected = session?.accountId
+      if (!expected) return Promise.reject(new DomainError('AUTH_REQUIRED'))
+      return authenticate(async (auth, signal) => {
+        const verified = await auth.currentSession(signal)
+        if (!verified || verified.accountId !== expected) throw new DomainError('ACCOUNT_CHANGED')
+        return verified
+      })
+    },
     async requestCode(email) {
       authVersion++
       if (!auth) throw new DomainError('CAPABILITY_UNAVAILABLE')

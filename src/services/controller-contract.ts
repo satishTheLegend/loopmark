@@ -53,6 +53,7 @@ export interface AppController {
   requestCode(email: string): Promise<{ retryAt: string }>
   verifyCode(email: string, code: string): Promise<void>
   completeCallback(url: string): Promise<void>
+  refreshAuthentication(): Promise<void>
   prepareSignOut(): Promise<LocalWorkCounts>
   signOut(options: {
     keepLocal: boolean
