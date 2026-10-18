@@ -11,6 +11,7 @@ import { benchmarkFixture } from './fixture'
 import { nativeExamples } from './examples'
 import { nativeMediaRepair } from '../harness/media-repair'
 import { stageNativeExport } from '../../../src/platform/native/share'
+import { decodeBase64Bytes } from '../../../src/media-validation'
 
 const openedAt = performance.now()
 const directory = Directory.Data
@@ -51,7 +52,7 @@ try {
   if (
     command.schemaVersion !== 1 ||
     !/^[a-f0-9-]{36}$/.test(command.runId) ||
-    !['import', 'export', 'startup', 'examples', 'repair'].includes(command.action) ||
+    !['import', 'export', 'startup', 'examples', 'repair', 'profile'].includes(command.action) ||
     !['small', 'limit'].includes(command.dataset)
   )
     throw new Error('Explicit benchmark command is invalid.')
@@ -97,6 +98,38 @@ try {
     data,
     scope: () => scope,
   })
+  const phases: { operation: string; bytes?: number; ms: number }[] = []
+  const storeVerified = repo.media.storeVerified.bind(repo.media),
+    release = repo.media.release.bind(repo.media),
+    importLocal = repo.importLocal.bind(repo)
+  repo.media.storeVerified = async (...args) => {
+    const started = performance.now()
+    try {
+      await storeVerified(...args)
+    } finally {
+      phases.push({
+        operation: 'storeVerified',
+        bytes: args[1].size,
+        ms: performance.now() - started,
+      })
+    }
+  }
+  repo.media.release = async (...args) => {
+    const started = performance.now()
+    try {
+      await release(...args)
+    } finally {
+      phases.push({ operation: 'release', ms: performance.now() - started })
+    }
+  }
+  repo.importLocal = async (...args) => {
+    const started = performance.now()
+    try {
+      return await importLocal(...args)
+    } finally {
+      phases.push({ operation: 'importLocal', ms: performance.now() - started })
+    }
+  }
   await progress('ready')
   if (command.action === 'import') {
     await progress('generating')
@@ -109,6 +142,7 @@ try {
     const started = performance.now()
     const key = await backups.restoreAsRecovered(fixture, `Benchmark ${command.dataset}`, runId)
     report.importMs = performance.now() - started
+    report.importPhases = phases
     const restored = await repo.readView(key)
     if (
       restored.projects.length !== report.expectedProjects ||
@@ -176,6 +210,26 @@ try {
   await repo.close()
   if (command.action === 'examples') report.examples = await nativeExamples()
   if (command.action === 'repair') report.repair = await nativeMediaRepair()
+  if (command.action === 'profile') {
+    const decoding = []
+    for (const size of [60 * 1024, 6 * 1024 * 1024]) {
+      const payload = 'A'.repeat((size * 4) / 3)
+      for (let iteration = 0; iteration < 3; iteration++) {
+        for (const algorithm of ['legacy-string-iterator', 'preallocated-byte-loop']) {
+          const started = performance.now()
+          const bytes =
+            algorithm === 'legacy-string-iterator'
+              ? Uint8Array.from(atob(payload), (c) => c.charCodeAt(0))
+              : decodeBase64Bytes(payload)
+          const elapsedMs = performance.now() - started
+          if (bytes.length !== size || bytes.some((value) => value !== 0))
+            throw new Error('Decode profile changed bytes')
+          decoding.push({ size, iteration, algorithm, elapsedMs })
+        }
+      }
+    }
+    report.decoding = decoding
+  }
   report.passed = true
 } catch (error) {
   report.passed = false

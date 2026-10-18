@@ -21,14 +21,14 @@ const [platform, action, dataset, countText = '1'] = process.argv.slice(2),
   count = Number(countText)
 if (
   !['ios', 'android'].includes(platform) ||
-  !['startup', 'import', 'export', 'examples', 'repair'].includes(action) ||
+  !['startup', 'import', 'export', 'examples', 'repair', 'profile'].includes(action) ||
   !['small', 'limit'].includes(dataset) ||
   !Number.isInteger(count) ||
   count < 1 ||
   count > 30
 )
   throw new Error(
-    'Usage: benchmark.mjs <ios|android> <startup|import|export|examples|repair> <small|limit> [1..30 samples]',
+    'Usage: benchmark.mjs <ios|android> <startup|import|export|examples|repair|profile> <small|limit> [1..30 samples]',
   )
 const appId = 'app.loopmark.craft.benchmark',
   evidence = resolve(root, 'docs/evidence/expansion/native/benchmarks')
@@ -208,7 +208,7 @@ for (let sample = 0; sample < count; sample++) {
         schemaVersion: 1,
         measurementWindow:
           process.env.LOOPMARK_NATIVE_BENCHMARK_WINDOW === 'exclusive'
-            ? 'exclusive'
+            ? 'loopmark-team-coordinated'
             : 'shared-correctness-only',
         target,
         platform,
