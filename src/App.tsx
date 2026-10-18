@@ -1,6 +1,7 @@
 import { UserFacingError } from './domain/errors'
 import { Capacitor } from '@capacitor/core'
 import { DiagnosticsView } from './components/DiagnosticsView'
+import { PendingProjectLink } from './components/PendingProjectLink'
 import { createDiagnosticReport, type DiagnosticReport } from './services/diagnostics'
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import {
@@ -189,6 +190,7 @@ export default function App({
         const target = await runtime.openUrl(url)
         if (active) {
           setModal(null)
+          history.replaceState(null, '', `/#${target}`)
           navigate(target)
         }
       } catch (error) {
@@ -201,8 +203,11 @@ export default function App({
       history.replaceState(null, '', '/#account')
       setRoute('account')
       void open(initial)
-    } else if (location.pathname.startsWith('/p/')) {
-      history.replaceState(null, '', '/')
+    } else if (
+      location.pathname.startsWith('/p/') ||
+      (location.pathname === '/' && location.hash.startsWith('#project='))
+    ) {
+      // Keep the original link until its parsed target is durably saved/resolved.
       void open(initial)
     }
     const remove = runtime.subscribePlatform((event) => {
@@ -663,6 +668,14 @@ export default function App({
               />
               <SyncStatus summary={summary} onDetails={() => setSyncDetails(true)} />
             </div>
+          )}
+          {runtime && (
+            <PendingProjectLink
+              runtime={runtime}
+              collectionName={state?.view?.info.name}
+              onOpen={navigate}
+              onAccount={() => navigate('account')}
+            />
           )}
           {runtime?.native && !modal && <NativeCaptureNotice runtime={runtime} />}
           {loading ? (
