@@ -93,6 +93,10 @@ describe('I07 real deletion barrier and independent ledger', () => {
     ).toBe(0)
     // Controlled time fixture moves only this synthetic job past its already asserted request-time barrier.
     await advanceSyntheticDeadline(a)
+    // An old preparation must not make the eventual backup-retention receipt expire early.
+    await sql(
+      `update loopmark_private.deletion_requests set requested_at=now()-interval '2 days',backup_expires_at=now()+interval '5 days' where owner_id=${quote(a.id)}::uuid`,
+    )
     const jobs = await request(env.serviceKey, 'jobs', {
       action: 'resume-deletions',
       limit: 1,
@@ -116,6 +120,9 @@ describe('I07 real deletion barrier and independent ledger', () => {
     })
     expect(finished.body.status).toBe('live-data-removed')
     expect(Object.keys(finished.body).sort()).toEqual(['backupExpiresAt', 'removedAt', 'status'])
+    expect(
+      Date.parse(finished.body.backupExpiresAt) - Date.parse(finished.body.removedAt),
+    ).toBeGreaterThanOrEqual(7 * 86400000)
   })
   it('preserves original receipt capability after ledger append before the primary barrier and retries idempotently', async () => {
     const a = await actor(),

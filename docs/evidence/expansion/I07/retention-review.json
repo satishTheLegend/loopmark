@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "I07 independent review correction",
+  "observedAt": "2026-10-18T18:59:47+05:30",
+  "profile": "loopmark-loopmark-expansi-eeac3023",
+  "execution": {
+    "command": "node scripts/test-server.mjs --suite deletion",
+    "tests": 3,
+    "passed": 3,
+    "skipped": 0,
+    "durationSeconds": 5.15
+  },
+  "setup": "Applied only migration011 transactionally to the existing exact local database; no lifecycle reset or other migration. Full fresh migration-chain qualification belongs to the next server run.",
+  "assertion": "After a synthetic two-day preparation delay, actual HTTP deletion/purge reports backupExpiresAt at least seven days after removedAt. Later existing expiry is preserved.",
+  "independentReview": "Worker C accepted source correction; actual retained recovery-point completion remains I11.",
+  "sha256": {
+    "supabase/migrations/202610180011_deletion_retention.sql": "313d6ab7d1c69453d4a4d0ef9d1c3d78816c467fb2b5a201b89911e07a5c7c2f",
+    "tests/server/deletion.test.ts": "e2e808574955ecea41d376da5c2106ba5bfde484f543c56fb47b74354293cec7"
+  }
+}
