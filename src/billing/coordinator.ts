@@ -238,11 +238,13 @@ export function createBillingCoordinator(options: {
             return row.value.intent.attemptId
           }
         } else {
-          const intent = purchaseIntentSchema.parse({
+          const parsedIntent = purchaseIntentSchema.safeParse({
             ...identity,
             attemptId: crypto.randomUUID(),
             generation: captured.scope.generation,
           })
+          if (!parsedIntent.success) throw new DomainError('VALIDATION')
+          const intent = parsedIntent.data
           check(captured)
           try {
             row = await options.workflows.write<PurchaseAttempt>(

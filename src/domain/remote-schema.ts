@@ -442,7 +442,7 @@ export const accountUsageSchema = z
   .strict()
 
 const purchaseProviderSchema = z.enum(['razorpay', 'revenuecat'])
-const purchaseProductIdSchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/)
+export const purchaseProductIdSchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/)
 export const localizedProductSchema = z
   .object({
     id: purchaseProductIdSchema,

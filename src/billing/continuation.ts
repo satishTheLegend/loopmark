@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { collectionKeySchema, id, timestamp } from '../domain/schema'
+import { purchaseProductIdSchema } from '../domain/remote-schema'
 import type { PurchaseIntent, PurchaseOutcome } from '../domain/contracts'
 import type { PurchaseAttemptState } from '../domain/remote-contracts'
 import type { SafeError } from '../domain/errors'
@@ -8,7 +9,7 @@ export const purchaseIntentSchema = z
     attemptId: z.uuid(),
     accountId: id,
     billingPrincipalId: id,
-    productId: id,
+    productId: purchaseProductIdSchema,
     collection: collectionKeySchema,
     generation: z.number().int().nonnegative(),
     returnAction: z.enum(['new-project', 'reopen-project', 'settings']),

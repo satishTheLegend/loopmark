@@ -312,3 +312,15 @@ it('native SDK cancellation best-effort releases server admission while preservi
   expect(f.coordinator.getSnapshot().attempts[0].intent.draftKey).toBe('cancelled-draft')
   expect(f.access.hasAccess(f.collection)).toBe(false)
 })
+
+it('accepts approved dotted store product IDs and redacts invalid input without opening a provider', async () => {
+  const f = await setup()
+  await f.coordinator.purchase('loopmark.lifetime', { returnAction: 'settings' }, 'dotted')
+  expect(f.adapter.purchase).toHaveBeenCalledOnce()
+  expect(f.adapter.purchase.mock.calls[0][0].productId).toBe('loopmark.lifetime')
+  await expect(
+    f.coordinator.purchase('private@example.invalid', { returnAction: 'settings' }, 'bad'),
+  ).rejects.toMatchObject({ name: 'DomainError', detail: { code: 'VALIDATION' } })
+  expect(f.adapter.purchase).toHaveBeenCalledOnce()
+  expect(JSON.stringify(f.coordinator.getSnapshot().error)).not.toContain('private@example.invalid')
+})
