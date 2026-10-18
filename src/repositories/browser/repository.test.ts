@@ -530,3 +530,79 @@ it('a retained/imported local revision clock remains greater than copied server 
   await repository.commitLocal(key, update('9000'), 1)
   expect((await repository.readView(key)).projects[0].revision).toBe('9002')
 })
+
+it('reconciles a delayed checkpoint acknowledgement after its parent was deleted by a newer pull', async () => {
+  const { repository, key } = await setup(true)
+  await repository.acknowledge(key, receipt('initial', '0'.repeat(64), '1'), 1)
+  const checkpoint = {
+    id: 'checkpoint',
+    projectId: 'project',
+    createdAt: now,
+    position: 'Row 2',
+    toolSize: '4 mm',
+    nextStep: 'Turn',
+    notes: '',
+  }
+  await repository.commitLocal(
+    key,
+    {
+      kind: 'checkpoint.create',
+      operationId: 'cp',
+      createdAt: now,
+      base: { revision: '1' },
+      payload: { checkpoint, updatedAt: now },
+    },
+    1,
+  )
+  const pending = (await repository.pending(key))[0]
+  await repository.acknowledge(
+    key,
+    receipt('remote-delete', '1'.repeat(64), '3', [
+      { kind: 'project.delete', id: 'project', revision: '3' },
+    ]),
+    1,
+  )
+  await repository.acknowledge(
+    key,
+    receipt('cp', pending.command.sha256, '2', [
+      { kind: 'project.put', value: project('project', '2') },
+      { kind: 'checkpoint.put', value: { ...checkpoint, revision: '2' } },
+    ]),
+    1,
+  )
+  expect((await repository.readView(key)).projects).toEqual([])
+  expect((await repository.readView(key)).checkpoints).toEqual([])
+  expect(await repository.pending(key)).toEqual([])
+})
+it('rejects omitted or cyclic snapshot pages before changing the durable collection', async () => {
+  const { repository, key } = await setup(true)
+  const base: SnapshotManifest = {
+    protocolVersion: 2,
+    snapshotId: 'snap',
+    collectionId: key.collectionId,
+    epoch: key.epoch,
+    after: null,
+    cursor: '0',
+    revision: '0',
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+    projects: [],
+    checkpoints: [],
+    media: [],
+    nextPage: 'page1',
+  }
+  await expect(
+    repository.hydrate(key, [base, { ...base, after: 'page2', nextPage: null }], 1),
+  ).rejects.toMatchObject({ detail: { code: 'SYNC_PAGE_INVALID' } })
+  await expect(
+    repository.hydrate(
+      key,
+      [
+        base,
+        { ...base, after: 'page1', nextPage: 'page1' },
+        { ...base, after: 'page1', nextPage: null },
+      ],
+      1,
+    ),
+  ).rejects.toMatchObject({ detail: { code: 'SYNC_PAGE_INVALID' } })
+  expect((await repository.readView(key)).revision).toBe('0')
+})

@@ -389,6 +389,11 @@ export function applyReceipt(state: StoredCollection, input: Receipt): void {
     const id = 'value' in change ? change.value.id : change.id
     const kind = change.kind.startsWith('project.') ? 'project' : 'checkpoint'
     const tombstone = state.tombstones[`${kind}:${id}`] ?? '0'
+    if (
+      change.kind === 'checkpoint.put' &&
+      BigInt(state.tombstones[`project:${change.value.projectId}`] ?? '0') >= BigInt(revision)
+    )
+      continue
     const current = (kind === 'project' ? state.projects : state.checkpoints).find(
       (p) => p.id === id,
     )
@@ -429,8 +434,13 @@ export function hydrateState(
   const pages = input.map(parseSnapshot),
     first = pages[0]
   if (Date.parse(first.expiresAt) <= now) throw new DomainError('SNAPSHOT_EXPIRED')
+  const cursors = new Set<string>()
   for (let i = 0; i < pages.length; i++) {
     const p = pages[i]
+    if (p.nextPage !== null) {
+      if (cursors.has(p.nextPage)) throw new DomainError('SYNC_PAGE_INVALID')
+      cursors.add(p.nextPage)
+    }
     if (
       p.after !== (i === 0 ? null : pages[i - 1].nextPage) ||
       p.snapshotId !== first.snapshotId ||

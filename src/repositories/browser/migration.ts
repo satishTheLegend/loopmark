@@ -393,7 +393,7 @@ export async function migrateLegacy(options: {
     const active = await activeScope(tx)
     if (
       active &&
-      (active.generation !== generation || keyOf(active.key) !== keyOf(destination.key))
+      canonicalJson(active) !== canonicalJson({ key: destination.key, generation, device })
     )
       throw new DomainError('ACCOUNT_CHANGED')
     const previous = await requestResult<{ value: MigrationReceipt } | undefined>(
@@ -453,7 +453,7 @@ export async function migrateLegacy(options: {
       throw new DomainError('REVISION_CONFLICT')
     if (
       active &&
-      (active.generation !== generation || keyOf(active.key) !== keyOf(destination.key))
+      canonicalJson(active) !== canonicalJson({ key: destination.key, generation, device })
     )
       throw new DomainError('ACCOUNT_CHANGED')
     receipt.status = 'selected'
