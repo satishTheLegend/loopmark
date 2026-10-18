@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T13:56:05.167179+00:00",
+  "sourceCommit": "15b72f7",
+  "manifestFileSha256": "fe9e1c5b78941c7c0192e495120b6d6264b24b03f2c49c095a496d691371124a",
+  "status": "pass",
+  "checks": [
+    "Every manifest asset matches generated iOS public assets",
+    "Every manifest asset matches generated Android public assets",
+    "Every manifest asset matches installed iOS simulator app",
+    "Every manifest asset matches packaged Android APK"
+  ],
+  "iosInstalledAppDirectorySha256": "e4d05817cea79a012bbce68b1242f4c856265fa5be53a37ae3e37f6f5e266169",
+  "androidApkSha256": "678edad71ea6b1492f6d724880e772cc10f16363fafd76927e9e391a6df6dadb",
+  "scope": "Read-only current artifact verification after restoring production builds. This does not claim another UI run or store signing qualification."
+}

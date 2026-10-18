@@ -3,10 +3,15 @@ import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { readFile, writeFile } from 'node:fs/promises'
 import { root, androidEnvironment, evidenceDirectory } from './process.mjs'
+import { productManifest, verifyProductAssets, verifyProductApk } from './product-evidence.mjs'
 
 const exec = promisify(execFile)
 const serial = process.env.ANDROID_SERIAL
 if (!serial?.startsWith('emulator-')) throw new Error('Select a test-owned emulator explicitly.')
+const manifest = await productManifest(`${root}/docs/evidence/expansion/native/product-bundle.json`)
+await verifyProductAssets(`${root}/android/app/src/main/assets/public`, manifest)
+const apk = `${root}/android/app/build/outputs/apk/debug/app-debug.apk`
+const artifactSha256 = await verifyProductApk(apk, manifest)
 const html = await readFile(`${root}/android/app/src/main/assets/public/index.html`, 'utf8')
 if (html.includes('native persistence fixture')) throw new Error('Production assets are required.')
 const env = await androidEnvironment()
@@ -36,6 +41,8 @@ async function connect() {
 }
 
 try {
+  // Install the exact verified artifact; a previous emulator install is not source evidence.
+  await adb('install', '-r', apk)
   // Actual OS-denied permission, scoped to this fixture app and emulator.
   await adb('shell', 'pm', 'revoke', 'app.loopmark.craft', 'android.permission.RECORD_AUDIO')
   await adb(
@@ -104,9 +111,11 @@ try {
         emulator: serial,
         passed: true,
         completedAt: new Date().toISOString(),
-        bundle: JSON.parse(
-          await readFile(`${root}/docs/evidence/expansion/native/product-bundle.json`, 'utf8'),
-        ).manifestSha256,
+        bundle: manifest.manifestSha256,
+        sourceCommit: manifest.sourceCommit,
+        manifestFileSha256: manifest.manifestFileSha256,
+        artifactSha256,
+        artifactFormat: 'apk',
         assertions: [
           'project creation or fixture reopen',
           'text-only draft',
