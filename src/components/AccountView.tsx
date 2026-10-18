@@ -196,7 +196,13 @@ export function AccountView({
           safe. A label or a synced copy is not a backup.
         </p>
         {onDiagnostics && (
-          <button className="button secondary" onClick={(event) => { event.currentTarget.focus(); onDiagnostics() }}>
+          <button
+            className="button secondary"
+            onClick={(event) => {
+              event.currentTarget.focus()
+              onDiagnostics()
+            }}
+          >
             Preview diagnostic report
           </button>
         )}
