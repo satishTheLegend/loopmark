@@ -122,6 +122,8 @@ export function createBillingCoordinator(options: {
     for (const row of rows)
       if (!attemptSchema.safeParse(row.value).success) throw new DomainError('VALIDATION')
     check(captured)
+    if (canonicalJson(owner) !== canonicalJson(identity(captured)))
+      state = { ...empty, access: access.getSnapshot() }
     owner = identity(captured)
     publish({ attempts: rows.map((row) => structuredClone(row.value)) })
     return rows

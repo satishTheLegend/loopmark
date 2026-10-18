@@ -332,3 +332,23 @@ it('accepts approved dotted store product IDs and redacts invalid input without 
   expect(f.adapter.purchase).toHaveBeenCalledOnce()
   expect(JSON.stringify(f.coordinator.getSnapshot().error)).not.toContain('private@example.invalid')
 })
+
+it('initializing another account clears prior recovery status before any new network response', async () => {
+  const f = await setup()
+  const normal = f.client.post.getMockImplementation()!
+  f.client.post.mockImplementation(async (...args) => {
+    const result = await normal(...args)
+    if ('entitlement' in result) {
+      result.recoveryKeyConfigured = true
+      Object.assign(result, { currentRecoveryKeyHash: 'a'.repeat(64) })
+    }
+    return result
+  })
+  await f.coordinator.refresh()
+  expect(f.coordinator.getSnapshot().currentRecoveryKeyHash).toBe('a'.repeat(64))
+  f.setSession({ ...f.session, accountId: '44444444-4444-4444-8444-444444444444' })
+  await f.coordinator.initialize()
+  expect(f.coordinator.getSnapshot().recoveryKeyConfigured).toBe(false)
+  expect(f.coordinator.getSnapshot().currentRecoveryKeyHash).toBeUndefined()
+  expect(f.coordinator.getSnapshot().attempts).toEqual([])
+})
