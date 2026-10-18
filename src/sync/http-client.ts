@@ -34,6 +34,81 @@ export interface FunctionClient {
     options?: { maxBytes?: number; anonymous?: boolean },
   ): Promise<unknown>
 }
+export interface AuthenticatedRequestOptions {
+  url: string
+  publicKey: string
+  token: () => Promise<string | null>
+  fetch?: typeof fetch
+}
+export function createAuthenticatedRequest(options: AuthenticatedRequestOptions) {
+  const origin = originSchema.parse(options.url)
+  if (!isPublicAuthKey(options.publicKey)) throw new DomainError('CONFIG_INVALID')
+  const request = options.fetch ?? fetch
+  return async (
+    name: FunctionName,
+    body: BodyInit,
+    signal: AbortSignal,
+    settings: {
+      anonymous?: boolean
+      contentType?: string
+      headers?: Record<string, string>
+    } = {},
+  ): Promise<Response> => {
+    signal.throwIfAborted()
+    const token = settings.anonymous
+      ? null
+      : await new Promise<string | null>((resolve, reject) => {
+          const aborted = () => reject(signal.reason)
+          signal.addEventListener('abort', aborted, { once: true })
+          options
+            .token()
+            .then(resolve, reject)
+            .finally(() => signal.removeEventListener('abort', aborted))
+        })
+    signal.throwIfAborted()
+    if (!settings.anonymous && !token) throw new DomainError('AUTH_REQUIRED')
+    try {
+      return await request(`${origin}/functions/v1/${name}`, {
+        method: 'POST',
+        credentials: 'omit',
+        cache: 'no-store',
+        redirect: 'error',
+        signal,
+        headers: {
+          ...settings.headers,
+          'content-type': settings.contentType ?? 'application/json',
+          apikey: options.publicKey,
+          ...(token ? { authorization: `Bearer ${token}` } : {}),
+        },
+        body,
+      })
+    } catch (error) {
+      if (signal.aborted) throw error
+      throw new DomainError('OFFLINE')
+    }
+  }
+}
+export async function withRequestDeadline<T>(
+  signal: AbortSignal,
+  milliseconds: number,
+  work: (bounded: AbortSignal) => Promise<T>,
+): Promise<T> {
+  const controller = new AbortController(),
+    bounded = AbortSignal.any([signal, controller.signal])
+  const timer = setTimeout(
+    () => controller.abort(new DomainError('SERVICE_UNAVAILABLE')),
+    milliseconds,
+  )
+  try {
+    return await work(bounded)
+  } catch (error) {
+    if (signal.aborted) throw signal.reason
+    if (controller.signal.aborted) throw new DomainError('SERVICE_UNAVAILABLE')
+    throw error
+  } finally {
+    clearTimeout(timer)
+  }
+}
 export async function boundedJson(response: Response, maxBytes: number): Promise<unknown> {
   const declared = Number(response.headers.get('content-length'))
   if (Number.isFinite(declared) && declared > maxBytes) throw new DomainError('SYNC_PAGE_INVALID')
@@ -108,44 +183,19 @@ export function responseError(
     ...(retryAfterMs !== undefined && Number.isFinite(retryAfterMs) ? { retryAfterMs } : {}),
   })
 }
-export function createFunctionClient(options: {
-  url: string
-  publicKey: string
-  token: () => Promise<string | null>
-  fetch?: typeof fetch
-}): FunctionClient {
-  const origin = originSchema.parse(options.url)
-  if (!isPublicAuthKey(options.publicKey)) throw new DomainError('CONFIG_INVALID')
-  const request = options.fetch ?? fetch
+export function createFunctionClient(options: AuthenticatedRequestOptions): FunctionClient {
+  const request = createAuthenticatedRequest(options)
   return {
     async post(name, body, signal, settings = {}) {
-      signal.throwIfAborted()
-      const token = settings.anonymous ? null : await options.token()
-      signal.throwIfAborted()
-      if (!settings.anonymous && !token) throw new DomainError('AUTH_REQUIRED')
-      let response: Response
-      try {
-        response = await request(`${origin}/functions/v1/${name}`, {
-          method: 'POST',
-          credentials: 'omit',
-          cache: 'no-store',
-          redirect: 'error',
-          signal,
-          headers: {
-            'content-type': 'application/json',
-            apikey: options.publicKey,
-            ...(token ? { authorization: `Bearer ${token}` } : {}),
-          },
-          body: JSON.stringify(body),
-        })
-      } catch (error) {
-        if (signal.aborted) throw error
-        throw new DomainError('OFFLINE')
-      }
-      const parsed = await boundedJson(response, settings.maxBytes ?? 512 * 1024)
-      if (!response.ok)
-        throw responseError(response.status, parsed, response.headers.get('retry-after'))
-      return parsed
+      return withRequestDeadline(signal, 15000, async (bounded) => {
+        const response = await request(name, JSON.stringify(body), bounded, settings)
+        if (!response.ok) {
+          const parsed = await boundedJson(response, 512 * 1024).catch(() => null)
+          bounded.throwIfAborted()
+          throw responseError(response.status, parsed, response.headers.get('retry-after'))
+        }
+        return boundedJson(response, settings.maxBytes ?? 512 * 1024)
+      })
     },
   }
 }

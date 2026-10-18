@@ -2,6 +2,32 @@ import { expect, it, vi } from 'vitest'
 import { boundedJson, createFunctionClient, responseError } from './http-client'
 import { createSyncTransport } from './transport'
 import { receipt } from '../repositories/browser/fixtures.test-support'
+it('bounds stalled token lookup and maps non-JSON service failures to a safe retryable error', async () => {
+  vi.useFakeTimers()
+  try {
+    const client = createFunctionClient({
+      url: 'http://127.0.0.1:56621',
+      publicKey: 'sb_publishable_1234567890abcdef',
+      token: () => new Promise(() => {}),
+    })
+    const result = client
+      .post('sync-pull', {}, new AbortController().signal)
+      .catch((error) => error)
+    await vi.advanceTimersByTimeAsync(15000)
+    expect(await result).toMatchObject({ detail: { code: 'SERVICE_UNAVAILABLE' } })
+  } finally {
+    vi.useRealTimers()
+  }
+  const client = createFunctionClient({
+    url: 'http://127.0.0.1:56621',
+    publicKey: 'sb_publishable_1234567890abcdef',
+    token: async () => 'token',
+    fetch: async () => new Response('upstream private error', { status: 503 }),
+  })
+  await expect(client.post('sync-pull', {}, new AbortController().signal)).rejects.toMatchObject({
+    detail: { code: 'SERVICE_UNAVAILABLE' },
+  })
+})
 it('limits streamed JSON independently of untrusted content-length and cancels the reader', async () => {
   let cancelled = false
   const body = new ReadableStream({

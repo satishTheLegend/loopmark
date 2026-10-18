@@ -3,6 +3,21 @@ import type { PlatformMedia } from '../platform/contracts'
 import { sha256Bytes, canonicalHash } from '../domain/canonical-json'
 import { DomainError } from '../domain/errors'
 import { validMedia } from '../media-validation'
+import { mediaRefSchema } from '../domain/schema'
+export async function verifyMediaBytes(ref: MediaRef, blob: Blob): Promise<void> {
+  if (
+    !mediaRefSchema.safeParse(ref).success ||
+    ref.bytes !== blob.size ||
+    blob.type !== ref.mimeType
+  )
+    throw new DomainError('MEDIA_INVALID')
+  const bytes = new Uint8Array(await blob.arrayBuffer())
+  if (
+    (await sha256Bytes(bytes)) !== ref.sha256 ||
+    !validMedia(bytesToDataUrl(bytes, ref.mimeType), ref.kind)
+  )
+    throw new DomainError('MEDIA_INVALID')
+}
 export function bytesToDataUrl(bytes: Uint8Array, mimeType: string): string {
   let binary = ''
   for (let offset = 0; offset < bytes.length; offset += 8192)

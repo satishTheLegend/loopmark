@@ -1,9 +1,7 @@
 import type { PlatformMedia, MediaInput, PreparedMedia } from '../../platform/contracts'
 import type { CollectionKey, MediaRef } from '../../domain/contracts'
 import { sha256Bytes, canonicalJson } from '../../domain/canonical-json'
-import { mediaRefSchema } from '../../domain/schema'
 import { DomainError } from '../../domain/errors'
-import { validMedia } from '../../media-validation'
 import { mediaRefs, keyOf, viewOf } from '../state'
 import {
   transaction,
@@ -16,21 +14,8 @@ import {
 } from './schema'
 
 export { bytesToDataUrl, dataUrlToBlob } from '../../services/media-codec'
-import { bytesToDataUrl } from '../../services/media-codec'
-export async function verifyBytes(ref: MediaRef, blob: Blob): Promise<void> {
-  if (
-    !mediaRefSchema.safeParse(ref).success ||
-    ref.bytes !== blob.size ||
-    blob.type !== ref.mimeType
-  )
-    throw new DomainError('MEDIA_INVALID')
-  const bytes = new Uint8Array(await blob.arrayBuffer())
-  if (
-    (await sha256Bytes(bytes)) !== ref.sha256 ||
-    !validMedia(bytesToDataUrl(bytes, ref.mimeType), ref.kind)
-  )
-    throw new DomainError('MEDIA_INVALID')
-}
+import { verifyMediaBytes as verifyBytes } from '../../services/media-codec'
+export { verifyMediaBytes as verifyBytes } from '../../services/media-codec'
 export async function assertMediaPresent(
   tx: IDBTransaction,
   scope: CollectionKey,
