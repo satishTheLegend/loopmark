@@ -9,6 +9,7 @@
 - Added project file availability, protected download removal, and reviewed iOS/Android backup-file intake with durable repeated-file handling.
 - Fixed first-install update-banner movement, unchanged sync polls invalidating reviews, and obsolete sync completions replacing a newly selected collection.
 - Fixed initial sync scheduling after delayed sign-in recovery while preserving queued action order and account ownership.
+- Invalidated the previous cloud acknowledgement immediately after local changes while their new sync state is being checked.
 - Added public help and explicit account/storage states while preserving private-route indexing protections.
 - Added executable contributor examples and separate guest, local backend, native and provider setup guides.
 
