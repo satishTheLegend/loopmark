@@ -3,7 +3,7 @@ import { canonicalJson } from '../../domain/canonical-json'
 import { DomainError } from '../../domain/errors'
 import { keyOf } from '../state'
 import { candidateBlocksRebase } from '../rebase'
-import { removableDownloads } from '../downloads'
+import { removableDownloads, workflowDownloadPins } from '../downloads'
 import {
   activeScope,
   getState,
@@ -51,6 +51,9 @@ export async function removeBrowserDownloads(
         for (const ref of row.media ?? []) pinned.add(ref.id)
     if (metadata.some((row) => candidateBlocksRebase(row, scope.key)))
       for (const row of cached) pinned.add(row.ref.id)
+    for (const row of metadata)
+      if (row.scope && keyOf(row.scope) === keyOf(scope.key))
+        for (const ref of workflowDownloadPins(row.value)) pinned.add(ref.id)
     const result = removableDownloads(state, projectId, cached, pinned)
     if (!result.remove.length) throw new DomainError('DOWNLOADS_PROTECTED')
     for (const ref of result.remove) tx.objectStore('media').delete(mediaKey(scope.key, ref.id))

@@ -117,7 +117,6 @@ export class BrowserMediaStore implements PlatformMedia {
         tx.objectStore('media').put({
           ...existing,
           bytes: storedBytes,
-          ...(options?.downloaded ? { downloaded: true } : {}),
         })
       else
         tx.objectStore('media').add({

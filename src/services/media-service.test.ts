@@ -149,3 +149,49 @@ it('rejects a late repair after a scope change and never overwrites a different 
   expect(stored.ref).toEqual(changedRef)
   expect(new Uint8Array(stored.bytes)).toEqual(corrupt)
 })
+
+it('T15 renews an expired ordinary reservation with a fresh request while preserving exact local bytes and immutable operation identity', async () => {
+  const f = await setup()
+  await f.repo.media.storeVerified(f.media.ref, f.media.bytes, f.scope.key, 1)
+  let clock = Date.parse('2026-10-01T00:00:00.000Z')
+  vi.spyOn(Date, 'now').mockImplementation(() => clock)
+  f.transport.reserve.mockImplementation(async () => ({
+    id: `reservation-${f.transport.reserve.mock.calls.length}`,
+    collectionId: f.scope.key.collectionId,
+    epoch: f.scope.key.epoch,
+    media: f.media.ref,
+    deletionGeneration: '0',
+    expiresAt: new Date(clock + 1000).toISOString(),
+  }))
+  f.transport.upload.mockRejectedValueOnce(new Error('interrupted upload'))
+  const input = {
+    scope: f.scope,
+    source: f.scope.key,
+    sourceRef: f.media.ref,
+    ref: f.media.ref,
+    operationId: 'immutable-checkpoint',
+  }
+  await expect(f.service.upload(input, new AbortController().signal)).rejects.toThrow(
+    'interrupted upload',
+  )
+  expect(
+    await new Response(await f.repo.media.open(f.media.ref, f.scope.key)).arrayBuffer(),
+  ).toEqual(await f.media.bytes.arrayBuffer())
+  clock += 1001
+  await createRemoteMediaService(f.options).upload(input, new AbortController().signal)
+  expect(f.transport.reserve).toHaveBeenCalledTimes(2)
+  const requests = f.transport.reserve.mock.calls as unknown as Array<
+    [{ requestId: string; upload: unknown }]
+  >
+  expect(requests[0][0].requestId).not.toBe(requests[1][0].requestId)
+  expect(requests[0][0].upload).toEqual(requests[1][0].upload)
+  expect((f.transport.upload.mock.calls as unknown as Array<[string]>).map((c) => c[0])).toEqual([
+    'reservation-1',
+    'reservation-2',
+  ])
+  expect(
+    await new Response(await f.repo.media.open(f.media.ref, f.scope.key)).arrayBuffer(),
+  ).toEqual(await f.media.bytes.arrayBuffer())
+  expect(await f.repo.pending(f.scope.key)).toEqual([])
+  vi.restoreAllMocks()
+})

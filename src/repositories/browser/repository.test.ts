@@ -847,3 +847,43 @@ it('verified reauthentication requeues only auth-blocked immutable commands for 
   })
   expect((await repository.pending(key))[0].error?.code).toBe('AUTH_REQUIRED')
 })
+
+it.each(['shadow-first', 'resolution-first'] as const)(
+  'T12 %s preserves recovered intent and converges to the newest cloud version without retiring a stale review',
+  async (order) => {
+    const { repository, key } = await setup(true)
+    await repository.acknowledge(key, receipt('initial', '0'.repeat(64)), 1)
+    await repository.commitLocal(key, update(), 1)
+    await repository.markFailure(key, 'update', new DomainError('REVISION_CONFLICT').detail, 1)
+    const review = (await repository.readView(key)).revision
+    const incoming = receipt('remote-update', '2'.repeat(64), '2', [
+      { kind: 'project.put', value: { ...project('project', '2'), name: 'Newest cloud scarf' } },
+    ])
+    const resolve = (expectedRevision: string) =>
+      repository.resolvePending(
+        key,
+        { operationId: 'update', expectedRevision, recoveryName: 'Saved device conflict' },
+        1,
+      )
+    let recovery,
+      acceptedReview = review
+    if (order === 'shadow-first') {
+      await repository.acknowledge(key, incoming, 1)
+      await expect(resolve(review)).rejects.toMatchObject({ detail: { code: 'REVISION_CONFLICT' } })
+      expect(await repository.pending(key)).toHaveLength(1)
+      expect(await repository.listCollections()).toHaveLength(1)
+      acceptedReview = (await repository.readView(key)).revision
+      recovery = await resolve(acceptedReview)
+    } else {
+      recovery = await resolve(review)
+      await repository.acknowledge(key, incoming, 1)
+    }
+    expect((await repository.readView(key)).projects[0].name).toBe('Newest cloud scarf')
+    expect((await repository.readAcknowledged(key)).projects[0].revision).toBe('2')
+    expect(await repository.pending(key)).toEqual([])
+    expect((await repository.readView(recovery.recovered!)).projects[0].name).toBe('Changed scarf')
+    const retry = await resolve(acceptedReview)
+    expect(retry).toEqual(recovery)
+    expect(await repository.listCollections()).toHaveLength(2)
+  },
+)

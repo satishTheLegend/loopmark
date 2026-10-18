@@ -3,6 +3,28 @@ import type { MediaRef } from '../domain/contracts'
 import { canonicalJson } from '../domain/canonical-json'
 import { DomainError } from '../domain/errors'
 import { mediaRefs, viewOf, type StoredCollection } from './state'
+import { mediaRefSchema } from '../domain/schema'
+
+export function workflowDownloadPins(value: unknown): MediaRef[] {
+  const entry = value as
+    | {
+        kind?: string
+        value?: {
+          state?: string
+          verified?: boolean
+          ref?: unknown
+          reservation?: { media?: unknown }
+        }
+      }
+    | undefined
+  if (entry?.kind !== 'upload' || !entry.value) return []
+  const work = entry.value
+  if (['complete', 'cancelled'].includes(work.state ?? '') || work.verified === true) return []
+  return [work.ref, work.reservation?.media].flatMap((candidate) => {
+    const result = mediaRefSchema.safeParse(candidate)
+    return result.success ? [result.data] : []
+  })
+}
 
 export function removableDownloads(
   state: StoredCollection,

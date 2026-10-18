@@ -655,3 +655,109 @@ it.each(['wrong-hash', 'truncated'] as const)(
     })
   },
 )
+
+it('T17 rejects a file larger than 50 MiB before parsing or restoring any records', async () => {
+  const { parseBackup, MAX_BACKUP_BYTES } = await import('../data')
+  const before = await repo.readView(scope.key)
+  expect(() => parseBackup(' '.repeat(MAX_BACKUP_BYTES + 1))).toThrow('smaller than 50 MiB')
+  expect(await repo.readView(scope.key)).toEqual(before)
+  expect(await repo.listCollections()).toHaveLength(1)
+})
+
+it('T18 expired export lease yields no partial file, releases both pins, and retries only uncached bytes under a fresh lease', async () => {
+  const connected = info(true, 'expiry')
+  await repo.createCollection(connected)
+  scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+  const prepared = await prepareBackupRecords(backup, repo.media, scope)
+  const refs = prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!])
+  const bytes = await Promise.all(
+    refs.map(
+      async (ref) =>
+        new Blob([await new Response(await repo.media.open(ref, scope.key)).arrayBuffer()], {
+          type: ref.mimeType,
+        }),
+    ),
+  )
+  const manifest = {
+    protocolVersion: 2 as const,
+    snapshotId: 'expired-lease',
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    cursor: '1',
+    revision: '1',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+    after: null,
+    nextPage: null,
+    projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+    checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+    media: refs,
+  }
+  await repo.hydrate(scope.key, [manifest], scope.generation)
+  await transaction(repo.database, 'readwrite', (tx) => {
+    for (const ref of refs) tx.objectStore('media').delete(mediaKey(scope.key, ref.id))
+  })
+  const before = await repo.readView(scope.key)
+  const transport = {
+    snapshot: vi.fn(async () => manifest),
+    releaseSnapshot: vi.fn(async () => {}),
+    push: vi.fn(),
+    pull: vi.fn(),
+  }
+  const mediaTransport = {
+    reserve: vi.fn(),
+    upload: vi.fn(),
+    cancel: vi.fn(),
+    download: vi.fn(async (input: { mediaId: string; snapshotId?: string }) => {
+      if (input.snapshotId === 'expired-lease' && input.mediaId === refs[1].id)
+        throw new DomainError('SNAPSHOT_EXPIRED')
+      return bytes[refs.findIndex((ref) => ref.id === input.mediaId)]
+    }),
+  }
+  const session = {
+    accountId: 'account',
+    billingPrincipalId: 'principal',
+    collection: scope.key,
+    device: scope.device,
+    deletionGeneration: '0',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+  }
+  const remoteMedia = createRemoteMediaService({
+    repository: repo,
+    media: repo.media,
+    transport: mediaTransport,
+    workflows: createBrowserWorkflowStore(repo),
+    current: () => session,
+  })
+  const exporter = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data: {} as never,
+    scope: () => scope,
+    remote: { transport, media: remoteMedia, current: () => session },
+    mediaConcurrency: 1,
+  })
+  const output = vi.fn()
+  await expect(exporter.exportComplete().then(output)).rejects.toMatchObject({
+    detail: { code: 'BACKUP_INCOMPLETE' },
+    total: 1,
+    missing: [{ kind: 'voice' }],
+  })
+  expect(output).not.toHaveBeenCalled()
+  expect(transport.releaseSnapshot).toHaveBeenCalledWith('expired-lease', expect.any(AbortSignal))
+  expect(
+    await transaction(repo.database, 'readonly', (tx) =>
+      requestResult(tx.objectStore('snapshots').getAll()),
+    ),
+  ).toEqual([])
+  expect(await repo.readView(scope.key)).toEqual(before)
+  transport.snapshot.mockResolvedValueOnce({ ...manifest, snapshotId: 'fresh-lease' })
+  expect((await exporter.exportComplete()).projects).toEqual(backup.projects)
+  expect(
+    mediaTransport.download.mock.calls.map(([input]) => [input.mediaId, input.snapshotId]),
+  ).toEqual([
+    [refs[0].id, 'expired-lease'],
+    [refs[1].id, 'expired-lease'],
+    [refs[1].id, 'fresh-lease'],
+  ])
+  expect(transport.releaseSnapshot).toHaveBeenLastCalledWith('fresh-lease', expect.any(AbortSignal))
+})

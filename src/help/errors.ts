@@ -84,9 +84,9 @@ export const errorHelp = {
     'sync#conflicts',
   ),
   SYNC_REBASE_REQUIRED: entry(
-    'These changes belong to an older collection.',
-    'The collection or device registration changed.',
-    'Keep them in Recovered work, refresh, then choose a destination.',
+    'This device needs a fresh account view.',
+    'The device registration retired, the saved feed expired, or the collection changed.',
+    'Open Sync details, choose Refresh account projects, and review the device copy before continuing.',
     'sync#recovered-work',
   ),
   SYNC_PAGE_INVALID: entry(
