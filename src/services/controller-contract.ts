@@ -6,6 +6,7 @@ import type {
   ProjectFields,
   SessionScope,
 } from '../domain/contracts'
+import type { AttachmentItem } from './attachment-queue'
 import type { SafeError } from '../domain/errors'
 export interface LocalWorkCounts {
   drafts: number
@@ -33,6 +34,8 @@ export interface ControllerState {
   sync: {
     state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
     pending: number
+    pendingAttachments?: number
+    failedAttachments?: number
     lastSyncedAt: string | null
   }
   error: SafeError | null
@@ -63,6 +66,8 @@ export interface AppController {
   chooseCollection(key: CollectionKey): Promise<void>
   runSync(): Promise<void>
   retryOperations(operationIds: string[]): Promise<void>
+  listAttachments(): Promise<AttachmentItem[]>
+  retryAttachments(ids: string[]): Promise<void>
   loadConflict(operationId: string): Promise<{ view: CollectionView; acknowledged: CollectionView }>
   previewAttach(source: CollectionKey): Promise<AttachPreview>
   confirmAttach(preview: AttachPreview): Promise<void>

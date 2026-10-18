@@ -181,3 +181,61 @@ it('honors Retry-After without exceeding a bounded foreground cycle', async () =
   expect(sleep).not.toHaveBeenCalled()
   expect((await repo.pending(scope.key))[0].error?.code).toBe('RATE_LIMITED')
 })
+
+it('journals before metadata push, drains attachments under the same lease and does not claim synced while bytes remain', async () => {
+  const { repo, scope, snapshot, transport } = await setup()
+  await repo.hydrate(scope.key, [snapshot], 1)
+  await repo.commitLocal(scope.key, create(), 1)
+  let held = false,
+    journaled = false
+  const original = transport.push.getMockImplementation()!
+  transport.push.mockImplementation(async (command) => {
+    expect(held).toBe(true)
+    expect(journaled).toBe(true)
+    return original(command)
+  })
+  const attachments = {
+    owns: () => false,
+    prepareCommand: vi.fn(async () => {
+      expect(held).toBe(true)
+      journaled = true
+    }),
+    run: vi.fn(async () => {
+      expect(held).toBe(true)
+    }),
+    resumeAfterAuthentication: vi.fn(),
+    list: vi.fn(async () => [
+      {
+        id: 'attachment-a',
+        checkpointId: 'checkpoint',
+        kind: 'photo' as const,
+        state: 'pending' as const,
+        error: null,
+      },
+    ]),
+  }
+  const coordinator = createSyncCoordinator({
+    repository: repo,
+    transport,
+    attachments,
+    lease: {
+      run: async (_scope, _signal, work) => {
+        held = true
+        try {
+          await work()
+          return true
+        } finally {
+          held = false
+        }
+      },
+    },
+  })
+  await coordinator.run(scope)
+  expect(coordinator.getSnapshot()).toMatchObject({
+    state: 'pending',
+    pending: 0,
+    pendingAttachments: 1,
+    lastSyncedAt: null,
+  })
+  expect(attachments.run).toHaveBeenCalledOnce()
+})

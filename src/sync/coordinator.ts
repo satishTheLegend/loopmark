@@ -4,15 +4,19 @@ import type { SyncTransport } from '../platform/contracts'
 import { canonicalJson } from '../domain/canonical-json'
 import { DomainError, safeError, type SafeError } from '../domain/errors'
 import type { TabLease } from './tab-lease'
+import type { AttachmentQueue } from '../services/attachment-queue'
 import { releaseSnapshotQuietly } from './snapshots'
 export interface SyncStatus {
   state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
   pending: number
+  pendingAttachments?: number
+  failedAttachments?: number
   lastSyncedAt: string | null
   error: SafeError | null
 }
 export interface SyncCoordinator {
   run(scope: SessionScope, operationIds?: string[]): Promise<void>
+  retryAttachments(scope: SessionScope, ids: string[]): Promise<void>
   stop(): void
   getSnapshot(): SyncStatus
   subscribe(listener: () => void): () => void
@@ -47,6 +51,7 @@ export function createSyncCoordinator(options: {
   clock?: SyncClock
   online?: () => boolean
   currentAccountId?: () => string | null
+  attachments?: AttachmentQueue
 }): SyncCoordinator {
   const { repository, transport, lease } = options,
     time = options.clock ?? clock
@@ -67,7 +72,12 @@ export function createSyncCoordinator(options: {
   }
   const retryable = (p: PendingIntent) =>
     p.state !== 'rejected' && p.state !== 'conflict' && (!p.error || p.error.retryable)
-  async function cycle(scope: SessionScope, only: string[] | undefined, signal: AbortSignal) {
+  async function cycle(
+    scope: SessionScope,
+    only: string[] | undefined,
+    signal: AbortSignal,
+    attachmentOnly?: string[],
+  ) {
     const started = time.now(),
       deadline = started + 60000
     async function retry<T>(work: () => Promise<T>): Promise<T> {
@@ -148,7 +158,12 @@ export function createSyncCoordinator(options: {
     }
     for (const item of pending) {
       if (time.now() >= deadline) break
-      if (item.intent.kind === 'collection.replace') continue
+      if (
+        item.intent.kind === 'collection.replace' ||
+        attachmentOnly ||
+        options.attachments?.owns(item.command)
+      )
+        continue
       if (!retryable(item) || (only && !only.includes(item.intent.operationId))) continue
       const latest = await repository.pending(scope.key)
       if (!latest.some((p) => p.intent.operationId === item.intent.operationId)) continue
@@ -164,6 +179,7 @@ export function createSyncCoordinator(options: {
         continue
       try {
         await check(scope, signal)
+        await options.attachments?.prepareCommand(scope, item.command, signal)
         await repository.markAttempt(scope.key, item.intent.operationId, scope.generation)
         const receipt = await retry(() => transport.push(item.command, signal))
         await check(scope, signal)
@@ -202,20 +218,77 @@ export function createSyncCoordinator(options: {
       await repository.applyPage(scope.key, page, scope.generation)
       more = page.hasMore
     }
+    if (!more && time.now() < deadline)
+      await options.attachments?.run(scope, signal, attachmentOnly)
+    const attachments = (await options.attachments?.list(scope.key)) ?? [],
+      pendingAttachments = attachments.filter((item) =>
+        ['pending', 'queued'].includes(item.state),
+      ).length,
+      failedAttachments = attachments.filter((item) => item.state === 'failed').length
     const remaining = await repository.pending(scope.key)
     publish({
+      pendingAttachments,
+      failedAttachments,
       state: remaining.some((p) => p.state === 'conflict')
         ? 'conflict'
-        : remaining.some((p) => p.state === 'rejected')
+        : failedAttachments || remaining.some((p) => p.state === 'rejected')
           ? 'error'
-          : remaining.length || more
+          : remaining.length || more || pendingAttachments
             ? 'pending'
             : 'idle',
       pending: remaining.length,
       lastSyncedAt:
-        remaining.length === 0 && !more ? new Date(time.now()).toISOString() : status.lastSyncedAt,
-      error: remaining.find((p) => p.error)?.error ?? null,
+        remaining.length === 0 && !more && !pendingAttachments && !failedAttachments
+          ? new Date(time.now()).toISOString()
+          : status.lastSyncedAt,
+      error:
+        remaining.find((p) => p.error)?.error ??
+        attachments.find((item) => item.error)?.error ??
+        null,
     })
+  }
+  async function run(scope: SessionScope, only?: string[], attachmentOnly?: string[]) {
+    if (disposed) throw new DomainError('ACCOUNT_CHANGED')
+    if (running) return running
+    if (options.online && !options.online()) {
+      publish({ state: 'offline', error: new DomainError('OFFLINE').detail })
+      return
+    }
+    const controller = new AbortController()
+    current = controller
+    const timeout = setTimeout(
+      () => controller.abort(new DomainError('SERVICE_UNAVAILABLE')),
+      60000,
+    )
+    running = (async () => {
+      try {
+        await lease.run(structuredClone(scope), controller.signal, () =>
+          cycle(scope, only, controller.signal, attachmentOnly),
+        )
+      } catch (error) {
+        if (
+          controller.signal.aborted &&
+          controller.signal.reason instanceof DomainError &&
+          controller.signal.reason.detail.code === 'ACCOUNT_CHANGED'
+        )
+          return
+        const detail = safeError(controller.signal.aborted ? controller.signal.reason : error)
+        const attachments = (await options.attachments?.list(scope.key).catch(() => [])) ?? []
+        publish({
+          pendingAttachments: attachments.filter((item) =>
+            ['pending', 'queued'].includes(item.state),
+          ).length,
+          failedAttachments: attachments.filter((item) => item.state === 'failed').length,
+        })
+        publish({ state: detail.code === 'OFFLINE' ? 'offline' : 'error', error: detail })
+        throw error
+      } finally {
+        clearTimeout(timeout)
+        if (current === controller) current = undefined
+        running = undefined
+      }
+    })()
+    return running
   }
   return {
     getSnapshot: () => status,
@@ -223,31 +296,10 @@ export function createSyncCoordinator(options: {
       listeners.add(listener)
       return () => listeners.delete(listener)
     },
-    async run(scope, only) {
-      if (disposed) throw new DomainError('ACCOUNT_CHANGED')
-      if (running) return running
-      if (options.online && !options.online()) {
-        publish({ state: 'offline', error: new DomainError('OFFLINE').detail })
-        return
-      }
-      const controller = new AbortController()
-      current = controller
-      running = (async () => {
-        try {
-          await lease.run(structuredClone(scope), controller.signal, () =>
-            cycle(scope, only, controller.signal),
-          )
-        } catch (error) {
-          if (controller.signal.aborted) return
-          const detail = safeError(error)
-          publish({ state: detail.code === 'OFFLINE' ? 'offline' : 'error', error: detail })
-          throw error
-        } finally {
-          if (current === controller) current = undefined
-          running = undefined
-        }
-      })()
-      return running
+    run,
+    retryAttachments: (scope, ids) => {
+      if (!options.attachments || !ids.length) return Promise.reject(new DomainError('VALIDATION'))
+      return run(scope, undefined, ids)
     },
     stop() {
       current?.abort(new DomainError('ACCOUNT_CHANGED'))

@@ -2,6 +2,7 @@ import type { AccountSession, CollectionKey, LocalIntent, SessionScope } from '.
 import type { Repository, LocalCollectionReview } from '../repositories/contracts'
 import type { AccountAuth } from '../auth/auth-service'
 import type { SyncCoordinator } from '../sync/coordinator'
+import type { AttachmentQueue } from './attachment-queue'
 import type { PlatformMedia } from '../platform/contracts'
 import { canonicalJson } from '../domain/canonical-json'
 import { DomainError, safeError } from '../domain/errors'
@@ -39,6 +40,7 @@ export interface AppControllerOptions {
   sync?: SyncCoordinator
   connections?: CollectionConnections
   media?: PlatformMedia
+  attachments?: AttachmentQueue
 }
 /** Root completes migration/guest activation before initialize. No implicit upload on sign-in. */
 export function createAppController(options: AppControllerOptions): AppController {
@@ -247,8 +249,10 @@ export function createAppController(options: AppControllerOptions): AppControlle
       state.auth === 'authenticated' &&
       keyOf(scope.key) === keyOf(session.collection) &&
       canonicalJson(scope.device) === canonicalJson(session.device)
-    )
+    ) {
       await repository.resumeAfterAuthentication(scope.key, scope.generation)
+      await options.attachments?.resumeAfterAuthentication(scope)
+    }
     return scope
   }
   function authenticate(work: (auth: AccountAuth, signal: AbortSignal) => Promise<AccountSession>) {
@@ -553,20 +557,35 @@ export function createAppController(options: AppControllerOptions): AppControlle
             }
           }
         }
+        const attachmentStates = new Map<string, boolean>()
+        for (const item of (await options.attachments?.list(info.key)) ?? []) {
+          if (!['complete', 'cancelled'].includes(item.state))
+            attachmentStates.set(`${item.checkpointId}:${item.kind}`, !!item.error)
+        }
         for (const pending of view.pending) {
           if (pending.intent.kind.startsWith('project.')) counts.unsentProjectChanges++
           if (pending.intent.kind === 'checkpoint.create') counts.unsentCheckpoints++
-          const media =
-            pending.intent.kind === 'checkpoint.create'
-              ? [
-                  pending.intent.payload.checkpoint.photo,
-                  pending.intent.payload.checkpoint.voice,
-                ].filter(Boolean).length
-              : pending.intent.kind === 'media.attach'
-                ? 1
-                : 0
-          if (pending.error) counts.failedAttachments += media
-          else counts.pendingAttachments += media
+          const checkpoint =
+            pending.intent.kind === 'checkpoint.create' ? pending.intent.payload.checkpoint : null
+          if (checkpoint)
+            for (const ref of [checkpoint.photo, checkpoint.voice])
+              if (ref)
+                attachmentStates.set(
+                  `${checkpoint.id}:${ref.kind}`,
+                  !!pending.error || attachmentStates.get(`${checkpoint.id}:${ref.kind}`) === true,
+                )
+          if (pending.intent.kind === 'media.attach')
+            attachmentStates.set(
+              `${pending.intent.payload.checkpointId}:${pending.intent.payload.media.kind}`,
+              !!pending.error ||
+                attachmentStates.get(
+                  `${pending.intent.payload.checkpointId}:${pending.intent.payload.media.kind}`,
+                ) === true,
+            )
+        }
+        for (const failed of attachmentStates.values()) {
+          if (failed) counts.failedAttachments++
+          else counts.pendingAttachments++
         }
       }
       await check(scope)
@@ -589,6 +608,16 @@ export function createAppController(options: AppControllerOptions): AppControlle
       const scope = bound()
       if (!sync) throw new DomainError('CAPABILITY_UNAVAILABLE')
       await sync.run(scope, ids)
+      await refresh(scope)
+    },
+    async listAttachments() {
+      const scope = bound()
+      return options.attachments?.list(scope.key) ?? []
+    },
+    async retryAttachments(ids) {
+      const scope = bound()
+      if (!sync) throw new DomainError('CAPABILITY_UNAVAILABLE')
+      await sync.retryAttachments(scope, ids)
       await refresh(scope)
     },
     async loadConflict(operationId) {

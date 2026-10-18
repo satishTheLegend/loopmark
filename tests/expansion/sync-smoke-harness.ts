@@ -12,6 +12,7 @@ import { createBrowserWorkflowStore } from '../../src/repositories/browser/workf
 import { createRemoteMediaService } from '../../src/services/media-service'
 import { createMediaTransport } from '../../src/sync/media-transport'
 import { createReplacementService } from '../../src/services/replacement-service'
+import { createAttachmentQueue } from '../../src/services/attachment-queue'
 import { createBackupService } from '../../src/services/backup-service'
 import { createDeletionService } from '../../src/services/deletion-service'
 import { DomainError } from '../../src/domain/errors'
@@ -73,13 +74,22 @@ export async function start(environment: Record<string, string>) {
     current,
   })
   deletion = createDeletionService({ repository, workflows, auth, client: auth.functions, current })
+  const attachments = createAttachmentQueue({
+    repository,
+    workflows,
+    transport,
+    media: remoteMedia,
+    current,
+  })
   controller = createAppController({
+    attachments,
     repository,
     media: repository.media,
     connections: replacement,
     auth,
     sync: createSyncCoordinator({
       repository,
+      attachments,
       transport: createSyncTransport(auth.functions),
       lease: createTabLease(),
     }),

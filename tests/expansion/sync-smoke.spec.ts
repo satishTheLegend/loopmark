@@ -220,3 +220,44 @@ test('actual local photo candidate remains private until confirmed, restores byt
     await context.close()
   }
 })
+
+test('actual checkpoint text and attachment finalization survive restart and complete export on a second device', async ({
+  browser,
+}) => {
+  test.setTimeout(90000)
+  const first = await browser.newContext(),
+    second = await browser.newContext(),
+    email = `loopmark-client-media-${crypto.randomUUID()}@example.invalid`
+  try {
+    const a = await page(first)
+    await login(a, email)
+    const project = await a.evaluate(() => window.LoopmarkSyncHarness.createProject())
+    await a.evaluate(() => window.LoopmarkSyncHarness.sync())
+    const photo = await a.evaluate(
+      (id) => window.LoopmarkSyncHarness.photoCheckpoint(id),
+      project.id,
+    )
+    await a.evaluate(() => window.LoopmarkSyncHarness.sync())
+    expect((await a.evaluate(() => window.LoopmarkSyncHarness.state())).sync).toMatchObject({
+      pending: 0,
+      pendingAttachments: 0,
+      failedAttachments: 0,
+      state: 'idle',
+    })
+    await new Promise((resolve) => setTimeout(resolve, 5100))
+    const b = await page(second)
+    await login(b, email)
+    const exported = await b.evaluate(() => window.LoopmarkSyncHarness.backup())
+    expect(exported.projects[0].checkpoints[0].photo).toBe(photo)
+    await a.reload()
+    await a.addScriptTag({ content: bundle })
+    await a.evaluate((env) => window.LoopmarkSyncHarness.start(env), environment)
+    await a.evaluate(() => window.LoopmarkSyncHarness.sync())
+    expect(
+      (await a.evaluate(() => window.LoopmarkSyncHarness.backup())).projects[0].checkpoints,
+    ).toHaveLength(1)
+  } finally {
+    await first.close()
+    await second.close()
+  }
+})
