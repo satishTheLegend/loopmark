@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-test('account code form has a durable resend cooldown and named fields', async ({ page }) => {
+test('account code form has a resend cooldown and named fields', async ({ page }) => {
   await page.goto('/tests/ui/index.html?scenario=account')
   await page.getByLabel('Email address', { exact: true }).fill('maker@example.test')
   await page.getByRole('button', { name: 'Send sign-in code' }).click()
