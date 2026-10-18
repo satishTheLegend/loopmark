@@ -1,0 +1,80 @@
+# Template. scripts/local.mjs creates a worktree-scoped runtime configuration.
+project_id = "__PROJECT_ID__"
+[api]
+enabled = true
+port = __API_PORT__
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+auto_expose_new_tables = false
+[db]
+port = __DB_PORT__
+shadow_port = __SHADOW_PORT__
+major_version = 17
+[db.migrations]
+enabled = true
+schema_paths = []
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+[studio]
+enabled = false
+port = __STUDIO_PORT__
+[local_smtp]
+enabled = true
+port = __MAIL_PORT__
+[realtime]
+enabled = false
+[storage]
+enabled = true
+file_size_limit = "8MiB"
+[storage.s3_protocol]
+enabled = false
+[auth]
+enabled = true
+site_url = "__APP_ORIGIN__"
+additional_redirect_urls = ["__APP_ORIGIN__/auth/callback"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+enable_signup = true
+enable_anonymous_sign_ins = false
+minimum_password_length = 12
+[auth.rate_limit]
+email_sent = 30
+sign_in_sign_ups = 30
+token_verifications = 30
+token_refresh = 150
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+double_confirm_changes = true
+secure_password_change = true
+max_frequency = "5s"
+otp_length = 6
+otp_expiry = 600
+[auth.email.template.magic_link]
+subject = "Your Loopmark sign-in code"
+content_path = "./supabase/templates/magic-link.html"
+[auth.email.template.confirmation]
+subject = "Your Loopmark sign-in code"
+content_path = "./supabase/templates/magic-link.html"
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+inspector_port = __INSPECTOR_PORT__
+deno_version = 2
+[analytics]
+enabled = false
+[functions.sync-push]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.sync-pull]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.sync-snapshot]
+verify_jwt = false
+import_map = "./functions/import_map.json"
+[functions.account-session]
+verify_jwt = false
+import_map = "./functions/import_map.json"
