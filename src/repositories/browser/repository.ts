@@ -1,4 +1,4 @@
-import type { Repository, LocalCollectionReview } from '../contracts'
+import type { Repository, LocalCollectionReview, RebaseInput, RebaseResult } from '../contracts'
 import type {
   CollectionInfo,
   CollectionKey,
@@ -50,6 +50,7 @@ import {
   BROWSER_DATABASE,
 } from './schema'
 import { BrowserMediaStore, assertMediaPresent, verifyBytes } from './media-store'
+import { prepareRebase, rebaseIdentity, candidateBlocksRebase } from '../rebase'
 
 export interface BrowserRepositoryOptions {
   databaseName?: string
@@ -430,6 +431,188 @@ export class BrowserRepository implements Repository {
       if (state.info.kind !== 'connected') throw new DomainError('VALIDATION')
       applyReceipt(state, receipt)
     })
+  }
+  async rebaseBlocked(key: CollectionKey): Promise<boolean> {
+    return transaction(this.database, 'readonly', async (tx) => {
+      const source = await getState(tx, key)
+      const metadata = await requestResult<Array<{ value?: unknown }>>(
+        tx.objectStore('meta').getAll(),
+      )
+      return (
+        source.pending.some((p) => p.intent.kind === 'collection.replace') ||
+        metadata.some((row) => candidateBlocksRebase(row, key))
+      )
+    })
+  }
+  async completeRebase(
+    expected: SessionScope,
+    review: LocalCollectionReview,
+    input: RebaseInput,
+  ): Promise<RebaseResult> {
+    const fingerprint = await canonicalHash(rebaseIdentity(expected, review, input))
+    const receiptKey = JSON.stringify(['rebase-complete', input.recoveryId])
+    const existing = await transaction(this.database, 'readonly', (tx) =>
+      requestResult<{ fingerprint: string; value: RebaseResult } | undefined>(
+        tx.objectStore('meta').get(receiptKey),
+      ),
+    )
+    if (existing) {
+      if (existing.fingerprint !== fingerprint) throw new DomainError('OPERATION_REUSED')
+      if (canonicalJson(await this.readActive()) !== canonicalJson(existing.value.scope))
+        throw new DomainError('ACCOUNT_CHANGED')
+      return existing.value
+    }
+    const captured = await transaction(this.database, 'readonly', async (tx) => {
+      if (canonicalJson(await activeScope(tx)) !== canonicalJson(expected))
+        throw new DomainError('ACCOUNT_CHANGED')
+      if (canonicalJson(await this.reviewIn(tx, expected.key)) !== canonicalJson(review))
+        throw new DomainError('REVISION_CONFLICT')
+      const source = await getState(tx, expected.key)
+      const rows = (await requestResult<MediaRow[]>(tx.objectStore('media').getAll())).filter(
+        (row) => keyOf(row.scope) === keyOf(expected.key),
+      )
+      const drafts = (
+        await requestResult<
+          Array<{
+            key: string
+            scope: CollectionKey
+            value: { key: string }
+            media?: import('../../domain/contracts').MediaRef[]
+          }>
+        >(tx.objectStore('drafts').getAll())
+      ).filter((row) => keyOf(row.scope) === keyOf(expected.key))
+      return { source, rows, drafts }
+    })
+    const prepared = prepareRebase(captured.source, expected, review, input, Date.now())
+    const required = [
+      ...mediaRefs(viewOf(captured.source).checkpoints),
+      ...captured.drafts.flatMap((d) => d.media ?? []),
+    ]
+    const draftIds = new Set(captured.drafts.flatMap((d) => d.media ?? []).map((r) => r.id))
+    for (const ref of required) {
+      const row = captured.rows.find((row) => row.ref.id === ref.id)
+      if (row && canonicalJson(row.ref) !== canonicalJson(ref))
+        throw new DomainError('MEDIA_INVALID')
+      try {
+        if (!row) throw new DomainError('BACKUP_INCOMPLETE')
+        await verifyBytes(ref, new Blob([row.bytes], { type: ref.mimeType }))
+      } catch (error) {
+        if (
+          !input.allowMissingMedia ||
+          draftIds.has(ref.id) ||
+          !(error instanceof DomainError) ||
+          !['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+        )
+          throw error
+      }
+    }
+    const result = await transaction(this.database, 'readwrite', async (tx) => {
+      if (canonicalJson(await activeScope(tx)) !== canonicalJson(expected))
+        throw new DomainError('ACCOUNT_CHANGED')
+      if (canonicalJson(await this.reviewIn(tx, expected.key)) !== canonicalJson(review))
+        throw new DomainError('REVISION_CONFLICT')
+      const rows = (await requestResult<MediaRow[]>(tx.objectStore('media').getAll())).filter(
+        (row) => keyOf(row.scope) === keyOf(expected.key),
+      )
+      if (
+        rows.length !== captured.rows.length ||
+        rows.some((row) => {
+          const old = captured.rows.find((before) => before.key === row.key)
+          if (
+            !old ||
+            canonicalJson(old.ref) !== canonicalJson(row.ref) ||
+            old.bytes.byteLength !== row.bytes.byteLength
+          )
+            return true
+          const before = new Uint8Array(old.bytes),
+            after = new Uint8Array(row.bytes)
+          return before.some((byte, i) => byte !== after[i])
+        })
+      )
+        throw new DomainError('REVISION_CONFLICT')
+      const metadata = await requestResult<
+        Array<{ key: string; scope?: CollectionKey; value?: unknown }>
+      >(tx.objectStore('meta').getAll())
+      if (metadata.some((row) => candidateBlocksRebase(row, expected.key)))
+        throw new DomainError('SYNC_REBASE_REQUIRED')
+      if (
+        await requestResult(tx.objectStore('collections').get(keyOf(prepared.recovered.info.key)))
+      )
+        throw new DomainError('REVISION_CONFLICT')
+      if (keyOf(expected.key) !== keyOf(input.session.collection)) {
+        const destination = await requestResult<CollectionRow | undefined>(
+          tx.objectStore('collections').get(keyOf(input.session.collection)),
+        )
+        if (
+          destination &&
+          (destination.value.info.accountId !== input.session.accountId ||
+            destination.value.version !== '0' ||
+            destination.value.projects.length ||
+            destination.value.checkpoints.length ||
+            destination.value.pending.length ||
+            (await this.reviewIn(tx, input.session.collection)).drafts.length)
+        )
+          throw new DomainError('REVISION_CONFLICT')
+      }
+      const archived = metadata.filter(
+        (row) =>
+          row.scope &&
+          keyOf(row.scope) === keyOf(expected.key) &&
+          !['purchase', 'deletion'].includes((row.value as { kind?: string })?.kind ?? ''),
+      )
+      for (const row of rows)
+        tx.objectStore('media').add({
+          ...row,
+          key: mediaKey(prepared.recovered.info.key, row.ref.id),
+          scope: prepared.recovered.info.key,
+        })
+      for (const draft of captured.drafts) {
+        tx.objectStore('drafts').add({
+          ...draft,
+          key: JSON.stringify([keyOf(prepared.recovered.info.key), draft.value.key]),
+          scope: prepared.recovered.info.key,
+        })
+        tx.objectStore('drafts').delete(draft.key)
+      }
+      for (const row of archived) tx.objectStore('meta').delete(row.key)
+      tx.objectStore('meta').add({
+        key: JSON.stringify(['rebase-archive', input.recoveryId]),
+        scope: prepared.recovered.info.key,
+        media: rows.map((row) => row.ref),
+        value: { source: captured.source, metadata: archived },
+      })
+      // Exact refs remain usable offline; fresh refs without cached bytes remain explicitly missing.
+      if (keyOf(expected.key) !== keyOf(prepared.next.info.key)) {
+        for (const ref of mediaRefs(prepared.next.checkpoints)) {
+          const row = rows.find((row) => canonicalJson(row.ref) === canonicalJson(ref))
+          if (row) {
+            const prior = await requestResult<MediaRow | undefined>(
+              tx.objectStore('media').get(mediaKey(prepared.next.info.key, ref.id)),
+            )
+            if (prior && canonicalJson(prior.ref) !== canonicalJson(ref))
+              throw new DomainError('MEDIA_INVALID')
+            tx.objectStore('media').put({
+              ...row,
+              key: mediaKey(prepared.next.info.key, ref.id),
+              scope: prepared.next.info.key,
+            })
+          }
+        }
+        tx.objectStore('collections').delete(keyOf(expected.key))
+      }
+      putState(tx, prepared.recovered)
+      putState(tx, prepared.next)
+      tx.objectStore('meta').put({ key: 'active', value: prepared.result.scope })
+      tx.objectStore('meta').add({
+        key: receiptKey,
+        scope: prepared.recovered.info.key,
+        fingerprint,
+        value: prepared.result,
+      })
+      return prepared.result
+    })
+    this.publish()
+    return result
   }
   async completeReplacement(
     key: CollectionKey,

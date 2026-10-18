@@ -8,13 +8,14 @@ import type { AccountSession, SessionScope } from '../domain/contracts'
 import type { AccountAuth } from '../auth/auth-service'
 import { createAppController } from './app-controller'
 import { DomainError } from '../domain/errors'
+import { createSyncCoordinator } from '../sync/coordinator'
 const repos: BrowserRepository[] = [],
   controllers: ReturnType<typeof createAppController>[] = []
 afterEach(async () => {
   for (const c of controllers.splice(0)) await c.dispose()
   for (const r of repos.splice(0)) await r.close()
 })
-async function setup(withMedia = false) {
+async function setup(withMedia = false, withRecovery = false) {
   const repo = await openBrowserRepository({
     factory: new IDBFactory(),
     databaseName: crypto.randomUUID(),
@@ -45,6 +46,7 @@ async function setup(withMedia = false) {
   let current: AccountSession | null = null,
     event: ((accountId: string | null) => void) | undefined
   const auth: AccountAuth = {
+    reregisterDevice: vi.fn(async () => session),
     functions: {
       post: async () => {
         throw new Error('unused')
@@ -75,15 +77,49 @@ async function setup(withMedia = false) {
     completeCallback: async () => session,
     dispose: () => {},
   }
+  const recoveryTransport = {
+    snapshot: vi.fn(async () => ({
+      protocolVersion: 2 as const,
+      snapshotId: 'rebase-snapshot',
+      collectionId: session.collection.collectionId,
+      epoch: session.collection.epoch,
+      cursor: '20',
+      revision: '20',
+      expiresAt: session.expiresAt,
+      after: null,
+      nextPage: null,
+      projects: [project('cloud', '20')],
+      checkpoints: [],
+      media: [],
+    })),
+    releaseSnapshot: vi.fn(async () => {}),
+    push: vi.fn(),
+    pull: vi.fn(),
+  }
+  const sync = withRecovery
+    ? createSyncCoordinator({
+        repository: repo,
+        transport: recoveryTransport,
+        currentAccountId: () => 'account',
+        lease: {
+          run: async (_scope, _signal, work) => {
+            await work()
+            return true
+          },
+        },
+      })
+    : undefined
   const controller = createAppController({
     repository: repo,
     auth,
+    sync,
     ...(withMedia ? { media: repo.media } : {}),
   })
   controllers.push(controller)
   await controller.initialize()
   return {
     repo,
+    recoveryTransport,
     controller,
     auth,
     guest,
@@ -376,4 +412,117 @@ it('fresh authentication accepts a recovered billing principal only for the alre
     detail: { code: 'ACCOUNT_CHANGED' },
   })
   expect(controller.getSession()?.accountId).toBe(session.accountId)
+})
+
+it('explicit recovery re-registers then atomically switches to the account snapshot while leaving local edits and draft in a recovered copy', async () => {
+  const { repo, controller, connected, auth, session, recoveryTransport } = await setup(true, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const scope = controller.getSnapshot().scope!
+  await repo.hydrate(scope.key, [await recoveryTransport.snapshot()], scope.generation)
+  await repo.commitLocal(scope.key, create('unsent'), scope.generation)
+  await repo.markAttempt(scope.key, 'create-unsent', scope.generation)
+  await repo.markFailure(
+    scope.key,
+    'create-unsent',
+    new DomainError('SYNC_REBASE_REQUIRED').detail,
+    scope.generation,
+  )
+  await createBrowserDraftStore(repo, scope).write('new-project', undefined, {
+    key: 'new-project',
+    revision: 'r',
+    value: { name: 'Keep this draft' },
+  })
+  vi.spyOn(auth, 'reregisterDevice').mockResolvedValue({
+    ...session,
+    device: { ...session.device, generation: 'fresh-device' },
+  })
+  const preview = await controller.prepareSyncRecovery()
+  expect(preview.counts).toEqual({
+    projects: 2,
+    checkpoints: 0,
+    drafts: 1,
+    unsent: 1,
+    missingAttachments: 0,
+  })
+  const result = await controller.recoverSync(preview)
+  expect(auth.reregisterDevice).toHaveBeenCalledWith('account', expect.any(AbortSignal))
+  expect(controller.getSnapshot().scope).toEqual(result.scope)
+  expect(controller.getSnapshot().view!.projects.map((p) => p.id)).toEqual(['cloud'])
+  expect((await repo.readView(result.recovered)).projects.map((p) => p.id).sort()).toEqual([
+    'cloud',
+    'unsent',
+  ])
+  expect((await repo.reviewLocal(result.recovered)).drafts).toHaveLength(1)
+  expect(await repo.pending(result.scope.key)).toEqual([])
+  expect(recoveryTransport.push).not.toHaveBeenCalled()
+  expect(recoveryTransport.releaseSnapshot).toHaveBeenCalledOnce()
+})
+it('new work after the recovery review prevents registration and source publication', async () => {
+  const { repo, controller, connected, auth } = await setup(true, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const preview = await controller.prepareSyncRecovery()
+  await createBrowserDraftStore(repo, preview.scope).write('new-project', undefined, {
+    key: 'new-project',
+    revision: 'late',
+    value: { name: 'New work' },
+  })
+  await expect(controller.recoverSync(preview)).rejects.toMatchObject({
+    detail: { code: 'REVISION_CONFLICT' },
+  })
+  expect(auth.reregisterDevice).not.toHaveBeenCalled()
+  expect(await repo.readActive()).toEqual(preview.scope)
+})
+it('snapshot failure after registration preserves source and restart cannot silently adopt the new device generation', async () => {
+  const { repo, controller, connected, auth, session, recoveryTransport } = await setup(true, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const scope = controller.getSnapshot().scope!
+  await repo.commitLocal(scope.key, create('unsent'), scope.generation)
+  const before = await repo.readView(scope.key),
+    fresh = { ...session, device: { ...session.device, generation: 'new-registration' } }
+  vi.spyOn(auth, 'reregisterDevice').mockResolvedValue(fresh)
+  recoveryTransport.snapshot.mockRejectedValueOnce(new DomainError('OFFLINE'))
+  await expect(
+    controller.recoverSync(await controller.prepareSyncRecovery()),
+  ).rejects.toMatchObject({ detail: { code: 'OFFLINE' } })
+  expect(await repo.readActive()).toEqual(scope)
+  expect(await repo.readView(scope.key)).toEqual(before)
+  await controller.dispose()
+  auth.cachedSession = async () => ({
+    session: fresh,
+    identity: { accountId: 'account', email: 'verified@example.test' },
+  })
+  auth.currentSession = () => new Promise(() => {})
+  const reopened = createAppController({ repository: repo, auth, media: repo.media })
+  controllers.push(reopened)
+  await reopened.initialize()
+  expect(await repo.readActive()).toEqual(scope)
+  expect(reopened.getSnapshot().scope).toEqual(scope)
+  expect(reopened.getSnapshot().error?.code).toBe('SYNC_REBASE_REQUIRED')
+  expect((await repo.readView(scope.key)).pending).toEqual(before.pending)
+})
+
+it('a new draft arriving while the fresh snapshot downloads aborts publication and releases its remote lease', async () => {
+  const { repo, controller, connected, recoveryTransport } = await setup(true, true)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const preview = await controller.prepareSyncRecovery(),
+    original = recoveryTransport.snapshot.getMockImplementation()!
+  recoveryTransport.snapshot.mockImplementationOnce(async () => {
+    await createBrowserDraftStore(repo, preview.scope).write('new-project', undefined, {
+      key: 'new-project',
+      revision: 'new-after-registration',
+      value: { name: 'Saved during recovery' },
+    })
+    return original()
+  })
+  await expect(controller.recoverSync(preview)).rejects.toMatchObject({
+    detail: { code: 'REVISION_CONFLICT' },
+  })
+  expect(await repo.readActive()).toEqual(preview.scope)
+  expect((await repo.listCollections()).filter((c) => c.kind === 'recovered')).toEqual([])
+  expect((await repo.reviewLocal(preview.scope.key)).drafts).toHaveLength(1)
+  expect(recoveryTransport.releaseSnapshot).toHaveBeenCalledOnce()
 })

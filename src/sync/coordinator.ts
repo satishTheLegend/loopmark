@@ -1,11 +1,16 @@
 import type { SessionScope, SnapshotManifest, PendingIntent } from '../domain/contracts'
-import type { Repository } from '../repositories/contracts'
+import type {
+  Repository,
+  LocalCollectionReview,
+  RebaseInput,
+  RebaseResult,
+} from '../repositories/contracts'
 import type { SyncTransport } from '../platform/contracts'
 import { canonicalJson } from '../domain/canonical-json'
 import { DomainError, safeError, type SafeError } from '../domain/errors'
 import type { TabLease } from './tab-lease'
 import type { AttachmentQueue } from '../services/attachment-queue'
-import { releaseSnapshotQuietly } from './snapshots'
+import { collectSnapshot, releaseSnapshotQuietly } from './snapshots'
 export interface SyncStatus {
   state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
   pending: number
@@ -15,6 +20,12 @@ export interface SyncStatus {
   error: SafeError | null
 }
 export interface SyncCoordinator {
+  rebase(
+    scope: SessionScope,
+    review: LocalCollectionReview,
+    input: Omit<RebaseInput, 'pages'>,
+  ): Promise<RebaseResult>
+
   run(scope: SessionScope, operationIds?: string[]): Promise<void>
   retryAttachments(scope: SessionScope, ids: string[]): Promise<void>
   stop(): void
@@ -58,7 +69,7 @@ export function createSyncCoordinator(options: {
   const listeners = new Set<() => void>()
   let status: SyncStatus = { state: 'idle', pending: 0, lastSyncedAt: null, error: null },
     current: AbortController | undefined,
-    running: Promise<void> | undefined,
+    running: Promise<unknown> | undefined,
     disposed = false
   const publish = (patch: Partial<SyncStatus>) => {
     status = { ...status, ...patch }
@@ -249,7 +260,10 @@ export function createSyncCoordinator(options: {
   }
   async function run(scope: SessionScope, only?: string[], attachmentOnly?: string[]) {
     if (disposed) throw new DomainError('ACCOUNT_CHANGED')
-    if (running) return running
+    if (running) {
+      await running
+      return
+    }
     if (options.online && !options.online()) {
       publish({ state: 'offline', error: new DomainError('OFFLINE').detail })
       return
@@ -288,9 +302,64 @@ export function createSyncCoordinator(options: {
         running = undefined
       }
     })()
-    return running
+    await running
   }
   return {
+    async rebase(scope, review, input) {
+      current?.abort(new DomainError('ACCOUNT_CHANGED'))
+      await running?.catch(() => {})
+      if (disposed) throw new DomainError('ACCOUNT_CHANGED')
+      const controller = new AbortController()
+      current = controller
+      const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(60000)])
+      const owned = async () =>
+        options.currentAccountId
+          ? options.currentAccountId() === input.session.accountId
+          : (await repository.readView((await repository.readActive())!.key)).info.accountId ===
+            input.session.accountId
+      let completed: RebaseResult | undefined
+      const work = (async () => {
+        await lease.run(scope, signal, async () => {
+          await check(scope, signal)
+          if (!(await owned())) throw new DomainError('ACCOUNT_CHANGED')
+          const pages = await collectSnapshot(
+            transport,
+            {
+              collectionId: input.session.collection.collectionId,
+              epoch: input.session.collection.epoch,
+              purpose: 'hydrate',
+            },
+            signal,
+            () => check(scope, signal),
+            owned,
+          )
+          try {
+            await check(scope, signal)
+            if (!(await owned())) throw new DomainError('ACCOUNT_CHANGED')
+            completed = await repository.completeRebase(scope, review, { ...input, pages })
+            publish({
+              state: 'idle',
+              pending: 0,
+              pendingAttachments: 0,
+              failedAttachments: 0,
+              error: null,
+              lastSyncedAt: null,
+            })
+          } finally {
+            await releaseSnapshotQuietly(transport, pages[0].snapshotId, owned)
+          }
+        })
+        if (!completed) throw new DomainError('SERVICE_UNAVAILABLE')
+        return completed
+      })()
+      running = work
+      try {
+        return await work
+      } finally {
+        if (running === work) running = undefined
+        if (current === controller) current = undefined
+      }
+    },
     getSnapshot: () => status,
     subscribe(listener) {
       listeners.add(listener)

@@ -12,6 +12,7 @@ export interface VerifiedIdentity {
   email: string
 }
 export interface AccountAuth extends AuthPort {
+  reregisterDevice(expectedAccountId: string, signal: AbortSignal): Promise<AccountSession>
   verifiedIdentity(): Promise<VerifiedIdentity | null>
   cachedSession(): Promise<{ session: AccountSession; identity: VerifiedIdentity } | null>
   subscribeIdentity(listener: (accountId: string | null) => void): () => void
@@ -171,11 +172,16 @@ export function createAccountAuth(options: {
     identity = { accountId: data.user.id, email: data.user.email }
     return identity
   }
-  async function account(signal: AbortSignal, expected: number): Promise<AccountSession> {
+  async function account(
+    signal: AbortSignal,
+    expected: number,
+    recoveryOwner?: string,
+  ): Promise<AccountSession> {
     assert(expected, signal)
     const owner = await verified()
     assert(expected, signal)
     if (!owner) throw new DomainError('AUTH_REQUIRED')
+    if (recoveryOwner && owner.accountId !== recoveryOwner) throw new DomainError('ACCOUNT_CHANGED')
     const device = await options.devices.read(owner.accountId)
     assert(expected, signal)
     const parsed = accountSessionSchema.safeParse(
@@ -183,7 +189,11 @@ export function createAccountAuth(options: {
         'account-session',
         {
           deviceId: device.id,
-          ...(device.generation ? { deviceGeneration: device.generation } : {}),
+          ...(recoveryOwner
+            ? { reregister: true }
+            : device.generation
+              ? { deviceGeneration: device.generation }
+              : {}),
         },
         signal,
       ),
@@ -203,6 +213,10 @@ export function createAccountAuth(options: {
   }
   return {
     functions,
+    reregisterDevice(expectedAccountId, signal) {
+      const expected = generation
+      return serial(() => account(signal, expected, expectedAccountId))
+    },
     async cachedSession() {
       const cached = await options.devices.readVerified()
       if (!cached) return null

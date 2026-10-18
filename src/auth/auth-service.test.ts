@@ -360,3 +360,37 @@ it('the installed SDK keeps two PKCE verifiers separate and a foreign flow canno
     auth.dispose()
   }
 })
+
+it('only explicit recovery omits the retired generation and sends reregister for the same stable device ID', async () => {
+  const { auth, devices, fetcher } = setup()
+  devices.read.mockResolvedValue({ id: 'device', generation: 'retired' } as never)
+  fetcher.mockResolvedValueOnce(
+    new Response(JSON.stringify({ error: { code: 'SYNC_REBASE_REQUIRED', retryable: false } }), {
+      status: 409,
+    }),
+  )
+  await expect(auth.currentSession(new AbortController().signal)).rejects.toMatchObject({
+    detail: { code: 'SYNC_REBASE_REQUIRED' },
+  })
+  expect(await auth.reregisterDevice('owner', new AbortController().signal)).toEqual(session)
+  expect(JSON.parse(String(fetcher.mock.calls[0][1]?.body))).toEqual({
+    deviceId: 'device',
+    deviceGeneration: 'retired',
+  })
+  expect(JSON.parse(String(fetcher.mock.calls[1][1]?.body))).toEqual({
+    deviceId: 'device',
+    reregister: true,
+  })
+  expect(devices.writeVerified).toHaveBeenCalledWith({
+    session,
+    identity: { accountId: 'owner', email: 'verified@example.test' },
+  })
+})
+it('re-registration refuses a different freshly verified account before enrolling any device', async () => {
+  const { auth, fetcher, devices } = setup()
+  await expect(
+    auth.reregisterDevice('another-account', new AbortController().signal),
+  ).rejects.toMatchObject({ detail: { code: 'ACCOUNT_CHANGED' } })
+  expect(fetcher).not.toHaveBeenCalled()
+  expect(devices.writeVerified).not.toHaveBeenCalled()
+})

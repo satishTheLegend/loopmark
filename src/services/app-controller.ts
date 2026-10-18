@@ -13,6 +13,7 @@ import type {
   CollectionSummary,
   ControllerState,
   LocalWorkCounts,
+  SyncRecoveryPreview,
 } from './controller-contract'
 export interface CollectionConnections {
   resume?(
@@ -63,6 +64,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
     busy = false,
     authenticating = false,
     authVersion = 0
+  let recoveryReview: SyncRecoveryPreview | null = null
   let cancel = new AbortController(),
     review: {
       accountId: string
@@ -196,7 +198,18 @@ export function createAppController(options: AppControllerOptions): AppControlle
         )
       )
         awaitingReplacement = true
-    if (!awaitingReplacement && !all.some((c) => keyOf(c.key) === keyOf(value.collection)))
+    const previousEpoch = all.some(
+      (c) =>
+        c.kind === 'connected' &&
+        c.accountId === value.accountId &&
+        c.key.collectionId === value.collection.collectionId &&
+        c.key.epoch !== value.collection.epoch,
+    )
+    if (
+      !awaitingReplacement &&
+      !previousEpoch &&
+      !all.some((c) => keyOf(c.key) === keyOf(value.collection))
+    )
       await repository.createCollection({
         key: value.collection,
         kind: 'connected',
@@ -253,6 +266,13 @@ export function createAppController(options: AppControllerOptions): AppControlle
       await repository.resumeAfterAuthentication(scope.key, scope.generation)
       await options.attachments?.resumeAfterAuthentication(scope)
     }
+    if (
+      session &&
+      (await repository.readView(scope.key)).info.kind === 'connected' &&
+      (keyOf(scope.key) !== keyOf(session.collection) ||
+        canonicalJson(scope.device) !== canonicalJson(session.device))
+    )
+      publish({ error: new DomainError('SYNC_REBASE_REQUIRED').detail })
     return scope
   }
   function authenticate(work: (auth: AccountAuth, signal: AbortSignal) => Promise<AccountSession>) {
@@ -430,7 +450,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
           session &&
           canonicalJson(scope.device) !== canonicalJson(session.device)
         )
-          scope = await repository.transition(scope, { key: scope.key, device: session.device })
+          publish({ error: new DomainError('SYNC_REBASE_REQUIRED').detail })
         await refresh(scope)
         if (auth) {
           const version = authVersion,
@@ -463,10 +483,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
                   session &&
                   canonicalJson(selected.device) !== canonicalJson(session.device)
                 )
-                  selected = await repository.transition(selected, {
-                    key: selected.key,
-                    device: session.device,
-                  })
+                  publish({ error: new DomainError('SYNC_REBASE_REQUIRED').detail })
                 await refresh(await resumeAuthenticated(selected))
               }),
             )
@@ -530,6 +547,103 @@ export function createAppController(options: AppControllerOptions): AppControlle
           device: view.info.kind === 'connected' ? session!.device : previous.device,
         })
         await refresh(await resumeAuthenticated(scope))
+      })
+    },
+    async prepareSyncRecovery() {
+      const scope = bound()
+      if (!auth || !sync || !session) throw new DomainError('AUTH_REQUIRED')
+      const view = await repository.readView(scope.key)
+      if (view.info.kind !== 'connected' || view.info.accountId !== session.accountId)
+        throw new DomainError('ACCOUNT_CHANGED')
+      const local = await repository.reviewLocal(scope.key)
+      if (local.revision !== view.revision) throw new DomainError('REVISION_CONFLICT')
+      let missingAttachments: number | null = 0
+      const refs = mediaRefs(view.checkpoints)
+      if (!options.media && refs.length) missingAttachments = null
+      else
+        for (const ref of refs) {
+          try {
+            await (await options.media!.open(ref, scope.key)).cancel()
+          } catch (error) {
+            if (
+              !(error instanceof DomainError) ||
+              !['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+            )
+              throw error
+            missingAttachments!++
+          }
+        }
+      const blockedByReplacement = await repository.rebaseBlocked(scope.key)
+      await check(scope)
+      if (canonicalJson(await repository.reviewLocal(scope.key)) !== canonicalJson(local))
+        throw new DomainError('REVISION_CONFLICT')
+      recoveryReview = {
+        scope,
+        review: local,
+        recoveryId: crypto.randomUUID(),
+        counts: {
+          projects: view.projects.length,
+          checkpoints: view.checkpoints.length,
+          drafts: local.drafts.length,
+          unsent: view.pending.length,
+          missingAttachments,
+        },
+        blockedByReplacement,
+      }
+      return structuredClone(recoveryReview)
+    },
+    recoverSync(preview, settings = {}) {
+      authVersion++
+      sync?.stop()
+      return serial(async () => {
+        if (!auth || !sync || !session) throw new DomainError('AUTH_REQUIRED')
+        if (!recoveryReview || canonicalJson(recoveryReview) !== canonicalJson(preview))
+          throw new DomainError('REVISION_CONFLICT')
+        if (preview.blockedByReplacement || (await repository.rebaseBlocked(preview.scope.key)))
+          throw new DomainError('SYNC_REBASE_REQUIRED')
+        if (
+          preview.counts.missingAttachments === null ||
+          (preview.counts.missingAttachments > 0 && !settings.allowMissingAttachments)
+        )
+          throw new DomainError('BACKUP_INCOMPLETE')
+        await check(preview.scope)
+        if (
+          canonicalJson(await repository.reviewLocal(preview.scope.key)) !==
+          canonicalJson(preview.review)
+        )
+          throw new DomainError('REVISION_CONFLICT')
+        const owner = session.accountId
+        const signal = AbortSignal.any([cancel.signal, AbortSignal.timeout(60000)])
+        const fresh = await auth.reregisterDevice(owner, signal)
+        const identity = await auth.verifiedIdentity()
+        signal.throwIfAborted()
+        await check(preview.scope)
+        if (!identity || identity.accountId !== owner || fresh.accountId !== owner)
+          throw new DomainError('ACCOUNT_CHANGED')
+        // Registration can be retried after process loss; it never changes the selected repository scope.
+        session = fresh
+        publish({ account: identity, auth: 'authenticated' })
+        try {
+          const result = await sync.rebase(preview.scope, preview.review, {
+            session: fresh,
+            recoveryId: preview.recoveryId,
+            recoveryName: 'Recovered before account refresh',
+            allowMissingMedia: settings.allowMissingAttachments === true,
+          })
+          recoveryReview = null
+          review = null
+          publish({ error: null })
+          await refresh(result.scope)
+          return result
+        } catch (error) {
+          const active = await repository.readActive()
+          if (active && canonicalJson(active) !== canonicalJson(preview.scope)) {
+            const selected = await repository.readView(active.key)
+            if (selected.info.kind === 'connected' && selected.info.accountId === owner)
+              await refresh(active)
+          }
+          throw error
+        }
       })
     },
     async prepareSignOut() {
@@ -610,6 +724,13 @@ export function createAppController(options: AppControllerOptions): AppControlle
     async runSync() {
       const scope = bound()
       if (!sync) throw new DomainError('CAPABILITY_UNAVAILABLE')
+      if (
+        session &&
+        (await repository.readView(scope.key)).info.kind === 'connected' &&
+        (keyOf(scope.key) !== keyOf(session.collection) ||
+          canonicalJson(scope.device) !== canonicalJson(session.device))
+      )
+        throw new DomainError('SYNC_REBASE_REQUIRED')
       await sync.run(scope)
       await refresh(scope)
     },

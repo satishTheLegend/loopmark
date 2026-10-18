@@ -54,15 +54,21 @@ export async function referenced(
   )
     return true
   const plans = await requestResult<
-    Array<{ scope?: CollectionKey; media?: MediaRef[]; value?: { operationId?: string } }>
+    Array<{
+      key?: string
+      scope?: CollectionKey
+      media?: MediaRef[]
+      value?: { operationId?: string }
+    }>
   >(tx.objectStore('meta').getAll())
   if (
     plans.some(
       (plan) =>
         plan.scope &&
         keyOf(plan.scope) === keyOf(scope) &&
-        plan.value?.operationId &&
-        !Object.hasOwn(row?.value.operations ?? {}, plan.value.operationId) &&
+        ((plan.value?.operationId &&
+          !Object.hasOwn(row?.value.operations ?? {}, plan.value.operationId)) ||
+          plan.key?.startsWith('["rebase-archive",')) &&
         plan.media?.some((ref) => ref.id === id),
     )
   )
