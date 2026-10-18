@@ -21,9 +21,11 @@ jobs:
       - run: npm run test:release:contracts
       - run: npm run test:sandbox:contracts
       - run: npm run test:native:evidence
+      - run: npm run test:native:benchmark:contracts
       - run: npm run test:examples
       - run: npm run test:docs
       - run: npm run test:dx
+      - run: npm run test:ops
   browsers:
     runs-on: ubuntu-latest
     timeout-minutes: 20

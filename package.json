@@ -30,6 +30,7 @@
     "test:native:ios:product": "node scripts/native/test-ios-product.mjs",
     "test:native:android:product": "node scripts/native/test-android-product.mjs",
     "test:native:evidence": "node --test tests/native/product-evidence.test.mjs",
+    "test:native:benchmark:contracts": "node --test tests/native/benchmark-memory.test.mjs",
     "test:sandbox:web": "node scripts/sandbox/web.mjs",
     "test:sandbox:ios": "node scripts/sandbox/ios.mjs",
     "test:sandbox:android": "node scripts/sandbox/android.mjs",
@@ -39,6 +40,9 @@
     "test:examples": "node scripts/test-examples.mjs",
     "test:docs": "node scripts/test-docs.mjs",
     "test:dx": "node scripts/test-dx.mjs",
+    "ops": "node scripts/ops.mjs",
+    "test:ops": "node scripts/test-ops.mjs",
+    "test:load:capture": "node scripts/test-sync-smoke.mjs --load-capture",
     "test:ui:purchases": "playwright test --config=tests/ui/purchases.config.ts"
   },
   "engines": {

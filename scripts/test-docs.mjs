@@ -13,6 +13,8 @@ export const developerDocs = [
     'native',
     'provider-sandbox',
     'migrations',
+    'operations',
+    'recovery',
   ].map((name) => `docs/developer/${name}.md`),
   'docs/evidence/expansion/dx/README.md',
 ]
