@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "runner-selection-error-no-cases-executed",
+  "productSourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "observation": "Anchored grep matched from the beginning of Playwright full titles, which also include file/profile context. No tests selected; server started and stopped.",
+  "correction": "Removed only the start anchor; retained the same three complete title alternatives and end anchor. No application or test source changed.",
+  "failedRecord": "final-status-ui-selection-failed.json",
+  "failedLog": "final-status-ui-selection-failed.log",
+  "failedLogSha256": "a2bdbd5ab3faf48df1494cfbb32cb1398ff95959fff0dfe7b3d5520a2564414c"
+}

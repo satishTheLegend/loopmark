@@ -1,0 +1,12 @@
+
+> loopmark@1.0.0 test:ui
+> playwright test --config=playwright.ui.config.ts tests/ui/expanded-accessibility.ui.ts tests/ui/account-states.ui.ts --workers=1 --retries=0 --grep ^(?:sync announces each actionable transition once without repeating polling updates|account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow|known saved-change checking replaces current without repeated announcements and preserves new remedies)$
+
+[WebServer] (node:94738) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:94759) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+Error: No tests found.
+Make sure that arguments are regular expressions matching test files.
+You may need to escape symbols like "$" or "*" and quote the arguments.
+
