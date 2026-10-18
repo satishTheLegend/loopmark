@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL b5151ea:382 exact unit cases/13 support commands bound; current full cloud76/80 with four retained fixture failures. Thirty focused fixture follow-ups,40 guest cases,current native qualification and final branch adjudication pending. IR25 status freshness under investigation;IR26 two assertion-mapping gaps assigned. No final approval.",
+  "reviewState": "PROVISIONAL b515 evidence complete for selected browser closures: fullcloud76/80, firstfollowup25/30, finalresend5/5, guest40/40;382unit/13checks retained. IR25 checking/priority source approved awaiting integration and affected qualification; IR26 assertions source-approved awaiting runtime; final native and123/286 adjudication pending.",
   "reviewer": "final_traceability_review (independent of implementation authors)",
   "reviewedSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
   "requiredIds": [
@@ -1831,6 +1831,879 @@
           "durationAsReported": "9.4s",
           "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "testSourceSha256": "eab21cdb4bb54ab6de862a11cbc1ebdf86bd2d1ac11c2892dc16ff328ba876d3"
+        }
+      ]
+    },
+    "webCloudB515Followup": {
+      "path": "docs/evidence/expansion/I13/web/final-ready-cloud-followup.log",
+      "sha256": "f508fc0f0f5be269a56cdd50912d2aa0051963a75a09eefdb79495c0501eeeac",
+      "sourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+      "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+      "reviewedAgainstRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+      "currentFreezeQualified": false,
+      "selection": "docs/evidence/expansion/I13/web/final-ready-cloud-followup-selection.json",
+      "selectionSha256": "d13d9b5e202811f68ab1ef904fd325367362d8cb2ddeb0ab1241f292534b65ff",
+      "scope": "Actual selected run:25passed/5failed of30; exact raw list-reporter cases independently parsed against immutable test source; selection/exit/timestamps retained. All five resend cases failed the fixture precondition because the route glob missed the OTP query; all twenty recovery/export and five expired-code cases passed. Separate query-safe follow-up does not rewrite these failures.",
+      "caseCount": 30,
+      "passed": 25,
+      "failed": 5,
+      "cases": [
+        {
+          "status": "passed",
+          "ordinal": 1,
+          "profile": "chromium",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 73,
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "failed",
+          "ordinal": 2,
+          "profile": "chromium",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "passed",
+          "ordinal": 3,
+          "profile": "chromium",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 59,
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "13.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 4,
+          "profile": "chromium",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 152,
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "13.1s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 5,
+          "profile": "chromium",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "9.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 6,
+          "profile": "chromium",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "17.1s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 7,
+          "profile": "firefox",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 73,
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.5s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "failed",
+          "ordinal": 8,
+          "profile": "firefox",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "passed",
+          "ordinal": 9,
+          "profile": "firefox",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 59,
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "12.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 10,
+          "profile": "firefox",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 152,
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "13.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 11,
+          "profile": "firefox",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "10.6s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 12,
+          "profile": "firefox",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "16.5s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 13,
+          "profile": "webkit",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 73,
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "2.9s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "failed",
+          "ordinal": 14,
+          "profile": "webkit",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.4s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "passed",
+          "ordinal": 15,
+          "profile": "webkit",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 59,
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "12.6s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 16,
+          "profile": "webkit",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 152,
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "14.1s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 17,
+          "profile": "webkit",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "11.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 18,
+          "profile": "webkit",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "23.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 19,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 73,
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "failed",
+          "ordinal": 20,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "2.4s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "passed",
+          "ordinal": 21,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 59,
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "14.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 22,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 152,
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "12.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 23,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "10.0s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 24,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "16.0s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 25,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 73,
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.0s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "failed",
+          "ordinal": 26,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "status": "passed",
+          "ordinal": 27,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 59,
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "11.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 28,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/media-export.cloud.ts",
+          "line": 152,
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "13.2s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "status": "passed",
+          "ordinal": 29,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "9.5s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "status": "passed",
+          "ordinal": 30,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/rebase.cloud.ts",
+          "line": 95,
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "15.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        }
+      ]
+    },
+    "webAuthB515Query": {
+      "path": "docs/evidence/expansion/I13/web/final-ready-auth-query.log",
+      "sha256": "f579d87216438d3f7974663395f9cd8e833fdb394cb109aaf5a1856d8f846c13",
+      "sourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+      "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+      "reviewedAgainstRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+      "currentFreezeQualified": true,
+      "selection": "docs/evidence/expansion/I13/web/final-ready-auth-query-selection.json",
+      "selectionSha256": "c02e8073279e276f92a136f186978a32d70bb5af33e4114e7a26be2394626aba",
+      "scope": "Actual selected run:5passed/0failed of5; exact raw list-reporter cases independently parsed against immutable test source; selection/exit/timestamps retained. Actual429 plus UI timed remedy/noidentity assertions passed in all five profiles. Passed testInfo timing attachments were not retained by the list reporter; no numeric response-age claim.",
+      "caseCount": 5,
+      "passed": 5,
+      "failed": 0,
+      "cases": [
+        {
+          "status": "passed",
+          "ordinal": 1,
+          "profile": "chromium",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "status": "passed",
+          "ordinal": 2,
+          "profile": "firefox",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "status": "passed",
+          "ordinal": 3,
+          "profile": "webkit",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "status": "passed",
+          "ordinal": 4,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.4s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "status": "passed",
+          "ordinal": 5,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/auth-errors.cloud.ts",
+          "line": 112,
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.2s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        }
+      ]
+    },
+    "webGuestB515Targeted": {
+      "path": "docs/evidence/expansion/I13/web/final-ready-guest.log",
+      "sha256": "0cf2c70a4486cd695150acca4e0075357320fcc915f470832336d667141f62c4",
+      "sourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+      "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+      "reviewedAgainstRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+      "currentFreezeQualified": true,
+      "selection": "docs/evidence/expansion/I13/web/final-ready-guest-selection.json",
+      "selectionSha256": "98029476523755a6a6115adc6c3b8d7bcea6e113d9a29c5bcfaa3020c479f935",
+      "scope": "Actual selected run:40passed/0failed of40; exact raw list-reporter cases independently parsed against immutable test source; selection/exit/timestamps retained. Eight existing startup/draft journeys pass on five profiles; source product-equivalent to b515. Not a full264-case rerun.",
+      "caseCount": 40,
+      "passed": 40,
+      "failed": 0,
+      "cases": [
+        {
+          "status": "passed",
+          "ordinal": 1,
+          "profile": "chromium",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 5,
+          "testName": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+          "durationAsReported": "1.7s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 2,
+          "profile": "chromium",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 33,
+          "testName": "a recovered draft can be discarded without creating a project",
+          "durationAsReported": "645ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 3,
+          "profile": "chromium",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 47,
+          "testName": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+          "durationAsReported": "295ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 4,
+          "profile": "chromium",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 78,
+          "testName": "discard serializes against further typing and save until draft storage finishes",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 5,
+          "profile": "chromium",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 10,
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "637ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 6,
+          "profile": "chromium",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 118,
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 7,
+          "profile": "chromium",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 165,
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "129ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 8,
+          "profile": "chromium",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 179,
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "183ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 9,
+          "profile": "firefox",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 5,
+          "testName": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+          "durationAsReported": "2.7s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 10,
+          "profile": "firefox",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 33,
+          "testName": "a recovered draft can be discarded without creating a project",
+          "durationAsReported": "744ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 11,
+          "profile": "firefox",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 47,
+          "testName": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+          "durationAsReported": "431ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 12,
+          "profile": "firefox",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 78,
+          "testName": "discard serializes against further typing and save until draft storage finishes",
+          "durationAsReported": "1.6s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 13,
+          "profile": "firefox",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 10,
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "856ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 14,
+          "profile": "firefox",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 118,
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.5s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 15,
+          "profile": "firefox",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 165,
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "201ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 16,
+          "profile": "firefox",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 179,
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "308ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 17,
+          "profile": "webkit",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 5,
+          "testName": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+          "durationAsReported": "1.8s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 18,
+          "profile": "webkit",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 33,
+          "testName": "a recovered draft can be discarded without creating a project",
+          "durationAsReported": "767ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 19,
+          "profile": "webkit",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 47,
+          "testName": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+          "durationAsReported": "404ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 20,
+          "profile": "webkit",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 78,
+          "testName": "discard serializes against further typing and save until draft storage finishes",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 21,
+          "profile": "webkit",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 10,
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "779ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 22,
+          "profile": "webkit",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 118,
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.4s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 23,
+          "profile": "webkit",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 165,
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "302ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 24,
+          "profile": "webkit",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 179,
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "586ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 25,
+          "profile": "chromium-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 5,
+          "testName": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+          "durationAsReported": "1.9s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 26,
+          "profile": "chromium-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 33,
+          "testName": "a recovered draft can be discarded without creating a project",
+          "durationAsReported": "687ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 27,
+          "profile": "chromium-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 47,
+          "testName": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+          "durationAsReported": "302ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 28,
+          "profile": "chromium-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 78,
+          "testName": "discard serializes against further typing and save until draft storage finishes",
+          "durationAsReported": "1.6s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 29,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 10,
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "663ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 30,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 118,
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.3s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 31,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 165,
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "155ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 32,
+          "profile": "chromium-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 179,
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "199ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 33,
+          "profile": "webkit-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 5,
+          "testName": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+          "durationAsReported": "1.7s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 34,
+          "profile": "webkit-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 33,
+          "testName": "a recovered draft can be discarded without creating a project",
+          "durationAsReported": "727ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 35,
+          "profile": "webkit-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 47,
+          "testName": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+          "durationAsReported": "374ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 36,
+          "profile": "webkit-mobile",
+          "file": "tests/draft-recovery.spec.ts",
+          "line": 78,
+          "testName": "discard serializes against further typing and save until draft storage finishes",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955"
+        },
+        {
+          "status": "passed",
+          "ordinal": 37,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 10,
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "703ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 38,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 118,
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 39,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 165,
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "271ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "status": "passed",
+          "ordinal": 40,
+          "profile": "webkit-mobile",
+          "file": "tests/expansion/app-startup.spec.ts",
+          "line": 179,
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "329ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
         }
       ]
     }
@@ -6711,7 +7584,8 @@
       "executedProofRefs": [
         "webGuestFrozen",
         "webGuest0b",
-        "webGuestA1Targeted"
+        "webGuestA1Targeted",
+        "webGuestB515Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -6864,6 +7738,56 @@
           "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "1.2s"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 5,
+          "profile": "chromium",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "637ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 13,
+          "profile": "firefox",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "856ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 21,
+          "profile": "webkit",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "779ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 29,
+          "profile": "chromium-mobile",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "663ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 37,
+          "profile": "webkit-mobile",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "durationAsReported": "703ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
         }
       ]
     },
@@ -6876,7 +7800,8 @@
       "executedProofRefs": [
         "webGuestFrozen",
         "webGuest0b",
-        "webGuestA1Targeted"
+        "webGuestA1Targeted",
+        "webGuestB515Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -7029,6 +7954,56 @@
           "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "2.5s"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 6,
+          "profile": "chromium",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 14,
+          "profile": "firefox",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.5s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 22,
+          "profile": "webkit",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.4s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 30,
+          "profile": "chromium-mobile",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.3s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 38,
+          "profile": "webkit-mobile",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
         }
       ]
     },
@@ -7041,7 +8016,8 @@
       "executedProofRefs": [
         "webGuestFrozen",
         "webGuest0b",
-        "webGuestA1Targeted"
+        "webGuestA1Targeted",
+        "webGuestB515Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -7194,6 +8170,56 @@
           "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "383ms"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 7,
+          "profile": "chromium",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "129ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 15,
+          "profile": "firefox",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "201ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 23,
+          "profile": "webkit",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "302ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 31,
+          "profile": "chromium-mobile",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "155ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 39,
+          "profile": "webkit-mobile",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "durationAsReported": "271ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
         }
       ]
     },
@@ -7206,7 +8232,8 @@
       "executedProofRefs": [
         "webGuestFrozen",
         "webGuest0b",
-        "webGuestA1Targeted"
+        "webGuestA1Targeted",
+        "webGuestB515Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -7359,6 +8386,56 @@
           "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "540ms"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 8,
+          "profile": "chromium",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "183ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 16,
+          "profile": "firefox",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "308ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 24,
+          "profile": "webkit",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "586ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 32,
+          "profile": "chromium-mobile",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "199ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+        },
+        {
+          "proofRef": "webGuestB515Targeted",
+          "status": "passed",
+          "ordinal": 40,
+          "profile": "webkit-mobile",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "durationAsReported": "329ms",
+          "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
         }
       ]
     },
@@ -9529,7 +10606,8 @@
       "executedProofRefs": [
         "webCloud0b",
         "webCloudA1",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "frozenSource": {
         "path": "tests/expansion/auth-errors.cloud.ts",
@@ -9687,6 +10765,56 @@
           "durationAsReported": "2.9s",
           "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "testSourceSha256": "1e78a3253fe1313bc3081afcf31a07c05a1fd67a5940db3837adffe293b5264a"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 1,
+          "profile": "chromium",
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 7,
+          "profile": "firefox",
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.5s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 13,
+          "profile": "webkit",
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "2.9s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 19,
+          "profile": "chromium-mobile",
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 25,
+          "profile": "webkit-mobile",
+          "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+          "durationAsReported": "3.0s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
         }
       ]
     },
@@ -9699,7 +10827,9 @@
       "executedProofRefs": [
         "webCloud0b",
         "webCloudA1",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup",
+        "webAuthB515Query"
       ],
       "frozenSource": {
         "path": "tests/expansion/auth-errors.cloud.ts",
@@ -9857,6 +10987,106 @@
           "durationAsReported": "2.0s",
           "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "testSourceSha256": "1e78a3253fe1313bc3081afcf31a07c05a1fd67a5940db3837adffe293b5264a"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "failed",
+          "ordinal": 2,
+          "profile": "chromium",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "failed",
+          "ordinal": 8,
+          "profile": "firefox",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "failed",
+          "ordinal": 14,
+          "profile": "webkit",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.4s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "failed",
+          "ordinal": 20,
+          "profile": "chromium-mobile",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "2.4s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "failed",
+          "ordinal": 26,
+          "profile": "webkit-mobile",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+        },
+        {
+          "proofRef": "webAuthB515Query",
+          "status": "passed",
+          "ordinal": 1,
+          "profile": "chromium",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "proofRef": "webAuthB515Query",
+          "status": "passed",
+          "ordinal": 2,
+          "profile": "firefox",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "proofRef": "webAuthB515Query",
+          "status": "passed",
+          "ordinal": 3,
+          "profile": "webkit",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.5s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "proofRef": "webAuthB515Query",
+          "status": "passed",
+          "ordinal": 4,
+          "profile": "chromium-mobile",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.4s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+        },
+        {
+          "proofRef": "webAuthB515Query",
+          "status": "passed",
+          "ordinal": 5,
+          "profile": "webkit-mobile",
+          "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+          "durationAsReported": "1.2s",
+          "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+          "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
         }
       ]
     },
@@ -15230,7 +16460,8 @@
       "executedProofRefs": [
         "webCloud0b",
         "webCloudA1",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "frozenSource": {
         "path": "tests/expansion/media-export.cloud.ts",
@@ -15388,6 +16619,56 @@
           "durationAsReported": "12.6s",
           "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 3,
+          "profile": "chromium",
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "13.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 9,
+          "profile": "firefox",
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "12.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 15,
+          "profile": "webkit",
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "12.6s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 21,
+          "profile": "chromium-mobile",
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "14.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 27,
+          "profile": "webkit-mobile",
+          "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+          "durationAsReported": "11.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
         }
       ]
     },
@@ -15400,7 +16681,8 @@
       "executedProofRefs": [
         "webCloud0b",
         "webCloudA1",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "frozenSource": {
         "path": "tests/expansion/media-export.cloud.ts",
@@ -15558,6 +16840,56 @@
           "durationAsReported": "22.7s",
           "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 4,
+          "profile": "chromium",
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "13.1s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 10,
+          "profile": "firefox",
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "13.3s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 16,
+          "profile": "webkit",
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "14.1s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 22,
+          "profile": "chromium-mobile",
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "12.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 28,
+          "profile": "webkit-mobile",
+          "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+          "durationAsReported": "13.2s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
         }
       ]
     },
@@ -24715,7 +26047,8 @@
       "executedProofRefs": [
         "webCloud0b",
         "webCloudA1",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "frozenSource": {
         "path": "tests/expansion/rebase.cloud.ts",
@@ -25023,6 +26356,106 @@
           "durationAsReported": "22.0s",
           "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "testSourceSha256": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 5,
+          "profile": "chromium",
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "9.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 6,
+          "profile": "chromium",
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "17.1s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 11,
+          "profile": "firefox",
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "10.6s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 12,
+          "profile": "firefox",
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "16.5s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 17,
+          "profile": "webkit",
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "11.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 18,
+          "profile": "webkit",
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "23.8s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 23,
+          "profile": "chromium-mobile",
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "10.0s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 24,
+          "profile": "chromium-mobile",
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "16.0s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 29,
+          "profile": "webkit-mobile",
+          "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "9.5s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+        },
+        {
+          "proofRef": "webCloudB515Followup",
+          "status": "passed",
+          "ordinal": 30,
+          "profile": "webkit-mobile",
+          "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+          "durationAsReported": "15.7s",
+          "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+          "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
         }
       ]
     },
@@ -38307,12 +39740,63 @@
               "durationAsReported": "2.9s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "1e78a3253fe1313bc3081afcf31a07c05a1fd67a5940db3837adffe293b5264a"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 1,
+              "profile": "chromium",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 7,
+              "profile": "firefox",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 13,
+              "profile": "webkit",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "2.9s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 19,
+              "profile": "chromium-mobile",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 25,
+              "profile": "webkit-mobile",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         },
         {
@@ -38477,12 +39961,114 @@
               "durationAsReported": "2.0s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "1e78a3253fe1313bc3081afcf31a07c05a1fd67a5940db3837adffe293b5264a"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "failed",
+              "ordinal": 2,
+              "profile": "chromium",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "failed",
+              "ordinal": 8,
+              "profile": "firefox",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "failed",
+              "ordinal": 14,
+              "profile": "webkit",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.4s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "failed",
+              "ordinal": 20,
+              "profile": "chromium-mobile",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "2.4s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "failed",
+              "ordinal": 26,
+              "profile": "webkit-mobile",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webAuthB515Query",
+              "status": "passed",
+              "ordinal": 1,
+              "profile": "chromium",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.5s",
+              "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+              "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+            },
+            {
+              "proofRef": "webAuthB515Query",
+              "status": "passed",
+              "ordinal": 2,
+              "profile": "firefox",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "2.0s",
+              "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+              "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+            },
+            {
+              "proofRef": "webAuthB515Query",
+              "status": "passed",
+              "ordinal": 3,
+              "profile": "webkit",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.5s",
+              "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+              "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+            },
+            {
+              "proofRef": "webAuthB515Query",
+              "status": "passed",
+              "ordinal": 4,
+              "profile": "chromium-mobile",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.4s",
+              "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+              "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
+            },
+            {
+              "proofRef": "webAuthB515Query",
+              "status": "passed",
+              "ordinal": 5,
+              "profile": "webkit-mobile",
+              "testName": "reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy",
+              "durationAsReported": "1.2s",
+              "testSourceRevision": "b0cb382521eab2a4d2c392c8c12299af688dbdce",
+              "testSourceSha256": "a7f649f10c421e42ecfa581b980cb6ca47bb2420b3e6b33e2c8db6c5a7875b8d"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup",
+            "webAuthB515Query"
           ]
         },
         {
@@ -38659,13 +40245,64 @@
               "durationAsReported": "2.9s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "1e78a3253fe1313bc3081afcf31a07c05a1fd67a5940db3837adffe293b5264a"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 1,
+              "profile": "chromium",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 7,
+              "profile": "firefox",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 13,
+              "profile": "webkit",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "2.9s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 19,
+              "profile": "chromium-mobile",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 25,
+              "profile": "webkit-mobile",
+              "testName": "expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work",
+              "durationAsReported": "3.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "6bebf0ade8e2203961630579a9aafb8d2fee116c605c92aef48a5d0e79020d14"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
             "unitFinal382",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ],
           "reviewNote": "IR24 readiness uses an explicit queued-transition settled edge; immediate invocation scope guards remain. Exact scheduler assertions are selected by branch; source/runtime qualification is separate."
         },
@@ -38830,7 +40467,9 @@
         "unitFinal373",
         "webCloudA1",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup",
+        "webAuthB515Query"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -43745,13 +45384,114 @@
               "durationAsReported": "22.0s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 5,
+              "profile": "chromium",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 6,
+              "profile": "chromium",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "17.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 11,
+              "profile": "firefox",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.6s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 12,
+              "profile": "firefox",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 17,
+              "profile": "webkit",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "11.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 18,
+              "profile": "webkit",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "23.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 23,
+              "profile": "chromium-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 24,
+              "profile": "chromium-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 29,
+              "profile": "webkit-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 30,
+              "profile": "webkit-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "15.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
             }
           ],
           "proofRefs": [
             "backendFinal84",
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         },
         {
@@ -44073,13 +45813,114 @@
               "durationAsReported": "22.0s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 5,
+              "profile": "chromium",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 6,
+              "profile": "chromium",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "17.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 11,
+              "profile": "firefox",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.6s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 12,
+              "profile": "firefox",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 17,
+              "profile": "webkit",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "11.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 18,
+              "profile": "webkit",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "23.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 23,
+              "profile": "chromium-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 24,
+              "profile": "chromium-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 29,
+              "profile": "webkit-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 30,
+              "profile": "webkit-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "15.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
             }
           ],
           "proofRefs": [
             "backendFinal84",
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         },
         {
@@ -44459,6 +46300,106 @@
               "durationAsReported": "22.0s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 5,
+              "profile": "chromium",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 6,
+              "profile": "chromium",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "17.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 11,
+              "profile": "firefox",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.6s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 12,
+              "profile": "firefox",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 17,
+              "profile": "webkit",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "11.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 18,
+              "profile": "webkit",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "23.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 23,
+              "profile": "chromium-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 24,
+              "profile": "chromium-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 29,
+              "profile": "webkit-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 30,
+              "profile": "webkit-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "15.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
             }
           ],
           "proofRefs": [
@@ -44467,7 +46408,8 @@
             "webCloud0b",
             "webCloudA1",
             "unitFinal382",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ],
           "reviewNote": "IR24 readiness uses an explicit queued-transition settled edge; immediate invocation scope guards remain. Exact scheduler assertions are selected by branch; source/runtime qualification is separate."
         },
@@ -44805,6 +46747,106 @@
               "durationAsReported": "22.0s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 5,
+              "profile": "chromium",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 6,
+              "profile": "chromium",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "17.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 11,
+              "profile": "firefox",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.6s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 12,
+              "profile": "firefox",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 17,
+              "profile": "webkit",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "11.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 18,
+              "profile": "webkit",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "23.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 23,
+              "profile": "chromium-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "10.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 24,
+              "profile": "chromium-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "16.0s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 29,
+              "profile": "webkit-mobile",
+              "testName": "actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "9.5s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 30,
+              "profile": "webkit-mobile",
+              "testName": "actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
+              "durationAsReported": "15.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "a0dd28a71edefbe4d06f1ae8429f2c1b49b846ed5ab25d909ead2fbfc7f0209c"
             }
           ],
           "proofRefs": [
@@ -44813,7 +46855,8 @@
             "webCloud0b",
             "webCloudA1",
             "unitFinal382",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         },
         {
@@ -44884,7 +46927,8 @@
         "webCloud0b",
         "webCloudA1",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "status": "implemented-awaiting-final-integrated-proof",
       "limitations": [
@@ -46356,12 +48400,63 @@
               "durationAsReported": "12.6s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 3,
+              "profile": "chromium",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "13.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 9,
+              "profile": "firefox",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "12.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 15,
+              "profile": "webkit",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "12.6s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 21,
+              "profile": "chromium-mobile",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "14.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 27,
+              "profile": "webkit-mobile",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "11.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         }
       ],
@@ -46419,7 +48514,8 @@
         "webCloudA1",
         "webRenderedA1",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -47092,12 +49188,63 @@
               "durationAsReported": "12.6s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 3,
+              "profile": "chromium",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "13.7s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 9,
+              "profile": "firefox",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "12.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 15,
+              "profile": "webkit",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "12.6s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 21,
+              "profile": "chromium-mobile",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "14.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 27,
+              "profile": "webkit-mobile",
+              "testName": "actual complete export names the missing checkpoint and retries only its absent bytes",
+              "durationAsReported": "11.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         }
       ],
@@ -47142,7 +49289,8 @@
         "backendFinal84",
         "webCloudA1",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -53005,7 +55153,8 @@
             "nativeShareBytes",
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ],
           "sourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
           "implementationRefs": [
@@ -53199,6 +55348,56 @@
               "durationAsReported": "22.7s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 4,
+              "profile": "chromium",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 10,
+              "profile": "firefox",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 16,
+              "profile": "webkit",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "14.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 22,
+              "profile": "chromium-mobile",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "12.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 28,
+              "profile": "webkit-mobile",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.2s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
             }
           ]
         },
@@ -54022,7 +56221,8 @@
         "nativeLegacyUI",
         "webCloudA1",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -56440,12 +58640,63 @@
               "durationAsReported": "22.7s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 4,
+              "profile": "chromium",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 10,
+              "profile": "firefox",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 16,
+              "profile": "webkit",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "14.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 22,
+              "profile": "chromium-mobile",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "12.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 28,
+              "profile": "webkit-mobile",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.2s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         },
         {
@@ -56612,12 +58863,63 @@
               "durationAsReported": "22.7s",
               "testSourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
               "testSourceSha256": "8d3321ac388714887257290c2f82a0c3654f0bf3442a0fec28c2129a56b71509"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 4,
+              "profile": "chromium",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 10,
+              "profile": "firefox",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.3s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 16,
+              "profile": "webkit",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "14.1s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 22,
+              "profile": "chromium-mobile",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "12.8s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
+            },
+            {
+              "proofRef": "webCloudB515Followup",
+              "status": "passed",
+              "ordinal": 28,
+              "profile": "webkit-mobile",
+              "testName": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+              "durationAsReported": "13.2s",
+              "testSourceRevision": "d059191a618ff6cdd486f5912721fdde3a3d9e9e",
+              "testSourceSha256": "8364f9e5e48d86895b3743f45b9c68137a709752a2e40246492fcefaa1e01be6"
             }
           ],
           "proofRefs": [
             "webCloud0b",
             "webCloudA1",
-            "webCloudB515"
+            "webCloudB515",
+            "webCloudB515Followup"
           ]
         },
         {
@@ -56829,7 +59131,8 @@
         "unitFinal373",
         "webCloudA1",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -57066,12 +59369,63 @@
               "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
               "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
               "durationAsReported": "1.2s"
+            },
+            {
+              "proofRef": "webGuestB515Targeted",
+              "status": "passed",
+              "ordinal": 5,
+              "profile": "chromium",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "durationAsReported": "637ms",
+              "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+            },
+            {
+              "proofRef": "webGuestB515Targeted",
+              "status": "passed",
+              "ordinal": 13,
+              "profile": "firefox",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "durationAsReported": "856ms",
+              "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+            },
+            {
+              "proofRef": "webGuestB515Targeted",
+              "status": "passed",
+              "ordinal": 21,
+              "profile": "webkit",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "durationAsReported": "779ms",
+              "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+            },
+            {
+              "proofRef": "webGuestB515Targeted",
+              "status": "passed",
+              "ordinal": 29,
+              "profile": "chromium-mobile",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "durationAsReported": "663ms",
+              "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
+            },
+            {
+              "proofRef": "webGuestB515Targeted",
+              "status": "passed",
+              "ordinal": 37,
+              "profile": "webkit-mobile",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "durationAsReported": "703ms",
+              "testSourceRevision": "bc661da53127f4d53c70244d267885899190d36c",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822"
             }
           ],
           "proofRefs": [
             "webGuestFrozen",
             "webGuest0b",
-            "webGuestA1Targeted"
+            "webGuestA1Targeted",
+            "webGuestB515Targeted"
           ]
         },
         {
@@ -57221,7 +59575,8 @@
         "freshCheckout",
         "integrationChecksA1",
         "webGuestA1Targeted",
-        "unitFinal382"
+        "unitFinal382",
+        "webGuestB515Targeted"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -60218,12 +62573,15 @@
       ],
       "finding": "Authenticated startup can publish while the controller serial transition remains busy; the runtime 150ms cycle then rejects in bound() before publishing an error. Clearing busy at settlement emits no readiness edge and an unchanged work key leaves only the45s fallback. The current expired-cursor trace shows successful account-session verification but no subsequent pull during its8s observation. A controlled reproduction establishes this source hole; exact internal timing in the original uninstrumented WebKit trace remains unproven.",
       "owner": "backend/client runtime coordination",
-      "status": "b5151ea source and nine exact regressions qualified. Full current cloud run records76 passes/4 fixture failures; its other readiness/account flows pass. Rebase focused closure,40 guest cases and current source-bound native execution remain pending.",
+      "status": "b515 source and nine exact regressions qualified; current40startup/draft guest cases pass. Full cloud76/80 retains four fixture failures, followed by25/30 with all20 recovery/export and5expiry cases passing, then query-safe resend5/5. Final current source-bound native qualification remains pending; separate IR25 product change reopens the freeze.",
       "proofRefs": [
         "webCloudA1",
         "runtimeReadinessControlled",
         "unitFinal382",
-        "webCloudB515"
+        "webCloudB515",
+        "webCloudB515Followup",
+        "webAuthB515Query",
+        "webGuestB515Targeted"
       ],
       "originalTraceSha256": "c1fbdb2c1c0f2e74bd126a631ca9a381ad2405a703b4a1786b15ec21f79a85c6",
       "requiredInvariants": [
