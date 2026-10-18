@@ -122,6 +122,72 @@ describe('supplemental native billing guards (no store transaction evidence)', (
     })
     expect(await billing.purchase(intent)).toEqual({ status: 'submitted', attemptId: 'attempt' })
   })
+  it('purchases for a selected local guest collection without connecting or adopting the cloud device', async () => {
+    const active = context()
+    active.scope = {
+      key: { namespace: 'guest', collectionId: 'local-projects', epoch: 'local-epoch' },
+      device: { id: 'local-device', generation: 'local-device-generation' },
+      generation: 5,
+    }
+    const billing = await adapter(() => active)
+    expect(
+      await billing.purchase({ ...intent, collection: active.scope.key, generation: 5 }),
+    ).toEqual({
+      status: 'submitted',
+      attemptId: 'attempt',
+    })
+    expect(sdk.configure).toHaveBeenCalledWith(expect.objectContaining({ appUserID: 'principal' }))
+    expect(sdk.purchaseStoreProduct).toHaveBeenCalledTimes(1)
+    expect(active.scope.key.namespace).toBe('guest')
+    expect(active.session.collection).toEqual(key)
+  })
+  it('rejects a local-guest purchase if the verified account switches before SDK submission', async () => {
+    let active = context()
+    active.scope = {
+      ...active.scope,
+      key: { namespace: 'guest', collectionId: 'local-projects', epoch: 'local-epoch' },
+    }
+    const localIntent = { ...intent, collection: active.scope.key }
+    const billing = await adapter(() => active)
+    sdk.getProducts.mockImplementation(async () => {
+      active = {
+        ...active,
+        session: { ...active.session, accountId: 'other', billingPrincipalId: 'other-principal' },
+      }
+      return { products: [product] }
+    })
+    expect(await billing.purchase(localIntent)).toMatchObject({ status: 'account-mismatch' })
+    expect(sdk.purchaseStoreProduct).not.toHaveBeenCalled()
+  })
+  it('does not apply a late native result after the local-guest paying account changes', async () => {
+    let active = context()
+    active.scope = {
+      ...active.scope,
+      key: { namespace: 'guest', collectionId: 'local-projects', epoch: 'local-epoch' },
+    }
+    const billing = await adapter(() => active)
+    sdk.purchaseStoreProduct.mockImplementation(async () => {
+      active = {
+        ...active,
+        session: { ...active.session, accountId: 'other', billingPrincipalId: 'other-principal' },
+      }
+      return { customerInfo: { entitlements: { active: { paid: true } } } }
+    })
+    expect(await billing.purchase({ ...intent, collection: active.scope.key })).toMatchObject({
+      status: 'account-mismatch',
+    })
+    expect(sdk.purchaseStoreProduct).toHaveBeenCalledTimes(1)
+  })
+  it('rejects an expired verified session after asynchronous product lookup', async () => {
+    let active = context()
+    const billing = await adapter(() => active)
+    sdk.getProducts.mockImplementation(async () => {
+      active = { ...active, session: { ...active.session, expiresAt: '2000-01-01T00:00:00.000Z' } }
+      return { products: [product] }
+    })
+    expect(await billing.purchase(intent)).toMatchObject({ status: 'account-mismatch' })
+    expect(sdk.purchaseStoreProduct).not.toHaveBeenCalled()
+  })
   it('maps pending and receipt-owner mismatch without exposing raw SDK errors', async () => {
     const billing = await adapter()
     sdk.purchaseStoreProduct.mockRejectedValue({ code: '20', message: 'private receipt' })

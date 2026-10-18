@@ -60,16 +60,18 @@ export function createNativeBilling(options: NativeBillingOptions): BillingAdapt
       Date.parse(value.session.expiresAt) <= Date.now()
     )
       throw new DomainError('AUTH_REQUIRED')
-    if (
-      canonicalJson(value.session.collection) !== canonicalJson(value.scope.key) ||
-      canonicalJson(value.session.device) !== canonicalJson(value.scope.device)
-    )
-      throw new DomainError('ACCOUNT_CHANGED')
+    // Authentication identifies the paying maker independently of the selected local collection.
+    // The server owns session.collection; the durable continuation remains bound to scope.
     return structuredClone(value)
   }
   function current(expected: NativeBillingContext) {
     const now = options.current()
-    return !!now && fingerprint(now) === fingerprint(expected)
+    return (
+      !!now &&
+      accountSessionSchema.safeParse(now.session).success &&
+      Date.parse(now.session.expiresAt) > Date.now() &&
+      fingerprint(now) === fingerprint(expected)
+    )
   }
   function fence(expected: NativeBillingContext) {
     if (!current(expected)) throw new DomainError('ACCOUNT_CHANGED')
