@@ -1,0 +1,13 @@
+Command: node scripts/test-server.mjs --suite schema
+Target: isolated local project loopmark-loopmark-expansi-eeac3023
+Source: 0d89275d26ace840f41e374e421fa37713d51518
+
+Server tests: real isolated local services for loopmark-loopmark-expansi-eeac3023; suite schema.
+RUN v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-backend
+Test Files 3 passed (3)
+Tests 16 passed (16)
+Start at 17:31:17 (Asia/Kolkata, 2026-10-18)
+Duration 9.30s (tests 99%, import 1%)
+Exit code: 0
+
+This text retains the final tool-reported result. No credentials or private mail bodies are included.

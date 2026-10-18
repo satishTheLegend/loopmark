@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "package": "I03",
+  "requirements": [
+    "X01",
+    "X02",
+    "X07",
+    "X09",
+    "C14",
+    "C16",
+    "C18",
+    "C21",
+    "DX01",
+    "DX06",
+    "DX07"
+  ],
+  "status": "implementation-verified-awaiting-independent-review",
+  "baseCommit": "c9e980fa4421f2a465c3bd5d186e7517f58de41f",
+  "resultCommit": "0d89275d26ace840f41e374e421fa37713d51518",
+  "sharedSnapshotCommit": "709eb051c47be89216adb6b980be8d80fa30e4c2",
+  "recordedAt": "2026-10-18T12:03:30.382Z",
+  "lockfileSha256": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d",
+  "environment": {
+    "platform": "Darwin arm64",
+    "node": "v26.8.2",
+    "npm": "11.19.1",
+    "supabaseCLI": "2.121.0",
+    "supabaseJS": "2.118.0",
+    "zod": "4.6.7",
+    "docker": "29.8.0",
+    "profile": "loopmark-loopmark-expansi-eeac3023",
+    "apiURL": "http://127.0.0.1:56621",
+    "databaseLoopbackPort": 56622,
+    "images": [
+      {
+        "tag": "public.ecr.aws/supabase/edge-runtime:v1.77.4",
+        "digests": [
+          "public.ecr.aws/supabase/edge-runtime@sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8"
+        ]
+      },
+      {
+        "tag": "public.ecr.aws/supabase/gotrue:v2.197.0",
+        "digests": [
+          "public.ecr.aws/supabase/gotrue@sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b"
+        ]
+      },
+      {
+        "tag": "public.ecr.aws/supabase/kong:2.8.1",
+        "digests": [
+          "public.ecr.aws/supabase/kong@sha256:1b53405d8680a09d6f44494b7990bf7da2ea43f84a258c59717d4539abf09f6d"
+        ]
+      },
+      {
+        "tag": "public.ecr.aws/supabase/mailpit:v1.31.3",
+        "digests": [
+          "public.ecr.aws/supabase/mailpit@sha256:ed9b00c609e77e99c79b93f1178255ebc271868920f2c69a8d166bd5634ed10d"
+        ]
+      },
+      {
+        "tag": "public.ecr.aws/supabase/postgres:17.11.0.004",
+        "digests": [
+          "public.ecr.aws/supabase/postgres@sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706"
+        ]
+      },
+      {
+        "tag": "public.ecr.aws/supabase/postgrest:v16.4",
+        "digests": [
+          "public.ecr.aws/supabase/postgrest@sha256:d155c6718ed9a9f990d159a2ab7c0a3f16944dbb6d0a0344557421042acfe0df"
+        ]
+      },
+      {
+        "tag": "public.ecr.aws/supabase/storage-api:v1.82.1",
+        "digests": [
+          "public.ecr.aws/supabase/storage-api@sha256:ec2ad41411eac8fc2b769b4bb00d1af32ae37eca3745c15bdb329db27d218934"
+        ]
+      }
+    ],
+    "containers": [
+      {
+        "name": "supabase_auth_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "9999/tcp": null
+        }
+      },
+      {
+        "name": "supabase_db_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "5432/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "56622"
+            }
+          ]
+        }
+      },
+      {
+        "name": "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+        "ports": {}
+      },
+      {
+        "name": "supabase_inbucket_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "8025/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "56624"
+            }
+          ]
+        }
+      },
+      {
+        "name": "supabase_kong_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "56621"
+            }
+          ]
+        }
+      },
+      {
+        "name": "supabase_rest_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "3000/tcp": null
+        }
+      },
+      {
+        "name": "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "5000/tcp": null
+        }
+      }
+    ]
+  },
+  "verification": {
+    "command": "node scripts/test-server.mjs --suite schema",
+    "exitCode": 0,
+    "startedAt": "2026-10-18T12:01:17Z",
+    "endedAt": "2026-10-18T12:01:26.300Z",
+    "timestampPrecision": "start reported to second; end derived from reported 9.30s duration",
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "files": 3,
+    "fixtureCounts": {
+      "accounts": 16,
+      "projects": 67,
+      "checkpoints": 2
+    },
+    "log": "schema-run.txt",
+    "logSha256": "4b05388a44cbb3eb234e1bab0bda2522190a087bc121eb7047f1a1e86f6fbecf"
+  },
+  "otherChecks": [
+    {
+      "command": "npm ci",
+      "result": "PASS; zero reported vulnerabilities; dependencies later deduplicated to integration node_modules after identical lockfile check during disk pressure"
+    },
+    {
+      "command": "node scripts/local.mjs up",
+      "result": "PASS; real services, pending migration application, private port guard, configuration reload and current shared Edge graph"
+    },
+    {
+      "command": "node scripts/local.mjs reset --confirm-project loopmark-loopmark-expansi-eeac3023",
+      "result": "PASS; exact-profile synthetic local data reset and all four migrations applied before final tests"
+    },
+    {
+      "command": "node scripts/local.mjs status",
+      "result": "PASS; all exact-project published ports loopback"
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "PASS before source commit"
+    },
+    {
+      "command": "node scripts/doctor.mjs --capability local-sync --json",
+      "result": "FAIL exit 3: root-owned doctor still reads source config template instead of generated .gstack/local/profile runtime. Integrator notified; integration fix pending."
+    }
+  ],
+  "reviewers": [
+    {
+      "name": "Worker C and root",
+      "status": "requested; pending"
+    }
+  ],
+  "sourceHashes": {
+    "package-lock.json": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d",
+    "scripts/lib/config.d.mts": "a131552fb3263ee09d5538ea74d1cb1d806ee68c3018d2c624a5291d9a6155ec",
+    "scripts/lib/config.mjs": "cbb482f5ac63ed99bfb1e7af47a9054988baf91fb7a1ee7944c515d02303710c",
+    "scripts/local.mjs": "6dff33f5b2a6630617d41ce7578cae74f290f72338f223476905eb1d6dd57001",
+    "scripts/test-server.mjs": "9000bf939698b1f929fe4df41999945ce977b635951e22e1701d8a66b926a2a3",
+    "src/domain/canonical-json.ts": "9d9bc1279c6e99acbdebdff2dca75316edceb4dcfa75a56a9dddd0c76265d774",
+    "src/domain/contracts.test.ts": "1c31c06873a12843cf88a3c21d81ec668512b4fda7a23d1c16001452c128706e",
+    "src/domain/contracts.ts": "1bffd02783f2fd3562b2d3a888735fbff5de71c2b0458474ea80810e1969d077",
+    "src/domain/errors.ts": "6127d0d12eadca535189a1366b07a2192284cdc34a992be4bd665de63038a07d",
+    "src/domain/media-contract.ts": "c1f39949c63bb817d5ca6a681e34174ffb9911b875ee807095028620cae11da5",
+    "src/domain/policy.test.ts": "80c433b2b7010c18769a1ee84836d239bc18e4071d8e8bca2f4d21fed2ec590d",
+    "src/domain/policy.ts": "361fb357c8439e286f37126cf7390195d4c94231ca245d70bc8c300edd0fd8df",
+    "src/domain/portable-schema.ts": "391eb0802bddc4058d11d26c98e2701f5faa42b7b12793e56e4a850f990c4b99",
+    "src/domain/portable.ts": "ca351bf619a1ddac8a69fdaccf831e8a1dedc4d1d905d71932a123c6c9700817",
+    "src/domain/revisions.ts": "a01ef320928feaa845f1d194b84d902ac3bcdf04fe1a00abfd2a7728b063aa41",
+    "src/domain/schema.ts": "b2648d8e5e4810c0afec30bafbcae251cabff056e972ade0c6d47ade39206285",
+    "src/help/errors.ts": "8e413356327dded5ae535171080665380e7b563c578c9bd5ff8bddddcedd52c0",
+    "src/media-validation.ts": "1f4782cce0606ce00214f44ecf351ed99ae2f9ab40c4d48f21fb725c1e477fe6",
+    "supabase/.gitignore": "507699eb91144818edf61d3a079212cacf31d8db520eae428e3b48fcf0d6919c",
+    "supabase/command.schema.json": "c147b02d54fc6a2b69d9932b87049a62cfec0356d5db90c48a25d7e33d22cca7",
+    "supabase/config.toml": "314f81acabf6629c6cd0afe4d86fa21f40933233d0da274bac7bcb2b049e13fb",
+    "supabase/functions/_shared/auth.ts": "af5b2ed742919e9cbf1fc85a8f7834c596b51a76fe09a5e08d7edf75a0ef0888",
+    "supabase/functions/_shared/command.ts": "32e9f21f6365332538abbeceed99b53761c52c833352f7e56a3f1dad6b79a140",
+    "supabase/functions/_shared/config.ts": "d568b1cceb3d711e0cbd438653cdb58eff47f8ceaa57e0c554653fc538999582",
+    "supabase/functions/_shared/limits.ts": "d36cc9b1db5b001410ca0f007e3f9a1eeacf8ba217d05be4581f042f49bc69e6",
+    "supabase/functions/account-session/index.ts": "3b5d784575e066b9ea4775b722b7b159ca1a1782f1ebacf7b0fee8d40162e88e",
+    "supabase/functions/import_map.json": "a34c96cec54d7584f089b65d2c69a26ffd86fb8fd80c57493294e48cc8129a9d",
+    "supabase/functions/sync-pull/index.ts": "48c4c10371b39ebc7c8937e81f049e1e277543b278d9db859bb4f48107c71cd9",
+    "supabase/functions/sync-push/index.ts": "e6d03bd8efe24d5a2c0717c26d890287223affd68350bc762ff6d7ed9433631e",
+    "supabase/functions/sync-snapshot/index.ts": "a5c129c22603ebb80ab7813d3824cc9a97343b21cf38cba1a4b548d8ac0b9324",
+    "supabase/migrations/202610180001_foundation.sql": "e00aec6e8d1d3160c667168d6ccb72b050a4082b506ed1d862a214138b57a703",
+    "supabase/migrations/202610180002_commands.sql": "82023e4f68360a523d97742ba08dcb056eba820591b61f89d9d15b13296678d8",
+    "supabase/migrations/202610180003_reads_retention.sql": "8866759cd5fdd7d66b373326166dcfb2578833087badcb1ed631f6b5c91cfe76",
+    "supabase/migrations/202610180004_reauthentication.sql": "b6cadcffa5d2390f0cd278bb556267c2f710cda00327b387e2e4f4c80b560a90",
+    "supabase/seed.sql": "b0f5fd71f53b1be3c36e8c784dcfadd4119931380fb17fb9668dca005ef32c20",
+    "supabase/templates/magic-link.html": "69f78b2537a47cd8219c27f3774f8e7b590875eaeee2b2ec70692e389a9f43f8",
+    "supabase/tests/commands.test.sql": "0fed24de838931364eb47928e6fe4c05728a9a98f6d81cc37ea75d1f9498db06",
+    "supabase/tests/ownership.test.sql": "cac1e4c0ed2c8b6472dea25fcb21f4019ada1dfe95b4a2efc1c02864b5f195f5",
+    "tests/server/boundaries.test.ts": "756e544524b4b34db3812f207e028d8f41cb338058b659583b514adce465e639",
+    "tests/server/helpers.ts": "41f2caeee6f3d147ce3fa4a3e841f74c242128950eaadb077f21b7b659895f7e",
+    "tests/server/schema.test.ts": "fcd425d235f7ef6e78b10042dc0c47cee149724968a3770eaf4c204adcfbaefa",
+    "tests/server/sync-ordering.test.ts": "dcd6e3beea5e4005839710c303e818bc3df5a948d15624e74a9f384c359e5dc8",
+    "vitest.server.config.ts": "fe3432c0ee626d4c75d2d0ae710de901227952ff7bc907f7a90be2a05005545b"
+  },
+  "boundaryNotes": [
+    "No hosted login, link, deployment, provider payment, cloud SMTP, or native runtime is claimed by I03. All Auth emails were delivered to this isolated local Mailpit using synthetic example.invalid addresses.",
+    "media.attach and collection.replace explicitly return CAPABILITY_UNAVAILABLE until I07; upload/replacement/deletion/billing/operations follow in their assigned packages.",
+    "Snapshot manifests include required after and prove chained pagination. Shared source is copied into the ignored Deno runtime graph with only module-specifier rewrites; no second handwritten validator.",
+    "Pinned CLI creates Docker port mappings without host IP. A process-local exact-project Docker shim adds 127.0.0.1 and startup audits every published port. No global Docker settings or unrelated containers were changed.",
+    "SQL/HTTP tests use real PostgreSQL roles, real RLS, actual Auth JWTs and real Edge/PostgREST. They include rolled-back mutations, delayed commits, sequence gaps following rejected CAS, response replay, cross-owner and same-owner bypass, bounded snapshots/devices, streaming size rejection, and 90-day compaction floors.",
+    "Database quotas count exact portable JSON bytes including escaped MIME codec quotes and Unicode; canonical JSON/hash vectors and generated SQL command schema match the shared source.",
+    "Successful final test used all current source hashes. Earlier observed failures (stale Edge module graph, ambiguous SQL identifiers, and bind-mounted template inode replacement) were corrected before this result.",
+    "No 100/1000-account load test or production throughput claim. Test fixture scale is recorded above."
+  ]
+}
