@@ -182,9 +182,10 @@ export async function runDoctor({
         'Repair the project-local CLI installation.',
       )
     }
+    const localRuntime = resolve(config.worktree, '.gstack/local', config.profile)
     let identityMatches = false
     try {
-      const toml = await readFile(resolve(config.worktree, 'supabase/config.toml'), 'utf8')
+      const toml = await readFile(resolve(localRuntime, 'supabase/config.toml'), 'utf8')
       const identity = toml.match(/^\s*project_id\s*=\s*"([a-z0-9-]+)"\s*$/m)?.[1]
       identityMatches = identity === config.projectId
       check(
@@ -243,7 +244,7 @@ export async function runDoctor({
     }
     const ownRunningPorts = new Set()
     if (cliFound && identityMatches && localDocker) {
-      const status = await command(cli, ['status', '--output', 'json'], env, config.worktree)
+      const status = await command(cli, ['status', '--output', 'json'], env, localRuntime)
       if (status.ok) {
         try {
           const state = JSON.parse(status.stdout)

@@ -18,8 +18,15 @@ const VERSION = 1
 const encoder = new TextEncoder()
 
 /** Installed once by application startup after the destination repository is verified. */
+export interface ProjectMediaAvailability {
+  checkpointId: string
+  kind: 'photo' | 'voice'
+  state: 'available' | 'missing'
+}
 export interface DataAdapter {
   listProjects(): Promise<Project[]>
+  getProject(id: string): Promise<Project | null>
+  mediaAvailability(projectId: string): Promise<ProjectMediaAvailability[]>
   getLibraryState(): Promise<LibraryState>
   createProject(input: ProjectInput, operationToken?: string): Promise<Project>
   updateProject(id: string, input: ProjectInput, expectedUpdatedAt: string): Promise<Project>
@@ -273,6 +280,21 @@ export async function listProjects(): Promise<Project[]> {
         ),
       )
   })
+}
+
+/** Selected-project bytes are read separately from shelf metadata. */
+export async function getProject(projectId: string): Promise<Project | null> {
+  if (adapter) return adapter.getProject(projectId)
+  return (await listProjects()).find((project) => project.id === projectId) ?? null
+}
+export async function mediaAvailability(projectId: string): Promise<ProjectMediaAvailability[]> {
+  if (adapter) return adapter.mediaAvailability(projectId)
+  const project = await getProject(projectId)
+  return (project?.checkpoints ?? []).flatMap((checkpoint) =>
+    (['photo', 'voice'] as const)
+      .filter((kind) => !!checkpoint[kind])
+      .map((kind) => ({ checkpointId: checkpoint.id, kind, state: 'available' as const })),
+  )
 }
 
 export interface LibraryState {
