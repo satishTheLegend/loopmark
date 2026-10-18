@@ -1,0 +1,13 @@
+{
+  "sourceCommit": "c471bc66b89b16fd63bc90485ce79cc6ed94a96c",
+  "purpose": "synthetic native performance fixture",
+  "files": {
+    "assets/definitions-DlpntO5o.js": "386d6863bee205584abf6e3c5c7b71353d92150155a3d8093a8a919380bc85a5",
+    "assets/dist-62TeNfsI.js": "a90c0da73ff7c2d7bae15ed1933cb548d44999a3d6fe06b370b2a11ae80b0f00",
+    "assets/index-BVOLvtQf.js": "a296f0ef66133b007146b30617403d9586f3767f816f04ba1ea1d0c28571bbd1",
+    "assets/web-BfhmW3-l.js": "96425e54c9eac0aeefbc678111789fca1b6d1dbad2897474fc257e17c6877d3f",
+    "assets/web-C7Yf4tsy.js": "fa13ecd4ed43abd4bb094909dc82aed2582e4ecfe08d4f537b3cca7a4dd509a0",
+    "assets/web-DkAlRek-.js": "6cc8d52b4d0213192627844f8f6bf1205841b80477527c697908ec149aacf23e",
+    "index.html": "449e47dfe2a40d32e7dbe8d9e817beaee408ab18e78ec4f37d2c53ffdab817b9"
+  }
+}
