@@ -395,8 +395,14 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         await send(a, 'sync-push', checkpointCommand)
         const page = await send(a, 'sync-pull', pullRequest(a))
         expect(
-          page.body.entries.map((entry: { operationId: string }) => entry.operationId),
-        ).toEqual([cmd.operationId, checkpointCommand.operationId])
+          page.body.entries.map((entry: { operationId: string; sha256: string }) => [
+            entry.operationId,
+            entry.sha256,
+          ]),
+        ).toEqual([
+          [cmd.operationId, cmd.sha256],
+          [checkpointCommand.operationId, checkpointCommand.sha256],
+        ])
         // Verify ownership after the burst below, so an overloaded gateway cannot masquerade as authorization denial.
       }),
     )
@@ -433,8 +439,14 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
           await send(a, 'sync-push', checkpointCommand, deadline)
           const page = await send(a, 'sync-pull', pullRequest(a), deadline)
           expect(
-            page.body.entries.map((entry: { operationId: string }) => entry.operationId),
-          ).toEqual([cmd.operationId, checkpointCommand.operationId])
+            page.body.entries.map((entry: { operationId: string; sha256: string }) => [
+              entry.operationId,
+              entry.sha256,
+            ]),
+          ).toEqual([
+            [cmd.operationId, cmd.sha256],
+            [checkpointCommand.operationId, checkpointCommand.sha256],
+          ])
           return true
         } catch (error) {
           const reason = String((error as Error)?.message ?? '')
@@ -514,7 +526,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         .slice(start, start + 50)
         .map(
           ({ a, value, checkpoint, cmd, checkpointCommand }) =>
-            `(${quote(a.id)}::uuid,${quote(value.id)},${quote(JSON.stringify({ ...value, updatedAt: checkpoint.createdAt, revision: '2' }))}::jsonb,${quote(checkpoint.id)},${quote(JSON.stringify({ ...checkpoint, revision: '2' }))}::jsonb,${quote(cmd.operationId)},${quote(cmd.sha256)},${quote(checkpointCommand.operationId)},${quote(checkpointCommand.sha256)})`,
+            `(${quote(a.id)}::uuid,${quote(value.id)},${quote(JSON.stringify({ ...value, updatedAt: checkpoint.createdAt }))}::jsonb,${quote(checkpoint.id)},${quote(JSON.stringify(checkpoint))}::jsonb,${quote(cmd.operationId)},${quote(cmd.sha256)},${quote(checkpointCommand.operationId)},${quote(checkpointCommand.sha256)})`,
         )
         .join(',')
       mismatches += Number(
@@ -524,7 +536,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         left join loopmark_private.checkpoints c on c.owner_id=e.owner_id and c.id=e.checkpoint_id
         left join loopmark_private.operation_receipts r1 on r1.owner_id=e.owner_id and r1.operation_id=e.project_operation
         left join loopmark_private.operation_receipts r2 on r2.owner_id=e.owner_id and r2.operation_id=e.checkpoint_operation
-        where p.data is distinct from e.project_data or c.data is distinct from e.checkpoint_data
+        where p.data is distinct from e.project_data or c.data is distinct from e.checkpoint_data or p.revision is distinct from 2::bigint or c.revision is distinct from 2::bigint
         or r1.sha256 is distinct from e.project_hash or r1.receipt->>'sha256' is distinct from e.project_hash or r1.receipt->>'resultId' is distinct from e.project_id
         or r2.sha256 is distinct from e.checkpoint_hash or r2.receipt->>'sha256' is distinct from e.checkpoint_hash or r2.receipt->>'resultId' is distinct from e.checkpoint_id`),
       )
