@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.amazon.device</groupId>
+    <artifactId>amazon-appstore-sdk</artifactId>
+    <version>3.0.5</version>
+    <packaging>jar</packaging>
+    <name>amazon-appstore-sdk</name>
+    <description>The Appstore SDK provides functionality for handling Digital Rights Management (DRM) and In-App Purchasing (IAP) within your Java-based Android-based app. DRM, or more generally "license verification," is used to address developer concerns around unauthorised copying and distribution of apps. With In-App Purchasing (IAP), users can purchase digital items within your app, such as extra lives for a game or a subscription to premium content</description>
+    <url>https://developer.amazon.com/docs/apps-and-games/sdk-downloads.html#iap</url>
+    <developers>
+        <developer>
+            <id>amazon-appstore</id>
+            <name>Amazon Appstore</name>
+            <email>amazon-appstore-sdk@amazon.com</email>
+        </developer>
+    </developers>
+    <dependencies>
+    </dependencies>
+    <licenses>
+        <license>
+            <name>Program Materials License</name>
+            <url>https://developer.amazon.com/support/legal/pml</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://developer.amazon.com/docs/appstore-sdk/integrate-appstore-sdk.html</url>
+    </scm>
+</project>

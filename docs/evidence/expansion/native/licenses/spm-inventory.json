@@ -1,0 +1,175 @@
+{
+  "packageResolvedSha256": "0144172085dd695630bdda4a03bd7bff95f228b4be944e973a85746e27057c93",
+  "packages": [
+    {
+      "identity": "capacitor-swift-pm",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/ionic-team/capacitor-swift-pm.git",
+      "notice": {
+        "file": "spm-capacitor-swift-pm.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE.md",
+            "sha256": "48f126b6311bd8e86b56bb3d2c5105a7999e9c348c2ceca7e60e397e7b5f41de"
+          }
+        ],
+        "sha256": "48f126b6311bd8e86b56bb3d2c5105a7999e9c348c2ceca7e60e397e7b5f41de"
+      },
+      "state": {
+        "revision": "4c7f346d16196e21fbe23d4a7a6fc7af62af6742",
+        "version": "8.5.3"
+      },
+      "verifiedCheckoutRevision": "4c7f346d16196e21fbe23d4a7a6fc7af62af6742"
+    },
+    {
+      "identity": "ion-ios-camera",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/ionic-team/ion-ios-camera.git",
+      "notice": {
+        "file": "spm-ion-ios-camera.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE",
+            "sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc"
+          }
+        ],
+        "sha256": "731d2fac39f3d6dc79c04f9a7d2e59c2999caa0dd1dbcf295f9c0e922580dacc"
+      },
+      "state": {
+        "revision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc",
+        "version": "2.0.0"
+      },
+      "verifiedCheckoutRevision": "00c3dfdd6267f80db299d9c5a0bad522156b6cbc"
+    },
+    {
+      "identity": "ion-ios-filesystem",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/ionic-team/ion-ios-filesystem.git",
+      "notice": {
+        "file": "spm-ion-ios-filesystem.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE",
+            "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d"
+          }
+        ],
+        "sha256": "de884404585ed20280150b0768082b6004d3548aaa0d6e596d6bfa0538ab331d"
+      },
+      "state": {
+        "revision": "549c18ad9d9bb70d05df37cc3f6f7aa7f5d0ee52",
+        "version": "2.0.1"
+      },
+      "verifiedCheckoutRevision": "549c18ad9d9bb70d05df37cc3f6f7aa7f5d0ee52"
+    },
+    {
+      "identity": "keychain-swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/evgenyneu/keychain-swift.git",
+      "notice": {
+        "file": "spm-keychain-swift.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE",
+            "sha256": "7aaa2bea1f502d3a23cbd9707191b38d9b1b987bf207a007dfad8416a86eb00c"
+          }
+        ],
+        "sha256": "7aaa2bea1f502d3a23cbd9707191b38d9b1b987bf207a007dfad8416a86eb00c"
+      },
+      "state": {
+        "revision": "265806607b45687a3d646e4c9837c31c90f202e8",
+        "version": "21.0.0"
+      },
+      "verifiedCheckoutRevision": "265806607b45687a3d646e4c9837c31c90f202e8"
+    },
+    {
+      "identity": "purchases-hybrid-common",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/RevenueCat/purchases-hybrid-common.git",
+      "notice": {
+        "file": "spm-purchases-hybrid-common.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE",
+            "sha256": "77e57f8a31eb21899940135b8f3acba2b0fc1825cc07db66e7b63b2f936f35ff"
+          }
+        ],
+        "sha256": "77e57f8a31eb21899940135b8f3acba2b0fc1825cc07db66e7b63b2f936f35ff"
+      },
+      "state": {
+        "revision": "a3d5cc0cfd80d75f4e2eebb3012deb05c13a77f4",
+        "version": "19.12.0"
+      },
+      "verifiedCheckoutRevision": "a3d5cc0cfd80d75f4e2eebb3012deb05c13a77f4"
+    },
+    {
+      "identity": "purchases-ios-spm",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/RevenueCat/purchases-ios-spm",
+      "notice": {
+        "file": "spm-purchases-ios-spm.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE",
+            "sha256": "9f0832999aa913fb2d4a94179839573467a2b79b43f6417ebaab93003506f1a2"
+          }
+        ],
+        "sha256": "9f0832999aa913fb2d4a94179839573467a2b79b43f6417ebaab93003506f1a2"
+      },
+      "state": {
+        "revision": "95ad250230efa7fc3e811c158ed264832aed2e79",
+        "version": "5.95.0"
+      },
+      "verifiedCheckoutRevision": "95ad250230efa7fc3e811c158ed264832aed2e79"
+    },
+    {
+      "identity": "sqlcipher.swift",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/sqlcipher/SQLCipher.swift.git",
+      "notice": {
+        "file": "spm-SQLCipher.swift.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "identical after line-ending/trailing-whitespace normalization",
+            "path": "LICENSE.md",
+            "sha256": "930857b664903eef7d8ee4f110c111aa6f97acebf96f162669f4bf62722c2b31"
+          }
+        ],
+        "sha256": "99102712ce4eb9fdb28bd3a9ddb1ff44e95a33a209b80613c7b6008cadeeaa64"
+      },
+      "state": {
+        "revision": "39f212458aeb88e33bdac2200a793a3f0d55d32b",
+        "version": "4.19.0"
+      },
+      "verifiedCheckoutRevision": "39f212458aeb88e33bdac2200a793a3f0d55d32b"
+    },
+    {
+      "identity": "zipfoundation",
+      "kind": "remoteSourceControl",
+      "location": "https://github.com/weichsel/ZIPFoundation.git",
+      "notice": {
+        "file": "spm-ZIPFoundation.txt",
+        "matchingUpstreamPaths": [
+          {
+            "comparison": "byte-identical",
+            "path": "LICENSE",
+            "sha256": "93a5b6f4c4fcfbca71aaf17f5758d249cf205d5d1c237becc37f14e43af09f6b"
+          }
+        ],
+        "sha256": "93a5b6f4c4fcfbca71aaf17f5758d249cf205d5d1c237becc37f14e43af09f6b"
+      },
+      "state": {
+        "revision": "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+        "version": "0.9.20"
+      },
+      "verifiedCheckoutRevision": "22787ffb59de99e5dc1fbfe80b19c97a904ad48d"
+    }
+  ],
+  "schemaVersion": 1,
+  "scope": "Exact Package.resolved revisions mapped to existing copied upstream notice texts; checked against local source checkouts."
+}

@@ -1,0 +1,23 @@
+import groovy.json.JsonOutput
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+
+gradle.projectsEvaluated {
+  rootProject.tasks.register('loopmarkRuntimeInventory') {
+    doLast {
+      def result = [:]
+      ['releaseRuntimeClasspath','debugRuntimeClasspath'].each { name ->
+        def configuration = rootProject.project(':app').configurations.getByName(name)
+        def graph = configuration.incoming.resolutionResult
+        result[name] = [
+          components: graph.allComponents.collect { c -> [id:c.id.displayName, module:c.moduleVersion?.toString(), reason:c.selectionReason.toString()] }.sort { it.id },
+          edges: graph.allDependencies.collect { d -> d instanceof ResolvedDependencyResult ? [from:d.from.id.displayName, requested:d.requested.displayName, selected:d.selected.id.displayName, constraint:d.constraint] : [from:d.from.id.displayName, requested:d.requested.displayName, unresolved:true] },
+          artifacts: configuration.incoming.artifactView { componentFilter { it instanceof ModuleComponentIdentifier } }.artifacts.artifacts.collect { a -> [component:a.id.componentIdentifier.displayName, file:a.file.absolutePath] }.sort { it.component }
+        ]
+      }
+      def file = new File(System.getenv('LOOPMARK_INVENTORY_OUTPUT'))
+      file.text = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+      println('Loopmark runtime inventory written: two configurations, no build task executed')
+    }
+  }
+}
