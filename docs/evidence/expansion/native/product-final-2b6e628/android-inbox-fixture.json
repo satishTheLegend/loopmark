@@ -1,0 +1,13 @@
+{
+  "productSourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "runner": "scripts/native/test-android-inbox-product.mjs",
+  "originalRunnerSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+  "rerunRunnerSha256": "7142615585ef2ca24a0400261f2f12b212d0a4691b9282c7bd3c6d1a7e32f05a",
+  "change": "Await exact selected heading and closed collection dialog after asynchronous selection; retain preservation assertion. No product or APK change.",
+  "validation": [
+    "node --check passed",
+    "Prettier check passed",
+    "complete same-APK Android external-backup journey passed"
+  ],
+  "fixtureCommit": "12aa29b6f5d92884d77e9cf5c373c39a3a43d159"
+}

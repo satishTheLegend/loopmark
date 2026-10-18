@@ -1,0 +1,8 @@
+{
+  "verifiedAt": "2026-10-18T19:11:40.723664+00:00",
+  "iosSimulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "iosBootedDevices": [],
+  "androidSerial": "emulator-5580",
+  "adbDevices": [],
+  "scope": "Task-owned iOS simulator and Android emulator were stopped; these read-only inventory commands confirm no booted simulator or attached Android device. No unrelated process was stopped."
+}

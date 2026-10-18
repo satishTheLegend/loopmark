@@ -1,0 +1,60 @@
+{
+  "observedAt": "2026-10-18T19:07:34.400Z",
+  "method": "Read-only copy of task-owned app SQLite database and WAL; no source application writes or resets. Projection excludes credentials, device identity, and unrelated metadata.",
+  "active": {
+    "key": {
+      "namespace": "local",
+      "collectionId": "personal",
+      "epoch": "initial"
+    },
+    "generation": 3
+  },
+  "collections": [
+    {
+      "key": {
+        "namespace": "local",
+        "collectionId": "personal",
+        "epoch": "initial"
+      },
+      "name": "Personal projects",
+      "kind": "guest",
+      "revision": "2",
+      "projects": [
+        {
+          "name": "Android native QA scarf",
+          "id": "project_b6693636ad8b2816568d4f83d61176e23f148706"
+        }
+      ],
+      "checkpoints": [
+        {
+          "projectId": "project_b6693636ad8b2816568d4f83d61176e23f148706",
+          "position": "Row 23 complete",
+          "nextStep": "Start row 24 with the 4 mm hook"
+        }
+      ]
+    },
+    {
+      "key": {
+        "namespace": "guest_restore_c9de2a55a2ec1463a27935858faf3271c04dc239",
+        "collectionId": "restore_c9de2a55a2ec1463a27935858faf3271c04dc239",
+        "epoch": "initial"
+      },
+      "name": "Restored 10/19/2026",
+      "kind": "recovered",
+      "revision": "1",
+      "projects": [
+        {
+          "name": "External valid 67851a23-19ca-4dd7-9fc3-6efc35122eca",
+          "id": "external_project"
+        }
+      ],
+      "checkpoints": [
+        {
+          "projectId": "external_project",
+          "position": "Row 24",
+          "nextStep": "Turn and continue from the external backup"
+        }
+      ]
+    }
+  ]
+}

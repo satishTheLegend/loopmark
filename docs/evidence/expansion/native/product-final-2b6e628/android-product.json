@@ -1,0 +1,21 @@
+{
+  "emulator": "emulator-5580",
+  "passed": true,
+  "completedAt": "2026-10-18T19:05:00.245Z",
+  "bundle": "d9a0287756f51e003a52c122e89ea870c735313741f1bba31c123c6ef1c2e0fb",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "96f26e1dffc90c0699a6faf305fef16dec1c6002954e90168357bd6793d7fca5",
+  "artifactSha256": "58395c1b116b21ebab1898c8b290b20021b036d2e118c84493bf843ee30f0373",
+  "artifactFormat": "apk",
+  "assertions": [
+    "project creation or fixture reopen",
+    "text-only draft",
+    "native camera cancel",
+    "OS-denied microphone",
+    "checkpoint save",
+    "process relaunch and saved next step",
+    "account unavailable without configuration",
+    "redacted native diagnostic preview and OS share-sheet cancellation",
+    "hardware back to workbasket"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "passed": true,
+  "completedAt": "2026-10-18T19:10:22.336Z",
+  "bundle": "d9a0287756f51e003a52c122e89ea870c735313741f1bba31c123c6ef1c2e0fb",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "96f26e1dffc90c0699a6faf305fef16dec1c6002954e90168357bd6793d7fca5",
+  "artifactSha256": "a3b799d83665e524ee099fbf07b0f07b761ff2416643e099aa140461cb16f105",
+  "artifactFormat": "app-directory-sha256",
+  "assertions": [
+    "project creation",
+    "text-only draft",
+    "native camera cancel",
+    "OS-denied microphone",
+    "checkpoint save",
+    "terminate and relaunch with saved next step",
+    "account navigation",
+    "redacted native diagnostic preview and OS share-sheet cancellation"
+  ]
+}

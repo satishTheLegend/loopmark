@@ -1,11 +1,11 @@
 {
   "emulator": "emulator-5580",
   "passed": true,
-  "completedAt": "2026-10-18T17:46:29.877Z",
-  "bundle": "607dd32f395529ad0cb620375366eb3409f8a9e4d7af65a374536948a67071a5",
-  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
-  "manifestFileSha256": "f862829fa5274450068df13eeb373d62667e0e45820afe2098bec9da82336ccc",
-  "artifactSha256": "f8b981f83cb24cc3bbcb0ebf454c98fd2267acbd5981b664571afc53d8e012f5",
+  "completedAt": "2026-10-18T19:05:00.245Z",
+  "bundle": "d9a0287756f51e003a52c122e89ea870c735313741f1bba31c123c6ef1c2e0fb",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "96f26e1dffc90c0699a6faf305fef16dec1c6002954e90168357bd6793d7fca5",
+  "artifactSha256": "58395c1b116b21ebab1898c8b290b20021b036d2e118c84493bf843ee30f0373",
   "artifactFormat": "apk",
   "assertions": [
     "project creation or fixture reopen",

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "recordedAt": "2026-10-18T19:11:12.738Z",
+  "performanceClaim": false,
+  "scope": "Actual production assets in iOS 26.5 simulator and Android 16/API 36 emulator; local ad hoc/debug signatures. Both checkpoint/diagnostic and OS backup journeys verify the exact installed artifact.",
+  "testFixture": {
+    "baseSource": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+    "modifiedRunner": "scripts/native/test-android-inbox-product.mjs",
+    "deltaFile": "android-inbox-fixture-settlement.patch",
+    "bindingFile": "android-inbox-fixture.json",
+    "commit": "12aa29b6f5d92884d77e9cf5c373c39a3a43d159"
+  },
+  "files": {
+    "android-inbox-fixture-settlement.patch": "05c0136cc6a67c539a2d70f15d4aaf5e9cd866212f17d1cb97e304f7e5051d9b",
+    "android-inbox-fixture.json": "b442a4e9bd538459041bf8abf57af4a64c4865b4af165551fd3c81f542f36ae7",
+    "android-inbox-product.json": "80943ceeb1afb20041f2dcb43c843a97e8a6fd52fe51eea6ddf02737cf19239d",
+    "android-inbox-settled-durable.json": "4acf5a68a8a7fd41aa1e67209b09a1e859a02beb923b5b3216d45042ad4bcb34",
+    "android-inbox-settled-ui.json": "12f3571eda98abec36fd0a4467d248f944aaa9d730c2cba7fdab68c5c9afcda0",
+    "android-inbox-settled.png": "6f6f11ff33ed905ae918512347126aada84c3be07d10a904d57180eee4c30d7e",
+    "android-inbox.log": "125ef7de740faa12306c5b746d2d79f2930719a97104db8f76c12b496cb46256",
+    "android-product.json": "e15784132c9afa113ce42a70dd8313b347e44fac561733da1bb08465613437f5",
+    "android-product.log": "78894ca58701f42be6c0067287c4e7cdbe0fdd6097d323d2486391b2882da049",
+    "android-production-build.log": "1fc5aec8719c90798696c01d80327d1b3b8b554b0cc6bd0bcf9c7aacc9ab4d23",
+    "failed-android-inbox-unsettled-selection.log": "c62e1696826737ec501fc570966dd09d1ab55b6c22e5159ce7bfb8c34c000155",
+    "ios-inbox-product.json": "b71e66f8d6c921c713cf4e576910c839e8695ae0f450031e58e311562c59bb54",
+    "ios-inbox.log": "2d4c582bf02751fe4f98eb41408c0fd94a1049bf9ecf8d77d3c7f31a0ed68485",
+    "ios-product.json": "ef97023033113c2ca5920aa65ab65cd3abe0deae596f866f6ded4a3b0a33cbc8",
+    "ios-product.log": "b7bf948b742bf2fbf55f781e1b0e8aa8c7cde1c55ecb0e34416174f639a399fe",
+    "product-bundle.json": "96f26e1dffc90c0699a6faf305fef16dec1c6002954e90168357bd6793d7fca5",
+    "production-sync.log": "7be70c22feccd9af6353707bef72cf0b837a580cadbd08b07603ab83d000b6ff",
+    "shutdown.json": "905ab43ace6d9f937f8c5b638ae619c9c8fbc6961c7e850f4a158e66783b9587"
+  },
+  "artifactManifest": {
+    "schemaVersion": 1,
+    "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+    "webSourceEquivalent": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+    "productionWebAssets": true,
+    "storeDistribution": false,
+    "ios": {
+      "file": "loopmark-ios-simulator-2b6e628.tar.gz",
+      "sha256": "396459d434ba30cb60dd471118d84ed110ae14a70f6e9b8bd976ec5e5f829b80",
+      "appDirectorySha256": "a3b799d83665e524ee099fbf07b0f07b761ff2416643e099aa140461cb16f105",
+      "target": "iOS Simulator arm64, ad hoc local simulator signature"
+    },
+    "android": {
+      "file": "loopmark-android-debug-2b6e628.apk",
+      "sha256": "58395c1b116b21ebab1898c8b290b20021b036d2e118c84493bf843ee30f0373",
+      "target": "Android debug APK; local debug key, no release/store signing"
+    }
+  },
+  "archiveExtractionVerified": true,
+  "passedJourneys": 4,
+  "failedAttempts": [
+    {
+      "file": "failed-android-inbox-unsettled-selection.log",
+      "observation": "The immediate assertion after clicking original collection failed. Subsequent settled UI showed Personal projects and original QA scarf/checkpoint. A read-only SQLite/WAL projection confirmed that original collection selected, original records intact, and exactly one separate recovered collection.",
+      "classification": "Fixture observed asynchronous selection before settlement; no product defect observed.",
+      "recovery": "Fixture now awaits the exact expected selected heading and closed selection dialog before capturing or asserting source. The entire journey passed on the identical production APK; no data reset, product change or assertion removal.",
+      "supportingFiles": [
+        "android-inbox-settled-ui.json",
+        "android-inbox-settled-durable.json",
+        "android-inbox-settled.png",
+        "android-inbox-fixture-settlement.patch",
+        "android-inbox-fixture.json"
+      ]
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator proof only; physical document provider, camera/audio, memory-pressure and device transfer gates remain separate.",
+    "No distribution signing or live provider/store transaction qualification.",
+    "No performance claim; earlier isolated native metrics and all-byte staged-export evidence remain separate."
+  ]
+}
