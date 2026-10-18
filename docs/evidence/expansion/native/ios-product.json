@@ -1,0 +1,15 @@
+{
+  "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "passed": true,
+  "completedAt": "2026-10-18T13:36:19.634Z",
+  "bundle": "1a1e2fc73e8e37d4e155404aa7c1480d4ca495b91193faaee4c2fe327d5842e9",
+  "assertions": [
+    "project creation",
+    "text-only draft",
+    "native camera cancel",
+    "OS-denied microphone",
+    "checkpoint save",
+    "terminate and relaunch with saved next step",
+    "account navigation"
+  ]
+}

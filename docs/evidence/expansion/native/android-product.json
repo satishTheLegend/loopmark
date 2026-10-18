@@ -1,0 +1,16 @@
+{
+  "emulator": "emulator-5580",
+  "passed": true,
+  "completedAt": "2026-10-18T13:36:54.569Z",
+  "bundle": "1a1e2fc73e8e37d4e155404aa7c1480d4ca495b91193faaee4c2fe327d5842e9",
+  "assertions": [
+    "project creation or fixture reopen",
+    "text-only draft",
+    "native camera cancel",
+    "OS-denied microphone",
+    "checkpoint save",
+    "process relaunch and saved next step",
+    "account unavailable without configuration",
+    "hardware back to workbasket"
+  ]
+}
