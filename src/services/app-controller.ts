@@ -2,9 +2,10 @@ import type { AccountSession, CollectionKey, LocalIntent, SessionScope } from '.
 import type { Repository, LocalCollectionReview } from '../repositories/contracts'
 import type { AccountAuth } from '../auth/auth-service'
 import type { SyncCoordinator } from '../sync/coordinator'
+import type { PlatformMedia } from '../platform/contracts'
 import { canonicalJson } from '../domain/canonical-json'
 import { DomainError, safeError } from '../domain/errors'
-import { keyOf } from '../repositories/state'
+import { keyOf, mediaRefs } from '../repositories/state'
 import type {
   AppController,
   AttachPreview,
@@ -26,6 +27,7 @@ export interface AppControllerOptions {
   auth?: AccountAuth
   sync?: SyncCoordinator
   connections?: CollectionConnections
+  media?: PlatformMedia
 }
 /** Root completes migration/guest activation before initialize. No implicit upload on sign-in. */
 export function createAppController(options: AppControllerOptions): AppController {
@@ -251,6 +253,122 @@ export function createAppController(options: AppControllerOptions): AppControlle
       }
     })
   }
+  function leaveAccount(
+    settings: {
+      keepLocal: boolean
+      discardUniqueWork?: boolean
+      allowMissingAttachments?: boolean
+    },
+    revoke?: (scope: SessionScope) => Promise<void>,
+  ) {
+    authVersion++
+    sync?.stop()
+    cancel.abort()
+    cancel = new AbortController()
+    return serial(async () => {
+      if (!session || !auth || !review || review.accountId !== session.accountId)
+        throw new DomainError('REVISION_CONFLICT')
+      const captured = review,
+        counts = captured.counts
+      if (
+        !settings.keepLocal &&
+        !settings.discardUniqueWork &&
+        counts.drafts +
+          counts.unsentProjectChanges +
+          counts.unsentCheckpoints +
+          counts.pendingAttachments +
+          counts.failedAttachments >
+          0
+      )
+        throw new DomainError('VALIDATION')
+      if (
+        settings.keepLocal &&
+        (counts.missingAttachments === null ||
+          (counts.missingAttachments > 0 && !settings.allowMissingAttachments))
+      )
+        throw new DomainError('BACKUP_INCOMPLETE')
+      let scope = await repository.transition(
+        captured.scope,
+        { key: captured.scope.key, device: captured.scope.device },
+        captured.collections.find((c) => keyOf(c.key) === keyOf(captured.scope.key)),
+      )
+      refreshVersion++
+      const retained: CollectionKey[] = []
+      try {
+        for (const local of captured.collections) {
+          if (canonicalJson(await repository.reviewLocal(local.key)) !== canonicalJson(local))
+            throw new DomainError('REVISION_CONFLICT')
+          if (keyOf(scope.key) !== keyOf(local.key))
+            scope = await repository.transition(
+              scope,
+              { key: local.key, device: scope.device },
+              local,
+            )
+          if (settings.keepLocal)
+            retained.push(
+              await repository.retainLocal(
+                local.key,
+                'Kept on this device',
+                local.revision,
+                scope.generation,
+                {
+                  allowMissingMedia:
+                    counts.missingAttachments !== null &&
+                    counts.missingAttachments > 0 &&
+                    settings.allowMissingAttachments === true,
+                },
+              ),
+            )
+        }
+        authenticating = true
+        try {
+          if (revoke) {
+            for (const local of captured.collections)
+              if (canonicalJson(await repository.reviewLocal(local.key)) !== canonicalJson(local))
+                throw new DomainError('REVISION_CONFLICT')
+            await revoke(scope)
+            await check(scope)
+          }
+          await auth.signOut()
+        } finally {
+          authenticating = false
+        }
+        session = null
+        publish({ account: null, auth: 'guest' })
+        for (const local of captured.collections) {
+          if (keyOf(scope.key) !== keyOf(local.key))
+            scope = await repository.transition(
+              scope,
+              { key: local.key, device: scope.device },
+              local,
+            )
+          if (canonicalJson(await repository.reviewLocal(local.key)) !== canonicalJson(local))
+            throw new DomainError('REVISION_CONFLICT')
+          await repository.removeLocal(local.key, local.revision, scope.generation)
+        }
+        const target = retained[0] ?? (await guest()).key
+        scope = await repository.transition(scope, {
+          key: target,
+          device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
+        })
+        review = null
+        await refresh(scope)
+      } catch (error) {
+        // Fence scope was intentionally never published. Recover to a valid visible local scope.
+        const active = await repository.readActive()
+        if (active && canonicalJson(active) === canonicalJson(scope)) {
+          const target = (await guest()).key
+          const safe = await repository.transition(active, {
+            key: target,
+            device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
+          })
+          await refresh(safe)
+        }
+        review = null
+        throw error
+      }
+    })
+  }
   const api: AppController = {
     async initialize() {
       return serial(async () => {
@@ -383,6 +501,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
         unsentCheckpoints: 0,
         pendingAttachments: 0,
         failedAttachments: 0,
+        missingAttachments: 0,
         recoveredCollections: all.filter((c) => c.kind === 'recovered').length,
       }
       for (const info of all.filter((c) => c.kind === 'connected' && c.accountId === accountId)) {
@@ -391,6 +510,19 @@ export function createAppController(options: AppControllerOptions): AppControlle
         if (view.revision !== local.revision) throw new DomainError('REVISION_CONFLICT')
         collections.push(local)
         counts.drafts += local.drafts.length
+        const refs = mediaRefs(view.checkpoints)
+        if (!options.media && refs.length) counts.missingAttachments = null
+        else if (options.media && counts.missingAttachments !== null) {
+          for (const ref of refs) {
+            try {
+              await (await options.media.open(ref, info.key)).cancel()
+            } catch (error) {
+              if (!(error instanceof DomainError) || error.detail.code !== 'BACKUP_INCOMPLETE')
+                throw error
+              counts.missingAttachments++
+            }
+          }
+        }
         for (const pending of view.pending) {
           if (pending.intent.kind.startsWith('project.')) counts.unsentProjectChanges++
           if (pending.intent.kind === 'checkpoint.create') counts.unsentCheckpoints++
@@ -412,92 +544,10 @@ export function createAppController(options: AppControllerOptions): AppControlle
       return structuredClone(counts)
     },
     signOut(settings) {
-      authVersion++
-      sync?.stop()
-      cancel.abort()
-      cancel = new AbortController()
-      return serial(async () => {
-        if (!session || !auth || !review || review.accountId !== session.accountId)
-          throw new DomainError('REVISION_CONFLICT')
-        const captured = review,
-          counts = captured.counts
-        if (
-          !settings.keepLocal &&
-          !settings.discardUniqueWork &&
-          counts.drafts +
-            counts.unsentProjectChanges +
-            counts.unsentCheckpoints +
-            counts.pendingAttachments +
-            counts.failedAttachments >
-            0
-        )
-          throw new DomainError('VALIDATION')
-        let scope = await repository.transition(
-          captured.scope,
-          { key: captured.scope.key, device: captured.scope.device },
-          captured.collections.find((c) => keyOf(c.key) === keyOf(captured.scope.key)),
-        )
-        refreshVersion++
-        const retained: CollectionKey[] = []
-        try {
-          for (const local of captured.collections) {
-            if (canonicalJson(await repository.reviewLocal(local.key)) !== canonicalJson(local))
-              throw new DomainError('REVISION_CONFLICT')
-            if (keyOf(scope.key) !== keyOf(local.key))
-              scope = await repository.transition(
-                scope,
-                { key: local.key, device: scope.device },
-                local,
-              )
-            if (settings.keepLocal)
-              retained.push(
-                await repository.retainLocal(
-                  local.key,
-                  'Kept on this device',
-                  local.revision,
-                  scope.generation,
-                ),
-              )
-          }
-          authenticating = true
-          try {
-            await auth.signOut()
-          } finally {
-            authenticating = false
-          }
-          session = null
-          publish({ account: null, auth: 'guest' })
-          for (const local of captured.collections) {
-            if (keyOf(scope.key) !== keyOf(local.key))
-              scope = await repository.transition(
-                scope,
-                { key: local.key, device: scope.device },
-                local,
-              )
-            await repository.removeLocal(local.key, local.revision, scope.generation)
-          }
-          const target = retained[0] ?? (await guest()).key
-          scope = await repository.transition(scope, {
-            key: target,
-            device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
-          })
-          review = null
-          await refresh(scope)
-        } catch (error) {
-          // Fence scope was intentionally never published. Recover to a valid visible local scope.
-          const active = await repository.readActive()
-          if (active && canonicalJson(active) === canonicalJson(scope)) {
-            const target = (await guest()).key
-            const safe = await repository.transition(active, {
-              key: target,
-              device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
-            })
-            await refresh(safe)
-          }
-          review = null
-          throw error
-        }
-      })
+      return leaveAccount(settings)
+    },
+    deleteAccount(settings, revoke) {
+      return leaveAccount(settings, revoke)
     },
     async runSync() {
       const scope = bound()

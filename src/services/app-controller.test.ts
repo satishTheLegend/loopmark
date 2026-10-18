@@ -2,7 +2,8 @@ import { IDBFactory } from 'fake-indexeddb'
 import { afterEach, expect, it, vi } from 'vitest'
 import { openBrowserRepository, type BrowserRepository } from '../repositories/browser/repository'
 import { createBrowserDraftStore } from '../repositories/browser/draft-store'
-import { info, create, now } from '../repositories/browser/fixtures.test-support'
+import { info, create, now, project, png } from '../repositories/browser/fixtures.test-support'
+import { describeInline } from './media-codec'
 import type { AccountSession, SessionScope } from '../domain/contracts'
 import type { AccountAuth } from '../auth/auth-service'
 import { createAppController } from './app-controller'
@@ -13,7 +14,7 @@ afterEach(async () => {
   for (const c of controllers.splice(0)) await c.dispose()
   for (const r of repos.splice(0)) await r.close()
 })
-async function setup() {
+async function setup(withMedia = false) {
   const repo = await openBrowserRepository({
     factory: new IDBFactory(),
     databaseName: crypto.randomUUID(),
@@ -74,7 +75,11 @@ async function setup() {
     completeCallback: async () => session,
     dispose: () => {},
   }
-  const controller = createAppController({ repository: repo, auth })
+  const controller = createAppController({
+    repository: repo,
+    auth,
+    ...(withMedia ? { media: repo.media } : {}),
+  })
   controllers.push(controller)
   await controller.initialize()
   return {
@@ -138,6 +143,102 @@ it('a draft created after review blocks signout and keep preserves its source-bo
   await expect(
     drafts.write('new', 'draft1', { key: 'new', revision: 'late', value: {} }),
   ).rejects.toMatchObject({ detail: { code: 'ACCOUNT_CHANGED' } })
+})
+it('retains saved work and drafts before the deletion barrier, and failure preserves both copies', async () => {
+  const { controller, repo, connected, auth } = await setup()
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const scope = controller.getSnapshot().scope!
+  await repo.commitLocal(scope.key, create(), scope.generation)
+  await createBrowserDraftStore(repo, scope).write('new', undefined, {
+    key: 'new',
+    revision: 'draft1',
+    value: { name: 'Draft' },
+  })
+  await controller.prepareSignOut()
+  const revoke = vi.fn(async (fenced: SessionScope) => {
+    expect(fenced.generation).toBeGreaterThan(scope.generation)
+    expect(await repo.readActive()).toEqual(fenced)
+    const retained = (await repo.listCollections()).find((c) => c.kind === 'retained')!
+    expect((await repo.readView(retained.key)).projects).toHaveLength(1)
+    expect((await repo.reviewLocal(retained.key)).drafts).toHaveLength(1)
+    throw new DomainError('OFFLINE')
+  })
+  await expect(controller.deleteAccount({ keepLocal: true }, revoke)).rejects.toMatchObject({
+    detail: { code: 'OFFLINE' },
+  })
+  expect(auth.signOut).not.toHaveBeenCalled()
+  expect((await repo.readView(connected.key)).projects).toHaveLength(1)
+  expect((await repo.listCollections()).filter((c) => c.kind === 'retained')).toHaveLength(1)
+})
+it('clears credentials and removes connected copies only after successful deletion', async () => {
+  const { controller, repo, connected, auth } = await setup()
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  await controller.prepareSignOut()
+  const order: string[] = []
+  vi.mocked(auth.signOut).mockImplementation(async () => {
+    order.push('credentials')
+  })
+  await controller.deleteAccount({ keepLocal: false }, async () => {
+    order.push('barrier')
+    expect((await repo.listCollections()).some((c) => c.kind === 'connected')).toBe(true)
+  })
+  expect(order).toEqual(['barrier', 'credentials'])
+  expect((await repo.listCollections()).some((c) => c.kind === 'connected')).toBe(false)
+})
+it('requires explicit acknowledgement of missing bytes and rejects unknown cache state before deletion', async () => {
+  for (const withMedia of [false, true]) {
+    const { repo, controller, connected } = await setup(withMedia)
+    await controller.verifyCode('maker@example.test', '123456')
+    await controller.chooseCollection(connected.key)
+    const scope = controller.getSnapshot().scope!,
+      { ref } = await describeInline(png, 'photo')
+    await repo.hydrate(
+      scope.key,
+      [
+        {
+          protocolVersion: 2,
+          snapshotId: 'snapshot',
+          collectionId: scope.key.collectionId,
+          epoch: scope.key.epoch,
+          cursor: '1',
+          revision: '1',
+          expiresAt: '2030-01-01T00:00:00.000Z',
+          after: null,
+          nextPage: null,
+          projects: [project('project', '1')],
+          checkpoints: [
+            {
+              id: 'checkpoint',
+              projectId: 'project',
+              revision: '1',
+              createdAt: now,
+              toolSize: '4 mm',
+              position: '2',
+              nextStep: 'Next',
+              notes: '',
+              photo: ref,
+            },
+          ],
+          media: [ref],
+        },
+      ],
+      scope.generation,
+    )
+    expect((await controller.prepareSignOut()).missingAttachments).toBe(withMedia ? 1 : null)
+    const revoke = vi.fn(async () => {})
+    await expect(controller.deleteAccount({ keepLocal: true }, revoke)).rejects.toMatchObject({
+      detail: { code: 'BACKUP_INCOMPLETE' },
+    })
+    expect(revoke).not.toHaveBeenCalled()
+    if (withMedia)
+      await controller.deleteAccount({ keepLocal: true, allowMissingAttachments: true }, revoke)
+    else
+      await expect(
+        controller.deleteAccount({ keepLocal: true, allowMissingAttachments: true }, revoke),
+      ).rejects.toMatchObject({ detail: { code: 'BACKUP_INCOMPLETE' } })
+  }
 })
 it('external auth identity changes hide account data immediately and fence old callbacks', async () => {
   const { controller, repo, connected, event } = await setup()

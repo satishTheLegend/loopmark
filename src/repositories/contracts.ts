@@ -45,6 +45,7 @@ export interface Repository {
     name: string,
     expectedRevision: string,
     generation: Generation,
+    options?: { allowMissingMedia?: boolean },
   ): Promise<CollectionKey>
   removeLocal(key: CollectionKey, expectedRevision: string, generation: Generation): Promise<void>
   activate(scope: SessionScope): Promise<void>

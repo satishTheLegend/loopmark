@@ -12,6 +12,7 @@ export interface LocalWorkCounts {
   unsentCheckpoints: number
   pendingAttachments: number
   failedAttachments: number
+  missingAttachments: number | null
   recoveredCollections: number
 }
 export interface CollectionSummary extends CollectionInfo {
@@ -48,7 +49,15 @@ export interface AppController {
   verifyCode(email: string, code: string): Promise<void>
   completeCallback(url: string): Promise<void>
   prepareSignOut(): Promise<LocalWorkCounts>
-  signOut(options: { keepLocal: boolean; discardUniqueWork?: boolean }): Promise<void>
+  signOut(options: {
+    keepLocal: boolean
+    discardUniqueWork?: boolean
+    allowMissingAttachments?: boolean
+  }): Promise<void>
+  deleteAccount(
+    options: { keepLocal: boolean; discardUniqueWork?: boolean; allowMissingAttachments?: boolean },
+    revoke: (scope: SessionScope) => Promise<void>,
+  ): Promise<void>
   chooseCollection(key: CollectionKey): Promise<void>
   runSync(): Promise<void>
   retryOperations(operationIds: string[]): Promise<void>

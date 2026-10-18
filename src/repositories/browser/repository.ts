@@ -654,6 +654,7 @@ export class BrowserRepository implements Repository {
     revision: string,
     generation: number,
     recovered?: RecoveryReason,
+    allowMissingMedia = false,
   ): Promise<CollectionKey> {
     const target: CollectionKey = {
       namespace: `guest_${crypto.randomUUID()}`,
@@ -684,7 +685,11 @@ export class BrowserRepository implements Repository {
           ),
         ).values(),
       ]
-      await assertMediaPresent(tx, key, refs)
+      await assertMediaPresent(
+        tx,
+        key,
+        allowMissingMedia ? drafts.flatMap((row) => row.media ?? []) : refs,
+      )
       const copied = emptyCollection({
         ...source.info,
         key: target,
@@ -706,9 +711,16 @@ export class BrowserRepository implements Repository {
         ...view.checkpoints.map((c) => c.revision),
       )
       for (const ref of refs) {
-        const row = await requestResult<MediaRow>(
+        const row = await requestResult<MediaRow | undefined>(
           tx.objectStore('media').get(mediaKey(key, ref.id)),
         )
+        if (!row && allowMissingMedia) continue
+        if (
+          !row ||
+          canonicalJson(row.ref) !== canonicalJson(ref) ||
+          row.bytes.byteLength !== ref.bytes
+        )
+          throw new DomainError('MEDIA_INVALID')
         tx.objectStore('media').add({ ...row, key: mediaKey(target, ref.id), scope: target })
       }
       for (const draft of drafts)
@@ -733,8 +745,16 @@ export class BrowserRepository implements Repository {
     name: string,
     expectedRevision: string,
     generation: number,
+    options?: { allowMissingMedia?: boolean },
   ): Promise<CollectionKey> {
-    return this.copyLocal(key, name, expectedRevision, generation)
+    return this.copyLocal(
+      key,
+      name,
+      expectedRevision,
+      generation,
+      undefined,
+      options?.allowMissingMedia ?? false,
+    )
   }
   async recoverPending(key: CollectionKey, reason: RecoveryReason): Promise<CollectionKey> {
     const { scope, state } = await transaction(this.database, 'readonly', async (tx) => ({
