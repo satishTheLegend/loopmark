@@ -4,6 +4,7 @@ import type {
   SessionScope,
   AccountSession,
   MediaRef,
+  LocalSnapshot,
 } from '../domain/contracts'
 import type { Repository } from '../repositories/contracts'
 import type { PlatformMedia, SyncTransport } from '../platform/contracts'
@@ -17,6 +18,54 @@ import { prepareBackupRecords, encodeSnapshotBackup } from './local-data-service
 import type { RemoteMediaService } from './media-service'
 import { collectSnapshot, releaseSnapshotQuietly } from '../sync/snapshots'
 import { mapBounded } from './concurrency'
+import { verifyMediaBytes } from './media-codec'
+export interface MissingBackupAttachment {
+  projectId: string
+  projectName: string
+  checkpointId: string
+  checkpointCreatedAt: string
+  position: string
+  kind: 'photo' | 'voice'
+}
+export class IncompleteBackupError extends DomainError {
+  readonly scope: SessionScope
+  readonly snapshotRevision: string
+  readonly missing: MissingBackupAttachment[]
+  readonly total: number
+  constructor(scope: SessionScope, snapshot: LocalSnapshot, unavailable: ReadonlySet<string>) {
+    super('BACKUP_INCOMPLETE')
+    this.name = 'IncompleteBackupError'
+    this.scope = structuredClone(scope)
+    this.snapshotRevision = snapshot.view.revision
+    const projects = new Map(snapshot.view.projects.map((project) => [project.id, project]))
+    const missing: MissingBackupAttachment[] = []
+    let total = 0
+    for (const checkpoint of snapshot.view.checkpoints)
+      for (const kind of ['photo', 'voice'] as const) {
+        const ref = checkpoint[kind]
+        if (!ref || !unavailable.has(ref.id)) continue
+        total++
+        if (missing.length < 20)
+          missing.push({
+            projectId: checkpoint.projectId,
+            projectName: projects.get(checkpoint.projectId)?.name.slice(0, 100) ?? '',
+            checkpointId: checkpoint.id,
+            checkpointCreatedAt: checkpoint.createdAt,
+            position: checkpoint.position.slice(0, 200),
+            kind,
+          })
+      }
+    this.missing = missing
+    this.total = total
+  }
+}
+const unavailableMedia = (error: unknown) =>
+  error instanceof DomainError && ['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+const preserveFailure = (error: unknown, signal: AbortSignal) =>
+  signal.aborted ||
+  (error instanceof Error && error.name === 'AbortError') ||
+  (error instanceof DomainError &&
+    ['ACCOUNT_CHANGED', 'AUTH_REQUIRED', 'ACCESS_REVOKED'].includes(error.detail.code))
 export interface ExportProgress {
   stage: 'checking' | 'downloading' | 'encoding'
   done: number
@@ -52,10 +101,36 @@ export function createBackupService(options: {
         if (canonicalJson(await options.repository.readActive()) !== canonicalJson(scope))
           throw new DomainError('ACCOUNT_CHANGED')
       }
+      const refs = mediaRefs(local.view.checkpoints)
+      const findMissing = async (strict = false) => {
+        const missing: MediaRef[] = []
+        await mapBounded(
+          refs,
+          async (ref) => {
+            await check()
+            try {
+              const stream = await options.media.open(ref, scope.key)
+              if (strict)
+                await verifyMediaBytes(
+                  ref,
+                  new Blob([await new Response(stream).arrayBuffer()], { type: ref.mimeType }),
+                )
+              else await stream.cancel()
+            } catch (error) {
+              if (unavailableMedia(error)) missing.push(ref)
+              else throw error
+            }
+            await check()
+          },
+          options.mediaConcurrency ?? 2,
+        )
+        return missing
+      }
+      const incomplete = (missing: MediaRef[]) =>
+        new IncompleteBackupError(scope, local, new Set(missing.map((ref) => ref.id)))
       try {
         await check()
         const missing: MediaRef[] = []
-        const refs = mediaRefs(local.view.checkpoints)
         let checked = 0
         onProgress?.({ stage: 'checking', done: 0, total: refs.length })
         await mapBounded(
@@ -65,8 +140,7 @@ export function createBackupService(options: {
             try {
               await (await options.media.open(ref, scope.key)).cancel()
             } catch (error) {
-              if (error instanceof DomainError && error.detail.code === 'BACKUP_INCOMPLETE')
-                missing.push(ref)
+              if (unavailableMedia(error)) missing.push(ref)
               else throw error
             }
             signal.throwIfAborted()
@@ -75,35 +149,43 @@ export function createBackupService(options: {
           options.mediaConcurrency ?? 2,
         )
         if (missing.length) {
-          if (!remote || local.view.info.kind !== 'connected' || !owned())
-            throw new DomainError('BACKUP_INCOMPLETE')
+          if (!remote || local.view.info.kind !== 'connected' || !owned()) throw incomplete(missing)
           const pages = await collectSnapshot(
             remote.transport,
             { collectionId: scope.key.collectionId, epoch: scope.key.epoch, purpose: 'export' },
             signal,
             check,
             owned,
-          )
+          ).catch(async (error) => {
+            if (preserveFailure(error, signal)) throw error
+            await check()
+            if (error instanceof DomainError && error.detail.code === 'SYNC_PAGE_INVALID')
+              throw error
+            throw incomplete(await findMissing())
+          })
           remoteId = pages[0].snapshotId
           const inventory = new Map(pages.flatMap((page) => page.media).map((ref) => [ref.id, ref]))
-          if (
-            missing.some(
-              (ref) => canonicalJson(inventory.get(ref.id) ?? null) !== canonicalJson(ref),
-            )
-          )
-            throw new DomainError('BACKUP_INCOMPLETE')
           let downloaded = 0
           onProgress?.({ stage: 'downloading', done: 0, total: missing.length })
           await mapBounded(
             missing,
             async (ref) => {
               await check()
-              await remote.media.ensureAvailable(ref, scope, signal, remoteId)
+              if (canonicalJson(inventory.get(ref.id) ?? null) !== canonicalJson(ref)) return
+              try {
+                await remote.media.ensureAvailable(ref, scope, signal, remoteId)
+              } catch (error) {
+                if (preserveFailure(error, signal)) throw error
+                // Other items can still finish and become durable retry cache entries.
+                return
+              }
               await check()
               onProgress?.({ stage: 'downloading', done: ++downloaded, total: missing.length })
             },
             options.mediaConcurrency ?? 2,
           )
+          const remaining = await findMissing(true)
+          if (remaining.length) throw incomplete(remaining)
         }
         await check()
         onProgress?.({ stage: 'encoding', done: 0, total: local.view.projects.length })
@@ -113,7 +195,11 @@ export function createBackupService(options: {
           scope,
           options.mediaConcurrency,
           { signal, onProject: (done, total) => onProgress?.({ stage: 'encoding', done, total }) },
-        )
+        ).catch(async (error) => {
+          if (preserveFailure(error, signal) || !unavailableMedia(error)) throw error
+          await check()
+          throw incomplete(await findMissing(true))
+        })
         await check()
         return backup
       } catch (error) {

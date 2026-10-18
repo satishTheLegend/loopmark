@@ -3,10 +3,11 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { openBrowserRepository, type BrowserRepository } from '../repositories/browser/repository'
 import { createBrowserOperationPlanStore } from '../repositories/browser/operation-plans'
 import { createLocalDataAdapter, prepareBackupRecords } from './local-data-service'
-import { createBackupService } from './backup-service'
+import { createBackupService, IncompleteBackupError } from './backup-service'
 import { info, create, now, png, wav, project } from '../repositories/browser/fixtures.test-support'
 import { mediaKey, requestResult, transaction } from '../repositories/browser/schema'
 import type { Backup, SessionScope } from '../domain/contracts'
+import { DomainError } from '../domain/errors'
 let repo: BrowserRepository, scope: SessionScope, service: ReturnType<typeof createBackupService>
 const { revision: _revision, ...fields } = project()
 const backup: Backup = {
@@ -341,4 +342,200 @@ it('cancel during remote export drains active downloads, preserves the collectio
   expect(progress.mock.calls.some(([value]) => value.stage === 'downloading')).toBe(true)
   expect(progress.mock.calls.some(([value]) => value.stage === 'encoding')).toBe(false)
   expect(await repo.readView(scope.key)).toEqual(before)
+})
+
+it('lists only unavailable snapshot attachments, keeps successful bytes, and retry downloads only the remainder', async () => {
+  const connected = info(true, 'retry')
+  await repo.createCollection(connected)
+  scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+  const prepared = await prepareBackupRecords(backup, repo.media, scope)
+  const manifest = {
+    protocolVersion: 2 as const,
+    snapshotId: 'retry-lease',
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    cursor: '1',
+    revision: '1',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+    after: null,
+    nextPage: null,
+    projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+    checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+    media: prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!]),
+  }
+  await repo.hydrate(scope.key, [manifest], scope.generation)
+  const bytes = new Map(
+    await Promise.all(
+      manifest.media.map(
+        async (ref) =>
+          [
+            ref.id,
+            new Blob([await new Response(await repo.media.open(ref, scope.key)).arrayBuffer()], {
+              type: ref.mimeType,
+            }),
+          ] as const,
+      ),
+    ),
+  )
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    for (const ref of manifest.media) tx.objectStore('media').delete(mediaKey(scope.key, ref.id))
+  })
+  let failVoice = true
+  const ensureAvailable = vi.fn(async (ref, bound) => {
+    if (failVoice && ref.kind === 'voice') throw new DomainError('SERVICE_UNAVAILABLE')
+    await repo.media.storeVerified(ref, bytes.get(ref.id)!, bound.key, bound.generation)
+  })
+  const transport = {
+    snapshot: vi.fn(async () => manifest),
+    releaseSnapshot: vi.fn(async () => {}),
+    push: vi.fn(),
+    pull: vi.fn(),
+  }
+  const exporter = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data: {} as never,
+    scope: () => scope,
+    remote: {
+      transport,
+      media: { ensureAvailable, upload: vi.fn() },
+      current: () => ({
+        accountId: 'account',
+        billingPrincipalId: 'principal',
+        collection: scope.key,
+        device: scope.device,
+        deletionGeneration: '0',
+        expiresAt: '2030-01-01T00:00:00.000Z',
+      }),
+    },
+  })
+  const output = vi.fn()
+  const first = await exporter.exportComplete().then(output, (error) => error)
+  expect(first).toBeInstanceOf(IncompleteBackupError)
+  expect(first).toMatchObject({
+    scope,
+    snapshotRevision: '1',
+    total: 1,
+    missing: [
+      {
+        projectId: 'project',
+        projectName: 'Moss scarf',
+        checkpointId: 'cp',
+        checkpointCreatedAt: now,
+        position: '4',
+        kind: 'voice',
+      },
+    ],
+  })
+  expect(output).not.toHaveBeenCalled()
+  expect(transport.releaseSnapshot).toHaveBeenCalledOnce()
+  await expect(repo.media.open(manifest.media[0], scope.key)).resolves.toBeInstanceOf(
+    ReadableStream,
+  )
+  ensureAvailable.mockClear()
+  failVoice = false
+  const completed = await exporter.exportComplete()
+  expect(ensureAvailable).toHaveBeenCalledOnce()
+  expect(ensureAvailable.mock.calls[0][0].kind).toBe('voice')
+  const fresh = await openBrowserRepository({
+    factory: new IDBFactory(),
+    databaseName: 'independent-complete-restore',
+  })
+  try {
+    const destination = info(false, 'independent')
+    await fresh.createCollection(destination)
+    let freshScope = { key: destination.key, generation: 1, device: scope.device }
+    await fresh.activate(freshScope)
+    const data = createLocalDataAdapter({
+      repository: fresh,
+      media: fresh.media,
+      plans: createBrowserOperationPlanStore(fresh),
+      scope: () => freshScope,
+    })
+    const restore = createBackupService({
+      repository: fresh,
+      media: fresh.media,
+      data,
+      scope: () => freshScope,
+    })
+    const recovered = await restore.restoreAsRecovered(completed, 'Independent restore', 'restore')
+    freshScope = await fresh.transition(freshScope, { key: recovered, device: freshScope.device })
+    expect((await restore.exportComplete()).projects).toEqual(backup.projects)
+  } finally {
+    await fresh.close()
+  }
+  const snapshot = await repo.snapshot(scope.key)
+  try {
+    snapshot.view.checkpoints = Array.from({ length: 25 }, (_, index) => ({
+      ...snapshot.view.checkpoints[0],
+      id: `cp_${index}`,
+    }))
+    const bounded = new IncompleteBackupError(
+      scope,
+      snapshot,
+      new Set(manifest.media.map((ref) => ref.id)),
+    )
+    expect(bounded.total).toBe(50)
+    expect(bounded.missing).toHaveLength(20)
+    expect(JSON.stringify(bounded.missing)).not.toContain('nextStep')
+  } finally {
+    await repo.releaseSnapshot(snapshot.id)
+  }
+})
+
+it('authentication failure during missing-media lookup remains an authentication error', async () => {
+  const connected = info(true, 'auth')
+  await repo.createCollection(connected)
+  scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+  const prepared = await prepareBackupRecords(backup, repo.media, scope)
+  await repo.hydrate(
+    scope.key,
+    [
+      {
+        protocolVersion: 2,
+        snapshotId: 'auth-lease',
+        collectionId: scope.key.collectionId,
+        epoch: scope.key.epoch,
+        cursor: '1',
+        revision: '1',
+        expiresAt: '2030-01-01T00:00:00.000Z',
+        after: null,
+        nextPage: null,
+        projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+        checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+        media: prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!]),
+      },
+    ],
+    scope.generation,
+  )
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    tx.objectStore('media').delete(mediaKey(scope.key, prepared.checkpoints[0].photo!.id))
+  })
+  const original = new DomainError('AUTH_REQUIRED')
+  const exporter = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data: {} as never,
+    scope: () => scope,
+    remote: {
+      media: { upload: vi.fn(), ensureAvailable: vi.fn() },
+      transport: {
+        snapshot: vi.fn(async () => {
+          throw original
+        }),
+        releaseSnapshot: vi.fn(),
+        push: vi.fn(),
+        pull: vi.fn(),
+      },
+      current: () => ({
+        accountId: 'account',
+        billingPrincipalId: 'principal',
+        collection: scope.key,
+        device: scope.device,
+        deletionGeneration: '0',
+        expiresAt: '2030-01-01T00:00:00.000Z',
+      }),
+    },
+  })
+  await expect(exporter.exportComplete()).rejects.toBe(original)
 })
