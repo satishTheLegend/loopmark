@@ -67,6 +67,31 @@ it('the installed facade path captures newest checkpoint, all media and full his
   })
   expect(await adapter.getProject(p.id)).toEqual(listed[0])
 })
+it('two independent local facades preserve concurrent immutable checkpoint appends and identical retries', async () => {
+  const project = await adapter.createProject(input, 'create-concurrent'),
+    other = await openBrowserRepository({ factory, databaseName: 'facade' })
+  try {
+    const second = createLocalDataAdapter({
+      repository: other,
+      media: other.media,
+      plans: createBrowserOperationPlanStore(other),
+      scope: () => scope,
+    })
+    const a = { position: '10', toolSize: '4 mm', nextStep: 'First tab', notes: '' },
+      b = { ...a, nextStep: 'Second tab' }
+    await Promise.all([
+      adapter.addCheckpoint(project.id, a, 'append-a'),
+      second.addCheckpoint(project.id, b, 'append-b'),
+    ])
+    await adapter.addCheckpoint(project.id, a, 'append-a')
+    expect(
+      (await second.getProject(project.id))?.checkpoints.map((c) => c.nextStep).sort(),
+    ).toEqual(['First tab', 'Second tab'])
+    expect(await repository.pending(scope.key)).toHaveLength(0)
+  } finally {
+    await other.close()
+  }
+})
 it('durable operation plans keep create/checkpoint retries byte-identical after reopen', async () => {
   const p = await adapter.createProject(input, 'durable-create')
   const checkpoint = {

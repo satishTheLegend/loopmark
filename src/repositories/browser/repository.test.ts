@@ -46,6 +46,66 @@ const update = (revision = '1'): LocalIntent => ({
   base: { revision },
   payload: { projectId: 'project', fields, updatedAt: now },
 })
+it('commutes stale local appends without regressing timestamps, but rejects a finished or deleted parent lineage', async () => {
+  const { repository, key } = await setup(),
+    other = await open('test')
+  await repository.commitLocal(key, create(), 1)
+  const append = (id: string, updatedAt = now): LocalIntent => ({
+    kind: 'checkpoint.create',
+    operationId: `append-${id}`,
+    createdAt: now,
+    base: { revision: '1' },
+    payload: {
+      checkpoint: {
+        id,
+        projectId: 'project',
+        createdAt: now,
+        toolSize: '4 mm',
+        position: '1',
+        nextStep: id,
+        notes: '',
+      },
+      updatedAt,
+    },
+  })
+  await Promise.all([
+    repository.commitLocal(key, append('a', '2030-01-01T00:00:00.000Z'), 1),
+    other.commitLocal(key, append('b'), 1),
+  ])
+  const view = await repository.readView(key)
+  expect(view.checkpoints.map((c) => c.id).sort()).toEqual(['a', 'b'])
+  expect(view.projects[0].updatedAt).toBe('2030-01-01T00:00:00.000Z')
+  await repository.commitLocal(
+    key,
+    {
+      kind: 'project.status',
+      operationId: 'finish',
+      createdAt: now,
+      base: { revision: view.projects[0].revision },
+      payload: { projectId: 'project', status: 'finished', updatedAt: '2030-01-01T00:00:01.000Z' },
+    },
+    1,
+  )
+  await expect(repository.commitLocal(key, append('finished'), 1)).rejects.toMatchObject({
+    detail: { code: 'REVISION_CONFLICT' },
+  })
+  await repository.commitLocal(
+    key,
+    {
+      kind: 'project.delete',
+      operationId: 'delete',
+      createdAt: now,
+      base: { revision: (await repository.readView(key)).projects[0].revision },
+      payload: { projectId: 'project' },
+    },
+    1,
+  )
+  await repository.commitLocal(key, create('project', 'recreate'), 1)
+  await expect(repository.commitLocal(key, append('deleted'), 1)).rejects.toMatchObject({
+    detail: { code: 'REVISION_CONFLICT' },
+  })
+  expect((await repository.readView(key)).checkpoints).toHaveLength(0)
+})
 beforeEach(() => {
   factory = new IDBFactory()
   repositories = []

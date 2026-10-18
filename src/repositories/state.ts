@@ -207,7 +207,7 @@ function mutateRecords(
       if (state.checkpoints.some((c) => c.id === intent.payload.checkpoint.id))
         throw new DomainError('REVISION_CONFLICT')
       state.checkpoints.push({ ...intent.payload.checkpoint, revision })
-      p.updatedAt = intent.payload.updatedAt
+      p.updatedAt = p.updatedAt > intent.payload.updatedAt ? p.updatedAt : intent.payload.updatedAt
       p.revision = revision
       break
     }
@@ -311,6 +311,29 @@ export function assertIntentBase(state: StoredCollection, intent: LocalIntent): 
       : target.kind === 'checkpoint'
         ? view.checkpoints.find((c) => c.id === target.id)
         : null
+  // Local immutable appends commute. Keep the captured intent/hash intact while transaction
+  // retries include another tab's append; a removed parent is never recreated by this rule.
+  if (
+    state.info.kind !== 'connected' &&
+    intent.kind === 'checkpoint.create' &&
+    current &&
+    intent.base &&
+    'revision' in intent.base &&
+    BigInt(intent.base.revision) <= BigInt(current.revision) &&
+    (intent.base.revision === current.revision ||
+      ('status' in current && current.status === 'active'))
+  ) {
+    const baseRevision = BigInt(intent.base.revision)
+    const deleted = Object.values(state.receipts).some((receipt) =>
+      receipt.changes.some(
+        (change) =>
+          change.kind === 'project.delete' &&
+          change.id === intent.payload.checkpoint.projectId &&
+          BigInt(change.revision) > baseRevision,
+      ),
+    )
+    if (!deleted) return
+  }
   if (intent.base && 'afterOperationId' in intent.base) {
     const previous = state.pending.find(
       (p) =>
