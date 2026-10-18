@@ -69,8 +69,8 @@ export async function releaseSnapshotQuietly(
   snapshotId: string,
   owned: () => boolean | Promise<boolean>,
 ): Promise<void> {
-  if (!(await owned())) return
   try {
+    if (!(await owned())) return
     await transport.releaseSnapshot(snapshotId, AbortSignal.timeout(4000))
   } catch {
     /* Expiry is the offline fallback. */

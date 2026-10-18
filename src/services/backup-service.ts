@@ -34,6 +34,7 @@ export function createBackupService(options: {
       const scope = structuredClone(options.scope()),
         local = await options.repository.snapshot(scope.key, { allowMissingMedia: true })
       let remoteId: string | undefined
+      let failed = false
       const remote = options.remote,
         owner = local.view.info.accountId
       const owned = () => !!owner && remote?.current()?.accountId === owner
@@ -94,9 +95,19 @@ export function createBackupService(options: {
         )
         await check()
         return backup
+      } catch (error) {
+        failed = true
+        throw error
       } finally {
-        await options.repository.releaseSnapshot(local.id)
-        if (remoteId && remote) await releaseSnapshotQuietly(remote.transport, remoteId, owned)
+        let cleanupError: unknown
+        try {
+          await options.repository.releaseSnapshot(local.id)
+        } catch (error) {
+          cleanupError = error
+        } finally {
+          if (remoteId && remote) await releaseSnapshotQuietly(remote.transport, remoteId, owned)
+        }
+        if (!failed && cleanupError) throw cleanupError
       }
     },
     async restoreAsRecovered(

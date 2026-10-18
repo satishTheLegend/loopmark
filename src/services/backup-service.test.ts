@@ -237,7 +237,9 @@ it('missing server bytes reject a complete export and release both leases withou
     scope: () => scope,
     remote: { transport, media: { ensureAvailable, upload: vi.fn() }, current: () => session },
   })
-  const release = vi.spyOn(repo, 'releaseSnapshot')
+  const release = vi
+    .spyOn(repo, 'releaseSnapshot')
+    .mockRejectedValueOnce(new Error('Local cleanup failed'))
   await expect(exporter.exportComplete()).rejects.toMatchObject({
     detail: { code: 'BACKUP_INCOMPLETE' },
   })
