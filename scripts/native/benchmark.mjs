@@ -21,14 +21,16 @@ const [platform, action, dataset, countText = '1'] = process.argv.slice(2),
   count = Number(countText)
 if (
   !['ios', 'android'].includes(platform) ||
-  !['startup', 'import', 'export', 'examples', 'repair', 'profile', 'rebase'].includes(action) ||
+  !['startup', 'import', 'export', 'examples', 'repair', 'profile', 'rebase', 'downloads'].includes(
+    action,
+  ) ||
   !['small', 'limit'].includes(dataset) ||
   !Number.isInteger(count) ||
   count < 1 ||
   count > 30
 )
   throw new Error(
-    'Usage: benchmark.mjs <ios|android> <startup|import|export|examples|repair|profile|rebase> <small|limit> [1..30 samples]',
+    'Usage: benchmark.mjs <ios|android> <startup|import|export|examples|repair|profile|rebase|downloads> <small|limit> [1..30 samples]',
   )
 const appId = 'app.loopmark.craft.benchmark',
   evidence = resolve(root, 'docs/evidence/expansion/native/benchmarks')

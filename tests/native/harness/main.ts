@@ -9,6 +9,7 @@ import { NativeCredentialStore } from '../../../src/platform/native/session-stor
 import { durableFiles } from '../../../src/platform/native/files-bridge'
 import { nativeMediaRepair } from './media-repair'
 import { nativeRebase } from './rebase'
+import { nativeDownloads } from './downloads'
 
 const results: { name: string; passed: boolean; error?: string }[] = []
 const assert = (value: unknown) => {
@@ -68,6 +69,9 @@ await test('native source-preserving rebase validates review and archives drafts
   await nativeRebase()
 })
 await adapterTests(test)
+await test('native downloaded cache eviction preserves protected/source bytes and retries physical cleanup', async () => {
+  await nativeDownloads()
+})
 await capabilityTests(test)
 const report = {
   schemaVersion: 1,
