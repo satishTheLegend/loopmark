@@ -216,6 +216,28 @@ export function validMedia(value: string, kind: 'photo' | 'voice'): boolean {
   if (!allowed.includes(mime) || length > (kind === 'photo' ? 4 : 8) * 1024 * 1024) return false
   try {
     const bytes = Uint8Array.from(atob(payload), (char) => char.charCodeAt(0))
+    return validMediaBytes(bytes, mime, kind)
+  } catch {
+    return false
+  }
+}
+
+/** Validate existing raw bytes without a base64 encode/decode round trip. */
+export function validMediaBytes(
+  bytes: Uint8Array,
+  mimeType: string,
+  kind: 'photo' | 'voice',
+): boolean {
+  const match = /^([^;,]+)(?:;\s*codecs=[\w., "-]+)?$/.exec(mimeType)
+  if (!match || bytes.length === 0 || bytes.length > (kind === 'photo' ? 4 : 8) * 1024 * 1024)
+    return false
+  const mime = match[1]
+  const allowed =
+    kind === 'photo'
+      ? ['image/jpeg', 'image/png', 'image/webp']
+      : ['audio/webm', 'audio/mp4', 'audio/ogg', 'audio/wav', 'audio/x-wav']
+  if (!allowed.includes(mime)) return false
+  try {
     switch (mime) {
       case 'image/jpeg':
         return validJpeg(bytes)
