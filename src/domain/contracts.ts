@@ -127,6 +127,8 @@ export interface SnapshotManifest {
   cursor: Revision
   revision: Revision
   expiresAt: string
+  /** Echoed page cursor. Null only for the first page; proves the full returned page chain. */
+  after: string | null
   projects: ProjectRecord[]
   checkpoints: CheckpointRecord[]
   media: MediaRef[]

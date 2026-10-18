@@ -212,6 +212,11 @@ export const pullPageSchema = z
     if (BigInt(value.nextCursor) !== cursor || (value.hasMore && value.entries.length === 0))
       context.addIssue({ code: 'custom', message: 'Page cursor must end at its last entry' })
   })
+const snapshotCursorSchema = z
+  .string()
+  .min(1)
+  .max(200)
+  .refine((value) => !value.includes('\0'))
 export const snapshotRequestSchema = z.discriminatedUnion('action', [
   z
     .object({
@@ -221,7 +226,7 @@ export const snapshotRequestSchema = z.discriminatedUnion('action', [
     })
     .strict(),
   z
-    .object({ action: z.literal('page'), snapshotId: id, after: z.string().max(200).nullable() })
+    .object({ action: z.literal('page'), snapshotId: id, after: snapshotCursorSchema.nullable() })
     .strict(),
   z.object({ action: z.literal('renew'), snapshotId: id }).strict(),
 ])
@@ -234,10 +239,11 @@ export const snapshotManifestSchema = z
     cursor: revisionSchema,
     revision: revisionSchema,
     expiresAt: timestamp,
+    after: snapshotCursorSchema.nullable(),
     projects: z.array(projectRecordSchema).max(MAX_PROJECTS),
     checkpoints: z.array(checkpointRecordSchema).max(MAX_CHECKPOINTS),
     media: z.array(mediaRefSchema).max(2 * MAX_CHECKPOINTS),
-    nextPage: z.string().max(200).nullable(),
+    nextPage: snapshotCursorSchema.nullable(),
   })
   .strict()
 export const uploadRequestSchema = z

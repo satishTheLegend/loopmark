@@ -8,6 +8,7 @@ import {
   deletionReceiptSchema,
   parseCommand,
   parsePullPage,
+  parseSnapshot,
   revisionSchema,
   signCommand,
   verifyCommand,
@@ -42,6 +43,28 @@ const command: UnsignedCommand = {
   },
 }
 describe('wire contract v2', () => {
+  it('requires explicit snapshot page identity and rejects ambiguous cursors', () => {
+    const page = {
+      protocolVersion: 2,
+      snapshotId: 'snapshot',
+      collectionId: 'collection',
+      epoch: 'epoch',
+      cursor: '0',
+      revision: '0',
+      expiresAt: '2026-10-19T00:00:00.000Z',
+      after: null,
+      projects: [],
+      checkpoints: [],
+      media: [],
+      nextPage: null,
+    }
+    expect(parseSnapshot(page).after).toBeNull()
+    const { after: _, ...missing } = page
+    expect(() => parseSnapshot(missing)).toThrow(DomainError)
+    for (const after of ['', 'nul\0cursor'])
+      expect(() => parseSnapshot({ ...page, after })).toThrow(DomainError)
+    expect(parseSnapshot({ ...page, after: 'page-2' }).after).toBe('page-2')
+  })
   it('matches independently calculated Unicode/key ordering SHA-256 fixtures', async () => {
     for (const vector of vectors) {
       expect(canonicalJson(vector.input)).toBe(vector.canonical)
