@@ -31,19 +31,23 @@ test('actual complete export names the missing checkpoint and retries only its a
       await a.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
       await a.getByLabel('What will you do next?').fill(`Follow photo ${index + 1}`)
       await a.getByLabel('Current row or repeat').fill(`Row ${index + 1}`)
-      await a
-        .getByLabel('Add checkpoint photo')
-        .setInputFiles({
-          name: `photo-${index}.png`,
-          mimeType: 'image/png',
-          buffer: PNG.sync.write(png),
-        })
+      await a.getByLabel('Add checkpoint photo').setInputFiles({
+        name: `photo-${index}.png`,
+        mimeType: 'image/png',
+        buffer: PNG.sync.write(png),
+      })
       await expect(a.getByAltText('Checkpoint photo preview')).toBeVisible()
       await a.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
       await expect(a.getByRole('dialog')).toHaveCount(0)
       await expect(a.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
         `Follow photo ${index + 1}`,
       )
+      await expect(a.locator('.detail-photo img')).toHaveAttribute(
+        'src',
+        /^data:image\/jpeg;base64,/,
+      )
+      if (photos.length)
+        await expect(a.locator('.detail-photo img')).not.toHaveAttribute('src', photos[0])
       photos.push((await a.locator('.detail-photo img').getAttribute('src'))!)
       await expect(a.locator('.sync-status')).toContainText('Synced to your account', {
         timeout: 20000,
@@ -59,6 +63,7 @@ test('actual complete export names the missing checkpoint and retries only its a
       files: string[] = []
     let failedId = ''
     await b.route('**/functions/v1/media-download', async (route) => {
+      if (route.request().method() !== 'POST') return route.continue()
       const id = route.request().postDataJSON().mediaId as string
       attempts.push(id)
       if (!failedId) failedId = id
@@ -79,6 +84,7 @@ test('actual complete export names the missing checkpoint and retries only its a
     await b.unroute('**/functions/v1/media-download')
     const retryIds: string[] = []
     await b.route('**/functions/v1/media-download', async (route) => {
+      if (route.request().method() !== 'POST') return route.continue()
       retryIds.push(route.request().postDataJSON().mediaId)
       await route.continue()
     })
