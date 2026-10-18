@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- BEGIN LOOPMARK VERIFIED LINKS -->
+            <!-- Configured locally by scripts/native/links.mjs after ownership inputs exist. -->
+            <!-- END LOOPMARK VERIFIED LINKS -->
+
         </activity>
 
         <provider
