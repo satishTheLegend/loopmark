@@ -15,7 +15,18 @@ public class BackupInboxPlugin extends Plugin {
         try { call.resolve(work.run(new BackupInbox(getContext()))); }
         catch (Exception error) { call.reject("Private backup inbox operation failed", "LOCAL_STORAGE_FAILED"); }
     }); }
-    @PluginMethod public void pending(PluginCall call) { perform(call, store -> new JSObject().put("item", store.pending() == null ? JSONObject.NULL : store.pending())); }
+    @PluginMethod public void pending(PluginCall call) { BackupInbox.QUEUE.execute(() -> {
+        JSONObject item;
+        try { item = new BackupInbox(getContext()).pending(); }
+        catch (Exception error) { item = BackupInbox.storageFailure(); }
+        call.resolve(new JSObject().put("item", item == null ? JSONObject.NULL : item));
+    }); }
     @PluginMethod public void read(PluginCall call) { perform(call, store -> new JSObject().put("base64", Base64.encodeToString(store.read(call.getString("id"), call.getLong("offset", -1L), call.getInt("length", 0)), Base64.NO_WRAP))); }
-    @PluginMethod public void finish(PluginCall call) { perform(call, store -> { store.finish(call.getString("id")); BackupInbox.notifyChanged(); return new JSObject(); }); }
+    @PluginMethod public void finish(PluginCall call) { BackupInbox.QUEUE.execute(() -> {
+        try {
+            String id = call.getString("id");
+            if (!BackupInbox.finishFailure(id)) new BackupInbox(getContext()).finish(id);
+            BackupInbox.notifyChanged(); call.resolve(new JSObject());
+        } catch (Exception error) { call.reject("Private backup inbox operation failed", "LOCAL_STORAGE_FAILED"); }
+    }); }
 }

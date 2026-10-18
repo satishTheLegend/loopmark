@@ -161,8 +161,12 @@ export function createNativeBackupInbox(repository: NativeRepository): NativeBac
       return blob
     },
     async finish(id, scope, outcome) {
-      const item = await nativeItem()
-      if (!item || item.id !== id) throw new DomainError('NOT_AVAILABLE')
+      // An unrelated notice can arrive after review. The durable source binding
+      // authorizes imported completion; the native layer validates that exact ID.
+      if (outcome.state === 'dismissed') {
+        const item = await nativeItem()
+        if (!item || item.id !== id) throw new DomainError('NOT_AVAILABLE')
+      }
       await repository.database.transaction(async (db) => {
         if (canonicalJson(await activeScope(db)) !== canonicalJson(scope))
           throw new DomainError('ACCOUNT_CHANGED')

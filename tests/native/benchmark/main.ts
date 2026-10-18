@@ -12,6 +12,7 @@ import { nativeExamples } from './examples'
 import { nativeMediaRepair } from '../harness/media-repair'
 import { nativeRebase } from '../harness/rebase'
 import { nativeDownloads } from '../harness/downloads'
+import { nativeInbox } from '../harness/inbox'
 import { stageNativeExport } from '../../../src/platform/native/share'
 import { decodeBase64Bytes } from '../../../src/media-validation'
 
@@ -63,6 +64,7 @@ try {
       'profile',
       'rebase',
       'downloads',
+      'inbox',
     ].includes(command.action) ||
     !['small', 'limit'].includes(command.dataset)
   )
@@ -223,6 +225,7 @@ try {
   if (command.action === 'repair') report.repair = await nativeMediaRepair()
   if (command.action === 'rebase') report.rebase = await nativeRebase()
   if (command.action === 'downloads') report.downloads = await nativeDownloads()
+  if (command.action === 'inbox') report.inbox = await nativeInbox()
   if (command.action === 'profile') {
     const decoding = []
     for (const size of [60 * 1024, 6 * 1024 * 1024]) {

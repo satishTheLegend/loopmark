@@ -12,6 +12,7 @@ import type {
   SnapshotManifest,
 } from '../../../src/domain/contracts'
 import { create, fixture, wave } from './persistence'
+import { nativeIncomingUrl } from '../../../src/platform/native/links'
 
 const assert = (value: unknown) => {
   if (!value) throw new Error('Assertion failed')
@@ -33,6 +34,14 @@ const scopeFor = (key: SessionScope['key']): SessionScope => ({
 export async function adapterTests(
   test: (name: string, action: () => Promise<void>) => Promise<void>,
 ) {
+  await test('native document URLs stay outside ordinary project URL routing', async () => {
+    assert(nativeIncomingUrl('file:///private/synthetic-backup.json') === null)
+    assert(nativeIncomingUrl('content://synthetic.provider/backup.json') === null)
+    assert(
+      nativeIncomingUrl('https://example.test/project/ABC-123') ===
+        'https://example.test/project/ABC-123',
+    )
+  })
   await test('native reviewed retention keeps missing saved refs but refuses missing draft media', async () => {
     const info = fixture(),
       scope = scopeFor(info.key)

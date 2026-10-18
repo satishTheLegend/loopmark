@@ -20,12 +20,11 @@ public class BackupInboxPlugin: CAPPlugin, CAPBridgedPlugin {
         }
     }
     @objc func pending(_ call: CAPPluginCall) {
-        perform(call) { store in
-            if let item = store.pending() {
-                guard let value = item as? JSObject else { throw BackupInbox.Failure.storage }
-                return ["item": value]
-            }
-            return ["item": NSNull()]
+        BackupInbox.queue.async {
+            let item: [String: Any]?
+            do { item = try BackupInbox().pending() } catch { item = BackupInbox.storageFailure() }
+            if let item = item, let value = item as? JSObject { call.resolve(["item": value]) }
+            else { call.resolve(["item": NSNull()]) }
         }
     }
     @objc func read(_ call: CAPPluginCall) {
@@ -34,6 +33,11 @@ public class BackupInboxPlugin: CAPPlugin, CAPBridgedPlugin {
     }
     @objc func finish(_ call: CAPPluginCall) {
         guard let id = call.getString("id") else { call.reject("Invalid private receipt", "VALIDATION"); return }
-        perform(call) { try $0.finish(id: id); return [:] }
+        BackupInbox.queue.async {
+            do {
+                if !BackupInbox.finishFailure(id: id) { try BackupInbox().finish(id: id) }
+                call.resolve([:])
+            } catch { call.reject("Private backup inbox operation failed", "LOCAL_STORAGE_FAILED") }
+        }
     }
 }

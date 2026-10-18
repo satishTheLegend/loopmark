@@ -6,6 +6,7 @@ import Darwin
 final class BackupInbox {
     static let queue = DispatchQueue(label: "app.loopmark.backup-inbox")
     static let changed = Notification.Name("LoopmarkBackupInboxChanged")
+    private static var volatileFailure: [String: Any]?
     static let maximum = 50 * 1024 * 1024
     private let root: URL
     private var manifest: [String: Any]
@@ -27,7 +28,7 @@ final class BackupInbox {
         for file in try FileManager.default.contentsOfDirectory(at: self.root, includingPropertiesForKeys: nil) {
             if file.lastPathComponent.hasPrefix(".tmp-") || (Self.validID(file.lastPathComponent) && file.lastPathComponent != pendingId) { try FileManager.default.removeItem(at: file) }
         }
-        try flush(self.root.deletingLastPathComponent()); try flush(self.root)
+        try flush(self.root.deletingLastPathComponent().deletingLastPathComponent()); try flush(self.root.deletingLastPathComponent()); try flush(self.root)
     }
     static func accept(_ url: URL) {
         guard url.isFileURL else { return }
@@ -43,8 +44,12 @@ final class BackupInbox {
                     }
                     if let failure = failure { throw failure }
                     if let coordinationError = coordinationError { throw coordinationError }
-                } catch { try store.notice("VALIDATION") }
-            } catch { /* pending() exposes storage failure; no project data is changed. */ }
+                } catch {
+                    let native = error as NSError
+                    let invalid = error as? Failure == .invalid || (native.domain == NSCocoaErrorDomain && native.code == NSFileReadNoPermissionError)
+                    store.recordFailure(invalid ? "VALIDATION" : "LOCAL_STORAGE_FAILED")
+                }
+            } catch { _ = storageFailure() }
             NotificationCenter.default.post(name: changed, object: nil)
         }
     }
@@ -73,7 +78,7 @@ final class BackupInbox {
         guard Darwin.rename(temp.path, root.appendingPathComponent("inbox.json").path) == 0 else { throw Failure.storage }
         try flush(root)
     }
-    private func item(id: String, name: String, bytes: Int, state: String) -> [String: Any] {
+    private static func item(id: String, name: String, bytes: Int, state: String) -> [String: Any] {
         let formatter = ISO8601DateFormatter(); formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         let scalars = name.unicodeScalars.filter { !CharacterSet.controlCharacters.contains($0) }.map(String.init).joined()
         let cleaned = String(decoding: Array(scalars.utf16.prefix(160)), as: UTF16.self)
@@ -81,8 +86,24 @@ final class BackupInbox {
     }
     private func notice(_ code: String) throws {
         if (manifest["notice"] as? [String: Any])?["errorCode"] as? String == code { return }
-        var value = item(id: Self.hash(Data(UUID().uuidString.utf8)), name: "Incoming backup", bytes: 0, state: "failed")
+        var value = Self.item(id: Self.hash(Data(UUID().uuidString.utf8)), name: "Incoming backup", bytes: 0, state: "failed")
         value["errorCode"] = code; manifest["notice"] = value; try save()
+    }
+    static func storageFailure() -> [String: Any] {
+        if let value = volatileFailure { return value }
+        var value = item(id: hash(Data(UUID().uuidString.utf8)), name: "Incoming backup was not saved", bytes: 0, state: "failed")
+        value["errorCode"] = "LOCAL_STORAGE_FAILED"; volatileFailure = value; return value
+    }
+    static func finishFailure(id: String) -> Bool {
+        guard volatileFailure?["id"] as? String == id else { return false }
+        volatileFailure = nil; return true
+    }
+    func recordFailure(_ code: String) {
+        do { try notice(code) } catch { _ = Self.storageFailure() }
+    }
+    private static func receipt(_ value: [String: Any]) throws -> [String: Any] {
+        guard let id = value["id"] as? String, let token = value["operationToken"] as? String, let receivedAt = value["receivedAt"] as? String else { throw Failure.storage }
+        return ["id": id, "operationToken": token, "receivedAt": receivedAt]
     }
     func stage(_ url: URL) throws {
         let resource = try url.resourceValues(forKeys: [.isRegularFileKey, .fileSizeKey, .nameKey])
@@ -103,14 +124,17 @@ final class BackupInbox {
         let id = digest.finalize().map { String(format: "%02x", $0) }.joined(), pending = manifest["pending"] as? [String: Any]
         if pending?["id"] as? String == id { return }
         let handled = manifest["handled"] as? [[String: Any]] ?? []
-        if let previous = handled.first(where: { $0["id"] as? String == id }) { var notice = previous; notice["state"] = "already-handled"; manifest["notice"] = notice; try save(); return }
+        if let previous = handled.first(where: { $0["id"] as? String == id }) {
+            var notice = try Self.receipt(previous); notice["state"] = "already-handled"; notice["name"] = "Previously handled backup"; notice["bytes"] = 0
+            manifest["notice"] = notice; try save(); return
+        }
         if pending != nil { try notice("CAPABILITY_UNAVAILABLE"); return }
         if handled.count >= 4096 { try notice("TECHNICAL_CAPACITY_REACHED"); return }
         guard Darwin.rename(temp.path, root.appendingPathComponent(id).path) == 0 else { throw Failure.storage }
         try flush(root)
-        manifest["pending"] = item(id: id, name: resource.name ?? "Incoming backup.json", bytes: total, state: "ready"); try save()
+        manifest["pending"] = Self.item(id: id, name: resource.name ?? "Incoming backup.json", bytes: total, state: "ready"); try save()
     }
-    func pending() -> [String: Any]? { manifest["notice"] as? [String: Any] ?? manifest["pending"] as? [String: Any] }
+    func pending() -> [String: Any]? { Self.volatileFailure ?? manifest["notice"] as? [String: Any] ?? manifest["pending"] as? [String: Any] }
     func read(id: String, offset: Int, length: Int) throws -> Data {
         guard Self.validID(id), let pending = manifest["pending"] as? [String: Any], pending["id"] as? String == id,
               let size = pending["bytes"] as? Int, offset >= 0, length > 0, length <= 512 * 1024, offset <= size - length else { throw Failure.invalid }
@@ -121,10 +145,14 @@ final class BackupInbox {
         guard bytes.count == length else { throw Failure.invalid }; return bytes
     }
     func finish(id: String) throws {
+        if Self.finishFailure(id: id) { return }
         if let notice = manifest["notice"] as? [String: Any], notice["id"] as? String == id { manifest.removeValue(forKey: "notice"); try save(); return }
-        guard var pending = manifest["pending"] as? [String: Any], pending["id"] as? String == id else { throw Failure.invalid }
-        pending["state"] = "already-handled"
-        var handled = manifest["handled"] as? [[String: Any]] ?? []; handled.append(pending)
+        var handled = manifest["handled"] as? [[String: Any]] ?? []
+        guard let pending = manifest["pending"] as? [String: Any], pending["id"] as? String == id else {
+            if handled.contains(where: { $0["id"] as? String == id }) { return }
+            throw Failure.invalid
+        }
+        handled.append(try Self.receipt(pending))
         manifest["handled"] = handled; manifest.removeValue(forKey: "pending"); try save()
         let file = root.appendingPathComponent(id); if FileManager.default.fileExists(atPath: file.path) { try FileManager.default.removeItem(at: file) }; try flush(root)
     }
