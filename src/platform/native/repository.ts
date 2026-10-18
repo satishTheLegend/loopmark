@@ -27,6 +27,7 @@ import {
   viewOf,
   applyIntent,
   applyReceipt,
+  applyPullPage,
   hydrateState,
   assertRecords,
   mediaRefs,
@@ -554,16 +555,17 @@ export class NativeRepository implements Repository {
   private async change(
     key: CollectionKey,
     generation: number,
-    work: (state: StoredCollection) => void,
+    work: (state: StoredCollection) => void | boolean,
   ) {
-    await this.database.transaction(async (db) => {
+    const changed = await this.database.transaction(async (db) => {
       await assertGeneration(db, key, generation, true)
       const state = await getState(db, key)
-      work(state)
+      if (work(state) === false) return false
       state.version = nextRevision(state.version)
       await putState(db, state)
+      return true
     })
-    this.publish()
+    if (changed) this.publish()
   }
   async acknowledge(key: CollectionKey, receipt: Receipt, generation: number) {
     await this.change(key, generation, (state) => {
@@ -572,13 +574,7 @@ export class NativeRepository implements Repository {
   }
   async applyPage(key: CollectionKey, input: PullPage, generation: number) {
     const page = parsePullPage(input)
-    await this.change(key, generation, (state) => {
-      if (page.collectionId !== key.collectionId || page.epoch !== key.epoch)
-        throw new DomainError('SYNC_REBASE_REQUIRED')
-      if (page.afterCursor !== state.cursor) throw new DomainError('SYNC_PAGE_INVALID')
-      for (const receipt of page.entries) applyReceipt(state, receipt)
-      state.cursor = page.nextCursor
-    })
+    await this.change(key, generation, (state) => applyPullPage(state, page))
   }
   async hydrate(key: CollectionKey, pages: SnapshotManifest[], generation: number) {
     await this.change(key, generation, (state) => {

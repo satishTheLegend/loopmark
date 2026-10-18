@@ -29,6 +29,7 @@ import {
   prepareResolution,
   type ConflictResolution,
   applyReceipt,
+  applyPullPage,
   hydrateState,
   assertRecords,
   mediaRefs,
@@ -421,16 +422,17 @@ export class BrowserRepository implements Repository {
   private async change(
     key: CollectionKey,
     generation: number,
-    work: (state: StoredCollection, tx: IDBTransaction) => void | Promise<void>,
+    work: (state: StoredCollection, tx: IDBTransaction) => void | boolean | Promise<void | boolean>,
   ): Promise<void> {
-    await transaction(this.database, 'readwrite', async (tx) => {
+    const changed = await transaction(this.database, 'readwrite', async (tx) => {
       await assertGeneration(tx, key, generation)
       const state = await getState(tx, key)
-      await work(state, tx)
+      if ((await work(state, tx)) === false) return false
       state.version = nextRevision(state.version)
       putState(tx, state)
+      return true
     })
-    this.publish()
+    if (changed) this.publish()
   }
   async acknowledge(key: CollectionKey, receipt: Receipt, generation: number): Promise<void> {
     await this.change(key, generation, (state) => {
@@ -677,14 +679,7 @@ export class BrowserRepository implements Repository {
   }
   async applyPage(key: CollectionKey, input: PullPage, generation: number): Promise<void> {
     const page = parsePullPage(input)
-    await this.change(key, generation, (state) => {
-      if (state.info.kind !== 'connected') throw new DomainError('VALIDATION')
-      if (page.collectionId !== key.collectionId || page.epoch !== key.epoch)
-        throw new DomainError('SYNC_REBASE_REQUIRED')
-      if (page.afterCursor !== state.cursor) throw new DomainError('SYNC_PAGE_INVALID')
-      for (const receipt of page.entries) applyReceipt(state, receipt)
-      state.cursor = page.nextCursor
-    })
+    await this.change(key, generation, (state) => applyPullPage(state, page))
   }
   async hydrate(key: CollectionKey, pages: SnapshotManifest[], generation: number): Promise<void> {
     await this.change(key, generation, (state) => {

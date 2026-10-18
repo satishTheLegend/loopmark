@@ -2,7 +2,14 @@ import { IDBFactory } from 'fake-indexeddb'
 import { afterEach, expect, it, vi } from 'vitest'
 import { openBrowserRepository, type BrowserRepository } from '../repositories/browser/repository'
 import { createBrowserDraftStore } from '../repositories/browser/draft-store'
-import { info, create, now, project, png } from '../repositories/browser/fixtures.test-support'
+import {
+  info,
+  create,
+  now,
+  project,
+  png,
+  receipt,
+} from '../repositories/browser/fixtures.test-support'
 import { describeInline } from './media-codec'
 import type { AccountSession, SessionScope } from '../domain/contracts'
 import type { AccountAuth } from '../auth/auth-service'
@@ -322,6 +329,40 @@ it('clears credentials and removes connected copies only after successful deleti
   })
   expect(order).toEqual(['barrier', 'credentials'])
   expect((await repo.listCollections()).some((c) => c.kind === 'connected')).toBe(false)
+})
+it('an empty background pull after deletion review permits explicit draft discard and preserves guest work', async () => {
+  const { controller, repo, connected, guest, auth } = await setup()
+  const guestScope = controller.getSnapshot().scope!
+  await repo.commitLocal(guest.key, create('personal'), guestScope.generation)
+  await controller.verifyCode('maker@example.test', '123456')
+  await controller.chooseCollection(connected.key)
+  const scope = controller.getSnapshot().scope!
+  await repo.commitLocal(scope.key, create(), scope.generation)
+  const command = (await repo.pending(scope.key))[0].command
+  const page = {
+    protocolVersion: 2 as const,
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    afterCursor: '0',
+    nextCursor: '1',
+    hasMore: false,
+    entries: [receipt(command.operationId, command.sha256)],
+  }
+  await repo.applyPage(scope.key, page, scope.generation)
+  const draft = { key: 'checkpoint:project', revision: 'draft-1', value: { nextStep: 'Unsent' } }
+  await createBrowserDraftStore(repo, scope).write(draft.key, undefined, draft)
+  expect(await controller.prepareSignOut()).toMatchObject({ drafts: 1, unsentProjectChanges: 0 })
+  // This is the exact race: a valid poll finishes after review without changing any work.
+  await repo.applyPage(scope.key, { ...page, afterCursor: '1', entries: [] }, scope.generation)
+  const revoke = vi.fn(async (fenced: SessionScope) => {
+    expect(await createBrowserDraftStore(repo, fenced).read(draft.key)).toEqual(draft)
+    expect(auth.signOut).not.toHaveBeenCalled()
+  })
+  await controller.deleteAccount({ keepLocal: false, discardUniqueWork: true }, revoke)
+  expect(revoke).toHaveBeenCalledOnce()
+  expect(auth.signOut).toHaveBeenCalledOnce()
+  expect((await repo.listCollections()).some((c) => c.kind === 'connected')).toBe(false)
+  expect((await repo.readView(guest.key)).projects.map((p) => p.id)).toEqual(['personal'])
 })
 it('requires explicit acknowledgement of missing bytes and rejects unknown cache state before deletion', async () => {
   for (const withMedia of [false, true]) {

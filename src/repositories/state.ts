@@ -8,6 +8,7 @@ import type {
   PendingIntent,
   LocalIntent,
   Receipt,
+  PullPage,
   MediaRef,
   Command,
   SnapshotManifest,
@@ -420,6 +421,17 @@ export function applyIntent(
     state.projects = view.projects
     state.checkpoints = view.checkpoints
   }
+}
+/** Apply a schema-validated pull page; an unchanged poll must not invalidate a device review. */
+export function applyPullPage(state: StoredCollection, page: PullPage): boolean {
+  if (state.info.kind !== 'connected') throw new DomainError('VALIDATION')
+  if (page.collectionId !== state.info.key.collectionId || page.epoch !== state.info.key.epoch)
+    throw new DomainError('SYNC_REBASE_REQUIRED')
+  if (page.afterCursor !== state.cursor) throw new DomainError('SYNC_PAGE_INVALID')
+  if (page.entries.length === 0 && page.nextCursor === state.cursor) return false
+  for (const receipt of page.entries) applyReceipt(state, receipt)
+  state.cursor = page.nextCursor
+  return true
 }
 export function applyReceipt(state: StoredCollection, input: Receipt): void {
   const receipt = parseReceipt(input)
