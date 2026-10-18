@@ -5175,13 +5175,117 @@
       "testName": "mobile ${width}px has no horizontal overflow in shelf, detail, forms, backup and navigation",
       "sourceSha256": "fe273f87679693eb8f92748d324bc70b6ccb3e63013a969476243ca7536be05f",
       "level": "actual-product-browser",
-      "executedProofRefs": [],
+      "executedProofRefs": [
+        "webGuest0b"
+      ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
         "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
         "sha256": "fe273f87679693eb8f92748d324bc70b6ccb3e63013a969476243ca7536be05f",
         "workingCopyMatchesFreeze": true
-      }
+      },
+      "frozenExecutions": [
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 34,
+          "durationAsReported": "8.5s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 35,
+          "durationAsReported": "8.5s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 86,
+          "durationAsReported": "9.7s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 87,
+          "durationAsReported": "11.7s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 138,
+          "durationAsReported": "9.8s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 139,
+          "durationAsReported": "11.0s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 192,
+          "durationAsReported": "9.1s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 193,
+          "durationAsReported": "8.9s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 244,
+          "durationAsReported": "8.9s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 245,
+          "durationAsReported": "9.2s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        }
+      ]
     },
     "tests/journeys.spec.ts:669": {
       "file": "tests/journeys.spec.ts",
@@ -5350,13 +5454,117 @@
       "testName": "missing ${missingApi} offers a written-note fallback without blocking a checkpoint",
       "sourceSha256": "fe273f87679693eb8f92748d324bc70b6ccb3e63013a969476243ca7536be05f",
       "level": "actual-product-browser",
-      "executedProofRefs": [],
+      "executedProofRefs": [
+        "webGuest0b"
+      ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
         "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
         "sha256": "fe273f87679693eb8f92748d324bc70b6ccb3e63013a969476243ca7536be05f",
         "workingCopyMatchesFreeze": true
-      }
+      },
+      "frozenExecutions": [
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 37,
+          "durationAsReported": "1.3s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 38,
+          "durationAsReported": "1.3s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 89,
+          "durationAsReported": "2.0s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 90,
+          "durationAsReported": "1.9s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 141,
+          "durationAsReported": "2.6s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 142,
+          "durationAsReported": "4.1s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 195,
+          "durationAsReported": "1.4s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 196,
+          "durationAsReported": "1.6s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 247,
+          "durationAsReported": "1.6s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        },
+        {
+          "proofRef": "webGuest0b",
+          "testName": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 248,
+          "durationAsReported": "2.1s",
+          "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db"
+        }
+      ]
     },
     "tests/journeys.spec.ts:769": {
       "file": "tests/journeys.spec.ts",
@@ -28639,7 +28847,32 @@
           "sha256": "ca4bb49bd7aa17cbd36fd0c15c9067c189a12dd1a23e74b7fa211760ab497ce4",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "directOracleRefs": [
+        "tests/journeys.spec.ts:78",
+        "tests/journeys.spec.ts:144",
+        "src/data.test.ts:197",
+        "src/data.test.ts:324"
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b",
+        "webGuestA1Targeted",
+        "unitFinal382"
+      ],
+      "directReview": {
+        "type": "independent-source-inspection-with-separate-runtime-anchors",
+        "files": [
+          {
+            "path": "src/components/Shelf.tsx",
+            "sourceRevision": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+            "sha256": "0ca3cc3eb0a079f8e93afa7ddbcdc08417c1cd6fe4efb1b62ff4f80e2006c1ee",
+            "workingCopyMatchesFreeze": true
+          }
+        ],
+        "finding": "Shelf applies selected active/finished status, craft and case-insensitive name/code/craft/yarn search before sorting; the labeled Sort projects select chooses name.localeCompare or descending updatedAt. CRUD/filter runtime assertions are directly mapped. Sorting wiring/comparator is source-inspected; no separately executed sort-dropdown assertion is claimed."
+      },
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R2",
@@ -28663,7 +28896,12 @@
       "directOracleRefs": [
         "tests/offline-first-install.spec.ts:review:8a86d9db84b7",
         "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
-        "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+        "scripts/native/test-android-product.mjs:review:ed089b9874cd",
+        "tests/journeys.spec.ts:78",
+        "tests/journeys.spec.ts:274",
+        "tests/reliability.spec.ts:115",
+        "tests/reliability.spec.ts:32",
+        "tests/reliability.spec.ts:61"
       ],
       "implementation": [
         {
@@ -28767,7 +29005,13 @@
       ],
       "directEvidenceRefs": [
         "nativeProductFrozen"
-      ]
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b",
+        "webGuestA1Targeted"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R3",
@@ -28857,7 +29101,18 @@
           "sha256": "cb8ec4e2b8aedf0f16fd6b42e5ace2a107081ae4ab4d129f3b5adf02fb3111b5",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "directOracleRefs": [
+        "tests/journeys.spec.ts:78",
+        "src/data.test.ts:206"
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b",
+        "webGuestA1Targeted",
+        "unitFinal382"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R4",
@@ -28983,7 +29238,21 @@
           "sha256": "ec5b4fec7a8031ee29c6ad25f7ec7000c5c879893672d5e5e9a053a0434ddee0",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "directOracleRefs": [
+        "tests/journeys.spec.ts:160",
+        "tests/journeys.spec.ts:470",
+        "tests/journeys.spec.ts:497",
+        "tests/journeys.spec.ts:527",
+        "tests/journeys.spec.ts:720",
+        "tests/journeys.spec.ts:769",
+        "tests/journeys.spec.ts:886"
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R5",
@@ -29137,7 +29406,25 @@
           "sha256": "92c26591b197b0607cbe002f613e5a74dbe81567977b04307c20db88234de998",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "directOracleRefs": [
+        "tests/journeys.spec.ts:233",
+        "tests/journeys.spec.ts:305",
+        "tests/journeys.spec.ts:329",
+        "tests/reliability.spec.ts:168",
+        "src/data.test.ts:444",
+        "src/data.test.ts:468",
+        "src/data.test.ts:549"
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b",
+        "webGuestA1Targeted",
+        "unitFinal353",
+        "unitFinal373",
+        "unitFinal382"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R6",
@@ -29190,7 +29477,15 @@
           "sha256": "25a8f41f0a006ef49489e55e80bd2cfe14cc2f8a72c3654baa9d78392cb47325",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "directOracleRefs": [
+        "tests/journeys.spec.ts:359"
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R7",
@@ -29212,7 +29507,12 @@
         "Referenced T branches map the relevant local behavior; their broader platform/provider/human gates are not automatically inherited. This requirement retains its own accepted scope and any direct review below. Final frozen runtime adjudication remains pending."
       ],
       "directOracleRefs": [
-        "tests/offline-first-install.spec.ts:review:8a86d9db84b7"
+        "tests/offline-first-install.spec.ts:review:8a86d9db84b7",
+        "tests/journeys.spec.ts:399",
+        "tests/journeys.spec.ts:574",
+        "tests/reliability.spec.ts:206",
+        "tests/reliability.spec.ts:234",
+        "tests/reliability.spec.ts:252"
       ],
       "implementation": [
         {
@@ -29334,7 +29634,13 @@
           "sha256": "74a4cd664768caea7c3dcafb8f421b93403f6dfee04ee7dc92b53aaaa5c64a84",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "proofRefs": [
+        "webGuestFrozen",
+        "webGuest0b",
+        "webGuestA1Targeted"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R8",
@@ -29446,7 +29752,19 @@
           "sha256": "6cb007770c30eec00341f4ed419b658a509dd2ddbd928bad4b96b16bbec4c58b",
           "workingCopyMatchesFreeze": true
         }
-      ]
+      ],
+      "directOracleRefs": [
+        "tests/journeys.spec.ts:613",
+        "tests/journeys.spec.ts:669",
+        "tests/journeys.spec.ts:451",
+        "tests/journeys.spec.ts:831"
+      ],
+      "proofRefs": [
+        "webGuest0b",
+        "webGuestFrozen",
+        "webAxeFollowup"
+      ],
+      "reviewNote": "Foundation assertions are mapped directly in addition to relevant expansion groups, so the broader group mapping does not hide original capture, media, backup or browser-state obligations. Execution retains its original product/test source; later shared-controller changes have separately selected startup/draft/runtime qualification."
     },
     {
       "id": "R9",
