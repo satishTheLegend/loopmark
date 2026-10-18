@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { AppRuntime } from '../runtime'
 import type { SavedPurchaseRecovery } from '../billing/recovery-service'
 import { ErrorMessage, errorText, fullDate } from './ui'
+import './PurchaseRecovery.css'
 
 export function PurchaseRecovery({
   runtime,
@@ -20,18 +21,27 @@ export function PurchaseRecovery({
     [error, setError] = useState(''),
     [message, setMessage] = useState('')
   const [retryAt, setRetryAt] = useState(0)
+  const [keyCheckUnavailable, setKeyCheckUnavailable] = useState(false)
   const keyToken = useRef(crypto.randomUUID()),
     claimToken = useRef(crypto.randomUUID())
   const mounted = useRef(true)
-  async function load() {
+  async function load(refresh = false) {
     if (service) {
+      if (refresh) {
+        try {
+          await service.refreshKeyStatus(runtime.scope(), AbortSignal.timeout(15000))
+          if (mounted.current) setKeyCheckUnavailable(false)
+        } catch {
+          if (mounted.current) setKeyCheckUnavailable(true)
+        }
+      }
       const next = await service.listKeys()
       if (mounted.current) setRows(next)
     }
   }
   useEffect(() => {
     mounted.current = true
-    void load().catch((e) => {
+    void load(true).catch((e) => {
       if (mounted.current) setError(errorText(e))
     })
     return () => {
@@ -40,7 +50,7 @@ export function PurchaseRecovery({
     // The parent remounts for each account and collection generation.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [service])
-  async function run(work: () => Promise<void>) {
+  async function run(work: () => Promise<void>, refreshKey = true) {
     if (busy) return
     setBusy(true)
     setError('')
@@ -51,7 +61,7 @@ export function PurchaseRecovery({
       if (mounted.current) setError(errorText(e))
     } finally {
       if (mounted.current) {
-        await load().catch(() => {})
+        await load(refreshKey).catch(() => {})
         setBusy(false)
       }
     }
@@ -87,8 +97,10 @@ export function PurchaseRecovery({
   }
   if (!service) return null
   const latest = [...rows]
-    .filter((row) => row.result && row.result.status !== 'pending')
+    .filter((row) => row.result && row.result.status !== 'pending' && row.keyState !== 'superseded')
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
+  const keyConfigured =
+    configured || rows.some((row) => row.result && row.result.status !== 'pending')
   return (
     <details className="purchase-recovery">
       <summary>Purchase recovery and recovery key</summary>
@@ -97,11 +109,11 @@ export function PurchaseRecovery({
         deleted projects. Keep it private and separate from your project backup.
       </p>
       <p>
-        {configured
+        {keyConfigured
           ? 'A recovery key is configured. Creating a new key replaces the previous one.'
           : 'You can create a recovery key for this account.'}
       </p>
-      <fieldset disabled={busy} className="form-fields">
+      <fieldset disabled={busy} className="form-fields account-form">
         <button
           type="button"
           className="button secondary"
@@ -147,8 +159,33 @@ export function PurchaseRecovery({
             })
           }
         >
-          {configured ? 'Replace recovery key' : 'Create recovery key'}
+          {keyConfigured ? 'Replace recovery key' : 'Create recovery key'}
         </button>
+        <button
+          type="button"
+          className="button secondary"
+          onClick={() => void run(() => load(true), false)}
+        >
+          Check current recovery key
+        </button>
+        {keyCheckUnavailable && (
+          <p role="status">
+            The current recovery key could not be checked. Showing the last saved result.
+          </p>
+        )}
+        {latest && (
+          <p>
+            {latest.keyState === 'current' && latest.keyCheckedAt
+              ? `This device's recovery key was confirmed current on ${fullDate(latest.keyCheckedAt)}. Reconnect and check for changes before relying on it.`
+              : 'This device has a previously confirmed recovery key. Check its current status when online.'}
+          </p>
+        )}
+        {rows.some((row) => row.keyState === 'superseded') && (
+          <p>
+            A recovery key saved on this device has been replaced. Use the current key from the
+            device where you created it, or create a new key here.
+          </p>
+        )}
         {latest && (
           <button
             type="button"
@@ -189,7 +226,9 @@ export function PurchaseRecovery({
           />
         </label>
         <label>
-          Recovery key <span className="optional">optional</span>
+          <span>
+            Recovery key <span className="optional">optional</span>
+          </span>
           <input
             type="password"
             value={recoveryKey}

@@ -1,0 +1,33 @@
+/* Keep recovery controls in the account form's reading and keyboard order. */
+.purchase-recovery {
+  margin-top: 24px;
+}
+.purchase-recovery summary {
+  margin-bottom: 16px;
+}
+.purchase-recovery .account-form {
+  gap: 16px;
+}
+.purchase-recovery label {
+  display: grid;
+  gap: 8px;
+  max-width: 460px;
+}
+.purchase-recovery select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--control-border);
+  border-radius: 5px;
+}
+.purchase-recovery .button {
+  justify-self: start;
+}
+.purchase-recovery h3 {
+  margin: 12px 0 0;
+}
+.purchase-recovery .optional {
+  font-size: inherit;
+}
