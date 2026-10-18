@@ -1,5 +1,7 @@
 # Operations and recovery
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 ## Local environments
 
 Development: `npm ci && npm run dev`. Production behavior: `npm run build && npm run preview -- --port 4173 --strictPort`. Node >=22.12.0, npm lockfile. Development omits the service worker so edits are immediately visible. Production uses a generated, content-addressed cache. Do not use `file://` for the application.

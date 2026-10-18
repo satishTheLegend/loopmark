@@ -1,5 +1,7 @@
 # Loopmark architecture
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 Design revision 2 — 18 October 2026. This document specifies the implemented local foundation's contracts and verification targets. Executed results belong in the final verification record. The subsequently accepted cloud, checkout and native scope is specified separately in [the expansion plan](expansion-plan.md); it is not implemented by this foundation.
 
 ## Product boundary

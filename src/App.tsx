@@ -746,6 +746,7 @@ export default function App({
             />
           ) : route === 'backup' ? (
             <BackupView
+              exportComplete={runtime?.backups.exportComplete}
               onMessage={notify}
               connected={state?.view?.info.kind === 'connected'}
               accountEmail={state?.account?.email}

@@ -1,0 +1,30 @@
+{
+  "format": "loopmark",
+  "version": 1,
+  "exportedAt": "2026-10-01T10:00:00.000Z",
+  "projects": [
+    {
+      "id": "previous-scarf",
+      "code": "LM-V1SCARF",
+      "name": "वापसी scarf 🧶",
+      "craft": "Knitting",
+      "color": "sage",
+      "toolSize": "4 mm needles",
+      "yarn": "Cotton",
+      "notes": "One extra repeat",
+      "status": "active",
+      "createdAt": "2026-09-01T10:00:00.000Z",
+      "updatedAt": "2026-09-05T10:00:00.000Z",
+      "checkpoints": [
+        {
+          "id": "previous-checkpoint",
+          "createdAt": "2026-09-05T10:00:00.000Z",
+          "position": "Row 24",
+          "toolSize": "4 mm needles",
+          "nextStep": "Turn and knit the first stitch.",
+          "notes": "Added two stitches."
+        }
+      ]
+    }
+  ]
+}

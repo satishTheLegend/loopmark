@@ -1,5 +1,7 @@
 # Completion cross-verification
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 18 October 2026. Scope: Loopmark's local craft-restart foundation in this separate project directory. Baseline commit `5d9bd54`; current candidate offline cache `loopmark-ad60daeda70e`. No public deployment, external account mutation, outreach or payment processing occurred. The user subsequently included cloud sync, checkout and native iOS/Android apps; their new planning record is [expansion-plan.md](expansion-plan.md). Passing this foundation does not complete that expanded scope.
 
 ## What changed

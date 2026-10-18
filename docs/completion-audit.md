@@ -1,5 +1,7 @@
 # Completion cross-check
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 Date: 18 October 2026. Baseline: `5d9bd54`, before this hardening pass. This is a source-and-requirements audit, not a fresh browser pass or a replacement for the final integrated judge. Previous `VERIFIED` labels are historical claims; they do not close the gaps below.
 
 This audit began against the recorded local-first release. The user subsequently selected all three expansion options: cloud sync, checkout and native applications, with deep brainstorming/gstack planning requested. Those are now included future-phase requirements; root owns their expanded plan. This document judges the existing local foundation and does not mark the expanded product complete.

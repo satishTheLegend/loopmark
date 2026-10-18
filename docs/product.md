@@ -1,5 +1,7 @@
 # Loopmark product brief
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 Version: initial local research release · 18 October 2026
 
 ## Purpose and audience

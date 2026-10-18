@@ -19,6 +19,7 @@ import type { LibraryState } from '../data'
 import type { Backup } from '../types'
 import { Dialog, ErrorMessage, errorText, fullDate } from './ui'
 import type { SharePort } from '../platform/contracts'
+import type { ExportProgress } from '../services/backup-service'
 export function BackupView({
   onMessage,
   connected = false,
@@ -27,6 +28,7 @@ export function BackupView({
   restoreRecovered,
   share,
   native = false,
+  exportComplete,
 }: {
   onMessage: (s: string) => void
   connected?: boolean
@@ -35,6 +37,10 @@ export function BackupView({
   restoreRecovered?: (backup: Backup, operationToken: string) => Promise<void>
   share?: SharePort
   native?: boolean
+  exportComplete?: (
+    signal: AbortSignal,
+    onProgress: (progress: ExportProgress) => void,
+  ) => Promise<Backup>
 }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -48,11 +54,15 @@ export function BackupView({
     [storageFeedback, setStorageFeedback] = useState('')
   const input = useRef<HTMLInputElement>(null)
   const restoreToken = useRef(crypto.randomUUID())
+  const exportAbort = useRef<AbortController | null>(null)
+  const [exportProgress, setExportProgress] = useState<ExportProgress | null>(null)
+  const [exportMessage, setExportMessage] = useState('')
   const mounted = useRef(true)
   useEffect(() => {
     mounted.current = true
     return () => {
       mounted.current = false
+      exportAbort.current?.abort()
     }
   }, [])
   useEffect(() => {
@@ -82,12 +92,24 @@ export function BackupView({
     }
   }, [])
   async function download() {
+    if (busy) return
+    const abort = new AbortController()
+    exportAbort.current = abort
+    setExportProgress({ stage: 'checking', done: 0, total: 0 })
+    setExportMessage('')
     setBusy(true)
     setError('')
     try {
-      const backup = await exportBackup()
+      const backup = exportComplete
+        ? await exportComplete(abort.signal, (value) => {
+            if (mounted.current) setExportProgress(value)
+          })
+        : await exportBackup()
+      abort.signal.throwIfAborted()
       if (!mounted.current) return
       const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' })
+      abort.signal.throwIfAborted()
+      setExportProgress(null)
       if (share) {
         const result = await share.shareFile({
           name: `loopmark-backup-${new Date().toISOString().slice(0, 10)}.json`,
@@ -109,9 +131,17 @@ export function BackupView({
       setTimeout(() => URL.revokeObjectURL(url), 1000)
       onMessage('Backup download started. Keep it somewhere safe.')
     } catch (e) {
-      setError(errorText(e))
+      if (mounted.current) {
+        if (abort.signal.aborted)
+          setExportMessage('Export cancelled. Your projects and saved checkpoints are unchanged.')
+        else setError(errorText(e))
+      }
     } finally {
-      setBusy(false)
+      exportAbort.current = null
+      if (mounted.current) {
+        setBusy(false)
+        setExportProgress(null)
+      }
     }
   }
   async function importFile(file?: Blob) {
@@ -207,6 +237,30 @@ export function BackupView({
             <IconDownload size={18} />
             {busy ? 'Working…' : 'Download full backup'}
           </button>
+          {exportProgress && (
+            <>
+              <p role="status">
+                {exportProgress.stage === 'checking'
+                  ? 'Checking attachments'
+                  : exportProgress.stage === 'downloading'
+                    ? 'Downloading missing attachments'
+                    : 'Preparing complete backup'}
+                {exportProgress.total
+                  ? ` · ${exportProgress.done} of ${exportProgress.total}`
+                  : '…'}
+              </p>
+              <button
+                className="button secondary"
+                onClick={() => {
+                  exportAbort.current?.abort()
+                  setExportMessage('Stopping export…')
+                }}
+              >
+                Cancel export
+              </button>
+            </>
+          )}
+          {exportMessage && <p role="status">{exportMessage}</p>}
           <small>
             Your downloaded file contains your personal notes and media. Store it privately.
           </small>

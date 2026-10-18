@@ -1,4 +1,6 @@
-# Release traceability
+# Foundation release traceability
+
+> R1–R9 below record the earlier foundation acceptance. Current expanded requirements X01–X10, C/D/DX decisions and the 46 test groups are tracked by the expansion plan, execution ledger and expanded verification record.
 
 Scope source: [specification](specification.md), derived from the user's idea and delegated master prompt. Local research release, single maker, current browser. Status refers to automated local implementation acceptance. Physical media, printing, assistive speech, OS install, hosted CI and human outcomes remain explicit external checks; see the current completion review. Original baseline labels were re-audited, not accepted as evidence by themselves.
 
@@ -16,8 +18,8 @@ Scope source: [specification](specification.md), derived from the user's idea an
 
 ## Business acceptance that software testing cannot establish
 
-The 15-person study (10 voluntary checkpoint users, 8 week-later resumers, 5 actual buyers) is **NOT RUN**. Proposed prices and three-free-project policy remain hypotheses. See product.md/research.md. There is no checkout stub, fake purchase or fabricated usage metric. The local app is intentionally unrestricted apart from safety capacity limits.
+The 15-person study (10 voluntary checkpoint users, 8 week-later resumers, 5 actual buyers) is **NOT RUN**. The price and demand remain hypotheses. The expansion implements three-active-project policy and verified purchase boundaries; no actual provider purchase or study outcome is claimed. See expansion-plan.md and expansion-research-protocol.md.
 
 ## Local foundation scope and subsequent expansion
 
-The original foundation selected a browser web app, including optional bag labels and voice, without server secrets/accounts. The user's subsequent instruction adds native iOS/Android packages, cloud sync and checkout as accepted expansion requirements X01–X10 in [expansion-plan.md](expansion-plan.md). They remain planned rather than verified by R1–R9's local results. Reminders and collection/social features remain excluded. Physical-device audio/installation, physical printing and store acceptance cannot be inferred from browser simulation. CI is configured, not executed on a remote host. Unfinished drafts persist separately on this device; save them into the collection before exporting. See completion-review.md for the current test matrix and completion-audit.md E01–E06 for external checks.
+The original foundation selected a browser web app, including optional bag labels and voice, without server secrets/accounts. The user's subsequent instruction adds native iOS/Android packages, cloud sync and checkout as accepted expansion requirements X01–X10 in [expansion-plan.md](expansion-plan.md). Their implementation and verification status is tracked in expansion-execution.md; R1–R9's earlier local results do not verify them. Reminders and collection/social features remain excluded. Physical-device audio/installation, physical printing and store acceptance cannot be inferred from browser simulation. CI is configured, not executed on a remote host. Unfinished drafts persist separately on this device; save them into the collection before exporting. See completion-review.md for the current test matrix and completion-audit.md E01–E06 for external checks.

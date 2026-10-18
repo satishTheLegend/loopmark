@@ -26,7 +26,19 @@
     "test:native:ios": "node scripts/native/test-ios.mjs",
     "test:native:android": "node scripts/native/test-android.mjs",
     "test:release": "node scripts/test-release.mjs",
-    "test:release:contracts": "node --test tests/release/*.test.mjs"
+    "test:release:contracts": "node --test tests/release/*.test.mjs",
+    "test:native:ios:product": "node scripts/native/test-ios-product.mjs",
+    "test:native:android:product": "node scripts/native/test-android-product.mjs",
+    "test:native:evidence": "node --test tests/native/product-evidence.test.mjs",
+    "test:sandbox:web": "node scripts/sandbox/web.mjs",
+    "test:sandbox:ios": "node scripts/sandbox/ios.mjs",
+    "test:sandbox:android": "node scripts/sandbox/android.mjs",
+    "test:sandbox:contracts": "node --test tests/sandbox/*.test.mjs",
+    "test:security": "node scripts/test-security.mjs",
+    "test:compat": "node scripts/test-compat.mjs",
+    "test:examples": "node scripts/test-examples.mjs",
+    "test:docs": "node scripts/test-docs.mjs",
+    "test:dx": "node scripts/test-dx.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

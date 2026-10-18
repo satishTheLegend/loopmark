@@ -1,5 +1,7 @@
 # Loopmark release specification · 2026-10-18
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 ## Intent and delegated decisions
 Help a maker with several unfinished projects leave enough information now to restart confidently later. The user supplied the pause/resume concept and delegated routine product, design and engineering decisions in the master prompt. This is an architectural new project. Spec/plan review proceeds under that delegation, without implying the user personally reviewed artifacts.
 

@@ -1,5 +1,7 @@
 # Loopmark Implementation Plan
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 > Execution: native integration owner with parallel independent research/design/data packages and fresh review. Equivalent host-native controlled workflow; no unsupported slash-command invocation claimed.
 
 **Goal:** A verified offline pause/resume craft utility.

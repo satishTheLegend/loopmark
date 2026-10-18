@@ -1,5 +1,7 @@
 # Independent completion judge
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 18 October 2026. Reviewer: scope-audit agent, independent of application implementation. Target: the local hardening changes from `5d9bd54`, compared with the master prompt, R1–R9 and the baseline ledger in `completion-audit.md`. This is a native source and evidence review using the applicable gstack review/QA methodology; no outside-model or full gstack runtime result is claimed. The user's subsequent cloud-sync/checkout/native selection is included in the separately planned expanded phase and is not judged complete here.
 
 **Independent final verdict: PASS for automated local-foundation acceptance, with E01–E06 still open.** Candidate `loopmark-ad60daeda70e` completed **209/209 browser cases**, zero failures/skips/flaky results. The isolated final scale suite passed 4/4. The scope-audit reviewer independently checked the retained case results against the original browser JSON, all five controller/cache attachments, the final browser report, static evidence and performance record. No additional tests or product changes were made during this signoff. This does not complete the selected cloud/checkout/native phase or establish a public release.

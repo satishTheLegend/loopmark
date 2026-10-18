@@ -2,88 +2,107 @@
 
 **A little note now. A lovely start later.**
 
-A complete browser-local craft project restart tool. Save where you paused, then open your project days or weeks later to see the next step immediately.
+Loopmark helps makers return to unfinished crochet, knitting and other craft projects. Save a photo, tool size, row or repeat, next step and optional voice note; open the latest checkpoint when you return.
+
+The project contains a React/Vite web app, Capacitor iOS/Android apps, optional Supabase account sync, hosted Razorpay web checkout, and RevenueCat native purchase adapters. Guest use requires no account or backend. Hosted services, real provider purchases, signing and physical-device release qualification are not activated by this checkout. See [release readiness](docs/release-readiness.md) and the [execution ledger](docs/expansion-execution.md) for the exact verification status.
 
 ![Loopmark project shelf with optional sample projects](docs/evidence/desktop-shelf.png)
 
 ## Run locally
 
-Requires Node.js **22.12+** (tested here with 26.8.2) and npm. Run commands inside this project folder:
+Requires Node.js **22.12+** and npm. The lockfile pins the installed dependencies.
 
 ```sh
 npm ci
+npm run doctor -- --capability guest --json
 npm run dev
 ```
 
-Open the URL printed by Vite, a deterministic port unique to this checkout (override with `LOOPMARK_DEV_APP_PORT`). No API keys, account, environment variables, or backend are required.
+Open the URL Vite prints. Each checkout derives a separate local port; `LOOPMARK_DEV_APP_PORT` overrides it. No API key or environment file is needed for guest use.
 
-For the full offline experience, use the production build:
+To test offline reopening:
 
 ```sh
 npm run build
 npm run preview -- --port 4173 --strictPort
 ```
 
-Open **http://127.0.0.1:4173** and check **A little guide** for “Ready offline on this device” before relying on offline reopening. Service workers intentionally run only in production. A different hostname or port is a different browser storage location. Keep using the same URL; export/import to move data between origins or browsers.
+Use **http://127.0.0.1:4173**, then check **A little guide** for “Ready offline on this device.” Service workers run in production builds. Keep using the same origin: a different hostname, port, browser or profile has separate storage.
 
-## What works
+## What the app does
 
-- Create/edit projects for crochet, knitting and other crafts; search, filter, sort, finish and reopen them.
-- Save immutable checkpoints with next step, row/repeat, tool size, optional photo, notes and microphone recording.
-- Recover unfinished project/checkpoint drafts after closing or reloading; explicitly discard them when needed.
-- Resume at the latest checkpoint; inspect the complete previous history.
-- Download and restore a complete backup including photos and audio; validated replacement is atomic and stale previews require a new confirmation.
-- Print a bag label with readable details and a locally generated QR shortcut.
-- Install as a web app where the browser supports it; use core workflows offline after the production shell is cached.
-- Keyboard-accessible dialogs, mobile layouts, reduced motion, local fonts and original vector artwork.
+- Create, edit, search, finish and reopen craft projects.
+- Save immutable checkpoints and resume from the latest next step; all saved history remains readable.
+- Keep unfinished drafts on this device, with explicit discard and safe retry after interrupted saves.
+- Export a complete portable v1 backup with verified photos and voice bytes. Restore creates a **separate recovered collection**, preserving the original collection and its drafts.
+- Print readable project-bag labels with QR shortcuts. A label points to a record; it does not contain the project or replace a backup.
+- Sign in optionally with an email code. Signing in leaves local projects in place; connecting them requires a destination/count preview and explicit confirmation.
+- Queue connected edits offline, retry immutable operations, distinguish saved text from pending attachments, and review conflicts without silently replacing either version.
+- Review local copies before sign-out or account deletion. Keep a private deletion receipt to check progress after sign-out.
+- Offer three active projects free. A verified one-time upgrade permits more active projects, within storage limits. Reaching the allowance never hides saved projects, edits, checkpoints, history or export. Eligible pre-expansion collections preserve their migration access; importing a backup does not create a purchase grant.
+- Keep an upgrade-gated draft on the device through sign-in and checkout. Price comes from the configured provider. Payment returns and SDK results require server verification; Continue opens the saved action for review without automatically creating or reopening a project.
+- Provide purchase restoration and recovery-key workflows separately from craft-data recovery.
 
-The first launch is empty. “Take a look with sample projects” adds three explicitly labeled examples only to an empty collection. The research build has no artificial project paywall. Capacity safeguards are 200 projects, 1,000 total checkpoints and 48 MiB of serialized library data.
+First launch is empty. Optional sample projects are labeled examples. Limits are **200 projects, 1,000 checkpoints and 48 MiB of serialized portable project content per collection**. Encoded photos and audio count toward this limit. Cloud storage also counts staged uploads and replacement reservations.
 
-## Using it
+## Saving and protecting your work
 
-1. Add a project and its tool/yarn details.
-2. Before putting it away, select **Save a checkpoint**. The only required checkpoint field is **What will you do next?**
-3. On return, open the project: your latest instruction, row and tool are already there.
-4. Download a full backup regularly from **Backup & restore**.
+Before putting a project away, choose **Save a checkpoint**. The required field is **What will you do next?** On return, the latest instruction, row and tool size are shown immediately.
 
-Recordings require microphone permission and HTTPS or localhost. They stop after two minutes. Closing a recording finishes it and keeps the result in the draft before leaving. Photo uploads accept JPEG, PNG and WebP up to 15 MiB and are resized locally. HEIC requires conversion first. No media is uploaded.
+Photos are resized locally. Browser recordings require microphone permission and HTTPS or localhost, and stop after two minutes. Native capture uses platform permission and interruption handling. Media is uploaded only for a collection you explicitly connect. A connected photo may need a download before it is available offline.
 
-## Data and recovery
+Download a complete backup regularly. Drafts are separate and **not included**: save them as projects/checkpoints first. An export with missing attachment bytes fails with recovery guidance rather than claiming to be complete. Backups contain private notes and media and are not encrypted by Loopmark.
 
-IndexedDB belongs to a browser profile and site origin. It is not a cloud backup, an account, or device sync. Clearing site data, private browsing or browser eviction can lose it. Requesting persistent storage can help but is not a guarantee. A backup contains private notes and media; store it safely.
+Browser storage can be evicted or cleared. Removing a native app can remove its local data. Sync is not an independent backup. A localhost QR points to the device on which it is scanned; cross-device labels require a stable configured HTTPS origin and access to the matching record.
 
-Restore previews project/checkpoint counts before confirmation and **replaces the entire current collection**. Download a current backup first if you need both collections. Unsupported/malformed imports leave existing data unchanged. Dates inside checkpoints remain unchanged; project update tokens refresh to prevent stale tabs overwriting restored data.
+## Optional services and native builds
 
-A label QR opens the same origin and project ID. It cannot transfer a project. Restore the backup on that site in the target browser first. A `localhost` label points to the computer where it is scanned and is unsuitable for sharing between devices; use a stable HTTPS origin for that use case.
-
-## Verification
+Use [developer setup](docs/developer/quickstart.md), [.env.example](.env.example), and the [contract reference](docs/developer/contracts.md). Only explicitly allowlisted `VITE_` values may enter browser/native web assets; server credentials belong outside public configuration.
 
 ```sh
-npm test                  # domain, transactions, validation, recovery
+npm run doctor -- --capability local-sync --json
+npm run local:up
+npm run test:server -- --suite all
+npm run test:sync -- --project=chromium
+npm run local:down
+```
+
+The local stack requires Docker and uses a checkout-specific loopback profile with synthetic accounts and delivered local email codes. `local:down` preserves data. Reset requires the exact project confirmation described by the setup guide. Never point these fixtures at production.
+
+```sh
+npm run native:sync
+npm run native:ios:build
+npm run native:android:build
+```
+
+Native builds require their platform toolchains. Actual simulator/emulator tests require explicit dedicated test targets. Unsigned/debug builds and simulator results do not establish store acceptance, physical capture fidelity, signing or production associated-domain behavior. [Qualification instructions](docs/release/qualification.md) list those gates.
+
+## Verification and project map
+
+```sh
+npm test
 npx playwright install chromium firefox webkit
 npm run build
-npm run test:e2e           # Chromium, Firefox, WebKit + mobile emulation
+npm run test:e2e
+npm run test:ui
+npm run test:compat
+npm run test:security
+npm run test:release:contracts
+npm run test:sandbox:contracts
 npm run format:check
 ```
 
-`npm run check` builds and runs both test suites. Tests use isolated synthetic data, native browser storage/service workers and synthesized media. The matrix covers Chromium, Firefox, WebKit, Pixel-style Chromium and iPhone-style WebKit emulation. Physical microphones/cameras, actual phone installation, printing, speech assistive technology and real user retention remain unverified. See [current verification](docs/verification.md), [completion audit](docs/completion-audit.md), and [independent completion judge](docs/completion-judge.md).
+Browser profiles cover Chromium, Firefox and WebKit desktop, plus Chromium/WebKit mobile emulation. Native persistence and production-screen tests run in actual simulators/emulators. Synthetic provider fixtures validate local authority behavior; actual provider sandbox transactions remain a separate requirement. Performance budgets are measured during isolated runs, not inferred from a busy-machine regression.
 
-Drafts are separate from saved projects and are **not exported**. Save them first to include their content in a full backup. A failed draft save keeps the form visible and warns before navigation; a failed cleanup after a successful save cannot duplicate the unchanged project/checkpoint when retried.
+- `src/runtime.ts`, `src/App.tsx`: platform services and application journeys.
+- `src/domain/`: portable, wire and policy contracts; `src/data.ts` retains the portable compatibility facade.
+- `src/repositories/`, `src/services/`, `src/sync/`: scoped persistence, immutable operations, backup, media and synchronization.
+- `src/auth/`, `src/billing/`, `src/platform/`: authentication and payment boundaries; browser/native adapters.
+- `supabase/`: migrations, functions, policies and local authority fixtures.
+- `ios/`, `android/`, `scripts/native/`: native shells, builds and device test tooling.
+- `src/components/`, `public/art/`: interfaces and original editable SVG artwork.
+- `docs/`, `tests/`: plans, evidence, requirements and regression suites.
 
-## Project map
+[Expanded product scope](docs/expansion-plan.md) · [Architecture and failure design](docs/expansion-engineering.md) · [Interaction specification](docs/expansion-design.md) · [Design system](design-system/loopmark/MASTER.md) · [Skill inventory](docs/skills.md) · [Research and pilot](docs/expansion-research-protocol.md) · [Operating budget](docs/operating-budget.md) · [Release gates](docs/release-readiness.md)
 
-- `src/App.tsx` — shell, navigation and integration
-- `src/components/` — shelf, project/history, forms, voice, backup, label and guide
-- `src/data.ts` / `src/types.ts` — versioned contracts, IndexedDB, strict validation, atomic mutations
-- `src/media.ts` / `src/media-validation.ts` — local image processing and bounded import validation
-- `src/drafts.ts` / `src/offline.ts` — recoverable forms and verified offline lifecycle
-- `public/art/` — original editable SVG art
-- `scripts/build-sw.mjs` — production precache generator
-- `tests/` — browser journeys and accessibility/recovery checks
-- `.github/workflows/ci.yml` — reproducible checks on push/PR
-
-## Decisions and evidence
-
-[Product and experiment](docs/product.md) · [Research ledger](docs/research.md) · [Release specification](docs/specification.md) · [Architecture](docs/architecture.md) · [Design system](design-system/loopmark/MASTER.md) · [Implementation plan](docs/implementation-plan.md) · [Requirement traceability](docs/requirements.md) · [Operations and deployment](docs/runbook.md) · [Skill inventory](docs/skills.md)
-
-No deployment, paid service, marketing message or real payment processing was performed. The user has now added native iOS/Android apps, optional cloud sync and checkout to the next phase; see the [expansion plan](docs/expansion-plan.md), [review record](docs/expansion-review.md), [interaction specification](docs/expansion-design.md), [execution packages](docs/expansion-implementation.md), [test map](docs/expansion-test-plan.md), [platform research](docs/expansion-platform-research.md), and [illustrative operating budget](docs/operating-budget.md). Those additions are planned and are not represented as implemented by this local build. Third-party license notices are included in `public/licenses/`; original artwork was created for this project.
+Earlier foundation completion reports remain historical evidence for their identified revision, not proof of the expanded release. No public deployment, outreach, real purchase, paid account provisioning or store submission has been performed. The 15-maker study and its 10/8/5 criteria have not been run.

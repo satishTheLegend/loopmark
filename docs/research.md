@@ -1,5 +1,7 @@
 # Loopmark research and validation
 
+> Historical foundation record: this document describes the earlier browser-local release. The accepted cloud, purchase and native expansion is tracked in [the expansion plan](expansion-plan.md), [execution ledger](expansion-execution.md) and [release readiness](release-readiness.md). Its earlier PASS labels do not qualify the expanded release.
+
 Research date: **18 October 2026**. Status: desk research and a proposed field study; **no participants recruited, interviews conducted, purchases recorded, or market demand measured** during this build.
 
 ## Decision
