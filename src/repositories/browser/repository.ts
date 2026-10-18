@@ -818,11 +818,14 @@ export class BrowserRepository implements Repository {
     })
     this.publish()
   }
-  async snapshot(key: CollectionKey): Promise<LocalSnapshot> {
+  async snapshot(
+    key: CollectionKey,
+    options: { allowMissingMedia?: boolean } = {},
+  ): Promise<LocalSnapshot> {
     return transaction(this.database, 'readwrite', async (tx) => {
       const view = viewOf(await getState(tx, key)),
         refs = mediaRefs(view.checkpoints)
-      await assertMediaPresent(tx, key, refs)
+      await assertMediaPresent(tx, key, refs, options.allowMissingMedia === true)
       const snapshot = {
         id: crypto.randomUUID(),
         view,

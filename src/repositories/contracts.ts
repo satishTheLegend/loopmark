@@ -72,7 +72,7 @@ export interface Repository {
   acknowledge(key: CollectionKey, receipt: Receipt, generation: Generation): Promise<void>
   hydrate(key: CollectionKey, pages: SnapshotManifest[], generation: Generation): Promise<void>
   recoverPending(key: CollectionKey, reason: RecoveryReason): Promise<CollectionKey>
-  snapshot(key: CollectionKey): Promise<LocalSnapshot>
+  snapshot(key: CollectionKey, options?: { allowMissingMedia?: boolean }): Promise<LocalSnapshot>
   releaseSnapshot(id: string): Promise<void>
   pending(key: CollectionKey): Promise<PendingIntent[]>
   resumeAfterAuthentication(key: CollectionKey, generation: Generation): Promise<void>

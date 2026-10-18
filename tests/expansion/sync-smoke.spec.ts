@@ -64,10 +64,10 @@ async function page(context: BrowserContext) {
   await p.evaluate((env) => window.LoopmarkSyncHarness.start(env), environment)
   return p
 }
-async function login(p: Page, email: string) {
+async function emailCode(email: string, request: () => Promise<unknown>) {
   const before = await (await fetch(mailpit + '/api/v1/messages')).json(),
     existing = new Set(before.messages.map((m: { ID: string }) => m.ID))
-  await p.evaluate((email) => window.LoopmarkSyncHarness.requestCode(email), email)
+  await request()
   let code = ''
   await expect
     .poll(
@@ -85,6 +85,12 @@ async function login(p: Page, email: string) {
       { timeout: 15000, intervals: [250, 500, 1000] },
     )
     .toBe(true)
+  return code
+}
+async function login(p: Page, email: string) {
+  const code = await emailCode(email, () =>
+    p.evaluate((email) => window.LoopmarkSyncHarness.requestCode(email), email),
+  )
   await p.evaluate(({ email, code }) => window.LoopmarkSyncHarness.verifyCode(email, code), {
     email,
     code,
@@ -160,5 +166,57 @@ test('actual OTP plus two browser devices converge text and retain a real concur
     )
   } finally {
     for (const context of [first, second, other]) await context.close()
+  }
+})
+
+test('actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion', async ({
+  browser,
+}) => {
+  test.setTimeout(90000)
+  const context = await browser.newContext(),
+    email = `loopmark-client-candidate-${crypto.randomUUID()}@example.invalid`
+  try {
+    const p = await page(context)
+    const project = await p.evaluate(() => window.LoopmarkSyncHarness.createProject())
+    const photo = await p.evaluate(
+      (id) => window.LoopmarkSyncHarness.photoCheckpoint(id),
+      project.id,
+    )
+    await login(p, email)
+    expect(await p.evaluate(() => window.LoopmarkSyncHarness.projects())).toEqual([])
+    let sentPrepare = 0
+    p.on('request', (request) => {
+      if (request.url().endsWith('/collection-attach')) sentPrepare++
+    })
+    const preview = await p.evaluate(() => window.LoopmarkSyncHarness.previewGuest())
+    expect(sentPrepare).toBe(0)
+    await p.evaluate((preview) => window.LoopmarkSyncHarness.confirm(preview), preview)
+    expect(sentPrepare).toBeGreaterThan(0)
+    const connected = await p.evaluate(() => window.LoopmarkSyncHarness.state())
+    expect(connected.view?.info.kind).toBe('connected')
+    expect(connected.view?.pending).toEqual([])
+    expect(connected.view?.projects).toHaveLength(1)
+    expect(connected.scope?.key.epoch).not.toBe(preview.destination.key.epoch)
+    expect(
+      (await p.evaluate(() => window.LoopmarkSyncHarness.backup())).projects[0].checkpoints[0]
+        .photo,
+    ).toBe(photo)
+    await new Promise((resolve) => setTimeout(resolve, 5100))
+    const code = await emailCode(email, () =>
+      p.evaluate(() => window.LoopmarkSyncHarness.deletionCode()),
+    )
+    expect((await p.evaluate(() => window.LoopmarkSyncHarness.review())).missingAttachments).toBe(0)
+    const deleted = await p.evaluate((code) => window.LoopmarkSyncHarness.deleteAccount(code), code)
+    expect(deleted.receipt.status).toMatch(/pending|live-data-removed|complete/)
+    expect(deleted.saved[0].localOutcome).toBe('kept')
+    const local = await p.evaluate(() => window.LoopmarkSyncHarness.state())
+    expect(local.account).toBeNull()
+    expect(local.view?.info.kind).toBe('retained')
+    expect(
+      (await p.evaluate(() => window.LoopmarkSyncHarness.backup())).projects[0].checkpoints[0]
+        .photo,
+    ).toBe(photo)
+  } finally {
+    await context.close()
   }
 })

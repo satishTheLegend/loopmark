@@ -20,11 +20,13 @@ export async function assertMediaPresent(
   tx: IDBTransaction,
   scope: CollectionKey,
   refs: MediaRef[],
+  allowMissing = false,
 ): Promise<void> {
   for (const ref of refs) {
     const row = await requestResult<MediaRow | undefined>(
       tx.objectStore('media').get(mediaKey(scope, ref.id)),
     )
+    if (!row && allowMissing) continue
     if (!row || canonicalJson(row.ref) !== canonicalJson(ref) || row.bytes.byteLength !== ref.bytes)
       throw new DomainError('BACKUP_INCOMPLETE')
   }

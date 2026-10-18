@@ -8,9 +8,19 @@ import { createSyncCoordinator } from '../../src/sync/coordinator'
 import { createSyncTransport } from '../../src/sync/transport'
 import { createTabLease } from '../../src/sync/tab-lease'
 import { parsePublicConfig } from '../../src/config'
+import { createBrowserWorkflowStore } from '../../src/repositories/browser/workflow-store'
+import { createRemoteMediaService } from '../../src/services/media-service'
+import { createMediaTransport } from '../../src/sync/media-transport'
+import { createReplacementService } from '../../src/services/replacement-service'
+import { createBackupService } from '../../src/services/backup-service'
+import { createDeletionService } from '../../src/services/deletion-service'
 import { DomainError } from '../../src/domain/errors'
 let controller: ReturnType<typeof createAppController>,
   adapter: ReturnType<typeof createLocalDataAdapter>,
+  replacement: ReturnType<typeof createReplacementService>,
+  deletion: ReturnType<typeof createDeletionService>,
+  backupService: ReturnType<typeof createBackupService>,
+  remoteMedia: ReturnType<typeof createRemoteMediaService>,
   repository: Awaited<ReturnType<typeof openBrowserRepository>>
 export async function start(environment: Record<string, string>) {
   repository = await openBrowserRepository({ databaseName: 'smoke-client' })
@@ -33,12 +43,40 @@ export async function start(environment: Record<string, string>) {
       device: { id: crypto.randomUUID(), generation: crypto.randomUUID() },
     })
   }
+  const config = parsePublicConfig(environment)
+  if (!config.cloud.enabled) throw new Error('Cloud required')
   const auth = createAccountAuth({
-    config: parsePublicConfig(environment),
+    config,
     devices: createBrowserDeviceStore(repository),
   })
+  const workflows = createBrowserWorkflowStore(repository),
+    transport = createSyncTransport(auth.functions),
+    current = () => controller?.getSession() ?? null
+  remoteMedia = createRemoteMediaService({
+    repository,
+    media: repository.media,
+    workflows,
+    current,
+    transport: createMediaTransport({
+      url: config.cloud.url,
+      publicKey: config.cloud.publicKey,
+      token: auth.accessToken,
+      client: auth.functions,
+    }),
+  })
+  replacement = createReplacementService({
+    repository,
+    workflows,
+    transport,
+    client: auth.functions,
+    media: remoteMedia,
+    current,
+  })
+  deletion = createDeletionService({ repository, workflows, auth, client: auth.functions, current })
   controller = createAppController({
     repository,
+    media: repository.media,
+    connections: replacement,
     auth,
     sync: createSyncCoordinator({
       repository,
@@ -56,6 +94,13 @@ export async function start(environment: Record<string, string>) {
       if (!scope) throw new DomainError('ACCOUNT_CHANGED')
       return scope
     },
+  })
+  backupService = createBackupService({
+    repository,
+    media: repository.media,
+    data: adapter,
+    scope: () => controller.getSnapshot().scope!,
+    remote: { media: remoteMedia, transport, current },
   })
 }
 export const requestCode = (email: string) => controller.requestCode(email)
@@ -97,4 +142,61 @@ export async function keepDeviceConflict() {
   if (!pending) throw new Error('Expected a reviewed conflict')
   await controller.resolveConflict(pending.intent.operationId, view.revision, { action: 'device' })
   await controller.runSync()
+}
+
+export async function photoCheckpoint(projectId: string) {
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 32
+  const context = canvas.getContext('2d')!
+  context.fillStyle = '#759688'
+  context.fillRect(0, 0, 32, 32)
+  const photo = canvas.toDataURL('image/png')
+  await adapter.addCheckpoint(
+    projectId,
+    {
+      position: 'row 20',
+      toolSize: '4 mm',
+      nextStep: 'Turn and continue the photo row',
+      notes: '',
+      photo,
+    },
+    'photo-token',
+  )
+  return photo
+}
+export async function previewGuest() {
+  const source = controller.getSnapshot().collections.find((c) => c.kind === 'guest')!
+  return controller.previewAttach(source.key)
+}
+export const confirm = (preview: Awaited<ReturnType<typeof previewGuest>>) =>
+  controller.confirmAttach(preview)
+export async function downloadAll() {
+  const scope = controller.getSnapshot().scope!
+  const view = await repository.readView(scope.key)
+  for (const checkpoint of view.checkpoints)
+    for (const ref of [checkpoint.photo, checkpoint.voice])
+      if (ref) await remoteMedia.ensureAvailable(ref, scope, new AbortController().signal)
+}
+export const backup = () => backupService.exportComplete()
+export const candidates = () => replacement.list()
+export const deletionCode = () =>
+  deletion.requestCode(controller.getSnapshot().scope!, new AbortController().signal)
+export const review = () => controller.prepareSignOut()
+export async function deleteAccount(code: string) {
+  let id = ''
+  await controller.deleteAccount({ keepLocal: true }, async (scope) => {
+    id = (
+      await deletion.delete(
+        { operationToken: 'delete-test', code },
+        scope,
+        new AbortController().signal,
+      )
+    ).id
+  })
+  await deletion.recordLocalOutcome(id, 'kept')
+  return {
+    id,
+    receipt: await deletion.refreshReceipt(id, new AbortController().signal),
+    saved: await deletion.listReceipts(),
+  }
 }

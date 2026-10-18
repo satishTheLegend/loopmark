@@ -112,3 +112,136 @@ it('a generation change while media is being prepared cannot install the old-ses
   })
   expect(await repo.listCollections()).toHaveLength(1)
 })
+
+it('complete export pins one local view, fetches missing bytes from one server lease, and keeps unsent history', async () => {
+  const connected = info(true, 'export')
+  await repo.createCollection(connected)
+  scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+  const prepared = await prepareBackupRecords(backup, repo.media, scope)
+  const manifest = {
+    protocolVersion: 2 as const,
+    snapshotId: 'export-lease',
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    cursor: '1',
+    revision: '1',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+    after: null,
+    nextPage: null,
+    projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+    checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+    media: prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!]),
+  }
+  await repo.hydrate(scope.key, [manifest], scope.generation)
+  const photo = manifest.media[0],
+    original = await new Response(await repo.media.open(photo, scope.key)).arrayBuffer()
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    tx.objectStore('media').delete(mediaKey(scope.key, photo.id))
+  })
+  await expect(repo.snapshot(scope.key)).rejects.toMatchObject({
+    detail: { code: 'BACKUP_INCOMPLETE' },
+  })
+  const pending = create('unsent', 'unsent-create')
+  await repo.commitLocal(scope.key, pending, scope.generation)
+  const transport = {
+    snapshot: vi.fn(async () => manifest),
+    releaseSnapshot: vi.fn(async () => {}),
+    push: vi.fn(),
+    pull: vi.fn(),
+  }
+  let localReleased = false
+  const release = repo.releaseSnapshot.bind(repo)
+  vi.spyOn(repo, 'releaseSnapshot').mockImplementation(async (id) => {
+    localReleased = true
+    await release(id)
+  })
+  const ensureAvailable = vi.fn(async (ref, bound, _signal, snapshotId) => {
+    expect(snapshotId).toBe('export-lease')
+    expect(localReleased).toBe(false)
+    expect(transport.releaseSnapshot).not.toHaveBeenCalled()
+    await repo.media.storeVerified(
+      ref,
+      new Blob([original], { type: photo.mimeType }),
+      bound.key,
+      bound.generation,
+    )
+  })
+  const session = {
+    accountId: 'account',
+    billingPrincipalId: 'principal',
+    collection: scope.key,
+    device: scope.device,
+    deletionGeneration: '0',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+  }
+  const exporter = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data: {} as never,
+    scope: () => scope,
+    remote: { transport, media: { ensureAvailable, upload: vi.fn() }, current: () => session },
+  })
+  const exported = await exporter.exportComplete()
+  expect(exported.projects.map((p) => p.id).sort()).toEqual(['project', 'unsent'])
+  expect(exported.projects.find((p) => p.id === 'project')!.checkpoints[0].photo).toBe(png)
+  expect(ensureAvailable).toHaveBeenCalledTimes(1)
+  expect(localReleased).toBe(true)
+  expect(transport.releaseSnapshot).toHaveBeenCalledWith('export-lease', expect.any(AbortSignal))
+  transport.snapshot.mockClear()
+  await exporter.exportComplete()
+  expect(transport.snapshot).not.toHaveBeenCalled() // Complete cached copies remain exportable offline.
+})
+
+it('missing server bytes reject a complete export and release both leases without emitting a partial backup', async () => {
+  const connected = info(true, 'missing')
+  await repo.createCollection(connected)
+  scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+  const prepared = await prepareBackupRecords(backup, repo.media, scope)
+  const manifest = {
+    protocolVersion: 2 as const,
+    snapshotId: 'missing-lease',
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    cursor: '1',
+    revision: '1',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+    after: null,
+    nextPage: null,
+    projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+    checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+    media: prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!]),
+  }
+  await repo.hydrate(scope.key, [manifest], scope.generation)
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    tx.objectStore('media').delete(mediaKey(scope.key, manifest.media[0].id))
+  })
+  const transport = {
+    snapshot: vi.fn(async () => ({ ...manifest, media: [] })),
+    releaseSnapshot: vi.fn(async () => {}),
+    push: vi.fn(),
+    pull: vi.fn(),
+  }
+  const session = {
+    accountId: 'account',
+    billingPrincipalId: 'principal',
+    collection: scope.key,
+    device: scope.device,
+    deletionGeneration: '0',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+  }
+  const ensureAvailable = vi.fn()
+  const exporter = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data: {} as never,
+    scope: () => scope,
+    remote: { transport, media: { ensureAvailable, upload: vi.fn() }, current: () => session },
+  })
+  const release = vi.spyOn(repo, 'releaseSnapshot')
+  await expect(exporter.exportComplete()).rejects.toMatchObject({
+    detail: { code: 'BACKUP_INCOMPLETE' },
+  })
+  expect(ensureAvailable).not.toHaveBeenCalled()
+  expect(release).toHaveBeenCalledOnce()
+  expect(transport.releaseSnapshot).toHaveBeenCalledOnce()
+})

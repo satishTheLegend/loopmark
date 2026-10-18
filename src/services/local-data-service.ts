@@ -16,6 +16,7 @@ import type {
   Base,
   Backup,
   LocalCollectionCandidate,
+  LocalSnapshot,
 } from '../domain/contracts'
 import { canonicalHash } from '../domain/canonical-json'
 import { DomainError } from '../domain/errors'
@@ -58,7 +59,7 @@ function projectBase(view: CollectionView, project: ProjectRecord): Base {
 async function expandProject(
   project: ProjectRecord,
   checkpoints: CheckpointRecord[],
-  deps: LocalDataDependencies,
+  deps: Pick<LocalDataDependencies, 'media'>,
   scope: SessionScope,
   allowMissing: boolean,
   limit: ReturnType<typeof limiter>,
@@ -86,6 +87,27 @@ async function expandProject(
     ...fields,
     checkpoints: children.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
   }
+}
+/** Serialize the exact pinned local view, including unsent history, with strict complete bytes. */
+export async function encodeSnapshotBackup(
+  snapshot: LocalSnapshot,
+  media: PlatformMedia,
+  scope: SessionScope,
+  mediaConcurrency = 2,
+): Promise<Backup> {
+  const limit = limiter(mediaConcurrency)
+  const backup: Backup = {
+    format: 'loopmark',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    projects: await mapBounded(snapshot.view.projects, (p) =>
+      expandProject(p, snapshot.view.checkpoints, { media }, scope, false, limit),
+    ),
+  }
+  if (utf8Bytes(backup) > MAX_BACKUP_BYTES) throw new DomainError('TECHNICAL_CAPACITY_REACHED')
+  const validated = parseBackup(JSON.stringify(backup))
+  await validateBackupMedia(validated)
+  return validated
 }
 export async function prepareBackupRecords(
   backup: Backup,
@@ -352,19 +374,7 @@ export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter
       const bound = scope(),
         snapshot = await repository.snapshot(bound.key)
       try {
-        const backup: Backup = {
-          format: 'loopmark',
-          version: 1,
-          exportedAt: new Date().toISOString(),
-          projects: await mapBounded(snapshot.view.projects, (p) =>
-            expandProject(p, snapshot.view.checkpoints, deps, bound, false, limit),
-          ),
-        }
-        if (utf8Bytes(backup) > MAX_BACKUP_BYTES)
-          throw new DomainError('TECHNICAL_CAPACITY_REACHED')
-        const validated = parseBackup(JSON.stringify(backup))
-        await validateBackupMedia(validated)
-        return validated
+        return await encodeSnapshotBackup(snapshot, media, bound, deps.mediaConcurrency)
       } finally {
         await repository.releaseSnapshot(snapshot.id)
       }
