@@ -1,6 +1,75 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page, type Route } from '@playwright/test'
+import type { Command, PullPage, Receipt } from '../../src/domain/contracts'
 import { readFile } from 'node:fs/promises'
 import { signIn, chooseAccount, createProject, deliveredCode, origin } from '../cloud/helpers'
+
+// A previous empty-account cycle can still say "Synced" just after a local save.
+// Hold this exact mutation until its waiting state is visible, then require its
+// receipt to pass through pull before the caller relies on a settled review.
+async function holdProjectPush(page: Page, name: string) {
+  let release!: () => void
+  const gate = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  let submitted!: (command: Command) => void
+  const commandReady = new Promise<Command>((resolve) => {
+    submitted = resolve
+  })
+  const pattern = '**/functions/v1/sync-push'
+  const hold = async (route: Route) => {
+    if (route.request().method() !== 'POST') return route.continue()
+    const command = route.request().postDataJSON() as Command
+    if (command.kind === 'project.create' && command.payload.project.name === name) {
+      submitted(command)
+      await gate
+    }
+    await route.continue()
+  }
+  await page.route(pattern, hold)
+  return async () => {
+    try {
+      const syncLabel = page.locator('.sync-status > span:not(.sr-only)')
+      await expect(syncLabel).toBeVisible({ timeout: 20000 })
+      await expect(syncLabel).toHaveText(/waiting to sync|Syncing with your account/, {
+        timeout: 20000,
+      })
+      const command = await commandReady
+      const pushed = page.waitForResponse(
+        (response) =>
+          response.url().endsWith('/functions/v1/sync-push') &&
+          response.request().method() === 'POST' &&
+          response.request().postDataJSON()?.operationId === command.operationId,
+        { timeout: 20000 },
+      )
+      const pulled = page.waitForResponse(
+        async (response) => {
+          if (!response.url().endsWith('/functions/v1/sync-pull') || !response.ok()) return false
+          const body = (await response.json()) as PullPage
+          return (
+            body.collectionId === command.collectionId &&
+            body.epoch === command.epoch &&
+            body.entries.some((entry) => entry.operationId === command.operationId)
+          )
+        },
+        { timeout: 20000 },
+      )
+      release()
+      const [pushResponse, pullResponse] = await Promise.all([pushed, pulled])
+      expect(pushResponse.ok()).toBe(true)
+      const receipt = (await pushResponse.json()) as Receipt
+      const pageResult = (await pullResponse.json()) as PullPage
+      expect(pageResult.entries.find((entry) => entry.operationId === command.operationId)).toEqual(
+        receipt,
+      )
+      expect(BigInt(pageResult.nextCursor)).toBeGreaterThanOrEqual(BigInt(receipt.cursor))
+      await expect(syncLabel).toBeVisible({ timeout: 20000 })
+      await expect(syncLabel).toHaveText('Synced to your account', { timeout: 20000 })
+    } finally {
+      release()
+      await page.unroute(pattern, hold)
+    }
+  }
+}
 
 test('actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work', async ({
   page,
@@ -11,10 +80,9 @@ test('actual deletion removes the selected account copy only after explicit uniq
   await createProject(page, 'Separate personal scarf')
   await signIn(page, email)
   await chooseAccount(page)
+  const finishProjectSync = await holdProjectPush(page, 'Account copy to remove')
   await createProject(page, 'Account copy to remove')
-  await expect(page.locator('.sync-status')).toContainText('Synced to your account', {
-    timeout: 20000,
-  })
+  await finishProjectSync()
   await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
   await page.getByLabel('What will you do next?').fill('Unsent draft explicitly discarded')
   await page.getByRole('button', { name: 'Close dialog' }).click()
@@ -123,22 +191,12 @@ test('actual account deletion retains reviewed work and a private status receipt
   const email = `loopmark-delete-ui-${crypto.randomUUID()}@example.invalid`
   await signIn(page, email)
   await chooseAccount(page)
-  let releasePush!: () => void
-  const pushGate = new Promise<void>((resolve) => {
-    releasePush = resolve
-  })
-  await page.route('**/functions/v1/sync-push', async (route) => {
-    await pushGate
-    await route.continue()
-  })
+  const finishProjectSync = await holdProjectPush(page, 'Keep after deleting cloud account')
   await createProject(page, 'Keep after deleting cloud account')
   await page.goto(origin + '/#account')
   await page.getByRole('button', { name: 'Review account deletion' }).click()
   await expect(page.getByRole('radio', { name: /Keep a separate local copy/ })).toBeChecked()
-  releasePush()
-  const syncLabel = page.locator('.sync-status > span:not(.sr-only)')
-  await expect(syncLabel).toBeVisible()
-  await expect(syncLabel).toHaveText('Synced to your account')
+  await finishProjectSync()
   await page.waitForTimeout(5100)
   const code = await deliveredCode(email, () =>
     page.getByRole('button', { name: 'Send deletion code' }).click(),

@@ -1,0 +1,118 @@
+{
+  "frozen_product_source": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+  "original_trace_path": "test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-webkit-mobile/trace.zip",
+  "original_trace_sha256": "6841fbd137f337cf912dfd5fab1a0688d1d060d824bc7d103bd4396d5e985bdd",
+  "profile": "webkit-mobile",
+  "time_basis": "seconds from Before Hooks start in original trace",
+  "ui_timeline": [
+    {
+      "event": "previous empty-account current status",
+      "seconds": 7.776,
+      "visible_label": "Synced to your account"
+    },
+    {
+      "event": "old container text assertion starts",
+      "seconds": 8.11
+    },
+    {
+      "event": "old container text assertion passes",
+      "seconds": 8.124
+    },
+    {
+      "event": "immediately following snapshot",
+      "seconds": 8.128,
+      "visible_label": "1 item waiting to sync"
+    },
+    {
+      "event": "deletion review click starts",
+      "seconds": 8.509
+    },
+    {
+      "event": "deletion review click finishes",
+      "seconds": 8.583
+    },
+    {
+      "event": "remove-copy radio check finishes",
+      "seconds": 8.929
+    },
+    {
+      "event": "Delete account click starts",
+      "seconds": 14.563
+    },
+    {
+      "event": "Delete account click finishes",
+      "seconds": 14.618
+    },
+    {
+      "event": "receipt assertion starts",
+      "seconds": 14.621
+    },
+    {
+      "event": "receipt assertion expires",
+      "seconds": 44.627
+    }
+  ],
+  "sync_http": [
+    {
+      "endpoint": "sync-pull",
+      "start_seconds": 7.717,
+      "end_seconds": 7.739,
+      "status": 200,
+      "request_after_cursor": "0",
+      "next_cursor": "0",
+      "has_more": false,
+      "entries": 0,
+      "entry_cursors": [],
+      "contains_exact_push_receipt": false
+    },
+    {
+      "endpoint": "sync-push",
+      "start_seconds": 8.441,
+      "end_seconds": 8.562,
+      "status": 200,
+      "command_kind": "project.create",
+      "receipt_cursor": "1",
+      "receipt_revision": "1",
+      "change_kinds": [
+        "project.put"
+      ]
+    },
+    {
+      "endpoint": "sync-pull",
+      "start_seconds": 8.605,
+      "end_seconds": 8.636,
+      "status": 200,
+      "request_after_cursor": "0",
+      "next_cursor": "1",
+      "has_more": false,
+      "entries": 1,
+      "entry_cursors": [
+        "1"
+      ],
+      "contains_exact_push_receipt": true
+    },
+    {
+      "endpoint": "sync-pull",
+      "start_seconds": 8.934,
+      "end_seconds": 8.994,
+      "status": 200,
+      "request_after_cursor": "1",
+      "next_cursor": "1",
+      "has_more": false,
+      "entries": 0,
+      "entry_cursors": [],
+      "contains_exact_push_receipt": false
+    }
+  ],
+  "deletion_http_requests": 0,
+  "reauthentication_http_requests": 0,
+  "final_error_code": "REVISION_CONFLICT",
+  "final_scope_label": "Account projects",
+  "final_review_counts": {
+    "unsent_project_changes": 0,
+    "drafts": 1
+  },
+  "verdict": "Real receipt/cursor advancement occurred after the destructive review. The valid unchanged-cursor empty pull remained a no-op. The test used a previous current status as readiness for a later save; the product correctly refused stale reviewed deletion before any destructive request. The trace does not establish that a stale live announcement caused this case.",
+  "verification": "Trace analysis and format/diff checks only; no browser, test, build or service execution in this lane. Focused runtime checks are pending root coordination.",
+  "privacy": "Only timing, generic status/error labels, counts and sync cursor metadata retained. No OTP, account identity, operation ID, project ID, craft content, credentials, request bodies or receipt capability is copied."
+}
