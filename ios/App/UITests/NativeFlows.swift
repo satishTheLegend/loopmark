@@ -138,6 +138,8 @@ final class InboxProductFlows: XCTestCase {
         let restore = app.buttons["Restore as separate collection"]
         XCTAssertTrue(restore.waitForExistence(timeout: 30), app.debugDescription); restore.tap()
         XCTAssertTrue(restore.waitForNonExistence(timeout: 30), app.debugDescription)
+        app.buttons["Open navigation"].tap()
+        app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "My projects")).firstMatch.tap()
         let restored = app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "Pick up iOS external backup")).firstMatch
         XCTAssertTrue(restored.waitForExistence(timeout: 30), app.debugDescription)
         app.open(file)

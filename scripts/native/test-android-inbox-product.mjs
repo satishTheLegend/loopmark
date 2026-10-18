@@ -81,6 +81,12 @@ try {
   )
   let page = await restart()
   await page.getByRole('button', { name: 'Change collection', exact: true }).waitFor()
+  await page.getByRole('button', { name: 'Change collection', exact: true }).click()
+  const personal = page.locator('.collection-option').filter({
+    has: page.getByText('Personal projects', { exact: true }),
+  })
+  if (await personal.count()) await personal.click()
+  else await page.getByRole('button', { name: 'Keep current collection', exact: true }).click()
   const sourceName = await page.locator('.collection-heading strong').textContent()
   const before = await countCollections(page)
   await send('valid')
@@ -98,6 +104,9 @@ try {
   await send('other') // A second file creates a notice while the original explicit preview stays open.
   await page.getByRole('button', { name: 'Restore as separate collection', exact: true }).click()
   await page.getByRole('dialog').waitFor({ state: 'hidden' })
+  // Restore keeps the maker on Backup & restore. Navigate through the product UI.
+  await page.getByRole('button', { name: 'Open navigation', exact: true }).click()
+  await page.getByRole('button', { name: /^My projects/ }).click()
   await page.getByRole('button', { name: `Pick up External valid ${tag}`, exact: true }).waitFor()
   await notice().getByText('This incoming file could not be prepared.', { exact: false }).waitFor()
   await notice().getByRole('button', { name: 'Dismiss backup file', exact: true }).click()
