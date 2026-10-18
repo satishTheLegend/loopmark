@@ -387,7 +387,9 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         }
         await send(a, 'sync-push', checkpointCommand)
         const page = await send(a, 'sync-pull', pullRequest(a))
-        expect(page.body.entries).toHaveLength(2)
+        expect(
+          page.body.entries.map((entry: { operationId: string }) => entry.operationId),
+        ).toEqual([cmd.operationId, checkpointCommand.operationId])
         // Verify ownership after the burst below, so an overloaded gateway cannot masquerade as authorization denial.
       }),
     )
@@ -421,7 +423,9 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
           await send(a, 'sync-push', cmd, deadline)
           await send(a, 'sync-push', checkpointCommand, deadline)
           const page = await send(a, 'sync-pull', pullRequest(a), deadline)
-          expect(page.body.entries).toHaveLength(2)
+          expect(
+            page.body.entries.map((entry: { operationId: string }) => entry.operationId),
+          ).toEqual([cmd.operationId, checkpointCommand.operationId])
           return true
         } catch {
           return false
@@ -467,6 +471,25 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         ),
       ),
     ).toBe(count)
+    report.committedInvariants = JSON.parse(
+      await sql(`select jsonb_build_object(
+      'receipts',(select count(*) from loopmark_private.operation_receipts where owner_id in (${owners})),
+      'feed',(select count(*) from loopmark_private.change_feed where owner_id in (${owners})),
+      'projects',(select count(*) from loopmark_private.projects where owner_id in (${owners})),
+      'checkpoints',(select count(*) from loopmark_private.checkpoints where owner_id in (${owners})),
+      'pending',(select count(*) from loopmark_private.sync_pending where owner_id in (${owners})),
+      'maximumPendingPerOwner',(select coalesce(max(n),0) from (select count(*) n from loopmark_private.sync_pending where owner_id in (${owners}) group by owner_id)t),
+      'crossOwnerCollectionMismatch',(select count(*) from loopmark_private.projects p join loopmark_private.collections c on c.id=p.collection_id where p.owner_id in (${owners}) and p.owner_id<>c.owner_id))`),
+    )
+    expect(report.committedInvariants).toMatchObject({
+      receipts: count * 2,
+      feed: count * 2,
+      projects: count,
+      checkpoints: count,
+      crossOwnerCollectionMismatch: 0,
+    })
+    expect(report.committedInvariants.maximumPendingPerOwner).toBeLessThanOrEqual(2)
+    report.crossOwnerDenials = count
     report.phase = 'interrupted-media'
     await mapLimit(prepared.slice(0, 10), 2, async ({ a, value }, index) => {
       const media = audioFixture(index + 1, 65536),
