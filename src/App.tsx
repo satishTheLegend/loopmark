@@ -97,7 +97,7 @@ export default function App({
     [loading, setLoading] = useState(true),
     [loadError, setLoadError] = useState(''),
     [route, setRoute] = useState<Route>(readRoute),
-    [modal, setModal] = useState<Modal>(null),
+    [modal, setModalState] = useState<Modal>(null),
     [mobileOpen, setMobileOpen] = useState(false),
     [toast, setToast] = useState(''),
     [toastError, setToastError] = useState(false),
@@ -133,6 +133,12 @@ export default function App({
     acknowledged: CollectionView
   } | null>(null)
   const exitGuard = useRef<(() => Promise<boolean>) | undefined>(undefined)
+  const navigationIntent = useRef(0)
+  const setModal = useCallback((next: Modal) => {
+    // A newly opened/closed form supersedes navigation that was waiting on storage.
+    navigationIntent.current += 1
+    setModalState(next)
+  }, [])
   const currentRoute = useRef(route)
   currentRoute.current = route
   const currentMobileOpen = useRef(mobileOpen)
@@ -201,17 +207,21 @@ export default function App({
     if (!runtime) return
     let active = true
     const open = async (url: string) => {
-      if (exitGuard.current && !(await exitGuard.current())) return
+      const intent = ++navigationIntent.current
       const requestedFrom = location.href
+      const current = () =>
+        active && navigationIntent.current === intent && location.href === requestedFrom
+      if (exitGuard.current && !(await exitGuard.current())) return
+      if (!current()) return
       try {
         const target = await runtime.openUrl(url)
-        if (active && location.href === requestedFrom) {
+        if (current()) {
           setModal(null)
           history.replaceState(null, '', `/#${target}`)
           navigate(target)
         }
       } catch (error) {
-        if (active) notify(errorText(error), true)
+        if (current()) notify(errorText(error), true)
       }
     }
     const initial = location.href
@@ -258,12 +268,22 @@ export default function App({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [runtime])
   useEffect(() => {
-    const change = async () => {
+    let active = true
+    const change = async (event: HashChangeEvent) => {
+      // A hash event may arrive after a newer URL or after an equivalent route was rendered.
+      if (event.newURL && event.newURL !== location.href) return
       const next = readRoute()
+      if (next === currentRoute.current) return
+      const intent = ++navigationIntent.current
+      const requestedFrom = location.href
+      const current = () =>
+        active && navigationIntent.current === intent && location.href === requestedFrom
       if (exitGuard.current && !(await exitGuard.current())) {
-        history.replaceState(null, '', `#${currentRoute.current}`)
+        if (current()) history.replaceState(null, '', `#${currentRoute.current}`)
         return
       }
+      if (!current()) return
+      currentRoute.current = next
       setRoute(next)
       if (next !== 'backup') setIncomingReview(null)
       setModal(null)
@@ -280,6 +300,7 @@ export default function App({
     window.addEventListener('online', connection)
     window.addEventListener('offline', connection)
     return () => {
+      active = false
       window.removeEventListener('hashchange', change)
       window.removeEventListener('online', connection)
       window.removeEventListener('offline', connection)
@@ -309,7 +330,9 @@ export default function App({
     return () => document.removeEventListener('keydown', closeOnEscape)
   }, [mobileOpen])
   function navigate(next: Route) {
+    navigationIntent.current += 1
     if (readRoute() === next) {
+      currentRoute.current = next
       setRoute(next)
       setMobileOpen(false)
     } else location.hash = next
