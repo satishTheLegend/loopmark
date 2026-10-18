@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "status": "resolved-before-test-execution",
+  "failure": "Preview server readiness timed out before any guest case ran. dist and dist/index.html were absent on inspection.",
+  "causeLimit": "The source of build-directory removal was not established. No product defect was inferred.",
+  "action": "Preserved the failed startup log and selection record, rebuilt the unchanged product, then reran the same selected journeys.",
+  "productCommit": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448"
+}
