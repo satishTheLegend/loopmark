@@ -73,6 +73,15 @@ async function countCollections(page) {
   await page.getByRole('button', { name: 'Keep current collection', exact: true }).click()
   return count
 }
+async function waitForCollection(page, name) {
+  // The click admits an asynchronous durable collection transition. Observe its
+  // exact selected heading before capturing a source or asserting preservation.
+  await page.getByRole('dialog').waitFor({ state: 'hidden' })
+  await page.waitForFunction(
+    (expected) => document.querySelector('.collection-heading strong')?.textContent === expected,
+    name,
+  )
+}
 try {
   // The previously built test APK is a separate UID and grants access through the OS.
   check(
@@ -85,8 +94,10 @@ try {
   const personal = page.locator('.collection-option').filter({
     has: page.getByText('Personal projects', { exact: true }),
   })
-  if (await personal.count()) await personal.click()
-  else await page.getByRole('button', { name: 'Keep current collection', exact: true }).click()
+  if (await personal.count()) {
+    await personal.click()
+    await waitForCollection(page, 'Personal projects')
+  } else await page.getByRole('button', { name: 'Keep current collection', exact: true }).click()
   const sourceName = await page.locator('.collection-heading strong').textContent()
   const before = await countCollections(page)
   await send('valid')
@@ -137,6 +148,7 @@ try {
     .filter({ has: page.locator('strong', { hasText: sourceName }) })
     .first()
     .click()
+  await waitForCollection(page, sourceName)
   check(
     (await page.locator('.collection-heading strong').textContent()) === sourceName,
     'Original collection not preserved',
