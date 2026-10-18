@@ -1,0 +1,11 @@
+# External backup opening
+
+The OS document callback stages at most one 50 MiB file in app-private storage. It hashes while copying, flushes and closes the temporary file, renames on the same volume, flushes the directory, and then publishes the durable inbox manifest. The inbox inherits the existing iOS backup exclusion and Android backup/device-transfer exclusion. It does not import, select a collection, or expose a path-reading API to JavaScript.
+
+Android accepts only OS-delivered `content://` VIEW/SEND intents with a read grant; iOS coordinates a security-scoped file URL from the scene document callback. References: [Android document access](https://developer.android.com/training/data-storage/shared/documents-files), [Apple document type declarations](https://help.apple.com/xcode/mac/current/en.lproj/devddd273fdd.html).
+
+The native inbox holds a bounded notice plus one pending file and up to 4,096 handled-file receipts. A second different file produces a notice and preserves the original. A repeated identical file keeps its original SHA-256 ID and operation token. A handled file produces an already-handled notice, so reopening it cannot silently create another collection. Temporary and orphaned inbox bytes are removed on reopen.
+
+`createNativeBackupInbox(repository)` exposes `initialize`, `dispose`, `pending`, `bind`, `read`, and `finish`. Explicit review binds the file to the complete active session. Re-review can advance the generation only for the same collection and device. Another collection can dismiss the inbox item without removing any craft data. Reads are chunked, checked against the full file hash, and fenced again before returning. Import completion is recorded in SQLite before the private bytes are removed. The caller finishes the inbox before selecting the recovered collection. A crash before completion uses the same restore operation token on retry.
+
+Qualification at this source checkpoint: TypeScript, native Java store/plugin compilation, Swift store/plugin typechecking against the installed Capacitor framework, and plist/project parsing passed. Actual iOS/Android OS file delivery, process relaunch, and end-to-end explicit restore remain pending the reserved native runtime interval. These source checks are not native runtime evidence.

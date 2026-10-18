@@ -21,6 +21,8 @@
 		E60E4CB0ECB14D6396DD4278 /* LoopmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF1335C21D24DB79C9DB0F1 /* LoopmarkViewController.swift */; };
 		04958E6674F54E0AB46139D2 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E0B38EFA064A4740B4DBE8CB /* PrivacyInfo.xcprivacy */; };
 		F10400000000000000000004 /* NativeFlows.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10400000000000000000003; };
+		F13200000000000000000002 /* BackupInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13200000000000000000001; };
+		F13200000000000000000004 /* BackupInboxPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13200000000000000000003; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,8 @@
 		E0B38EFA064A4740B4DBE8CB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; name = "PrivacyInfo.xcprivacy"; path = "PrivacyInfo.xcprivacy"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; includeInIndex = 0; };
 		F10400000000000000000003 /* NativeFlows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITests/NativeFlows.swift; sourceTree = SOURCE_ROOT; };
 		F10400000000000000000002 /* LoopmarkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoopmarkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F13200000000000000000001 /* BackupInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupInbox.swift; sourceTree = "<group>"; };
+		F13200000000000000000003 /* BackupInboxPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupInboxPlugin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,8 @@
 				504EC3131FED79650016851F /* Info.plist */,
 				2FAD9762203C412B000D30F8 /* config.xml */,
 				50B271D01FEDC1A000F3C39B /* public */,
+				F13200000000000000000001 /* BackupInbox.swift */,
+				F13200000000000000000003 /* BackupInboxPlugin.swift */,
 				89222B9F2E7547DC987EB0FD /* DurableFiles.swift */,
 				E644727525554CC6AA420D1B /* DurableFilesPlugin.swift */,
 				3BF1335C21D24DB79C9DB0F1 /* LoopmarkViewController.swift */,
@@ -182,6 +188,8 @@
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
+				F13200000000000000000002 /* BackupInbox.swift in Sources */,
+				F13200000000000000000004 /* BackupInboxPlugin.swift in Sources */,
 				E4A52778D9914E7E9CAA961B /* DurableFiles.swift in Sources */,
 				75DF2F971FAE47C0A2FD83BB /* DurableFilesPlugin.swift in Sources */,
 				E60E4CB0ECB14D6396DD4278 /* LoopmarkViewController.swift in Sources */,
