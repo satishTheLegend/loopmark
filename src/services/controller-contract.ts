@@ -1,0 +1,78 @@
+import type {
+  CollectionInfo,
+  CollectionKey,
+  CollectionView,
+  ProjectFields,
+  SessionScope,
+} from '../domain/contracts'
+import type { SafeError } from '../domain/errors'
+export interface LocalWorkCounts {
+  drafts: number
+  unsentCheckpoints: number
+  pendingAttachments: number
+  failedAttachments: number
+  recoveredCollections: number
+}
+export interface CollectionSummary extends CollectionInfo {
+  projects: number
+  checkpoints: number
+  drafts: number
+}
+export interface AttachPreview {
+  id: string
+  source: { key: CollectionKey; name: string; revision: string }
+  destination: { key: CollectionKey; name: string; revision: string; email: string }
+  additions: number
+  matches: number
+  copies: number
+  mappings: Array<{
+    sourceId: string
+    sourceCode: string
+    destinationId: string
+    destinationCode: string
+  }>
+  resulting: {
+    projects: number
+    activeProjects: number
+    checkpoints: number
+    portableBytes: number
+  }
+  expiresAt: string
+}
+export interface ControllerState {
+  phase: 'starting' | 'ready' | 'error'
+  scope: SessionScope | null
+  collections: CollectionSummary[]
+  view: CollectionView | null
+  account: { accountId: string; email: string } | null
+  auth: 'guest' | 'sending-code' | 'code-sent' | 'authenticated' | 'expired'
+  sync: {
+    state: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
+    pending: number
+    lastSyncedAt: string | null
+  }
+  error: SafeError | null
+}
+export type ConflictChoice =
+  | { action: 'cloud' }
+  | { action: 'device' }
+  | { action: 'merged'; fields: ProjectFields }
+  | { action: 'later' }
+export interface AppController {
+  getSnapshot(): ControllerState
+  subscribe(listener: () => void): () => void
+  requestCode(email: string): Promise<{ retryAt: string }>
+  verifyCode(email: string, code: string): Promise<void>
+  prepareSignOut(): Promise<LocalWorkCounts>
+  signOut(options: { keepLocal: boolean; discardUniqueWork?: boolean }): Promise<void>
+  chooseCollection(key: CollectionKey): Promise<void>
+  runSync(): Promise<void>
+  previewAttach(source: CollectionKey): Promise<AttachPreview>
+  confirmAttach(preview: AttachPreview): Promise<void>
+  resolveConflict(
+    operationId: string,
+    expectedRevision: string,
+    choice: ConflictChoice,
+  ): Promise<void>
+  dispose(): Promise<void>
+}

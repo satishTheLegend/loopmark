@@ -15,18 +15,8 @@ import {
   type CollectionRow,
 } from './schema'
 
-export function bytesToDataUrl(bytes: Uint8Array, mimeType: string): string {
-  let binary = ''
-  for (let offset = 0; offset < bytes.length; offset += 8192)
-    binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192))
-  return `data:${mimeType};base64,${btoa(binary)}`
-}
-export function dataUrlToBlob(value: string): Blob {
-  const split = value.indexOf(';base64,')
-  if (!value.startsWith('data:') || split < 0) throw new DomainError('MEDIA_INVALID')
-  const raw = atob(value.slice(split + 8))
-  return new Blob([Uint8Array.from(raw, (c) => c.charCodeAt(0))], { type: value.slice(5, split) })
-}
+export { bytesToDataUrl, dataUrlToBlob } from '../../services/media-codec'
+import { bytesToDataUrl } from '../../services/media-codec'
 export async function verifyBytes(ref: MediaRef, blob: Blob): Promise<void> {
   if (
     !mediaRefSchema.safeParse(ref).success ||

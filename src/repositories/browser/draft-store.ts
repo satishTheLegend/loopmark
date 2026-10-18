@@ -4,17 +4,7 @@ import { keyOf } from '../state'
 import { transaction, requestResult, assertGeneration } from './schema'
 import type { BrowserRepository } from './repository'
 
-export interface StoredDraft<T> {
-  key: string
-  value: T
-  revision: string
-  baseRevision?: string
-}
-export interface DraftStore {
-  read<T>(key: string): Promise<StoredDraft<T> | undefined>
-  write<T>(key: string, previous: string | undefined, draft?: StoredDraft<T>): Promise<void>
-  removeProjectDrafts(projectId: string): Promise<void>
-}
+import type { DraftRecord as StoredDraft, DraftStore } from '../drafts'
 const draftKey = (scope: CollectionKey, key: string) => JSON.stringify([keyOf(scope), key])
 /** Each instance is permanently bound to the opening collection and session generation. */
 export function createBrowserDraftStore(
