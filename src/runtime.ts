@@ -375,6 +375,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     timer: ReturnType<typeof setTimeout> | undefined,
     disposed = false,
     running = false,
+    runAgain = false,
     lastWork = ''
   const hints =
     auth && cloudModules
@@ -412,6 +413,12 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   function schedule(delay = 150) {
     clearTimeout(timer)
     if (disposed || !foreground || !sync) return
+    // Saves or realtime hints arriving during hydration/pull must not be lost
+    // when that cycle schedules its ordinary 45-second idle poll.
+    if (running) {
+      runAgain = true
+      return
+    }
     timer = setTimeout(() => void cycle(), delay)
   }
   async function cycle() {
@@ -430,6 +437,8 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       // The controller publishes a redacted, actionable error. Polls never dismiss it.
     } finally {
       running = false
+      const followUp = runAgain
+      runAgain = false
       const error = controller.getSnapshot().error
       if (
         !error ||
@@ -441,7 +450,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
           'CAPABILITY_UNAVAILABLE',
         ].includes(error.code)
       )
-        schedule(45_000)
+        schedule(followUp ? 150 : 45_000)
     }
   }
   const unsubscribe = controller.subscribe(() => {

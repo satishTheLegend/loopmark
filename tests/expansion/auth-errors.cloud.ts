@@ -80,7 +80,7 @@ test('reload cannot bypass actual Auth resend throttling and the UI offers a tim
   await page.goto(origin + '/#account')
   await page.getByLabel('Email address', { exact: true }).fill(email)
   await deliveredCode(email, () => page.getByRole('button', { name: 'Send sign-in code' }).click())
-  await expect(page.getByRole('button', { name: /Send again in/ })).toBeDisabled()
+  await expect(page.getByRole('button', { name: /Resend in/ })).toBeDisabled()
   await page.reload()
   await page.getByLabel('Email address', { exact: true }).fill(email)
   const limited = page.waitForResponse(
@@ -90,6 +90,6 @@ test('reload cannot bypass actual Auth resend throttling and the UI offers a tim
   await page.getByRole('button', { name: 'Send sign-in code' }).click()
   expect((await limited).status()).toBe(429)
   await expect(page.getByRole('alert')).toContainText('RATE_LIMITED')
-  await expect(page.getByRole('button', { name: /Send again in/ })).toBeDisabled()
+  await expect(page.getByRole('button', { name: /Try again in/ })).toBeDisabled()
   await expect(page.locator('.account-identity')).toHaveCount(0)
 })
