@@ -84,7 +84,7 @@ export interface AppController {
     options: { keepLocal: boolean; discardUniqueWork?: boolean; allowMissingAttachments?: boolean },
     revoke: (scope: SessionScope) => Promise<void>,
   ): Promise<void>
-  chooseCollection(key: CollectionKey): Promise<void>
+  chooseCollection(key: CollectionKey, expectedSource?: SessionScope): Promise<void>
   runSync(): Promise<void>
   retryOperations(operationIds: string[]): Promise<void>
   listAttachments(): Promise<AttachmentItem[]>

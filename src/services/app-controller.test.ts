@@ -140,6 +140,57 @@ it('login retains guest selection, exposes verified identity and switches only d
   await controller.chooseCollection(connected.key)
   expect(controller.getSnapshot().scope?.key).toEqual(connected.key)
 })
+it('keeps a restored collection without selecting it when cleanup finishes after a deliberate switch', async () => {
+  const { repo, controller, connected } = await setup()
+  const restored = { ...info(false, 'restored'), kind: 'recovered' as const }
+  await repo.createCollection(restored)
+  await controller.verifyCode('maker@example.test', '123456')
+  const source = controller.getSnapshot().scope!
+  let finishCleanup!: () => void
+  const cleanup = new Promise<void>((resolve) => {
+    finishCleanup = resolve
+  })
+  const continuation = cleanup.then(() => controller.chooseCollection(restored.key, source))
+  await controller.chooseCollection(connected.key)
+  const selected = controller.getSnapshot().scope
+  finishCleanup()
+  await expect(continuation).rejects.toMatchObject({ detail: { code: 'ACCOUNT_CHANGED' } })
+  expect(controller.getSnapshot().scope).toEqual(selected)
+  expect(await repo.readActive()).toEqual(selected)
+  expect((await repo.readView(restored.key)).info.kind).toBe('recovered')
+  // Manual selection remains available after reviewing the saved copy.
+  await controller.chooseCollection(restored.key)
+  expect(controller.getSnapshot().scope?.key).toEqual(restored.key)
+})
+it('checks the captured source inside the serialized selection, including same-key generation changes', async () => {
+  const { repo, controller, guest } = await setup()
+  const restored = { ...info(false, 'restored'), kind: 'recovered' as const }
+  await repo.createCollection(restored)
+  const source = structuredClone(controller.getSnapshot().scope!)
+  const transition = controller.chooseCollection(guest.key)
+  const staleContinuation = controller.chooseCollection(restored.key, source)
+  // Mutating the caller-owned object must not change the queued guard.
+  source.generation += 1
+  await transition
+  await expect(staleContinuation).rejects.toMatchObject({ detail: { code: 'ACCOUNT_CHANGED' } })
+  expect(controller.getSnapshot().scope?.key).toEqual(guest.key)
+  expect(controller.getSnapshot().scope?.generation).toBe(source.generation)
+  expect(await repo.readActive()).toEqual(controller.getSnapshot().scope)
+  await controller.chooseCollection(restored.key, controller.getSnapshot().scope!)
+  expect(controller.getSnapshot().scope?.key).toEqual(restored.key)
+})
+it('refuses a guarded selection when durable scope changes before the controller observes it', async () => {
+  const { repo, controller, guest } = await setup()
+  const source = controller.getSnapshot().scope!
+  const changed = await repo.transition(source, {
+    key: guest.key,
+    device: { ...source.device, generation: 'new-device-generation' },
+  })
+  await expect(controller.chooseCollection(guest.key, source)).rejects.toMatchObject({
+    detail: { code: 'ACCOUNT_CHANGED' },
+  })
+  expect(await repo.readActive()).toEqual(changed)
+})
 it('does not create an empty next epoch over a pending replacement when verified auth advances after response loss', async () => {
   const { repo, controller, connected, session, auth } = await setup()
   await controller.verifyCode('maker@example.test', '123456')

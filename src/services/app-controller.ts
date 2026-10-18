@@ -531,10 +531,16 @@ export function createAppController(options: AppControllerOptions): AppControlle
     completeCallback(url) {
       return authenticate((auth, signal) => auth.completeCallback(url, signal))
     },
-    chooseCollection(key) {
+    chooseCollection(key, expectedSource) {
+      const source = expectedSource ? structuredClone(expectedSource) : undefined
       return serial(async () => {
         const previous = state.scope
         if (!previous) throw new DomainError('ACCOUNT_CHANGED')
+        if (source) {
+          if (canonicalJson(previous) !== canonicalJson(source))
+            throw new DomainError('ACCOUNT_CHANGED')
+          await check(source)
+        }
         const view = await repository.readView(key)
         if (view.info.kind === 'connected' && view.info.accountId !== session?.accountId)
           throw new DomainError('AUTH_REQUIRED')
