@@ -1,0 +1,191 @@
+import { Capacitor } from '@capacitor/core'
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
+import { openNativeRepository } from '../../../src/platform/native/repository'
+import { createNativeOperationPlanStore } from '../../../src/platform/native/operation-plans'
+import { createLocalDataAdapter } from '../../../src/services/local-data-service'
+import { createBackupService } from '../../../src/services/backup-service'
+import { canonicalHash } from '../../../src/domain/canonical-json'
+import { MAX_LIBRARY_BYTES, utf8Bytes } from '../../../src/domain/policy'
+import type { CollectionInfo, SessionScope } from '../../../src/domain/contracts'
+import { benchmarkFixture } from './fixture'
+import { nativeExamples } from './examples'
+import { nativeMediaRepair } from '../harness/media-repair'
+import { stageNativeExport } from '../../../src/platform/native/share'
+
+const openedAt = performance.now()
+const directory = Directory.Data
+const commandName = 'loopmark-benchmark-command.json'
+const reportName = 'loopmark-benchmark-results.json'
+const progressName = 'loopmark-benchmark-progress.json'
+let runId = 'unread-command'
+async function progress(stage: string, detail: Record<string, unknown> = {}) {
+  const value = {
+    runId,
+    stage,
+    wallTime: Date.now(),
+    elapsedMs: performance.now() - openedAt,
+    ...detail,
+  }
+  document.getElementById('results')!.textContent = JSON.stringify(value, null, 2)
+  await Filesystem.writeFile({
+    path: progressName,
+    directory,
+    encoding: Encoding.UTF8,
+    data: JSON.stringify(value),
+  })
+}
+const report: Record<string, unknown> = {
+  schemaVersion: 1,
+  platform: Capacitor.getPlatform(),
+  origin: location.origin,
+  scope:
+    'actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim',
+}
+try {
+  if (!Capacitor.isNativePlatform()) throw new Error('Actual native runtime required.')
+  const command = JSON.parse(
+    String(
+      (await Filesystem.readFile({ path: commandName, directory, encoding: Encoding.UTF8 })).data,
+    ),
+  )
+  if (
+    command.schemaVersion !== 1 ||
+    !/^[a-f0-9-]{36}$/.test(command.runId) ||
+    !['import', 'export', 'startup', 'examples', 'repair'].includes(command.action) ||
+    !['small', 'limit'].includes(command.dataset)
+  )
+    throw new Error('Explicit benchmark command is invalid.')
+  runId = command.runId
+  Object.assign(report, { runId, action: command.action, dataset: command.dataset })
+  await progress('opening')
+  const repo = await openNativeRepository({ databaseName: 'native_benchmark_v1' })
+  let selected = await repo.readActive()
+  if (!selected) {
+    const info: CollectionInfo = {
+      key: {
+        namespace: 'guest_native_benchmark',
+        collectionId: 'benchmark_empty',
+        epoch: 'initial',
+      },
+      kind: 'guest',
+      accountId: null,
+      legacyAccess: false,
+      name: 'Synthetic benchmark',
+      createdAt: '2026-01-01T00:00:00.000Z',
+    }
+    await repo.createCollection(info)
+    selected = await repo.transition(null, {
+      key: info.key,
+      device: { id: 'benchmark_device', generation: 'initial' },
+    })
+  }
+  let scope: SessionScope = selected
+  const startingView = await repo.readView(scope.key)
+  report.repositoryReadyMs = performance.now() - openedAt
+  report.repositoryReadyWallTime = Date.now()
+  report.startingProjects = startingView.projects.length
+  report.startingCheckpoints = startingView.checkpoints.length
+  const data = createLocalDataAdapter({
+    repository: repo,
+    media: repo.media,
+    plans: createNativeOperationPlanStore(repo),
+    scope: () => scope,
+  })
+  const backups = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data,
+    scope: () => scope,
+  })
+  await progress('ready')
+  if (command.action === 'import') {
+    await progress('generating')
+    let fixture = benchmarkFixture(command.dataset)
+    report.fixtureBytes = utf8Bytes(fixture)
+    report.expectedProjects = fixture.projects.length
+    report.expectedCheckpoints = fixture.projects.reduce((sum, p) => sum + p.checkpoints.length, 0)
+    const expected = await canonicalHash(fixture.projects)
+    await progress('importing', { fixtureBytes: report.fixtureBytes })
+    const started = performance.now()
+    const key = await backups.restoreAsRecovered(fixture, `Benchmark ${command.dataset}`, runId)
+    report.importMs = performance.now() - started
+    const restored = await repo.readView(key)
+    if (
+      restored.projects.length !== report.expectedProjects ||
+      restored.checkpoints.length !== report.expectedCheckpoints
+    )
+      throw new Error('Imported record counts differ.')
+    // The durable selected target is used by a separate, clean process export run.
+    scope = await repo.transition(scope, { key, device: scope.device })
+    await repo.database.transaction(async (db) => {
+      await db.run(
+        'INSERT OR REPLACE INTO metadata(key,body) VALUES(?,?)',
+        [
+          'benchmark_expected',
+          JSON.stringify({ dataset: command.dataset, hash: expected, bytes: report.fixtureBytes }),
+        ],
+        false,
+      )
+    })
+    fixture = {
+      format: 'loopmark',
+      version: 1,
+      exportedAt: '2026-01-01T00:00:00.000Z',
+      projects: [],
+    }
+    await progress('cleanup')
+    const completedKey = scope.key
+    for (const info of await repo.listCollections()) {
+      if (JSON.stringify(info.key) === JSON.stringify(completedKey)) continue
+      const previous = await repo.readView(info.key)
+      scope = await repo.transition(scope, { key: info.key, device: scope.device })
+      await repo.removeLocal(info.key, previous.revision, scope.generation)
+      scope = await repo.transition(scope, { key: completedKey, device: scope.device })
+    }
+    await repo.media.reconcile()
+  } else if (command.action === 'export') {
+    const expected = await repo.database.serial(async (db) => {
+      const row = (await db.query('SELECT body FROM metadata WHERE key=?', ['benchmark_expected']))
+        .values?.[0]
+      return row ? JSON.parse(String(row.body)) : null
+    })
+    if (!expected || expected.dataset !== command.dataset)
+      throw new Error('Import the matching fixture before export.')
+    await progress('exporting')
+    const started = performance.now()
+    const backup = await backups.exportComplete()
+    // Include the final compact JSON allocation and Blob that the product exports.
+    const serialized = JSON.stringify(backup),
+      blob = new Blob([serialized], { type: 'application/json' })
+    report.exportMs = performance.now() - started
+    report.exportBytes = blob.size
+    if (
+      blob.size !== expected.bytes ||
+      (command.dataset === 'limit' && blob.size !== MAX_LIBRARY_BYTES)
+    )
+      throw new Error('Complete export length differs from the imported portable fixture.')
+    const staged = await stageNativeExport({ name: 'synthetic-benchmark.json', bytes: blob })
+    report.exportThroughNativeFileMs = performance.now() - started
+    report.nativeExportFileBytes = (await Filesystem.stat({ path: staged.uri })).size
+    await Filesystem.rmdir({ path: staged.directory, directory: Directory.Cache, recursive: true })
+    await progress('verifying', { exportBytes: blob.size })
+    if ((await canonicalHash(backup.projects)) !== expected.hash)
+      throw new Error('Complete export content differs after native process restart.')
+    report.roundtripHash = expected.hash
+  }
+  await repo.close()
+  if (command.action === 'examples') report.examples = await nativeExamples()
+  if (command.action === 'repair') report.repair = await nativeMediaRepair()
+  report.passed = true
+} catch (error) {
+  report.passed = false
+  report.error = error instanceof Error ? error.message : String(error)
+}
+report.completedAt = new Date().toISOString()
+await progress('complete', { passed: report.passed })
+await Filesystem.writeFile({
+  path: reportName,
+  directory,
+  encoding: Encoding.UTF8,
+  data: JSON.stringify(report, null, 2),
+})

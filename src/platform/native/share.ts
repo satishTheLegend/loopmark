@@ -26,6 +26,41 @@ async function clearExpiredExports() {
         recursive: true,
       }).catch(() => undefined)
 }
+/** Internal shared path for OS sharing and measured native export-file preparation. */
+export async function stageNativeExport(input: { name: string; bytes: Blob }) {
+  requireNative()
+  if (
+    !input.bytes.size ||
+    input.bytes.size > MAX_BACKUP_BYTES ||
+    !input.name ||
+    input.name.length > 120 ||
+    !/^[A-Za-z0-9][A-Za-z0-9._ -]*$/.test(input.name)
+  )
+    throw new DomainError('VALIDATION')
+  await clearExpiredExports()
+  const directory = `${ROOT}/${crypto.randomUUID()}`
+  await Filesystem.mkdir({ path: directory, directory: Directory.Cache, recursive: true })
+  try {
+    const path = `${directory}/${input.name}`
+    // Bounded bridge calls avoid one additional 68MiB base64 string for a maximum backup.
+    for (let offset = 0; offset < input.bytes.size; offset += 512 * 1024) {
+      const data = encode(
+        new Uint8Array(await input.bytes.slice(offset, offset + 512 * 1024).arrayBuffer()),
+      )
+      if (offset === 0) await Filesystem.writeFile({ path, directory: Directory.Cache, data })
+      else await Filesystem.appendFile({ path, directory: Directory.Cache, data })
+    }
+    if ((await Filesystem.stat({ path, directory: Directory.Cache })).size !== input.bytes.size)
+      throw new DomainError('BACKUP_INCOMPLETE')
+    const { uri } = await Filesystem.getUri({ path, directory: Directory.Cache })
+    return { directory, uri }
+  } catch (error) {
+    await Filesystem.rmdir({ path: directory, directory: Directory.Cache, recursive: true }).catch(
+      () => undefined,
+    )
+    throw error
+  }
+}
 export class NativeShare implements SharePort {
   private sharing = false
   private picking = false
@@ -40,34 +75,13 @@ export class NativeShare implements SharePort {
       completed = false
     try {
       requireNative()
-      if (
-        !input.bytes.size ||
-        input.bytes.size > MAX_BACKUP_BYTES ||
-        !input.name ||
-        input.name.length > 120 ||
-        !/^[A-Za-z0-9][A-Za-z0-9._ -]*$/.test(input.name)
-      )
-        throw new DomainError('VALIDATION')
       if (!(await Share.canShare()).value) throw new DomainError('CAPABILITY_UNAVAILABLE')
-      await clearExpiredExports()
-      directory = `${ROOT}/${crypto.randomUUID()}`
-      await Filesystem.mkdir({ path: directory, directory: Directory.Cache, recursive: true })
-      const path = `${directory}/${input.name}`
-      // Bounded bridge calls avoid one additional 68MiB base64 string for a maximum backup.
-      for (let offset = 0; offset < input.bytes.size; offset += 512 * 1024) {
-        const data = encode(
-          new Uint8Array(await input.bytes.slice(offset, offset + 512 * 1024).arrayBuffer()),
-        )
-        if (offset === 0) await Filesystem.writeFile({ path, directory: Directory.Cache, data })
-        else await Filesystem.appendFile({ path, directory: Directory.Cache, data })
-      }
-      if ((await Filesystem.stat({ path, directory: Directory.Cache })).size !== input.bytes.size)
-        throw new DomainError('BACKUP_INCOMPLETE')
-      const { uri } = await Filesystem.getUri({ path, directory: Directory.Cache })
+      const staged = await stageNativeExport(input)
+      directory = staged.directory
       await Share.share({
         title: input.name,
         dialogTitle: 'Save or share your complete backup',
-        files: [uri],
+        files: [staged.uri],
       })
       completed = true
       return { status: 'ok', value: undefined }

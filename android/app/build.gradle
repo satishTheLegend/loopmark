@@ -17,6 +17,10 @@ android {
         }
     }
     buildTypes {
+        debug {
+            // Explicit synthetic benchmark builds get their own application sandbox.
+            if (project.hasProperty('loopmarkBenchmark')) applicationIdSuffix '.benchmark'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
