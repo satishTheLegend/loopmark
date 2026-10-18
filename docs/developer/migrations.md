@@ -11,7 +11,7 @@ These version numbers describe different boundaries and must not be conflated:
 | Legacy browser DB | `loopmark` and `loopmark-drafts` | Copy and verify before selecting normalized storage; leave source content intact |
 | Native SQLite / server SQL | Ordered committed migrations | Use their migration ledger, not the wire version, as the applied-schema authority |
 
-Portable files contain projects and checkpoint history, not account ownership, paid grants, outbox commands, credentials or recovery capabilities. Limits remain 200 projects, 1,000 checkpoints per project, 48 MiB summed serialized project objects, and less than 50 MiB for the complete compact file. An older over-free-cap local import remains readable/exportable; it does not create a paid entitlement.
+Portable files contain projects and checkpoint history, not account ownership, paid grants, outbox commands, credentials or recovery capabilities. Limits remain 200 projects and 1,000 checkpoints per collection, 48 MiB summed serialized project objects, and less than 50 MiB for the complete compact file. An older over-free-cap local import remains readable/exportable; it does not create a paid entitlement.
 
 Browser migration freezes legacy writers at an IDB upgrade barrier based on the actual current version, including a deliberate absent-source fence. Original presence is durably recorded so an empty fence database cannot become a legacy entitlement. Copy verification checks source revision/counts/media hashes and drafts; selection happens only after a durable receipt and complete scope CAS. Blocked upgrades, corruption or late source changes keep the original selection and expose the read-only fallback. Do not delete legacy sources as a repair step.
 
