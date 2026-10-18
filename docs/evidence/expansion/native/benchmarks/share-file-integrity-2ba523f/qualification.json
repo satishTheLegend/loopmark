@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "2ba523f",
+  "scope": "Actual private native cache file staged by production NativeShare helper; not an external receiving app or OS destination",
+  "timingClaim": false,
+  "checks": {
+    "ios": {
+      "completedAt": "2026-10-18T16:37:28.929Z",
+      "nativeExportFileBytes": 50331648,
+      "nativeExportVerifiedBytes": 50331648,
+      "nativeExportFileSha256": "5449cbec6c6e6e9d5d53b689a4f2f67666ac156f00b25fd94aa0cee051909460",
+      "passed": true
+    },
+    "android": {
+      "completedAt": "2026-10-18T16:37:58.456Z",
+      "nativeExportFileBytes": 50331648,
+      "nativeExportVerifiedBytes": 50331648,
+      "nativeExportFileSha256": "82d339180eb9a94630ca906018ffb1a5ab264e142aa5691f3bef8d871795ed3e",
+      "passed": true
+    }
+  },
+  "files": {
+    "ios-export-limit.json": "de6160335e553837a737a770de0c51841eb94f91e57c46d842397647d0570b14",
+    "bundle.json": "548a2976378220bce350e641a12e86a9fff0a4b040746db89c9ea9784abdac89",
+    "android-export-limit.json": "50893e7886a8e27c63eed89d6cb8365d3a2be58e713ac0e9ceb0428d451b9d84"
+  }
+}
