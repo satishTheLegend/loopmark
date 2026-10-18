@@ -6,7 +6,10 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: { androidScheme: 'https' },
   ios: { contentInset: 'automatic' },
-  plugins: { CapacitorHttp: { enabled: false } },
+  plugins: {
+    CapacitorHttp: { enabled: false },
+    CapacitorSQLite: { iosDatabaseLocation: 'Library/Loopmark/Databases' },
+  },
 }
 
 export default config
