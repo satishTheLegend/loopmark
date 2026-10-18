@@ -8,13 +8,12 @@ import {
   project,
   pullRequest,
   quote,
-  sql,
   type Actor,
   localEnvironment,
 } from '../server/helpers'
 import { audioFixture, download } from '../server/media-fixtures'
 import { seedBilling, fixture, fixtureSecret, webProduct } from '../server/billing-fixtures'
-import { context, rpc, run } from '../../scripts/ops/common.mjs'
+import { context, rpc, run, sql as streamedSql } from '../../scripts/ops/common.mjs'
 import { backupSnapshot } from '../../scripts/ops/recovery.mjs'
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 async function mapLimit<T, R>(
@@ -78,8 +77,9 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
       body: await response.json().catch(() => ({ error: { code: 'UNTYPED' } })),
     }
   }
-  const ctx = await context(),
-    id = randomUUID(),
+  const ctx = await context()
+  const sql = (statement: string) => streamedSql(ctx, statement)
+  const id = randomUUID(),
     started = new Date().toISOString(),
     report: any = {
       schemaVersion: 2,
