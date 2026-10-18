@@ -1,0 +1,390 @@
+
+> loopmark@1.0.0 build
+> tsc -b && vite build && node scripts/build-public-pages.mjs && node scripts/build-sw.mjs
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 6594 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                        1.13 kB │ gzip:   0.52 kB
+dist/assets/dm-sans-latin-600-normal-Aqo67rzb.woff2   14.14 kB
+dist/assets/dm-sans-latin-400-normal-CW0RaeGs.woff2   14.20 kB
+dist/assets/dm-sans-latin-500-normal-B9HHJjqV.woff2   14.30 kB
+dist/assets/dm-sans-latin-600-normal-BmdmIIQ2.woff    18.32 kB
+dist/assets/dm-sans-latin-400-normal-BwCSEQnW.woff    18.35 kB
+dist/assets/dm-sans-latin-500-normal-Dr3UlScf.woff    18.52 kB
+dist/assets/lora-latin-400-normal-DnxXpLNu.woff2      21.14 kB
+dist/assets/lora-latin-500-normal-Dh16O2IA.woff2      21.90 kB
+dist/assets/lora-latin-400-normal-DBJS-Hc6.woff       25.96 kB
+dist/assets/lora-latin-500-normal-Dbc_1yrl.woff       26.82 kB
+dist/assets/index-BB0qLCy3.css                        44.02 kB │ gzip:   9.83 kB
+dist/assets/files-bridge-uQ_sSquT.js                   0.08 kB │ gzip:   0.09 kB
+dist/assets/web-BFSHTsCB.js                            0.36 kB │ gzip:   0.25 kB
+dist/assets/schema-vjYR0ug2.js                         0.41 kB │ gzip:   0.28 kB
+dist/assets/esm-Cn_WaiII.js                            0.48 kB │ gzip:   0.31 kB
+dist/assets/boundary-BwrRw60f.js                       0.60 kB │ gzip:   0.40 kB
+dist/assets/workflow-store-CiM5je_z.js                 0.66 kB │ gzip:   0.39 kB
+dist/assets/native-ZO9Ornsi.js                         0.77 kB │ gzip:   0.33 kB
+dist/assets/web-1p2i-BHj.js                            0.79 kB │ gzip:   0.38 kB
+dist/assets/web-Cj9BfKHj.js                            0.84 kB │ gzip:   0.40 kB
+dist/assets/purchase-return-BBjSfBaG.js                0.93 kB │ gzip:   0.49 kB
+dist/assets/legacy-recovery-ZCxNibNf.js                0.96 kB │ gzip:   0.55 kB
+dist/assets/draft-store-ConbBlcI.js                    0.97 kB │ gzip:   0.51 kB
+dist/assets/web-DdXTZotF.js                            1.10 kB │ gzip:   0.54 kB
+dist/assets/operation-plans-CHFYbTZl.js                1.13 kB │ gzip:   0.60 kB
+dist/assets/recovery-journal-D60AenDH.js               1.22 kB │ gzip:   0.63 kB
+dist/assets/workflow-store-BEnsjE8t.js                 1.35 kB │ gzip:   0.67 kB
+dist/assets/workflow-store-CWyjGmub.js                 1.41 kB │ gzip:   0.75 kB
+dist/assets/esm-oJBN64zT.js                            1.41 kB │ gzip:   0.76 kB
+dist/assets/policy-DZgk93UT.js                         1.43 kB │ gzip:   0.85 kB
+dist/assets/device-store-DOqmWhAM.js                   1.50 kB │ gzip:   0.67 kB
+dist/assets/operation-plans-nxawMmFl.js                1.69 kB │ gzip:   0.82 kB
+dist/assets/device-store-CAkHFkZL.js                   1.77 kB │ gzip:   0.75 kB
+dist/assets/media-transport-DjPPiXsc.js                1.91 kB │ gzip:   0.91 kB
+dist/assets/lifecycle-0P9io7OQ.js                      2.01 kB │ gzip:   0.94 kB
+dist/assets/session-storage-CMjJgcsv.js                2.19 kB │ gzip:   0.99 kB
+dist/assets/purchases-CPH3KWXk.js                      2.19 kB │ gzip:   0.97 kB
+dist/assets/realtime-hints-BaNtP1Fk.js                 2.35 kB │ gzip:   1.18 kB
+dist/assets/http-client-C2CIoDqs.js                    2.73 kB │ gzip:   1.44 kB
+dist/assets/base-EBEQyEYs.js                           2.82 kB │ gzip:   1.01 kB
+dist/assets/share-i3fNEvBR.js                          3.06 kB │ gzip:   1.44 kB
+dist/assets/media-service-DGkERlpG.js                  3.20 kB │ gzip:   1.36 kB
+dist/assets/downloads-BmtAc4h2.js                      3.47 kB │ gzip:   1.53 kB
+dist/assets/backup-inbox-DsUVI4mU.js                   3.65 kB │ gzip:   1.57 kB
+dist/assets/capture-DJXQBsBu.js                        5.03 kB │ gzip:   2.03 kB
+dist/assets/capture-recovery-DJ36AiU8.js               5.09 kB │ gzip:   2.04 kB
+dist/assets/attachment-queue-DPjSjjhz.js               5.22 kB │ gzip:   1.92 kB
+dist/assets/auth-service-BTknlXgv.js                   5.62 kB │ gzip:   2.25 kB
+dist/assets/web-DzE3hX2_.js                            6.10 kB │ gzip:   1.84 kB
+dist/assets/recovery-service-CBzpxs-c.js               6.19 kB │ gzip:   2.17 kB
+dist/assets/schema-CcQG86yv.js                         6.79 kB │ gzip:   2.61 kB
+dist/assets/errors-dDnGBpSV.js                         7.35 kB │ gzip:   2.98 kB
+dist/assets/coordinator-BjmInq6u.js                    8.09 kB │ gzip:   2.66 kB
+dist/assets/web-D9R582YO.js                            8.46 kB │ gzip:   2.82 kB
+dist/assets/web-Zt14PLUN.js                            9.46 kB │ gzip:   1.31 kB
+dist/assets/replacement-service-bxngc4jf.js            9.92 kB │ gzip:   3.14 kB
+dist/assets/web-DQ7QrZkM.js                            9.99 kB │ gzip:   2.03 kB
+dist/assets/camera-D3ZWpe_L.js                        11.38 kB │ gzip:   3.75 kB
+dist/assets/purchases-Djq0GI5y.js                     12.24 kB │ gzip:   4.53 kB
+dist/assets/state-D2Y0ZmQz.js                         14.40 kB │ gzip:   4.16 kB
+dist/assets/repository-BCItKTAN.js                    19.63 kB │ gzip:   5.52 kB
+dist/assets/drafts-DAyfHRVj.js                        19.76 kB │ gzip:   4.73 kB
+dist/assets/repository-B8YtaiEP.js                    31.60 kB │ gzip:   8.27 kB
+dist/assets/portable-schema-DsMxkj_c.js               95.70 kB │ gzip:  28.10 kB
+dist/assets/dist-DtuMx0jC.js                         214.39 kB │ gzip:  55.16 kB
+dist/assets/index-B4EbGug-.js                        513.61 kB │ gzip: 155.74 kB
+
+✓ built in 1.66s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Public help pages: 3; indexing disabled without public HTTPS origin
+Offline precache: 89 assets, loopmark-70e968e4cce3
+
+> loopmark@1.0.0 test
+> vitest run --reporter=default --reporter=json --outputFile=.gstack/final-ready-unit-report.json
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+ ✓ src/services/media-service.test.ts (10 tests) 1545ms
+   ✓ serializes concurrent same-scope/ref downloads and the waiter reuses the verified durable bytes 388ms
+   ✓ distinct snapshot authorities are not coalesced, and a new generation never adopts the old callback 378ms
+ ✓ src/sync/runtime-scheduler.test.ts (9 tests) 1731ms
+   ✓ does not start after recovery settles while offline, then syncs on eligibility return 447ms
+   ✓ keeps queued account-selection work unavailable through an ABA switch and binds only the settled generation 323ms
+   ✓ preserves admission order when a readiness subscriber queues another selection 519ms
+ ✓ src/repositories/browser/migration.test.ts (11 tests) 2095ms
+   ✓ aborts the copy atomically if collections storage fails 481ms
+   ✓ aborts the copy atomically if drafts storage fails 345ms
+   ✓ aborts the copy atomically if migrations storage fails 496ms
+   ✓ a failed selection retains a complete verified copy and retry switches only once 318ms
+ ✓ src/services/downloads-service.test.ts (12 tests) 2810ms
+   ✓ retains bytes owned by snapshot while safely evicting unrelated downloads 580ms
+   ✓ retains bytes owned by plan while safely evicting unrelated downloads 407ms
+   ✓ retains bytes owned by archive while safely evicting unrelated downloads 474ms
+   ✓ retains bytes owned by upload while safely evicting unrelated downloads 340ms
+   ✓ retains local provenance and guest/recovered copies even when IDs match a downloaded account blob 459ms
+ ✓ src/services/local-data-service.test.ts (10 tests) 3579ms
+   ✓ the installed facade path captures newest checkpoint, all media and full history after restart 522ms
+   ✓ two independent local facades preserve concurrent immutable checkpoint appends and identical retries 604ms
+   ✓ durable operation plans keep create/checkpoint retries byte-identical after reopen 398ms
+   ✓ numeric local CAS protects a stale timestamp form and reviewed restore preview 372ms
+   ✓ restores over-cap content without granting a fourth active create and retains full media 475ms
+   ✓ shelf reads no media and selected detail/availability bound media work to two 920ms
+ ✓ src/services/backup-service.test.ts (13 tests) 4929ms
+   ✓ restores full verified history as a separate recovered collection and same-token retry reuses it 658ms
+   ✓ lists only unavailable snapshot attachments, keeps successful bytes, and retry downloads only the remainder 921ms
+   ✓ authentication failure during missing-media lookup remains an authentication error 346ms
+   ✓ repairs wrong-hash cached bytes under the original snapshot and exports exact complete media 495ms
+   ✓ repairs truncated cached bytes under the original snapshot and exports exact complete media 849ms
+   ✓ T17 rejects a file larger than 50 MiB before parsing or restoring any records 433ms
+   ✓ T18 expired export lease yields no partial file, releases both pins, and retries only uncached bytes under a fresh lease 849ms
+ ✓ src/repositories/browser/repository.test.ts (35 tests) 5024ms
+   ✓ IndexedDB repository durability and isolation (9)
+     ✓ preserves an immutable command across retries, attempts and error markers 380ms
+     ✓ enforces three active projects without blocking edit, finish, history or legacy local access 556ms
+   ✓ media, snapshots, copy and hydration (6)
+     ✓ pins real attachment bytes through deletion and releases only unreferenced bytes 663ms
+   ✓ never restores an acknowledged target merely because unrelated pending work remains 421ms
+   ✓ rolls back retirement, recovery collection and fresh replacement together if storage aborts 324ms
+   ✓ verified reauthentication requeues only auth-blocked immutable commands for the same device 597ms
+ ✓ src/repositories/browser/rebase.test.ts (7 tests) 1621ms
+   ✓ atomically keeps overlay, draft, history, media and immutable attempts before fresh publication (new epoch=false) 815ms
+   ✓ compares the complete draft set and full session scope, not only the source revision 477ms
+ ✓ src/sync/coordinator.test.ts (13 tests) 1447ms
+   ✓ stopped sync cannot publish or reject after its deferred initial-pending read 376ms
+ ✓ src/services/replacement-service.test.ts (6 tests) 1211ms
+   ✓ calculates preview locally without source upload and only confirms the exact reviewed source 631ms
+ ✓ src/services/app-controller.test.ts (35 tests) 7051ms
+   ✓ retryOperations completion cannot replace a deliberately selected collection (transition in flight: true) 621ms
+   ✓ retryOperations ignores a late rejection belonging to the prior collection 597ms
+   ✓ retryAttachments ignores a late rejection belonging to the prior collection 305ms
+   ✓ a late run from an earlier generation cannot invalidate an account selected again 543ms
+   ✓ an older refresh failure cannot overwrite a newer successful refresh in the same scope 407ms
+   ✓ a refresh already reading storage cannot cancel or publish over a later selection 307ms
+   ✓ checks the captured source inside the serialized selection, including same-key generation changes 391ms
+   ✓ does not create an empty next epoch over a pending replacement when verified auth advances after response loss 684ms
+   ✓ sign-out counts unsent project mutations and requires explicit discard with no checkpoint 564ms
+   ✓ a draft created after review blocks signout and keep preserves its source-bound content 488ms
+ ✓ src/platform/native/purchases.test.ts (9 tests) 1229ms
+   ✓ supplemental native billing guards (no store transaction evidence) (9)
+     ✓ does not initialize the SDK when enrolled public configuration is unavailable 858ms
+ ✓ src/billing/recovery-service.test.ts (5 tests) 202ms
+ ✓ src/data.test.ts (33 tests) 1153ms
+   ✓ backup validation (10)
+     ✓ rejects date-range poisoning before replacing the library 349ms
+ ✓ src/config.test.ts (38 tests) 7432ms
+   ✓ operator configuration and read-only doctor (7)
+     ✓ guest readiness ignores absent providers, while sandbox readiness reports each missing prerequisite 3257ms
+     ✓ reports an occupied app port as an unhealthy dependency without disturbing its listener 1541ms
+     ✓ JSON output for a missing prerequisite contains no credential values or subprocess diagnostics 2164ms
+     ✓ rejects unsupported arguments with parseable exit-2 JSON 355ms
+ ✓ src/billing/coordinator.test.ts (12 tests) 483ms
+ ✓ src/services/media-codec.test.ts (2 tests) 309ms
+ ✓ src/auth/auth-service.test.ts (14 tests) 310ms
+ ✓ src/repositories/browser/pull-review.test.ts (5 tests) 210ms
+ ✓ src/repositories/browser/operation-plans.test.ts (1 test) 236ms
+ ✓ src/repositories/browser/workflow-store.test.ts (1 test) 214ms
+ ✓ src/sync/offline-chain.test.ts (1 test) 462ms
+   ✓ T08 offline create → edit → edit → append survives process restart and a committed-but-lost acknowledgement without rewriting dependencies 441ms
+ ✓ src/services/deletion-service.test.ts (3 tests) 232ms
+ ✓ src/links/project-continuation.test.ts (5 tests) 590ms
+ ✓ src/services/attachment-queue.test.ts (6 tests) 1361ms
+   ✓ journals both refs before text ack, then finalizes each exact checkpoint CAS in order without rewriting text 400ms
+ ✓ src/sync/media-transport.test.ts (2 tests) 346ms
+   ✓ rejects truncated, oversized and hash-mismatched binary downloads regardless of declared length 324ms
+ ✓ src/platform/native/capture.test.ts (7 tests) 110ms
+ ✓ src/sync/http-client.test.ts (4 tests) 540ms
+   ✓ bounds stalled token lookup and maps non-JSON service failures to a safe retryable error 332ms
+ ✓ src/billing/upgrade-prompts.test.ts (2 tests) 534ms
+   ✓ retains a pre-auth draft action across reload without claiming account ownership or changing the draft 500ms
+ ✓ src/repositories/browser/replacement.test.ts (3 tests) 863ms
+   ✓ queues immutable replacement without changing records then atomically preserves old work and selects verified next epoch 611ms
+ ✓ src/links/link-service.test.ts (2 tests) 41ms
+ ✓ src/platform/browser/purchases.test.ts (13 tests) 74ms
+ ✓ src/domain/contracts.test.ts (9 tests) 120ms
+ ✓ src/repositories/browser/transition.test.ts (1 test) 201ms
+ ✓ src/links/purchase-return.test.ts (10 tests) 38ms
+ ✓ src/platform/native/session-storage.test.ts (3 tests) 18ms
+ ✓ src/services/portable-draft-store.test.ts (1 test) 64ms
+ ✓ src/services/startup.test.ts (2 tests) 151ms
+ ✓ src/services/diagnostics.test.ts (3 tests) 9ms
+ ✓ src/services/legacy-recovery.test.ts (2 tests) 19ms
+ ✓ src/components/sync-summary.test.ts (5 tests) 18ms
+ ✓ src/sync/realtime-hints.test.ts (3 tests) 17ms
+ ✓ src/repositories/browser/draft-store.test.ts (1 test) 36ms
+ ✓ src/media-validation.test.ts (2 tests) 8ms
+ ✓ src/domain/policy.test.ts (4 tests) 11ms
+ ✓ src/pages/public-pages.test.ts (4 tests) 7ms
+ ✓ src/components/ui.test.ts (3 tests) 11ms
+
+ Test Files  47 passed (47)
+      Tests  382 passed (382)
+   Start at  23:41:57
+   Duration  12.08s (tests 64%, import 30%, transform 6%, worker 1%)
+
+    Isolate  47 workers spawned · ~535ms startup each (spawn + environment, per file)
+             at least ~2.26s faster with isolate: false — reuses workers across files instead of one per file
+
+JSON report written to /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/final-ready-unit-report.json
+
+> loopmark@1.0.0 format:check
+> prettier --check src tests scripts *.ts *.json .github/workflows/*.yml
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> loopmark@1.0.0 test:security
+> node scripts/test-security.mjs
+
+{"scope":"Built web and present native web assets; credential patterns and harness markers only","filesScanned":68,"findings":[]}
+✔ built worker never intercepts private API, auth, upload or foreign-origin requests (1.463667ms)
+✔ offline payment return uses only the static shell and never caches the return URL (1.889ms)
+✔ built precache contains no test harness, provider callback or private route (0.4645ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70.027542
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  7 passed (7)
+      Tests  100 passed (100)
+   Start at  23:42:15
+   Duration  880ms (tests 61%, import 31%, transform 7%, worker 1%)
+
+Local security checks passed. Live backend authority, provider sandbox, signing and physical-device checks remain separate evidence.
+
+> loopmark@1.0.0 test:compat
+> node scripts/test-compat.mjs
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  23:42:17
+   Duration  221ms (import 58%, transform 23%, tests 16%, worker 2%)
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  3 passed (3)
+      Tests  33 passed (33)
+   Start at  23:42:17
+   Duration  411ms (tests 52%, import 36%, transform 10%, worker 2%)
+
+Compatibility: portable v1, previous browser migration/old-writer fence, future-local-schema preservation and unsupported wire rejection. There was no pre-expansion cloud wire release; native migration remains separately qualified on its actual runtime.
+
+> loopmark@1.0.0 test:examples
+> node scripts/test-examples.mjs
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  23:42:18
+   Duration  293ms (import 41%, tests 35%, transform 23%, worker 1%)
+
+
+> loopmark@1.0.0 test:docs
+> node scripts/test-docs.mjs
+
+PASS: 12 developer documents; script, configuration and local-link references.
+
+> loopmark@1.0.0 test:dx
+> node scripts/test-dx.mjs
+
+✔ production browser assets exclude server/provider secret environment values (922.80775ms)
+✔ documentation validator catches a missing script, broken local link and misspelled setting (12.924375ms)
+✔ missing Docker reports a prerequisite and leaves guest independent of provider secrets (795.571125ms)
+✔ occupied application port reports unhealthy and never closes the existing listener (48.821666ms)
+✔ wrong local project and remote Docker context fail read-only readiness without leaking values (436.427292ms)
+✔ wrong reset project is refused before preparation or mutation (607.873958ms)
+✔ remote operator endpoint is refused before invoking Docker (64.302875ms)
+✔ remote Docker override cannot bypass the local reset boundary (63.795875ms)
+✔ remote active Docker context is refused even without a host override (463.071291ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3666.171459
+
+> loopmark@1.0.0 test:ops
+> node scripts/test-ops.mjs
+
+✔ operating alerts cover observed queues, conflicts, media, verification, deletion and backup (2.937584ms)
+✔ help is dependency-free and default local grammar preserves exact exit classes (462.510583ms)
+✔ opaque cursors bind exact project command target and durable job without granting skip authority (1.10225ms)
+✔ operator grammar is explicit, bounded and defaults to a dry run (1.042334ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 606.148291
+
+> loopmark@1.0.0 test:release:contracts
+> node --test tests/release/*.test.mjs
+
+✔ complete matching synthetic evidence is explicitly not a deployment or authorization (10.022167ms)
+✔ missing, blocked, failed, duplicate and unknown gates cannot pass (13.027083ms)
+✔ dirty source, mismatched artifact and changed evidence bytes invalidate a record (8.228ms)
+✔ symlink escape and malformed shape fail closed (3.553833ms)
+✔ platform-specific and production gates cannot disappear (0.24825ms)
+✔ evidence paths cannot traverse or symlink elsewhere inside the checkout (3.12525ms)
+✔ a symlink to evidence within an allowed directory still verifies its actual bytes (3.412625ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 106.627708
+
+> loopmark@1.0.0 test:sandbox:contracts
+> node --test tests/sandbox/*.test.mjs
+
+✔ missing configuration blocks every platform without any network or transaction (0.640083ms)
+✔ live mode, mismatched artifact and absent authorization cannot reach a provider (5.242458ms)
+✔ read-only web probes can report readiness but never sandbox qualification; secrets stay out of reports (13.052875ms)
+✔ native readiness requires exact store app and authenticated sandbox catalog, never Test Store (3.1945ms)
+✔ provider failures are redacted and an explicit probe flag is required (2.101ms)
+✔ native exact configuration reports only operator readiness using read-only provider API (3.584166ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 86.493083
+
+> loopmark@1.0.0 test:native:evidence
+> node --test tests/native/product-evidence.test.mjs
+
+✔ manifest rejects traversal and hashes the exact file used as evidence (5.053458ms)
+✔ changed generated assets cannot be attributed to the original bundle (2.166083ms)
+✔ packaged APK assets must match and returned artifact digest covers APK bytes (17.49175ms)
+✔ installed app digest changes for native bytes and refuses untracked symlink targets (3.756ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.643083
+
+> loopmark@1.0.0 test:native:benchmark:contracts
+> node --test tests/native/benchmark-memory.test.mjs
+
+✔ iOS RSS includes only the selected simulator parent and app, separating content and support (0.96425ms)
+✔ Android RSS keeps benchmark and isolated WebView renderer, ignoring unrelated app/browser (0.306042ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 60.0205

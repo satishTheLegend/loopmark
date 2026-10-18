@@ -1,0 +1,16 @@
+
+> loopmark@1.0.0 test:native:evidence
+> node --test tests/native/product-evidence.test.mjs
+
+✔ manifest rejects traversal and hashes the exact file used as evidence (5.128208ms)
+✔ changed generated assets cannot be attributed to the original bundle (2.031334ms)
+✔ packaged APK assets must match and returned artifact digest covers APK bytes (11.546375ms)
+✔ installed app digest changes for native bytes and refuses untracked symlink targets (3.466875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 76.695125
