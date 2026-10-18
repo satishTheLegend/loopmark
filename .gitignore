@@ -13,3 +13,6 @@ supabase/.temp/
 
 # Locally built unsigned/simulator deliverables, reproduced from committed source.
 artifacts/native/
+
+# Private archives, local toolchains and consolidation records.
+.local/
