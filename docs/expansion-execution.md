@@ -7,10 +7,15 @@ The user selected the recommended stack and explicitly delegated build-and-verif
 | P0 | VERIFIED | Foundation commit `59cefbd`; 33 unit,209 browser,4 isolated scale checks |
 | P1 | COMPLETE | Plan commit `8353f23`; actual four-phase gstack pipeline,104 decisions,26 aggregated tasks,15 packages,46 test groups |
 | I01 | VERIFIED for contract/config scope | 80 unit/config tests,43 Chromium cases,build/format/doctor/audit; independent corrections confirmed |
-| I02 | READY | Browser repository/migration; consumes frozen I01 |
-| I03 | READY | Backend schema/commands; Docker ready, Supabase2.121.0 installed locally |
-| I04 | READY | Native repository/build proof; pinned packages installed; Android JDK/SDK availability unresolved |
-| I05–I13 | PLANNED | Preserve all dependencies and acceptance in expansion-implementation.md |
+| I02 | IMPLEMENTED / INTEGRATING | Browser repository, old-writer migration fence, normalized media, atomic conflict recovery and collection/draft transition CAS. 53 focused repository/facade tests passed in the client lane; migration exercised across all five browser profiles. App startup migration wiring remains in I05/I09. |
+| I03 | IMPLEMENTED / REVIEW FIXES IN PROGRESS | Actual isolated local PostgreSQL/Auth/Storage/Edge runtime; 16 SQL/HTTP/delivered-code tests passed after a clean reset. Independent review found media deduplication, byte-bounded snapshot paging, retention fairness and native CORS gaps; fixes and regressions remain open. See evidence/I03. |
+| I04 | VERIFIED FOR IMPLEMENTED STORAGE SCOPE | iOS simulator and Android emulator: 13 actual persistence/adapter groups passed twice across process restarts. Android instrumentation 2/2; unsigned iOS and Android debug builds passed. Native signing/store/physical-device qualification remains I14. See evidence/native. |
+| I05 | IN PROGRESS | Auth/HTTP boundary candidate integrated; account/collection controller, connection preview, links and deletion continuation remain under implementation. |
+| I06 | IN PROGRESS | Metadata-only shelf, bounded selected-project media reads, strict portable export and immutable save plans integrated. Network coordinator, media admission/download and connected replacement callers remain. |
+| I07–I08 | IN PROGRESS / DEPENDENT WORK | Backend media/replacement/deletion and provider purchase authority follow reviewed I03. No live checkout or store transaction has been performed. |
+| I09 | IN PROGRESS | Static public privacy/support/deletion pages passed 35 public-page/draft browser checks; account/collection/sync/conflict/sign-out components and app wiring are being integrated. These screens are not yet end-to-end qualified. |
+| I10 | IN PROGRESS | Native persistence complete for current ports; capture/share/lifecycle/purchase adapters underway. |
+| I11–I13 | PLANNED | Preserve operations, contributor workflow, adversarial/load/compatibility verification and independent final judge in expansion-implementation.md. |
 | I14 | EXTERNAL QUALIFICATION PENDING | Actual provider accounts/products, devices,signing and sandbox transactions |
 | I15 | PLANNED / EXTERNAL ACTIVATION PENDING | Prepare research/release artifacts; actual funding/cohort/release authorization remains external |
 

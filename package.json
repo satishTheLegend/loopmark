@@ -16,7 +16,13 @@
     "local:up": "node scripts/local.mjs up",
     "local:down": "node scripts/local.mjs down",
     "local:reset": "node scripts/local.mjs reset",
-    "test:server": "node scripts/test-server.mjs"
+    "test:server": "node scripts/test-server.mjs",
+    "local:status": "node scripts/local.mjs status",
+    "native:sync": "npm run build && node scripts/native/sync.mjs",
+    "native:ios:build": "node scripts/native/build-ios.mjs",
+    "native:android:build": "node scripts/native/build-android.mjs",
+    "test:native:ios": "node scripts/native/test-ios.mjs",
+    "test:native:android": "node scripts/native/test-android.mjs"
   },
   "engines": {
     "node": ">=22.12.0"
