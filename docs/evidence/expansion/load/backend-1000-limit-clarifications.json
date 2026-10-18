@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "sourceRun": "5187e940-6da2-4a1a-98e6-6562557663df",
+  "recordedAt": "2026-10-18T17:08:17.128024+00:00",
+  "concurrentBackup": {
+    "status": "FAIL",
+    "originalError": "UNCLASSIFIED",
+    "exactCause": "Not captured. The harness retained only a bounded error code; the original thrown exception detail is unavailable. Narrow retained Storage/Kong logs had no entries, and database log markers did not identify this exception.",
+    "recoveryStatus": "PASS",
+    "sameRecoveryPointResumed": true,
+    "verifiedBytes": 145322609
+  },
+  "remainingStaging": {
+    "status": "BOUNDED_PENDING_EXPIRY",
+    "rows": 10,
+    "allocatedBytes": 655360,
+    "matchingPhysicalStorageObjects": 0,
+    "uploadReservationStates": {
+      "uploading": 10,
+      "attached": 10
+    },
+    "explanation": "Ten deliberately truncated requests failed byte validation before Storage upload. Their original reservation/object metadata remains until expiry; ten fresh retries attached valid bytes.",
+    "reservationLifetimeSeconds": 900,
+    "inflightLeaseSeconds": 60,
+    "minimumObjectAgeForSweepSeconds": 3600,
+    "cleanup": "Bounded media maintenance sweep becomes eligible only after all reservation/inflight/live/snapshot/recovery references expire. This cohort has not been aged or swept as part of this clarification. Separate full-84 usage/sweep assertions prove physical orphan collection and live/pinned preservation.",
+    "quotaAccounting": "Staged allocation remains included in provider-allocation limits; it is not reported as zero allocated usage or as stored physical bytes."
+  },
+  "acceptanceInterpretation": {
+    "sources": [
+      "docs/expansion-engineering.md:134",
+      "docs/expansion-test-plan.md:T41",
+      "docs/expansion-implementation.md:I13"
+    ],
+    "stressCapacity": "FAIL at 1000 simultaneous reconnects on this local runtime. This is not a hosted capacity or operating-budget pass.",
+    "safetyAndRecovery": "PASS for observed no-loss/no-duplicate/owner isolation, bounded unchanged-command recovery, bounded staging, fair compaction, typed admission fixtures and uninterrupted local capture.",
+    "backupAtPeak": "Not an explicit all-1000-success condition in T41; recovery traffic is required and was included. The failed concurrent backup remains a distinct failure with successful bounded resumption afterward."
+  }
+}
