@@ -90,6 +90,10 @@ export async function nativePullNoop() {
       () => repo.applyPage(scope.key, { ...page, nextCursor: '-1' }, scope.generation),
       'SYNC_PAGE_INVALID',
     )
+    await rejects(
+      () => repo.applyPage(scope.key, { ...page, nextCursor: '1' }, scope.generation),
+      'SYNC_PAGE_INVALID',
+    )
     await rejects(() => repo.applyPage(scope.key, page, scope.generation + 1), 'ACCOUNT_CHANGED')
     await rejects(
       () => repo.applyPage({ ...scope.key, namespace: 'another-owner' }, page, scope.generation),
@@ -105,7 +109,27 @@ export async function nativePullNoop() {
       ),
     )
 
-    await repo.applyPage(scope.key, { ...page, nextCursor: '1' }, scope.generation)
+    // A cursor cannot advance without a contiguous receipt. A deletion for an
+    // already-absent project advances the durable journal without visible rows.
+    await repo.applyPage(
+      scope.key,
+      {
+        ...page,
+        nextCursor: '1',
+        entries: [
+          {
+            operationId: 'remote-delete',
+            sha256: 'b'.repeat(64),
+            epoch: scope.key.epoch,
+            revision: '1',
+            cursor: '1',
+            resultId: 'already-absent',
+            changes: [{ kind: 'project.delete', id: 'already-absent', revision: '1' }],
+          },
+        ],
+      },
+      scope.generation,
+    )
     const advanced = await repo.readView(scope.key)
     assert(
       advanced.cursor === '1' && advanced.revision !== review.revision && notifications === 1,
