@@ -17,7 +17,7 @@ import type {
 import type { SafeError } from '../../domain/errors'
 import type { SQLiteDBConnection } from '@capacitor-community/sqlite'
 import { DomainError } from '../../domain/errors'
-import { canonicalHash, canonicalJson, sha256Bytes } from '../../domain/canonical-json'
+import { canonicalHash, canonicalJson } from '../../domain/canonical-json'
 import { signCommand, parsePullPage, id } from '../../domain/schema'
 import {
   emptyCollection,
@@ -931,7 +931,6 @@ export class NativeRepository implements Repository {
       const view = viewOf(await getState(db, key)),
         refs = mediaRefs(view.checkpoints)
       if (options?.allowMissingMedia) {
-        const available = new Set((await durableFiles.list()).files.map((file) => file.key))
         for (const ref of refs) {
           const row = (
             await db.query('SELECT body,file_key FROM media WHERE scope=? AND id=?', [
@@ -942,11 +941,8 @@ export class NativeRepository implements Repository {
           if (!row) continue
           if (canonicalJson(JSON.parse(row.body as string)) !== canonicalJson(ref))
             throw new DomainError('MEDIA_INVALID')
-          if (!available.has(row.file_key as string)) continue
-          const result = await durableFiles.read({ key: row.file_key as string })
-          const bytes = Uint8Array.from(atob(result.base64), (c) => c.charCodeAt(0))
-          if (bytes.length !== ref.bytes || (await sha256Bytes(bytes)) !== ref.sha256)
-            throw new DomainError('MEDIA_INVALID')
+          // The saved descriptor remains authoritative. Complete export validates bytes,
+          // reports damaged/missing cache and may repair it while these refs stay pinned.
         }
       } else await assertMediaPresent(db, key, refs)
       // Pin every immutable ref, including an absent byte object fetched after this snapshot.

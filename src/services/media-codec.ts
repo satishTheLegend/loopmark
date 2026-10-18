@@ -2,7 +2,7 @@ import type { MediaKind, MediaRef, SessionScope } from '../domain/contracts'
 import type { PlatformMedia } from '../platform/contracts'
 import { sha256Bytes, canonicalHash } from '../domain/canonical-json'
 import { DomainError } from '../domain/errors'
-import { validMedia } from '../media-validation'
+import { decodeBase64Bytes, decodeValidatedMedia, validMediaBytes } from '../media-validation'
 import { mediaRefSchema } from '../domain/schema'
 export async function verifyMediaBytes(ref: MediaRef, blob: Blob): Promise<void> {
   if (
@@ -12,10 +12,7 @@ export async function verifyMediaBytes(ref: MediaRef, blob: Blob): Promise<void>
   )
     throw new DomainError('MEDIA_INVALID')
   const bytes = new Uint8Array(await blob.arrayBuffer())
-  if (
-    (await sha256Bytes(bytes)) !== ref.sha256 ||
-    !validMedia(bytesToDataUrl(bytes, ref.mimeType), ref.kind)
-  )
+  if ((await sha256Bytes(bytes)) !== ref.sha256 || !validMediaBytes(bytes, ref.mimeType, ref.kind))
     throw new DomainError('MEDIA_INVALID')
 }
 export function bytesToDataUrl(bytes: Uint8Array, mimeType: string): string {
@@ -27,20 +24,21 @@ export function bytesToDataUrl(bytes: Uint8Array, mimeType: string): string {
 export function dataUrlToBlob(value: string): Blob {
   const split = value.indexOf(';base64,')
   if (!value.startsWith('data:') || split < 0) throw new DomainError('MEDIA_INVALID')
-  let raw: string
+  let bytes: Uint8Array<ArrayBuffer>
   try {
-    raw = atob(value.slice(split + 8))
+    bytes = decodeBase64Bytes(value.slice(split + 8))
   } catch {
     throw new DomainError('MEDIA_INVALID')
   }
-  return new Blob([Uint8Array.from(raw, (c) => c.charCodeAt(0))], { type: value.slice(5, split) })
+  return new Blob([bytes], { type: value.slice(5, split) })
 }
 export async function describeInline(
   value: string,
   kind: MediaKind,
 ): Promise<{ ref: MediaRef; bytes: Blob }> {
-  if (!validMedia(value, kind)) throw new DomainError('MEDIA_INVALID')
-  const bytes = dataUrlToBlob(value),
+  const decoded = decodeValidatedMedia(value, kind)
+  if (!decoded) throw new DomainError('MEDIA_INVALID')
+  const bytes = new Blob([decoded.bytes], { type: decoded.mimeType }),
     sha256 = await sha256Bytes(new Uint8Array(await bytes.arrayBuffer()))
   return {
     ref: {

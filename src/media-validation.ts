@@ -201,12 +201,23 @@ function validWebm(bytes: Uint8Array): boolean {
   return tracks && cluster
 }
 
-export function validMedia(value: string, kind: 'photo' | 'voice'): boolean {
+/** Decode into a preallocated buffer; Array.from(string) creates a large intermediate array. */
+export function decodeBase64Bytes(value: string): Uint8Array<ArrayBuffer> {
+  const binary = atob(value),
+    bytes = new Uint8Array(binary.length)
+  for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index)
+  return bytes
+}
+
+export function decodeValidatedMedia(
+  value: string,
+  kind: 'photo' | 'voice',
+): { bytes: Uint8Array<ArrayBuffer>; mimeType: string } | null {
   // WebKit's FileReader preserves the MediaRecorder MIME's space before codecs.
   const match = /^data:([^;,]+)(?:;\s*codecs=[\w., "-]+)?;\s*base64,([A-Za-z0-9+/]*={0,2})$/.exec(
     value,
   )
-  if (!match || !match[2] || match[2].length % 4 !== 0) return false
+  if (!match || !match[2] || match[2].length % 4 !== 0) return null
   const [, mime, payload] = match
   const allowed =
     kind === 'photo'
@@ -214,13 +225,18 @@ export function validMedia(value: string, kind: 'photo' | 'voice'): boolean {
       : ['audio/webm', 'audio/mp4', 'audio/ogg', 'audio/wav', 'audio/x-wav']
   const length =
     (payload.length / 4) * 3 - (payload.endsWith('==') ? 2 : payload.endsWith('=') ? 1 : 0)
-  if (!allowed.includes(mime) || length > (kind === 'photo' ? 4 : 8) * 1024 * 1024) return false
+  if (!allowed.includes(mime) || length > (kind === 'photo' ? 4 : 8) * 1024 * 1024) return null
   try {
-    const bytes = Uint8Array.from(atob(payload), (char) => char.charCodeAt(0))
-    return validMediaBytes(bytes, mime, kind)
+    const bytes = decodeBase64Bytes(payload)
+    const mimeType = value.slice(5, value.length - payload.length - 1).replace(/;\s*base64$/, '')
+    return validMediaBytes(bytes, mime, kind) ? { bytes, mimeType } : null
   } catch {
-    return false
+    return null
   }
+}
+
+export function validMedia(value: string, kind: 'photo' | 'voice'): boolean {
+  return decodeValidatedMedia(value, kind) !== null
 }
 
 /** Validate existing raw bytes without a base64 encode/decode round trip. */

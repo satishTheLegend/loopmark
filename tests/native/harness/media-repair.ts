@@ -7,6 +7,12 @@ import { DomainError, type ErrorCode } from '../../../src/domain/errors'
 import { fixture, create } from './persistence'
 import { localSave } from '../../examples/local-save'
 import { completeLocalExport } from '../../examples/complete-export'
+import { createBackupService } from '../../../src/services/backup-service'
+import { createRemoteMediaService } from '../../../src/services/media-service'
+import { createNativeWorkflowStore } from '../../../src/platform/native/workflow-store'
+import { createLocalDataAdapter } from '../../../src/services/local-data-service'
+import { createNativeOperationPlanStore } from '../../../src/platform/native/operation-plans'
+import type { SnapshotManifest } from '../../../src/domain/contracts'
 
 const png =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aQmcAAAAASUVORK5CYII='
@@ -142,11 +148,141 @@ export async function nativeMediaRepair() {
   assert(savedDraft?.notes === 'Keep this draft', 'Repair changed draft')
   await repo.releaseSnapshot(snapshot.id)
   await repo.close()
+  await nativeCompleteExportRepair()
   return [
     'actual native corruption detected',
     'failed SQL repair preserves original pointer and draft/export pins',
     'stale generation rejected',
     'immutable replacement repairs corrupt and missing files',
     'reopen complete export preserves exact photo',
+    'actual complete-export service downloads and repairs corrupt cache using synthetic authenticated transport',
   ]
+}
+
+async function nativeCompleteExportRepair() {
+  const repo = await openNativeRepository({ databaseName: `export_repair_${Date.now()}` }),
+    info = fixture(true)
+  await repo.createCollection(info)
+  const scope = await repo.transition(null, {
+    key: info.key,
+    device: { id: 'repair-device', generation: 'first' },
+  })
+  const { ref, bytes } = await describeInline(png, 'photo'),
+    intent = create(info)
+  if (intent.kind !== 'project.create') throw new Error('Wrong fixture')
+  const manifest: SnapshotManifest = {
+    protocolVersion: 2,
+    snapshotId: 'repair-export-snapshot',
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    cursor: '1',
+    revision: '1',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+    after: null,
+    nextPage: null,
+    projects: [{ ...intent.payload.project, revision: '1' }],
+    checkpoints: [
+      {
+        id: 'export-checkpoint',
+        projectId: intent.payload.project.id,
+        createdAt: info.createdAt,
+        revision: '1',
+        position: 'Row 12',
+        toolSize: '4 mm',
+        nextStep: 'Keep these stitches',
+        notes: '',
+        photo: ref,
+      },
+    ],
+    media: [ref],
+  }
+  await repo.hydrate(scope.key, [manifest], scope.generation)
+  await repo.media.storeVerified(ref, bytes, scope.key, scope.generation)
+  const row = await repo.database.serial(
+    async (db) =>
+      (
+        await db.query('SELECT file_key FROM media WHERE scope=? AND id=?', [
+          scopeKey(scope.key),
+          ref.id,
+        ])
+      ).values![0],
+  )
+  const fileKey = String(row.file_key),
+    corrupt = new Uint8Array([1, 2, 3])
+  await durableFiles.remove({ key: fileKey })
+  await durableFiles.put({
+    key: fileKey,
+    base64: btoa(String.fromCharCode(...corrupt)),
+    sha256: await sha256Bytes(corrupt),
+  })
+  const session = {
+    accountId: info.accountId!,
+    billingPrincipalId: 'repair-principal',
+    collection: scope.key,
+    device: scope.device,
+    deletionGeneration: '0',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+  }
+  let downloads = 0,
+    releases = 0
+  const unused = async (): Promise<never> => {
+    throw new Error('Unexpected transport operation')
+  }
+  const remote = createRemoteMediaService({
+    repository: repo,
+    media: repo.media,
+    workflows: createNativeWorkflowStore(repo),
+    current: () => session,
+    transport: {
+      reserve: unused,
+      upload: unused,
+      cancel: unused,
+      download: async () => {
+        downloads++
+        const pins = await repo.database.serial(
+          async (db) =>
+            (
+              await db.query(
+                "SELECT owner FROM pins WHERE scope=? AND media_id=? AND owner LIKE 'snapshot:%'",
+                [scopeKey(scope.key), ref.id],
+              )
+            ).values ?? [],
+        )
+        assert(pins.length > 0, 'Repair download lost its export pin')
+        return bytes
+      },
+    },
+  })
+  const data = createLocalDataAdapter({
+    repository: repo,
+    media: repo.media,
+    plans: createNativeOperationPlanStore(repo),
+    scope: () => scope,
+  })
+  const backups = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data,
+    scope: () => scope,
+    remote: {
+      current: () => session,
+      media: remote,
+      transport: {
+        snapshot: async () => manifest,
+        releaseSnapshot: async () => {
+          releases++
+        },
+        push: unused,
+        pull: unused,
+      },
+    },
+  })
+  const backup = await backups.exportComplete()
+  assert(
+    backup.projects[0].checkpoints[0].photo === png && downloads === 1 && releases === 1,
+    'Complete backup did not repair exact bytes or release lease',
+  )
+  await backups.exportComplete()
+  assert(downloads === 1, 'Already repaired cache downloaded twice')
+  await repo.close()
 }

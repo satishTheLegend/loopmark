@@ -1,9 +1,9 @@
 import type { CollectionKey, Generation, MediaRef } from '../../domain/contracts'
 import type { MediaInput, PlatformMedia, PreparedMedia } from '../contracts'
-import { canonicalHash } from '../../domain/canonical-json'
+import { canonicalHash, sha256Bytes } from '../../domain/canonical-json'
 import { mediaRefSchema } from '../../domain/schema'
 import { DomainError } from '../../domain/errors'
-import { validMedia } from '../../media-validation'
+import { decodeBase64Bytes, validMediaBytes } from '../../media-validation'
 import { readFile } from '../../media'
 import { durableFiles } from './files-bridge'
 import { NativeDatabase } from './database'
@@ -45,14 +45,15 @@ export class NativeMedia implements PlatformMedia {
     generation: Generation,
   ): Promise<void> {
     mediaRefSchema.parse(ref)
+    const raw = new Uint8Array(await bytes.arrayBuffer())
     if (
       bytes.size !== ref.bytes ||
       bytes.type !== ref.mimeType ||
-      (await digest(bytes)) !== ref.sha256
+      (await sha256Bytes(raw)) !== ref.sha256
     )
       throw new DomainError('VALIDATION')
+    if (!validMediaBytes(raw, ref.mimeType, ref.kind)) throw new DomainError('VALIDATION')
     const dataUrl = await readFile(bytes)
-    if (!validMedia(dataUrl, ref.kind)) throw new DomainError('VALIDATION')
     if (ref.kind === 'photo') await this.decodePhoto(bytes)
     const scopeId = scopeKey(scope)
     // A repair publishes new immutable bytes, then changes only the SQLite file pointer.
@@ -149,12 +150,12 @@ export class NativeMedia implements PlatformMedia {
     }
     let bytes: Uint8Array<ArrayBuffer>
     try {
-      bytes = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0))
+      bytes = decodeBase64Bytes(encoded)
     } catch {
       throw new DomainError('MEDIA_INVALID')
     }
     const blob = new Blob([bytes], { type: ref.mimeType })
-    if (blob.size !== ref.bytes || (await digest(blob)) !== ref.sha256)
+    if (blob.size !== ref.bytes || (await sha256Bytes(bytes)) !== ref.sha256)
       throw new DomainError('MEDIA_INVALID')
     return blob
   }
