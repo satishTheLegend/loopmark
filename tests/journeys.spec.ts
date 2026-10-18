@@ -10,14 +10,28 @@ const tinyPng = Buffer.from(
 )
 
 async function createProject(page: Page, name = 'Sunday cardigan') {
-  await page.getByRole('button', { name: 'New project', exact: true }).click()
+  const newProject = page.getByRole('button', { name: 'New project', exact: true })
+  // The shelf mounts after IndexedDB opens; fonts.ready before that point only
+  // covers the loading screen. Settle the real control before one native click.
+  await expect(newProject).toBeVisible()
+  await page.evaluate(() => document.fonts.ready)
+  await newProject.scrollIntoViewIfNeeded()
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  )
+  await newProject.click()
   const dialog = page.getByRole('dialog')
   await dialog.getByLabel('Project name').fill(name)
   await dialog.getByLabel('Hook or needle size').fill('5 mm hook')
   await dialog.getByLabel('Yarn or material').fill('Soft cotton, terracotta')
   await dialog.getByLabel('Project notes').fill('Pattern kept in the blue folder.')
   await dialog.getByRole('button', { name: 'Create project', exact: true }).click()
-  await expect(page.getByRole('heading', { name, exact: true })).toBeVisible()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(page).toHaveURL(/#project=/)
+  await expect(page.getByRole('heading', { name, exact: true, level: 1 })).toBeVisible()
 }
 
 async function checkpoint(
@@ -25,11 +39,13 @@ async function checkpoint(
   nextStep: string,
   position = 'Row 23 complete',
   photo = false,
+  notes?: string,
 ) {
   await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
   const dialog = page.getByRole('dialog')
   await dialog.getByLabel('What will you do next?').fill(nextStep)
   await dialog.getByLabel('Current row or repeat').fill(position)
+  if (notes) await dialog.getByLabel('Anything else to remember?').fill(notes)
   if (photo) {
     await dialog
       .getByLabel('Add checkpoint photo')
@@ -64,7 +80,7 @@ test('create, edit, capture photo, resume latest, browse immutable history, fini
 }) => {
   await page.goto('/')
   await expect(page.getByText('Let’s keep your place.')).toBeVisible()
-  await expect(page.getByRole('button', { name: /^Open / })).toHaveCount(0)
+  await expect(page.locator('.project-card').getByRole('button', { name: /^Open / })).toHaveCount(0)
   await createProject(page)
   const code = await page.locator('.project-code').innerText()
   const projectUrl = page.url()
@@ -141,7 +157,7 @@ test('search, craft filter and no-results recovery operate on opt-in samples', a
   await expect(page.locator('.project-card')).toHaveCount(3)
 })
 
-test('simulated microphone recording and photo survive a full export and isolated-browser restore', async ({
+test('@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore', async ({
   page,
   browser,
 }) => {
@@ -180,6 +196,10 @@ test('simulated microphone recording and photo survive a full export and isolate
     )
     .toBe(true)
   await dialog.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
+  await expect(dialog).toHaveCount(0)
+  await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
+    'Continue with the blue yarn.',
+  )
   const exported = await backup(page)
   expect(exported.projects[0].checkpoints[0].photo).toMatch(/^data:image\/jpeg;base64,/)
   expect(exported.projects[0].checkpoints[0].voice).toMatch(/^data:audio\/webm/)
@@ -373,7 +393,7 @@ test('bag label renders QR and print-only content, then opens the saved local pr
 test('production cache permits offline reload, capture, and later reload without remote requests', async ({
   page,
   context,
-}) => {
+}, testInfo) => {
   const remoteRequests: string[] = []
   page.on('request', (request) => {
     if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== 'http://127.0.0.1:4173')
@@ -381,7 +401,7 @@ test('production cache permits offline reload, capture, and later reload without
   })
   await page.goto('/')
   await createProject(page, 'Offline socks')
-  await page.evaluate(async () => {
+  const worker = await page.evaluate(async () => {
     await navigator.serviceWorker.ready
     if (!navigator.serviceWorker.controller)
       await new Promise<void>((resolve) =>
@@ -389,6 +409,19 @@ test('production cache permits offline reload, capture, and later reload without
           once: true,
         }),
       )
+    return {
+      scriptURL: navigator.serviceWorker.controller?.scriptURL,
+      state: navigator.serviceWorker.controller?.state,
+      caches: await caches.keys(),
+    }
+  })
+  await testInfo.attach('offline-cache.json', {
+    body: JSON.stringify(
+      { project: testInfo.project.name, browser: context.browser()?.version(), ...worker },
+      null,
+      2,
+    ),
+    contentType: 'application/json',
   })
   await context.setOffline(true)
   await page.reload()
@@ -412,9 +445,13 @@ test('dialog traps keyboard focus and returns it to the opener', async ({ page }
   await opener.focus()
   await page.keyboard.press('Enter')
   await expect(page.getByLabel('Project name')).toBeFocused()
-  for (let index = 0; index < 16; index++) {
-    await page.keyboard.press('Tab')
-    expect(await page.evaluate(() => Boolean(document.activeElement?.closest('dialog')))).toBe(true)
+  for (const key of ['Tab', 'Shift+Tab']) {
+    for (let index = 0; index < 16; index++) {
+      await page.keyboard.press(key)
+      expect(await page.evaluate(() => Boolean(document.activeElement?.closest('dialog')))).toBe(
+        true,
+      )
+    }
   }
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog')).toHaveCount(0)
@@ -425,7 +462,7 @@ test('microphone permission denial and invalid photo have actionable recovery', 
   page,
 }) => {
   await page.addInitScript(() => {
-    navigator.mediaDevices.getUserMedia = () =>
+    Object.getPrototypeOf(navigator.mediaDevices).getUserMedia = () =>
       Promise.reject(new DOMException('Denied for test', 'NotAllowedError'))
   })
   await page.goto('/')
@@ -478,7 +515,7 @@ test('a large photo is resized to the documented bound before saving', async ({ 
   )
 })
 
-test('voice capture stops at the simulated time limit, removes audio, and releases tracks on close', async ({
+test('@chromium-media voice capture stops at the simulated time limit, removes audio, and releases tracks on close', async ({
   page,
 }) => {
   await page.context().grantPermissions(['microphone'])
@@ -576,7 +613,15 @@ for (const width of [320, 390]) {
       ).toBe(true)
     await page.goto('/')
     await checkWidth()
-    await page.getByRole('button', { name: 'Take a look with sample projects' }).click()
+    const samples = page.getByRole('button', { name: 'Take a look with sample projects' })
+    await samples.scrollIntoViewIfNeeded()
+    await page.evaluate(
+      () =>
+        new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    )
+    await samples.click()
     await expect(page.locator('.project-card')).toHaveCount(3)
     await page.locator('.project-card-main').first().click()
     await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toBeVisible()
@@ -657,4 +702,237 @@ test('axe WCAG 2.2 AA scan covers eight core screens and dialogs', async ({ page
   await scan('backup')
   await page.goto('/#guide')
   await scan('guide')
+})
+
+for (const missingApi of ['MediaRecorder', 'mediaDevices'] as const) {
+  test(`missing ${missingApi} offers a written-note fallback without blocking a checkpoint`, async ({
+    page,
+  }) => {
+    await page.addInitScript((api) => {
+      if (api === 'MediaRecorder')
+        Object.defineProperty(window, 'MediaRecorder', { value: undefined, configurable: true })
+      else
+        Object.defineProperty(navigator, 'mediaDevices', { value: undefined, configurable: true })
+    }, missingApi)
+    await page.goto('/')
+    await createProject(page)
+    await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
+    await page.getByRole('button', { name: 'Record a quick note' }).click()
+    await expect(page.getByRole('alert')).toContainText('Voice recording is unavailable here')
+    await expect(page.getByRole('alert')).toContainText('written note')
+    await page.getByLabel('What will you do next?').fill('Continue from the written instructions.')
+    await page.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
+    await expect(page.getByRole('dialog')).toHaveCount(0)
+    await page.reload()
+    await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
+      'Continue from the written instructions.',
+    )
+  })
+}
+
+async function installSynthesizedAudio(page: Page) {
+  await page.addInitScript(() => {
+    Object.getPrototypeOf(navigator.mediaDevices).getUserMedia = async () => {
+      const audio = new AudioContext()
+      const tone = audio.createOscillator()
+      const destination = audio.createMediaStreamDestination()
+      tone.connect(destination)
+      tone.start()
+      await audio.resume()
+      ;(window as unknown as { synthesizedStream: MediaStream }).synthesizedStream =
+        destination.stream
+      destination.stream.getTracks().forEach((track) => {
+        const stop = track.stop.bind(track)
+        track.stop = () => {
+          stop()
+          tone.stop()
+          void audio.close()
+        }
+      })
+      return destination.stream
+    }
+  })
+}
+
+test('native recorder accepts a synthesized audio stream and restores its playable output', async ({
+  page,
+  browser,
+}, testInfo) => {
+  // Exercises each engine's real MediaRecorder/container without claiming microphone hardware coverage.
+  // Only getUserMedia is replaced; the app owns recording, encoding, persistence and restoration.
+  await installSynthesizedAudio(page)
+  await page.goto('/')
+  await createProject(page, 'Native recorder project')
+  await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
+  await page.getByLabel('What will you do next?').fill('Listen to the recorded reminder.')
+  await page.getByRole('button', { name: 'Record a quick note' }).click()
+  await expect(page.getByRole('button', { name: /Stop recording/ })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Save checkpoint', exact: true })).toBeDisabled()
+  await page.waitForTimeout(700)
+  await page.getByRole('button', { name: /Stop recording/ }).click()
+  const audio = page.locator('dialog audio')
+  await expect(audio).toHaveAttribute('src', /^data:audio\/(webm|mp4|ogg)/)
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        (window as unknown as { synthesizedStream: MediaStream }).synthesizedStream
+          .getTracks()
+          .every((track) => track.readyState === 'ended'),
+      ),
+    )
+    .toBe(true)
+  const voice = await audio.getAttribute('src')
+  await testInfo.attach('recorded-container.txt', {
+    body: voice!.slice(0, voice!.indexOf(',')),
+    contentType: 'text/plain',
+  })
+  await page.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  const exported = await backup(page)
+  expect(exported.projects[0].checkpoints[0].voice).toBe(voice)
+  const otherContext = await browser.newContext()
+  try {
+    const other = await otherContext.newPage()
+    await other.goto('http://127.0.0.1:4173/#backup')
+    await uploadBackup(other, exported)
+    await other.getByRole('button', { name: 'Replace and restore' }).click()
+    await expect(other.getByRole('dialog')).toHaveCount(0)
+    await other.goto(`http://127.0.0.1:4173/#project=${exported.projects[0].id}`)
+    const restoredAudio = other.locator('audio')
+    await expect(restoredAudio).toHaveAttribute('src', voice!)
+    // Playback evidence checks actual decoder acceptance and progress, beyond a data URL existing.
+    await restoredAudio.evaluate(async (element) => {
+      const media = element as HTMLAudioElement
+      await media.play()
+    })
+    await expect
+      .poll(() => restoredAudio.evaluate((element) => (element as HTMLAudioElement).currentTime))
+      .toBeGreaterThan(0)
+    expect(
+      await restoredAudio.evaluate((element) => (element as HTMLAudioElement).error),
+    ).toBeNull()
+  } finally {
+    await otherContext.close()
+  }
+})
+
+test('maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions', async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 844 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'New project', exact: true }).click()
+  const name = 'N'.repeat(100)
+  const tool = 'T'.repeat(80)
+  const yarn = 'Y'.repeat(200)
+  const notes = 'P'.repeat(2000)
+  const nextStep = 'S'.repeat(1000)
+  const checkpointNotes = 'C'.repeat(2000)
+  const position = 'R'.repeat(100)
+  await page.getByLabel('Project name').fill(name)
+  await page.getByLabel('Hook or needle size').fill(tool)
+  await page.getByLabel('Yarn or material').fill(yarn)
+  await page.getByLabel('Project notes').fill(notes)
+  await page.getByRole('button', { name: 'Create project', exact: true }).click()
+  await expect(page.getByRole('heading', { name, exact: true })).toBeVisible()
+  await checkpoint(page, nextStep, position, false, checkpointNotes)
+  await page.reload()
+  await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toContainText(nextStep)
+  const checkReflow = async (state: string) => {
+    await page.evaluate(() => document.fonts.ready)
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+      `${state} content must fit the viewport`,
+    ).toBeLessThanOrEqual(320)
+    expect(
+      await page.evaluate(
+        () =>
+          document.getAnimations().filter((animation) => animation.playState === 'running').length,
+      ),
+      `${state} must respect reduced motion`,
+    ).toBe(0)
+  }
+  await checkReflow('detail')
+  await page.getByRole('button', { name: 'Make a bag label' }).click()
+  await expect(page.getByAltText('QR code to this project on this site')).toBeVisible()
+  await checkReflow('bag label')
+  await page.screenshot({ path: testInfo.outputPath('long-fields-320.png'), fullPage: true })
+  await page.getByRole('button', { name: 'Close dialog' }).click()
+  await page.getByRole('button', { name: 'Back to your projects' }).click()
+  await checkReflow('shelf')
+  const exported = await backup(page)
+  expect(exported.projects[0]).toMatchObject({ name, toolSize: tool, yarn, notes })
+  expect(exported.projects[0].checkpoints[0]).toMatchObject({
+    nextStep,
+    position,
+    toolSize: tool,
+    notes: checkpointNotes,
+  })
+})
+
+test('navigation waits for delayed voice conversion and recovers the completed voice draft', async ({
+  page,
+}) => {
+  await installSynthesizedAudio(page)
+  await page.goto('/')
+  await createProject(page, 'Voice conversion recovery')
+  const projectUrl = page.url()
+  await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
+  await page
+    .getByLabel('What will you do next?')
+    .fill('Keep this voice reminder through navigation.')
+  await page.getByRole('button', { name: 'Record a quick note' }).click()
+  await expect(page.getByRole('button', { name: /Stop recording/ })).toBeVisible()
+  await page.waitForTimeout(700)
+  await page.evaluate(() => {
+    const read = FileReader.prototype.readAsDataURL
+    FileReader.prototype.readAsDataURL = function (blob) {
+      if (!blob.type.startsWith('audio/')) return read.call(this, blob)
+      // Hold the real FileReader, then add 500 ms latency after release. The gate makes
+      // assertions deterministic even when CI is slow; no media result is fabricated.
+      const reader = this
+      ;(window as unknown as { releaseVoiceRead: () => void }).releaseVoiceRead = () => {
+        setTimeout(() => read.call(reader, blob), 500)
+      }
+    }
+  })
+  await page.getByRole('button', { name: /Stop recording/ }).click()
+  const processing = page.getByRole('button', { name: 'Preparing voice note…' })
+  await expect(processing).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Save checkpoint', exact: true })).toBeDisabled()
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => typeof (window as unknown as { releaseVoiceRead?: unknown }).releaseVoiceRead,
+      ),
+    )
+    .toBe('function')
+  await page.evaluate(() => {
+    location.hash = 'guide'
+  })
+  await expect(
+    page.getByRole('heading', { name: 'Voice conversion recovery', exact: true }),
+  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Leave a note. Find your rhythm.' })).toHaveCount(
+    0,
+  )
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await expect(processing).toBeDisabled()
+  await page.evaluate(() =>
+    (window as unknown as { releaseVoiceRead: () => void }).releaseVoiceRead(),
+  )
+  await expect(page).toHaveURL(/#guide$/)
+  await expect(page.getByRole('heading', { name: 'Leave a note. Find your rhythm.' })).toBeVisible()
+  await page.goto(projectUrl)
+  await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
+  await expect(page.getByLabel('What will you do next?')).toHaveValue(
+    'Keep this voice reminder through navigation.',
+  )
+  await expect(page.locator('dialog audio')).toHaveAttribute('src', /^data:audio\/(webm|mp4|ogg)/)
+  const voice = await page.locator('dialog audio').getAttribute('src')
+  await page.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await page.reload()
+  await expect(page.locator('audio')).toHaveAttribute('src', voice!)
 })

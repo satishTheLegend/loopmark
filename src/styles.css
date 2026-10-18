@@ -472,6 +472,8 @@ h1 {
 }
 .filter-tabs {
   display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
   align-items: center;
   gap: 5px;
 }
@@ -884,7 +886,7 @@ h1 {
   font-size: 12px;
   overflow-wrap: anywhere;
 }
-.dialog form > label,
+.dialog .form-fields > label,
 .form-grid > label {
   display: block;
   font-size: 11px;
@@ -2214,7 +2216,7 @@ h1 {
   .dialog-head h2 {
     font-size: 23px;
   }
-  .dialog form > label,
+  .dialog .form-fields > label,
   .form-grid > label {
     font-size: 12px;
   }
@@ -2735,4 +2737,78 @@ h1 {
 .project-detail-grid > *,
 .project-sidebar > * {
   min-width: 0;
+}
+
+/* Recovery and offline status share the notebook's quiet, readable surfaces. */
+.form-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.draft-status {
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border-left: 3px solid var(--sage);
+  background: #e9edde;
+  border-radius: 4px;
+}
+.draft-status p {
+  margin: 0 0 5px;
+}
+.draft-status .text-button {
+  font-size: 12px;
+}
+.field-help {
+  margin: -10px 0 18px;
+  color: var(--muted);
+}
+.toast-error {
+  border-color: #a3452e;
+}
+.toast-error .toast-mark {
+  background: #f5ded4;
+  color: #852c1c;
+}
+.offline-settings {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px 0;
+  background: var(--surface);
+}
+.offline-settings p {
+  line-height: 1.7;
+  max-width: 68ch;
+}
+.offline-settings h3 {
+  margin-top: 24px;
+}
+.offline-settings .button {
+  white-space: normal;
+}
+.page-heading p {
+  overflow-wrap: anywhere;
+}
+.project-details-card dl {
+  grid-template-columns: 90px minmax(0, 1fr);
+}
+.form-grid,
+.checkpoint-facts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.form-grid > *,
+.checkpoint-facts > * {
+  min-width: 0;
+}
+@media (max-width: 400px) {
+  .checkpoint-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

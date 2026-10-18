@@ -1,5 +1,7 @@
 import { z } from 'zod'
 import type { Backup, CheckpointInput, Project, ProjectInput } from './types'
+import { validMedia, validateBackupMedia } from './media-validation'
+export { validateBackupMedia } from './media-validation'
 
 export const MAX_BACKUP_BYTES = 50 * 1024 * 1024
 export const MAX_LIBRARY_BYTES = 48 * 1024 * 1024
@@ -9,51 +11,25 @@ const DATABASE = 'loopmark'
 const VERSION = 1
 const encoder = new TextEncoder()
 const id = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/, 'Invalid record ID')
-const timestamp = z.string().refine((value) => {
+function supportedTimestamp(value: unknown): value is string {
+  if (typeof value !== 'string') return false
   const parsed = new Date(value)
-  return Number.isFinite(parsed.getTime()) && parsed.toISOString() === value
-}, 'Invalid date')
+  // Do not allow an imported date to move the persistent revision clock near Date's limit.
+  // A century of clock skew still permits ordinary backups from devices with incorrect clocks.
+  return (
+    /^\d{4}-/.test(value) &&
+    Number.isFinite(parsed.getTime()) &&
+    parsed.toISOString() === value &&
+    parsed.getTime() <= Date.now() + 100 * 366 * 24 * 60 * 60 * 1000
+  )
+}
+const timestamp = z.string().refine(supportedTimestamp, 'Invalid date')
 const nonBlank = (max: number) =>
   z
     .string()
     .min(1)
     .max(max)
     .refine((value) => value.trim().length > 0, 'Must not be blank')
-
-function validMedia(value: string, kind: 'photo' | 'voice'): boolean {
-  const match = /^data:([^;,]+)(?:;codecs=[\w., "-]+)?;base64,([A-Za-z0-9+/]*={0,2})$/.exec(value)
-  if (!match || !match[2] || match[2].length % 4 !== 0) return false
-  const [, mime, payload] = match
-  const allowed =
-    kind === 'photo'
-      ? ['image/jpeg', 'image/png', 'image/webp']
-      : ['audio/webm', 'audio/mp4', 'audio/ogg', 'audio/wav', 'audio/x-wav']
-  const bytes =
-    (payload.length / 4) * 3 - (payload.endsWith('==') ? 2 : payload.endsWith('=') ? 1 : 0)
-  if (!allowed.includes(mime) || bytes > (kind === 'photo' ? 4 : 8) * 1024 * 1024) return false
-  let header: string
-  try {
-    header = atob(payload.slice(0, Math.min(32, payload.length)))
-  } catch {
-    return false
-  }
-  switch (mime) {
-    case 'image/jpeg':
-      return header.startsWith('\xff\xd8\xff')
-    case 'image/png':
-      return header.startsWith('\x89PNG\r\n\x1a\n')
-    case 'image/webp':
-      return header.startsWith('RIFF') && header.slice(8, 12) === 'WEBP'
-    case 'audio/webm':
-      return header.startsWith('\x1a\x45\xdf\xa3')
-    case 'audio/mp4':
-      return header.slice(4, 8) === 'ftyp'
-    case 'audio/ogg':
-      return header.startsWith('OggS')
-    default:
-      return header.startsWith('RIFF') && header.slice(8, 12) === 'WAVE'
-  }
-}
 
 const projectFields = {
   name: nonBlank(100),
@@ -147,6 +123,7 @@ interface Stats {
   projects: number
   checkpoints: number
   lastUpdatedAt?: string
+  revision?: string
 }
 const emptyStats = (): Stats => ({ key: 'library', bytes: 0, projects: 0, checkpoints: 0 })
 const size = (value: unknown) => encoder.encode(JSON.stringify(value)).byteLength
@@ -292,10 +269,16 @@ export function subscribe(listener: () => void): () => void {
   }
 }
 
-const nextTimestamp = (...previous: (string | undefined)[]) =>
-  new Date(
+const nextTimestamp = (...previous: (string | undefined)[]) => {
+  const next = new Date(
     Math.max(Date.now(), ...previous.flatMap((value) => (value ? [Date.parse(value) + 1] : []))),
-  ).toISOString()
+  )
+  if (!Number.isFinite(next.getTime()) || next.getUTCFullYear() > 9999 || next.getUTCFullYear() < 0)
+    throw new Error(
+      'The saved date is outside the supported range. Restore a backup with valid dates.',
+    )
+  return next.toISOString()
+}
 function requireCurrent(project: Project | undefined, expected?: string): Project {
   if (!project)
     throw new Error(
@@ -303,7 +286,7 @@ function requireCurrent(project: Project | undefined, expected?: string): Projec
     )
   if (expected !== undefined && project.updatedAt !== expected)
     throw new Error(
-      'This project changed in another tab. Close this form and reopen it to use the latest version. Your other tab’s changes are safe.',
+      'This project changed in another tab. Your other tab’s changes are safe. If an unfinished edit returns, copy anything you need, discard that draft, and reopen the latest details.',
     )
   return project
 }
@@ -323,11 +306,22 @@ function writeProject(
       stats.projects += Number(Boolean(next)) - Number(Boolean(previous))
       stats.checkpoints += (next?.checkpoints.length ?? 0) - (previous?.checkpoints.length ?? 0)
       stats.lastUpdatedAt = nextTimestamp(stats.lastUpdatedAt, previous?.updatedAt, next?.updatedAt)
+      stats.revision = crypto.randomUUID()
       assertCapacity(stats)
       const store = tx.objectStore('projects')
       if (next && previous) store.put(next)
       else if (next) store.add(next)
-      else if (previous) store.delete(previous.id)
+      else if (previous) {
+        store.delete(previous.id)
+        const receipts = tx.objectStore('meta').openCursor()
+        receipts.onsuccess = () => {
+          const cursor = receipts.result
+          if (!cursor) return
+          if (String(cursor.key).startsWith('receipt:') && cursor.value.projectId === previous.id)
+            cursor.delete()
+          cursor.continue()
+        }
+      }
       tx.objectStore('meta').put(stats)
       done()
     } catch (error) {
@@ -348,8 +342,117 @@ export async function listProjects(): Promise<Project[]> {
   })
 }
 
-export async function createProject(input: ProjectInput): Promise<Project> {
+export interface LibraryState {
+  revision: string
+  projects: number
+  checkpoints: number
+}
+const revisionOf = (stats?: Stats) => stats?.revision ?? stats?.lastUpdatedAt ?? 'empty'
+export async function getLibraryState(): Promise<LibraryState> {
+  return transaction('readonly', (tx, done) => {
+    const request = tx.objectStore('meta').get('library')
+    request.onsuccess = () => {
+      const stats = request.result as Stats | undefined
+      done({
+        revision: revisionOf(stats),
+        projects: stats?.projects ?? 0,
+        checkpoints: stats?.checkpoints ?? 0,
+      })
+    }
+  })
+}
+export async function getLibraryRevision(): Promise<string> {
+  return (await getLibraryState()).revision
+}
+export class LibraryChangedError extends Error {
+  constructor() {
+    super(
+      'Your collection changed while this restore was open. Review the latest collection before confirming replacement again. Your newer changes are safe.',
+    )
+    this.name = 'LibraryChangedError'
+  }
+}
+
+interface Operation {
+  key: string
+  fingerprint: string
+}
+interface Receipt extends Operation {
+  projectId: string
+  checkpointId?: string
+}
+async function operationFor(
+  kind: 'create' | 'checkpoint',
+  token: string | undefined,
+  input: unknown,
+): Promise<Operation | undefined> {
+  if (token === undefined) return undefined
+  validated(id, token)
+  const digest = await crypto.subtle.digest('SHA-256', encoder.encode(JSON.stringify(input)))
+  return {
+    key: `receipt:${kind}:${token}`,
+    fingerprint: Array.from(new Uint8Array(digest), (byte) =>
+      byte.toString(16).padStart(2, '0'),
+    ).join(''),
+  }
+}
+function retryOrWrite(
+  tx: IDBTransaction,
+  operation: Operation | undefined,
+  projectId: string | undefined,
+  done: (project: Project) => void,
+  write: () => void,
+  fail: (error: unknown) => void,
+) {
+  if (!operation) {
+    write()
+    return
+  }
+  const request = tx.objectStore('meta').get(operation.key)
+  request.onsuccess = () => {
+    try {
+      const receipt = request.result as Receipt | undefined
+      if (!receipt) {
+        write()
+        return
+      }
+      if (
+        receipt.fingerprint !== operation.fingerprint ||
+        (projectId !== undefined && receipt.projectId !== projectId)
+      )
+        throw new Error(
+          'This save token was already used for different input. Reopen the form before saving these changes.',
+        )
+      const saved = tx.objectStore('projects').get(receipt.projectId)
+      saved.onsuccess = () => {
+        const project = saved.result as Project | undefined
+        if (
+          !project ||
+          (receipt.checkpointId &&
+            !project.checkpoints.some((checkpoint) => checkpoint.id === receipt.checkpointId))
+        ) {
+          fail(
+            new Error(
+              'The previously saved result is no longer available. Reopen this form before trying again.',
+            ),
+          )
+          return
+        }
+        done(project)
+      }
+    } catch (error) {
+      fail(error)
+    }
+  }
+}
+
+export async function createProject(
+  input: ProjectInput,
+  operationToken?: string,
+): Promise<Project> {
   const clean = validated(projectInputSchema, input)
+  clean.name = clean.name.trim()
+  const operation = operationToken ? await operationFor('create', operationToken, clean) : undefined
   const now = nextTimestamp()
   const project: Project = {
     ...clean,
@@ -361,29 +464,72 @@ export async function createProject(input: ProjectInput): Promise<Project> {
     updatedAt: now,
     checkpoints: [],
   }
-  await transaction<void>('readwrite', (tx, done, fail) =>
-    writeProject(tx, undefined, project, () => done(), fail),
-  )
+  const saved = await transaction<Project>('readwrite', (tx, done, fail) => {
+    retryOrWrite(
+      tx,
+      operation,
+      undefined,
+      done,
+      () => {
+        writeProject(
+          tx,
+          undefined,
+          project,
+          () => {
+            if (operation)
+              tx.objectStore('meta').put({ ...operation, projectId: project.id } satisfies Receipt)
+            done(project)
+          },
+          fail,
+        )
+      },
+      fail,
+    )
+  })
   publish()
-  return project
+  return saved
 }
 
 async function mutateProject(
   idValue: string,
   mutate: (project: Project) => Project | undefined,
   expected?: string,
+  operation?: Operation,
 ): Promise<Project | undefined> {
   const result = await transaction<Project | undefined>('readwrite', (tx, done, fail) => {
-    const request = tx.objectStore('projects').get(idValue)
-    request.onsuccess = () => {
-      try {
-        const previous = requireCurrent(request.result, expected)
-        const next = mutate(previous)
-        writeProject(tx, previous, next, () => done(next), fail)
-      } catch (error) {
-        fail(error)
-      }
-    }
+    retryOrWrite(
+      tx,
+      operation,
+      idValue,
+      done,
+      () => {
+        const request = tx.objectStore('projects').get(idValue)
+        request.onsuccess = () => {
+          try {
+            const previous = requireCurrent(request.result, expected)
+            const next = mutate(previous)
+            writeProject(
+              tx,
+              previous,
+              next,
+              () => {
+                if (operation && next)
+                  tx.objectStore('meta').put({
+                    ...operation,
+                    projectId: next.id,
+                    checkpointId: next.checkpoints[0].id,
+                  } satisfies Receipt)
+                done(next)
+              },
+              fail,
+            )
+          } catch (error) {
+            fail(error)
+          }
+        }
+      },
+      fail,
+    )
   })
   publish()
   return result
@@ -424,21 +570,34 @@ export async function deleteProject(idValue: string, expectedUpdatedAt: string):
   await mutateProject(idValue, () => undefined, expectedUpdatedAt)
 }
 
-export async function addCheckpoint(idValue: string, input: CheckpointInput): Promise<Project> {
+export async function addCheckpoint(
+  idValue: string,
+  input: CheckpointInput,
+  operationToken?: string,
+): Promise<Project> {
   const clean = validated(checkpointInputSchema, input)
-  return (await mutateProject(idValue, (project) => {
-    if (project.status === 'finished')
-      throw new Error('This project is finished. Reopen it before saving another checkpoint.')
-    const now = nextTimestamp(project.updatedAt)
-    return {
-      ...project,
-      updatedAt: now,
-      checkpoints: [
-        { ...clean, nextStep: clean.nextStep.trim(), id: crypto.randomUUID(), createdAt: now },
-        ...project.checkpoints,
-      ],
-    }
-  })) as Project
+  clean.nextStep = clean.nextStep.trim()
+  const operation = operationToken
+    ? await operationFor('checkpoint', operationToken, clean)
+    : undefined
+  return (await mutateProject(
+    idValue,
+    (project) => {
+      if (project.status === 'finished')
+        throw new Error('This project is finished. Reopen it before saving another checkpoint.')
+      const now = nextTimestamp(project.updatedAt)
+      return {
+        ...project,
+        updatedAt: now,
+        checkpoints: [
+          { ...clean, nextStep: clean.nextStep.trim(), id: crypto.randomUUID(), createdAt: now },
+          ...project.checkpoints,
+        ],
+      }
+    },
+    undefined,
+    operation,
+  )) as Project
 }
 
 export async function exportBackup(): Promise<Backup> {
@@ -471,9 +630,15 @@ export function parseBackup(text: string): Backup {
   return backup
 }
 
-async function applyBackup(backup: Backup, onlyWhenEmpty: boolean): Promise<void> {
+async function applyBackup(
+  backup: Backup,
+  onlyWhenEmpty: boolean,
+  expectedRevision?: string,
+): Promise<void> {
   // Revalidate even callers that bypass the file picker. Nothing is cleared on validation failure.
   const clean = parseBackup(JSON.stringify(backup))
+  if (clean.projects.some((project) => project.checkpoints.some((checkpoint) => checkpoint.photo)))
+    await validateBackupMedia(clean)
   await transaction<void>('readwrite', (tx, done, fail) => {
     const store = tx.objectStore('projects')
     const request = store.getAll()
@@ -481,20 +646,31 @@ async function applyBackup(backup: Backup, onlyWhenEmpty: boolean): Promise<void
       const metadata = tx.objectStore('meta').get('library')
       metadata.onsuccess = () => {
         try {
+          if (expectedRevision !== undefined && revisionOf(metadata.result) !== expectedRevision)
+            throw new LibraryChangedError()
           if (onlyWhenEmpty && request.result.length)
             throw new Error(
               'Sample projects can only be added to an empty collection. Your existing projects are safe.',
             )
-          const previous = new Map(
-            (request.result as Project[]).map((project) => [project.id, project.updatedAt]),
+          // Explicit restore can recover old releases that accepted impossible revision clocks.
+          // Keep every supported existing/imported clock, including records removed by replacement,
+          // so surviving drafts cannot regain a previously issued normal revision after recovery.
+          const watermark = nextTimestamp(
+            ...[
+              (metadata.result as Stats | undefined)?.lastUpdatedAt,
+              clean.exportedAt,
+              ...[...(request.result as Project[]), ...clean.projects].flatMap((project) => [
+                project.createdAt,
+                project.updatedAt,
+                ...project.checkpoints.map((checkpoint) => checkpoint.createdAt),
+              ]),
+            ].filter(supportedTimestamp),
           )
-          const watermark = (metadata.result as Stats | undefined)?.lastUpdatedAt
           // Retain the clock through empty restores so deleted/reintroduced IDs cannot reuse draft tokens.
           const projects = clean.projects.map((project) => ({
             ...project,
             updatedAt: nextTimestamp(
               project.updatedAt,
-              previous.get(project.id),
               project.createdAt,
               project.checkpoints[0]?.createdAt,
               watermark,
@@ -502,11 +678,14 @@ async function applyBackup(backup: Backup, onlyWhenEmpty: boolean): Promise<void
           }))
           store.clear()
           for (const project of projects) store.add(project)
+          // A replacement starts a new library; old draft-save receipts must not replay into it.
+          tx.objectStore('meta').clear()
           tx.objectStore('meta').put({
             key: 'library',
             bytes: projects.reduce((sum, project) => sum + size(project), 0),
             projects: projects.length,
             checkpoints: projects.reduce((sum, project) => sum + project.checkpoints.length, 0),
+            revision: crypto.randomUUID(),
             lastUpdatedAt: nextTimestamp(
               watermark,
               ...projects.map((project) => project.updatedAt),
@@ -522,8 +701,9 @@ async function applyBackup(backup: Backup, onlyWhenEmpty: boolean): Promise<void
   publish()
 }
 
-export async function restoreBackup(backup: Backup): Promise<void> {
-  await applyBackup(backup, false)
+/** UI callers must pass the revision shown in their confirmation. Omission is for trusted reset/test callers. */
+export async function restoreBackup(backup: Backup, expectedRevision?: string): Promise<void> {
+  await applyBackup(backup, false, expectedRevision)
 }
 
 /** Adds opt-in examples only if the library is still empty when the write transaction runs. */

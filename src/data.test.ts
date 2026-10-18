@@ -1,10 +1,12 @@
 import 'fake-indexeddb/auto'
+import { readFileSync } from 'node:fs'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   addCheckpoint,
   createProject,
   deleteProject,
   exportBackup,
+  getLibraryRevision,
   listProjects,
   MAX_CHECKPOINTS,
   MAX_PROJECTS,
@@ -39,7 +41,8 @@ const emptyBackup = (): Backup => ({
 })
 const png =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aQmcAAAAASUVORK5CYII='
-const webm = `data:audio/webm;codecs=opus;base64,${btoa('\x1a\x45\xdf\xa3fixture')}`
+// Complete mono PCM WAV: 44-byte header followed by one 16-bit silent sample.
+const wav = 'data:audio/wav;base64,UklGRiYAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQIAAAAAAA=='
 
 beforeEach(async () => {
   vi.restoreAllMocks()
@@ -47,6 +50,106 @@ beforeEach(async () => {
 })
 
 describe('backup validation', () => {
+  it('rejects date-range poisoning before replacing the library', async () => {
+    const original = await createProject(projectInput)
+    const backup = await exportBackup()
+    backup.projects[0].updatedAt = '+275760-09-12T23:59:59.998Z'
+    await expect(restoreBackup(backup)).rejects.toThrow('date')
+    expect(await listProjects()).toEqual([original])
+    await addCheckpoint(original.id, checkpointInput)
+    await restoreBackup(emptyBackup())
+    expect(await listProjects()).toEqual([])
+  })
+
+  it('recovers legacy poisoned clocks through an atomic valid-backup restore and retains supported revisions', async () => {
+    const original = await createProject(projectInput)
+    const backup = await exportBackup()
+    const supported = await createProject({ ...projectInput, name: 'Supported clock' })
+    const future = '2041-01-01T00:00:00.000Z'
+    const poison = '+275760-09-13T00:00:00.000Z'
+    await new Promise<void>((resolve, reject) => {
+      const request = indexedDB.open('loopmark', 1)
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => {
+        const db = request.result
+        const tx = db.transaction(['projects', 'meta'], 'readwrite')
+        tx.objectStore('projects').put({ ...original, updatedAt: poison })
+        tx.objectStore('projects').put({ ...supported, updatedAt: future })
+        const metadata = tx.objectStore('meta').get('library')
+        metadata.onsuccess = () =>
+          tx.objectStore('meta').put({ ...metadata.result, lastUpdatedAt: poison })
+        tx.oncomplete = () => {
+          db.close()
+          resolve()
+        }
+        tx.onabort = tx.onerror = () => {
+          db.close()
+          reject(tx.error)
+        }
+      }
+    })
+    await expect(createProject(projectInput)).rejects.toThrow('supported range')
+    const poisoned = await listProjects()
+    const revision = await getLibraryRevision()
+    const add = IDBObjectStore.prototype.add
+    const failure = vi.spyOn(IDBObjectStore.prototype, 'add').mockImplementation(function (
+      this: IDBObjectStore,
+      value: unknown,
+      key?: IDBValidKey,
+    ) {
+      if (this.name === 'projects')
+        throw new DOMException('Injected restore failure', 'QuotaExceededError')
+      return add.call(this, value, key)
+    })
+    await expect(restoreBackup(backup, revision)).rejects.toThrow('storage is full')
+    expect(await listProjects()).toEqual(poisoned)
+    expect(await getLibraryRevision()).toBe(revision)
+    failure.mockRestore()
+    await restoreBackup(backup, revision)
+    const restored = (await listProjects())[0]
+    expect(restored.id).toBe(original.id)
+    expect(Date.parse(restored.updatedAt)).toBeGreaterThan(Date.parse(future))
+    await expect(updateProject(restored.id, projectInput, original.updatedAt)).rejects.toThrow(
+      'another tab',
+    )
+    await createProject(projectInput)
+    await addCheckpoint(restored.id, checkpointInput)
+    expect(await listProjects()).toHaveLength(2)
+  })
+
+  it('rejects signature-only and truncated attachments without replacing good data', async () => {
+    const original = await createProject(projectInput)
+    const backup = await exportBackup()
+    for (const media of [
+      { photo: 'data:image/jpeg;base64,/9j/' },
+      { photo: `data:image/png;base64,${btoa('\x89PNG\r\n\x1a\n')}` },
+      { voice: 'data:audio/webm;base64,GkXfow==' },
+      { voice: wav.slice(0, -8) },
+    ]) {
+      backup.projects[0].checkpoints = [
+        { ...checkpointInput, ...media, id: 'broken-media', createdAt: original.createdAt },
+      ]
+      await expect(restoreBackup(backup)).rejects.toThrow()
+      expect(await listProjects()).toEqual([original])
+    }
+  })
+
+  it('accepts recorder MIME parameters with optional whitespace', async () => {
+    const project = await createProject(projectInput)
+    await expect(
+      addCheckpoint(project.id, {
+        ...checkpointInput,
+        voice: wav.replace(';base64', '; codecs=pcm; base64'),
+      }),
+    ).resolves.toBeDefined()
+  })
+
+  it('accepts native Firefox WebM with its empty SeekHead element', async () => {
+    const project = await createProject(projectInput)
+    const voice = readFileSync(new URL('./fixtures/firefox-recording.txt', import.meta.url), 'utf8')
+    await expect(addCheckpoint(project.id, { ...checkpointInput, voice })).resolves.toBeDefined()
+  })
+
   it('rejects malformed JSON, unsupported versions and missing fields without changing existing data', async () => {
     const project = await createProject(projectInput)
     expect(() => parseBackup('{')).toThrow('valid JSON')
@@ -129,6 +232,79 @@ describe('backup validation', () => {
 })
 
 describe('transactional project storage', () => {
+  it('commits repeated and concurrent create retries only once per draft operation', async () => {
+    const projects = await Promise.all([
+      createProject(projectInput, 'create-draft-revision'),
+      createProject(projectInput, 'create-draft-revision'),
+    ])
+    expect(projects[0].id).toBe(projects[1].id)
+    expect((await createProject(projectInput, 'create-draft-revision')).id).toBe(projects[0].id)
+    expect(await listProjects()).toHaveLength(1)
+  })
+
+  it('commits repeated and concurrent checkpoint retries only once per draft operation', async () => {
+    const project = await createProject(projectInput)
+    await Promise.all([
+      addCheckpoint(project.id, checkpointInput, 'checkpoint-draft-revision'),
+      addCheckpoint(project.id, checkpointInput, 'checkpoint-draft-revision'),
+    ])
+    await addCheckpoint(project.id, checkpointInput, 'checkpoint-draft-revision')
+    expect((await listProjects())[0].checkpoints).toHaveLength(1)
+  })
+
+  it('clears committed-operation receipts when deleting or replacing their collection', async () => {
+    const project = await createProject(projectInput, 'reusable-token')
+    await deleteProject(project.id, project.updatedAt)
+    const recreated = await createProject(projectInput, 'reusable-token')
+    expect(recreated.id).not.toBe(project.id)
+    await restoreBackup(emptyBackup())
+    const restored = await createProject(projectInput, 'reusable-token')
+    expect(restored.id).not.toBe(recreated.id)
+    expect(await listProjects()).toHaveLength(1)
+  })
+
+  it('rejects replaying a committed save token with different input or project', async () => {
+    const first = await createProject(projectInput, 'create-bound-input')
+    await expect(
+      createProject({ ...projectInput, name: 'Different' }, 'create-bound-input'),
+    ).rejects.toThrow('different input')
+    const second = await createProject(projectInput)
+    await addCheckpoint(first.id, checkpointInput, 'checkpoint-bound-input')
+    await expect(
+      addCheckpoint(
+        first.id,
+        { ...checkpointInput, nextStep: 'Changed' },
+        'checkpoint-bound-input',
+      ),
+    ).rejects.toThrow('different input')
+    await expect(
+      addCheckpoint(second.id, checkpointInput, 'checkpoint-bound-input'),
+    ).rejects.toThrow('different input')
+    expect(
+      (await listProjects()).reduce((count, project) => count + project.checkpoints.length, 0),
+    ).toBe(1)
+  })
+
+  it('rolls back the saved record and receipt together when receipt persistence fails', async () => {
+    const revision = await getLibraryRevision()
+    const put = IDBObjectStore.prototype.put
+    const failure = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementation(function (
+      this: IDBObjectStore,
+      value: unknown,
+      key?: IDBValidKey,
+    ) {
+      if (this.name === 'meta' && String((value as { key?: string }).key).startsWith('receipt:'))
+        throw new DOMException('Injected receipt failure', 'QuotaExceededError')
+      return put.call(this, value, key)
+    })
+    await expect(createProject(projectInput, 'failed-receipt')).rejects.toThrow('storage is full')
+    expect(await listProjects()).toEqual([])
+    expect(await getLibraryRevision()).toBe(revision)
+    failure.mockRestore()
+    const created = await createProject(projectInput, 'failed-receipt')
+    expect((await createProject(projectInput, 'failed-receipt')).id).toBe(created.id)
+    expect(await listProjects()).toHaveLength(1)
+  })
   it('preserves both concurrent checkpoint appends and immutable snapshots', async () => {
     const project = await createProject(projectInput)
     await Promise.all([
@@ -267,7 +443,7 @@ describe('transactional project storage', () => {
 
   it('round-trips every project field, photo and voice in a self-contained backup', async () => {
     const project = await createProject(projectInput)
-    await addCheckpoint(project.id, { ...checkpointInput, photo: png, voice: webm })
+    await addCheckpoint(project.id, { ...checkpointInput, photo: png, voice: wav })
     const backup = await exportBackup()
     const parsed = parseBackup(JSON.stringify(backup))
     await restoreBackup(emptyBackup())
@@ -287,6 +463,26 @@ describe('transactional project storage', () => {
       updateProject(original.id, { ...projectInput, name: 'Stale form' }, original.updatedAt),
     ).rejects.toThrow('another tab')
     expect((await listProjects())[0].name).toBe(projectInput.name)
+  })
+
+  it('rejects a restore when the library changed after preview and permits a refreshed confirmation', async () => {
+    const project = await createProject(projectInput)
+    const previewRevision = await getLibraryRevision()
+    const pending = emptyBackup()
+    await addCheckpoint(project.id, checkpointInput)
+    const latest = await listProjects()
+    await expect(restoreBackup(pending, previewRevision)).rejects.toThrow('changed')
+    expect(await listProjects()).toEqual(latest)
+    await restoreBackup(pending, await getLibraryRevision())
+    expect(await listProjects()).toEqual([])
+  })
+
+  it('changes the library revision for every successful mutation, including an empty restore', async () => {
+    const before = await getLibraryRevision()
+    await restoreBackup(emptyBackup(), before)
+    const after = await getLibraryRevision()
+    expect(after).not.toBe(before)
+    await expect(restoreBackup(emptyBackup(), before)).rejects.toThrow('changed')
   })
 
   it('advances a restored token beyond existing, incoming and checkpoint dates even after a clock rollback', async () => {

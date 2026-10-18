@@ -37,15 +37,10 @@ export function Dialog({
             'button:not(:disabled), input:not(:disabled):not([tabindex="-1"]), textarea:not(:disabled), select:not(:disabled), a[href], [tabindex="0"]',
           ) || [],
         ).filter((el) => el.getClientRects().length > 0)
-        const first = items[0],
-          last = items[items.length - 1]
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault()
-          last?.focus()
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault()
-          first?.focus()
-        }
+        if (!items.length) return
+        event.preventDefault()
+        const index = items.indexOf(document.activeElement as HTMLElement)
+        items[(index + (event.shiftKey ? -1 : 1) + items.length) % items.length]?.focus()
       }}
       onCancel={(e) => {
         e.preventDefault()

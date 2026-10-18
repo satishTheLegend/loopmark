@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   IconLayoutGrid,
   IconCircleCheck,
@@ -30,6 +30,8 @@ import { BackupView } from './components/BackupView'
 import { BagLabel } from './components/BagLabel'
 import { Guide } from './components/Guide'
 import { sampleBackup } from './samples'
+import { useOfflineSupport } from './offline'
+import { deleteProjectDrafts } from './drafts'
 type Route = 'projects' | 'finished' | 'backup' | 'guide' | `project=${string}`
 type Modal = 'new' | 'edit' | 'checkpoint' | 'label' | 'delete' | null
 function readRoute(): Route {
@@ -38,6 +40,7 @@ function readRoute(): Route {
   return ['finished', 'backup', 'guide'].includes(hash) ? (hash as Route) : 'projects'
 }
 export default function App() {
+  const offlineSupport = useOfflineSupport()
   const [projects, setProjects] = useState<Project[]>([]),
     [loading, setLoading] = useState(true),
     [loadError, setLoadError] = useState(''),
@@ -45,10 +48,17 @@ export default function App() {
     [modal, setModal] = useState<Modal>(null),
     [mobileOpen, setMobileOpen] = useState(false),
     [toast, setToast] = useState(''),
+    [toastError, setToastError] = useState(false),
     [offline, setOffline] = useState(!navigator.onLine),
     [busy, setBusy] = useState(false),
     [actionError, setActionError] = useState(''),
     [editSnapshot, setEditSnapshot] = useState<Project>()
+  const exitGuard = useRef<(() => Promise<boolean>) | undefined>(undefined)
+  const currentRoute = useRef(route)
+  currentRoute.current = route
+  const setExitGuard = useCallback((guard?: () => Promise<boolean>) => {
+    exitGuard.current = guard
+  }, [])
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
     main = useRef<HTMLElement>(null),
     request = useRef(0)
@@ -72,8 +82,13 @@ export default function App() {
     return off
   }, [])
   useEffect(() => {
-    const change = () => {
-      setRoute(readRoute())
+    const change = async () => {
+      const next = readRoute()
+      if (exitGuard.current && !(await exitGuard.current())) {
+        history.replaceState(null, '', `#${currentRoute.current}`)
+        return
+      }
+      setRoute(next)
       setModal(null)
       setMobileOpen(false)
       requestAnimationFrame(() => main.current?.focus())
@@ -118,9 +133,11 @@ export default function App() {
     } else location.hash = next
     window.scrollTo({ top: 0, behavior: 'instant' })
   }
-  function notify(message: string) {
+  function notify(message: string, isError = false) {
     clearTimeout(toastTimer.current)
     setToast(message)
+    setToastError(isError)
+    if (isError) return
     toastTimer.current = setTimeout(() => setToast(''), 6500)
   }
   let projectId: string | undefined
@@ -135,25 +152,30 @@ export default function App() {
       ? `${project.name} · Loopmark`
       : 'Loopmark · Pick up where you left off'
   }, [project])
-  async function saveProject(input: ProjectInput) {
+  async function saveProject(input: ProjectInput, expectedRevision?: string, draftToken?: string) {
     if (modal === 'edit' && editSnapshot) {
-      await updateProject(editSnapshot.id, input, editSnapshot.updatedAt)
-      setModal(null)
-      notify('Project details saved.')
-    } else {
-      const created = await createProject(input)
-      setModal(null)
-      navigate(`project=${created.id}`)
-      notify('A new beginning. Your project is saved.')
+      await updateProject(editSnapshot.id, input, expectedRevision || editSnapshot.updatedAt)
+      await refresh()
+      return editSnapshot.id
     }
+    const created = await createProject(input, draftToken)
+    await refresh()
+    return created.id
+  }
+  function projectSaved(id: string, warning?: string) {
+    exitGuard.current = undefined
+    setModal(null)
+    navigate(`project=${id}`)
+    notify(warning || 'Your project is saved.', !!warning)
+  }
+  async function saveCheckpoint(input: CheckpointInput, draftToken?: string) {
+    if (!project) throw new Error('This project is no longer available. Your draft is still here.')
+    await addCheckpoint(project.id, input, draftToken)
     await refresh()
   }
-  async function saveCheckpoint(input: CheckpointInput) {
-    if (!project) return
-    await addCheckpoint(project.id, input)
-    await refresh()
+  function checkpointSaved(warning?: string) {
     setModal(null)
-    notify('Your place is saved. Take your time.')
+    notify(warning || 'Your place is saved. Take your time.', !!warning)
   }
   async function changeStatus() {
     if (!project || busy) return
@@ -171,7 +193,7 @@ export default function App() {
           : 'Your project is back in the workbasket.',
       )
     } catch (e) {
-      notify(errorText(e))
+      notify(errorText(e), true)
     } finally {
       setBusy(false)
     }
@@ -182,10 +204,16 @@ export default function App() {
     setActionError('')
     try {
       await deleteProject(editSnapshot.id, editSnapshot.updatedAt)
+      let warning = ''
+      try {
+        await deleteProjectDrafts(editSnapshot.id)
+      } catch (e) {
+        warning = errorText(e)
+      }
       setModal(null)
       navigate('projects')
       await refresh()
-      notify('Project deleted.')
+      notify(warning || 'Project deleted.', !!warning)
     } catch (e) {
       setActionError(errorText(e))
     } finally {
@@ -200,7 +228,7 @@ export default function App() {
       await refresh()
       notify('Three sample projects added. Explore them, edit them, or delete them.')
     } catch (e) {
-      notify(errorText(e))
+      notify(errorText(e), true)
     } finally {
       setBusy(false)
     }
@@ -315,7 +343,14 @@ export default function App() {
         {offline && (
           <div className="offline-banner" role="status">
             <IconWifiOff size={16} />
-            You’re offline. Your projects and checkpoints still work on this device.
+            {offlineSupport.ready
+              ? 'You’re offline. Your projects and checkpoints still work on this device.'
+              : 'You’re offline. Keep this page open until you reconnect; offline reopening is not ready yet.'}
+          </div>
+        )}
+        {offlineSupport.update && (
+          <div className="offline-banner" role="status">
+            An update is ready. Save your work, close all Loopmark tabs, then reopen to apply it.
           </div>
         )}
         <main id="main" ref={main} tabIndex={-1} className="main-content">
@@ -369,7 +404,11 @@ export default function App() {
           ) : route === 'backup' ? (
             <BackupView onMessage={notify} />
           ) : route === 'guide' ? (
-            <Guide onNew={() => setModal('new')} onBackup={() => navigate('backup')} />
+            <Guide
+              offlineSupport={offlineSupport}
+              onNew={() => setModal('new')}
+              onBackup={() => navigate('backup')}
+            />
           ) : (
             <Shelf
               key={route}
@@ -384,8 +423,11 @@ export default function App() {
         </main>
       </div>
       {toast && (
-        <div className="toast" role="status">
-          <span className="toast-mark">✓</span>
+        <div
+          className={`toast ${toastError ? 'toast-error' : ''}`}
+          role={toastError ? 'alert' : 'status'}
+        >
+          <span className="toast-mark">{toastError ? '!' : '✓'}</span>
           <span>{toast}</span>
           <button className="icon-button" aria-label="Dismiss message" onClick={() => setToast('')}>
             <IconX size={16} />
@@ -397,10 +439,18 @@ export default function App() {
           project={modal === 'edit' ? editSnapshot : undefined}
           onClose={() => setModal(null)}
           onSave={saveProject}
+          onSaved={projectSaved}
+          onExitGuard={setExitGuard}
         />
       )}{' '}
       {modal === 'checkpoint' && project && (
-        <CheckpointForm project={project} onClose={() => setModal(null)} onSave={saveCheckpoint} />
+        <CheckpointForm
+          project={project}
+          onClose={() => setModal(null)}
+          onSave={saveCheckpoint}
+          onSaved={checkpointSaved}
+          onExitGuard={setExitGuard}
+        />
       )}{' '}
       {modal === 'label' && project && (
         <BagLabel project={project} onClose={() => setModal(null)} />

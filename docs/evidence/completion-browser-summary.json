@@ -1,0 +1,2957 @@
+{
+  "candidate": "loopmark-ad60daeda70e",
+  "stats": {
+    "startTime": "2026-10-18T10:00:49.099Z",
+    "duration": 177230.013,
+    "expected": 209,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "projects": {
+    "chromium": {
+      "expected": 43
+    },
+    "firefox": {
+      "expected": 41
+    },
+    "webkit": {
+      "expected": 41
+    },
+    "chromium-mobile": {
+      "expected": 43
+    },
+    "webkit-mobile": {
+      "expected": 41
+    }
+  },
+  "errors": [],
+  "cases": [
+    {
+      "title": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2110,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered draft can be discarded without creating a project",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1241,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 872,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "discard serializes against further typing and save until draft storage finishes",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2601,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+      "file": "draft-recovery.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9671,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered draft can be discarded without creating a project",
+      "file": "draft-recovery.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6167,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+      "file": "draft-recovery.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6086,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "discard serializes against further typing and save until draft storage finishes",
+      "file": "draft-recovery.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4374,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2917,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered draft can be discarded without creating a project",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2010,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1211,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "discard serializes against further typing and save until draft storage finishes",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2774,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3006,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered draft can be discarded without creating a project",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1447,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 760,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "discard serializes against further typing and save until draft storage finishes",
+      "file": "draft-recovery.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2827,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "new project and checkpoint drafts survive dismissal and reload, and clear after save",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3265,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered draft can be discarded without creating a project",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1708,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed draft persistence guards hash navigation and keeps text when leaving is declined",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1390,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "discard serializes against further typing and save until draft storage finishes",
+      "file": "draft-recovery.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2964,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3054,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "search, craft filter and no-results recovery operate on opt-in samples",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 628,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3685,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "invalid or hostile imports preserve current data; valid replacement needs confirmation",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2477,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "browser storage write failures retain form values and leave existing checkpoints intact",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1598,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed restore rolls back the entire transaction",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1384,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "two tabs retain concurrent checkpoints and reject stale detail edits",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2432,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "bag label renders QR and print-only content, then opens the saved local project",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1677,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "production cache permits offline reload, capture, and later reload without remote requests",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1363,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "dialog traps keyboard focus and returns it to the opener",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 706,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "microphone permission denial and invalid photo have actionable recovery",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1502,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a large photo is resized to the documented bound before saving",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1297,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "@chromium-media voice capture stops at the simulated time limit, removes audio, and releases tracks on close",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2252,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "blocked storage shows recovery instead of claiming a saved collection",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 280,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "imported markup remains literal text and cannot execute scripts",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1522,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2003,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2130,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6222,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1457,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1467,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "native recorder accepts a synthesized audio stream and restores its playable output",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3683,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1199,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "navigation waits for delayed voice conversion and recovers the completed voice draft",
+      "file": "journeys.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3288,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 7526,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "search, craft filter and no-results recovery operate on opt-in samples",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2249,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "invalid or hostile imports preserve current data; valid replacement needs confirmation",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4667,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "browser storage write failures retain form values and leave existing checkpoints intact",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3580,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed restore rolls back the entire transaction",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3304,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "two tabs retain concurrent checkpoints and reject stale detail edits",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5500,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "bag label renders QR and print-only content, then opens the saved local project",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3113,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "production cache permits offline reload, capture, and later reload without remote requests",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3209,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "dialog traps keyboard focus and returns it to the opener",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1969,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "microphone permission denial and invalid photo have actionable recovery",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2667,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a large photo is resized to the documented bound before saving",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3038,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "blocked storage shows recovery instead of claiming a saved collection",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 962,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "imported markup remains literal text and cannot execute scripts",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3013,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2953,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2953,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9227,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1979,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1990,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "native recorder accepts a synthesized audio stream and restores its playable output",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4351,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1614,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "navigation waits for delayed voice conversion and recovers the completed voice draft",
+      "file": "journeys.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4769,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3319,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "search, craft filter and no-results recovery operate on opt-in samples",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 860,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "invalid or hostile imports preserve current data; valid replacement needs confirmation",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3215,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "browser storage write failures retain form values and leave existing checkpoints intact",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2031,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed restore rolls back the entire transaction",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1821,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "two tabs retain concurrent checkpoints and reject stale detail edits",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3651,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "bag label renders QR and print-only content, then opens the saved local project",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2466,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "production cache permits offline reload, capture, and later reload without remote requests",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2030,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "dialog traps keyboard focus and returns it to the opener",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1441,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "microphone permission denial and invalid photo have actionable recovery",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2001,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a large photo is resized to the documented bound before saving",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2000,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "blocked storage shows recovery instead of claiming a saved collection",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 691,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "imported markup remains literal text and cannot execute scripts",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2195,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2428,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2649,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 9963,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1871,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1947,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "native recorder accepts a synthesized audio stream and restores its playable output",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4893,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1533,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "navigation waits for delayed voice conversion and recovers the completed voice draft",
+      "file": "journeys.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3940,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 16215,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "search, craft filter and no-results recovery operate on opt-in samples",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 777,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3101,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "invalid or hostile imports preserve current data; valid replacement needs confirmation",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2129,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "browser storage write failures retain form values and leave existing checkpoints intact",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1622,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed restore rolls back the entire transaction",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1318,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "two tabs retain concurrent checkpoints and reject stale detail edits",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1993,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "bag label renders QR and print-only content, then opens the saved local project",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1769,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "production cache permits offline reload, capture, and later reload without remote requests",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1292,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "dialog traps keyboard focus and returns it to the opener",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 514,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "microphone permission denial and invalid photo have actionable recovery",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1158,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a large photo is resized to the documented bound before saving",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1136,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "@chromium-media voice capture stops at the simulated time limit, removes audio, and releases tracks on close",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2191,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "blocked storage shows recovery instead of claiming a saved collection",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 279,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "imported markup remains literal text and cannot execute scripts",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1495,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2245,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2286,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 5567,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1338,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1281,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "native recorder accepts a synthesized audio stream and restores its playable output",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3084,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1606,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "navigation waits for delayed voice conversion and recovers the completed voice draft",
+      "file": "journeys.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3071,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 16420,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "search, craft filter and no-results recovery operate on opt-in samples",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 984,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "invalid or hostile imports preserve current data; valid replacement needs confirmation",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2912,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "browser storage write failures retain form values and leave existing checkpoints intact",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1863,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed restore rolls back the entire transaction",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1711,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "two tabs retain concurrent checkpoints and reject stale detail edits",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2423,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "bag label renders QR and print-only content, then opens the saved local project",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1728,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "production cache permits offline reload, capture, and later reload without remote requests",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1374,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "dialog traps keyboard focus and returns it to the opener",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 774,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "microphone permission denial and invalid photo have actionable recovery",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1277,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a large photo is resized to the documented bound before saving",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1353,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "blocked storage shows recovery instead of claiming a saved collection",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 448,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "imported markup remains literal text and cannot execute scripts",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1675,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1955,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2015,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 6904,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing MediaRecorder offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1384,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing mediaDevices offers a written-note fallback without blocking a checkpoint",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1286,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "native recorder accepts a synthesized audio stream and restores its playable output",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4047,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1901,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "navigation waits for delayed voice conversion and recovers the completed voice draft",
+      "file": "journeys.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3800,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed precache is reported and a deliberate retry prepares offline reopening",
+      "file": "offline.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 608,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing cached files are detected and repaired without deleting projects",
+      "file": "offline.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1509,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a waiting update keeps an open draft intact and activates after all old tabs close",
+      "file": "offline.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2364,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed precache is reported and a deliberate retry prepares offline reopening",
+      "file": "offline.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 686,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing cached files are detected and repaired without deleting projects",
+      "file": "offline.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3205,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a waiting update keeps an open draft intact and activates after all old tabs close",
+      "file": "offline.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2075,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed precache is reported and a deliberate retry prepares offline reopening",
+      "file": "offline.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1116,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing cached files are detected and repaired without deleting projects",
+      "file": "offline.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2004,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a waiting update keeps an open draft intact and activates after all old tabs close",
+      "file": "offline.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2100,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed precache is reported and a deliberate retry prepares offline reopening",
+      "file": "offline.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 556,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing cached files are detected and repaired without deleting projects",
+      "file": "offline.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 938,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a waiting update keeps an open draft intact and activates after all old tabs close",
+      "file": "offline.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2004,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "failed precache is reported and a deliberate retry prepares offline reopening",
+      "file": "offline.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1040,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "missing cached files are detected and repaired without deleting projects",
+      "file": "offline.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1346,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a waiting update keeps an open draft intact and activates after all old tabs close",
+      "file": "offline.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1325,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered edit draft cannot overwrite details saved later in another tab",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2829,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "competing tabs preserve the first stored draft and warn before losing the second input",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1757,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "draft write failure reports the loss of recovery while a normal project save still commits",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1073,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2443,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "already-persistent storage is shown as protected without asking again",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 507,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a stale backup preview preserves newer work until its updated collection is reviewed and reconfirmed",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2391,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a storage-status check failure stays visible and permits a later protection request",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 767,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "unsupported storage protection explains the backup fallback without claiming protection",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 380,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "declined storage protection remains visible and a backup can still be downloaded",
+      "file": "reliability.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 515,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered edit draft cannot overwrite details saved later in another tab",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2918,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "competing tabs preserve the first stored draft and warn before losing the second input",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1919,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "draft write failure reports the loss of recovery while a normal project save still commits",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2491,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2467,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "already-persistent storage is shown as protected without asking again",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 616,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a stale backup preview preserves newer work until its updated collection is reviewed and reconfirmed",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2430,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a storage-status check failure stays visible and permits a later protection request",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 690,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "unsupported storage protection explains the backup fallback without claiming protection",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 459,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "declined storage protection remains visible and a backup can still be downloaded",
+      "file": "reliability.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 558,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered edit draft cannot overwrite details saved later in another tab",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4109,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "competing tabs preserve the first stored draft and warn before losing the second input",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3599,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "draft write failure reports the loss of recovery while a normal project save still commits",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1634,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3191,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "already-persistent storage is shown as protected without asking again",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1194,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a stale backup preview preserves newer work until its updated collection is reviewed and reconfirmed",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3918,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a storage-status check failure stays visible and permits a later protection request",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1136,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "unsupported storage protection explains the backup fallback without claiming protection",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 886,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "declined storage protection remains visible and a backup can still be downloaded",
+      "file": "reliability.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1050,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered edit draft cannot overwrite details saved later in another tab",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1913,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "competing tabs preserve the first stored draft and warn before losing the second input",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1700,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "draft write failure reports the loss of recovery while a normal project save still commits",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 880,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2328,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "already-persistent storage is shown as protected without asking again",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 520,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a stale backup preview preserves newer work until its updated collection is reviewed and reconfirmed",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1985,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a storage-status check failure stays visible and permits a later protection request",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 497,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "unsupported storage protection explains the backup fallback without claiming protection",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 426,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "declined storage protection remains visible and a backup can still be downloaded",
+      "file": "reliability.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 479,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a recovered edit draft cannot overwrite details saved later in another tab",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2358,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "competing tabs preserve the first stored draft and warn before losing the second input",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1394,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "draft write failure reports the loss of recovery while a normal project save still commits",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 865,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2091,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "already-persistent storage is shown as protected without asking again",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 663,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a stale backup preview preserves newer work until its updated collection is reviewed and reconfirmed",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2080,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "a storage-status check failure stays visible and permits a later protection request",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 587,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "unsupported storage protection explains the backup fallback without claiming protection",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 464,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "declined storage protection remains visible and a backup can still be downloaded",
+      "file": "reliability.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 617,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "200% zoom reflow model and 200% text preserve shelf, capture and backup use",
+      "file": "scale.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2489,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "200% zoom reflow model and 200% text preserve shelf, capture and backup use",
+      "file": "scale.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2494,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "200% zoom reflow model and 200% text preserve shelf, capture and backup use",
+      "file": "scale.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3393,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "200% zoom reflow model and 200% text preserve shelf, capture and backup use",
+      "file": "scale.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1881,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "200% zoom reflow model and 200% text preserve shelf, capture and backup use",
+      "file": "scale.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2349,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "50 projects and 500 checkpoints remain searchable and reload intact",
+      "file": "scale.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1635,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "20-project 200-checkpoint text saves render committed feedback and persist",
+      "file": "scale.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2425,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "10-project 100-checkpoint media backup validates, restores and roundtrips",
+      "file": "scale.spec.ts",
+      "project": "chromium",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4430,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "50 projects and 500 checkpoints remain searchable and reload intact",
+      "file": "scale.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1817,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "20-project 200-checkpoint text saves render committed feedback and persist",
+      "file": "scale.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2320,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "10-project 100-checkpoint media backup validates, restores and roundtrips",
+      "file": "scale.spec.ts",
+      "project": "firefox",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2546,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "50 projects and 500 checkpoints remain searchable and reload intact",
+      "file": "scale.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3161,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "20-project 200-checkpoint text saves render committed feedback and persist",
+      "file": "scale.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3114,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "10-project 100-checkpoint media backup validates, restores and roundtrips",
+      "file": "scale.spec.ts",
+      "project": "webkit",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 4617,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "50 projects and 500 checkpoints remain searchable and reload intact",
+      "file": "scale.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1227,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "20-project 200-checkpoint text saves render committed feedback and persist",
+      "file": "scale.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1905,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "10-project 100-checkpoint media backup validates, restores and roundtrips",
+      "file": "scale.spec.ts",
+      "project": "chromium-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 3191,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "50 projects and 500 checkpoints remain searchable and reload intact",
+      "file": "scale.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1664,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "20-project 200-checkpoint text saves render committed feedback and persist",
+      "file": "scale.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2216,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "10-project 100-checkpoint media backup validates, restores and roundtrips",
+      "file": "scale.spec.ts",
+      "project": "webkit-mobile",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2662,
+          "retry": 0,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

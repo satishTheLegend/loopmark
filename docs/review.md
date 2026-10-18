@@ -1,4 +1,6 @@
-# Independent release review
+> Historical first-release review. Current independent findings and results are in [completion-judge.md](completion-judge.md).
+
+# Baseline independent release review
 
 **Status: PASS for the tested local-first Chromium release.** No open release blocker remains in the reviewed paths. The device and browser limits below remain unverified.
 

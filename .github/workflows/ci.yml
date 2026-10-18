@@ -16,10 +16,33 @@ jobs:
       - run: npm run format:check
       - run: npm run build
       - run: npm test
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
-        if: failure()
+  browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - engine: chromium
+            projects: --project=chromium --project=chromium-mobile
+          - engine: firefox
+            projects: --project=firefox
+          - engine: webkit
+            projects: --project=webkit --project=webkit-mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          name: browser-test-results
-          path: test-results/
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.engine }}
+      - run: npm run build
+      - run: npm run test:e2e -- ${{ matrix.projects }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-test-results-${{ matrix.engine }}
+          path: |
+            test-results/
+            playwright-report/

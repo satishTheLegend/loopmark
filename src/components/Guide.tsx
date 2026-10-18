@@ -4,7 +4,16 @@ import {
   IconArrowBackUp,
   IconDownload,
 } from '@tabler/icons-react'
-export function Guide({ onNew, onBackup }: { onNew: () => void; onBackup: () => void }) {
+import type { useOfflineSupport } from '../offline'
+export function Guide({
+  onNew,
+  onBackup,
+  offlineSupport,
+}: {
+  onNew: () => void
+  onBackup: () => void
+  offlineSupport: ReturnType<typeof useOfflineSupport>
+}) {
   return (
     <>
       <header className="page-heading">
@@ -23,7 +32,7 @@ export function Guide({ onNew, onBackup }: { onNew: () => void; onBackup: () => 
           <h2>
             Your project can wait.
             <br />
-            Your place won’t get lost.
+            Leave a little reminder.
           </h2>
           <p>You don’t need a perfect record. Just enough to know what to do when you return.</p>
           <button className="button primary" onClick={onNew}>
@@ -57,6 +66,44 @@ export function Guide({ onNew, onBackup }: { onNew: () => void; onBackup: () => 
           </section>
         ))}
       </div>
+      <section className="offline-settings" aria-labelledby="offline-heading">
+        <h2 id="offline-heading">Take your workbasket with you</h2>
+        <p role="status">{offlineSupport.status}</p>
+        <p>
+          Wait for “Ready offline” before disconnecting. Browser data can still be cleared; keep a
+          full backup.
+        </p>
+        <div className="empty-actions">
+          <button
+            className="button secondary"
+            disabled={offlineSupport.checking}
+            onClick={() => void offlineSupport.check()}
+          >
+            {offlineSupport.checking ? 'Checking…' : 'Check offline readiness & updates'}
+          </button>
+          {offlineSupport.canInstall && (
+            <button className="button primary" onClick={() => void offlineSupport.installApp()}>
+              Install Loopmark
+            </button>
+          )}
+        </div>
+        <h3>Add to your home screen</h3>
+        <p>
+          On iPhone or iPad, open this site in Safari, tap Share, then Add to Home Screen. On
+          Android or desktop, look for Install app or Add to Home Screen in your browser menu when
+          available. Installation is optional.
+        </p>
+        <p>
+          When an update is ready, save your work and close every Loopmark tab or installed window.
+          Open it again to use the update.
+        </p>
+        <h3>Return to an unfinished note</h3>
+        <p>
+          Text, photos, and stopped voice recordings are kept as drafts on this device. Reopen the
+          same project form to recover one. Save the project or checkpoint to include it in your
+          full backup. A recording in progress is not a saved draft.
+        </p>
+      </section>
       <section className="tip-note">
         <IconDownload size={24} />
         <div>
