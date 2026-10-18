@@ -52,6 +52,9 @@ import { AccountCapacity } from './components/AccountCapacity'
 import { AccountReceipts } from './components/AccountReceipts'
 import { NativeCaptureNotice } from './components/NativeCaptureNotice'
 import { appLinkOrigin, type AppRuntime } from './runtime'
+import { UpgradeView } from './components/UpgradeView'
+import { DomainError } from './domain/errors'
+import type { PurchaseAction } from './billing/coordinator'
 type Route = 'projects' | 'finished' | 'backup' | 'guide' | 'account' | `project=${string}`
 type Modal = 'new' | 'edit' | 'checkpoint' | 'label' | 'delete' | null
 function readRoute(): Route {
@@ -91,6 +94,7 @@ export default function App({
   const [attachmentState, setAttachmentState] = useState<ProjectMediaAvailability[]>([])
   const [attachmentQueue, setAttachmentQueue] = useState<SyncItem[]>([])
   const [syncDetails, setSyncDetails] = useState(false)
+  const [reopenUpgrade, setReopenUpgrade] = useState<string | null>(null)
   const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
   const [connectionMode, setConnectionMode] = useState<'attach' | 'replace'>('attach')
   const [connectionPhase, setConnectionPhase] = useState<'preview' | 'prepared' | 'queued'>(
@@ -187,7 +191,7 @@ export default function App({
       }
     }
     const initial = location.href
-    if (location.pathname === '/auth/callback') {
+    if (location.pathname === '/auth/callback' || location.pathname === '/purchase/return') {
       // Remove the one-use code before any subsequent navigation or network activity.
       history.replaceState(null, '', '/#account')
       setRoute('account')
@@ -374,6 +378,8 @@ export default function App({
       )
     } catch (e) {
       notify(errorText(e), true)
+      if (e instanceof DomainError && e.detail.code === 'UPGRADE_REQUIRED')
+        setReopenUpgrade(project.id)
     } finally {
       setBusy(false)
     }
@@ -421,6 +427,32 @@ export default function App({
     setModal(null)
     navigate('projects')
     await controller.chooseCollection(key)
+  }
+  async function seeUpgrade(action: PurchaseAction) {
+    if (!runtime) return
+    await runtime.upgradePrompts.save(action)
+    exitGuard.current = undefined
+    setModal(null)
+    setReopenUpgrade(null)
+    navigate('account')
+  }
+  async function continueUpgrade(action: PurchaseAction) {
+    if (action.returnAction === 'new-project') {
+      if (action.draftKey !== 'new' || !(await runtime?.draftStore().read('new')))
+        throw new Error(
+          'The original draft is no longer on this device. Your upgrade remains available; start a new project from My projects.',
+        )
+      setModal('new')
+    } else if (action.returnAction === 'reopen-project' && action.projectId) {
+      if (!(await getProject(action.projectId)))
+        throw new Error(
+          'The original project is no longer in this collection. Your upgrade remains available.',
+        )
+      navigate(`project=${action.projectId}`)
+      notify(
+        'Your project is ready to review. Choose Reopen project when you want it in your workbasket.',
+      )
+    } else notify('Your upgrade is ready. You can add another project from My projects.')
   }
   async function previewConnection(key: CollectionKey, mode: 'attach' | 'replace' = 'attach') {
     if (!controller || busy) return
@@ -750,6 +782,18 @@ export default function App({
               onVerifyCode={(email, code) => controller!.verifyCode(email, code)}
               onSignOut={() => void reviewSignOut()}
             >
+              {runtime && (
+                <UpgradeView
+                  key={`upgrade:${state?.account?.accountId ?? 'guest'}`}
+                  runtime={runtime}
+                  signedIn={state?.auth === 'authenticated'}
+                  onContinue={continueUpgrade}
+                  onSelect={async (key) => {
+                    navigate('account')
+                    await controller?.chooseCollection(key)
+                  }}
+                />
+              )}
               {state?.auth === 'authenticated' &&
                 state.account &&
                 state.view?.info.kind !== 'connected' && (
@@ -971,6 +1015,9 @@ export default function App({
           onSave={saveProject}
           onSaved={projectSaved}
           onExitGuard={setExitGuard}
+          onUpgrade={
+            runtime ? () => seeUpgrade({ returnAction: 'new-project', draftKey: 'new' }) : undefined
+          }
           destination={
             state?.view
               ? `${state.view.info.name} · ${state.view.info.kind === 'connected' ? (state.account?.email ?? 'Account projects') : 'On this device'}`
@@ -978,6 +1025,32 @@ export default function App({
           }
         />
       )}{' '}
+      {reopenUpgrade && (
+        <Dialog title="Make room to reopen this project" onClose={() => setReopenUpgrade(null)}>
+          <p>
+            Your project and checkpoints are saved. Finish an active project to make room, or review
+            the one-time upgrade.
+          </p>
+          <div className="dialog-actions">
+            <button className="button secondary" onClick={() => setReopenUpgrade(null)}>
+              Keep it finished
+            </button>
+            {runtime && (
+              <button
+                className="button primary"
+                onClick={() =>
+                  void seeUpgrade({
+                    returnAction: 'reopen-project',
+                    projectId: reopenUpgrade,
+                  }).catch((error) => notify(errorText(error), true))
+                }
+              >
+                See upgrade
+              </button>
+            )}
+          </div>
+        </Dialog>
+      )}
       {modal === 'checkpoint' && project && (
         <CheckpointForm
           runtime={runtime}

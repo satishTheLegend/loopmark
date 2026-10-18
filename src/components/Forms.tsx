@@ -7,6 +7,7 @@ import { VoiceNote } from './VoiceNote'
 import { useDraft } from '../drafts'
 import { NativeVoiceNote } from './NativeVoiceNote'
 import type { AppRuntime } from '../runtime'
+import { DomainError } from '../domain/errors'
 export function ProjectForm({
   project,
   onSave,
@@ -14,6 +15,7 @@ export function ProjectForm({
   onSaved,
   onExitGuard,
   destination,
+  onUpgrade,
 }: {
   project?: Project
   onSave: (v: ProjectInput, expectedRevision?: string, draftToken?: string) => Promise<string>
@@ -21,6 +23,7 @@ export function ProjectForm({
   onClose: () => void
   onExitGuard: (guard?: () => Promise<boolean>) => void
   destination?: string
+  onUpgrade?: () => Promise<void>
 }) {
   const draft = useDraft<ProjectInput>(
     project ? `edit:${project.id}` : 'new',
@@ -41,6 +44,7 @@ export function ProjectForm({
   }, [draft.ready])
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('')
+  const [upgradeRequired, setUpgradeRequired] = useState(false)
   useEffect(() => {
     onExitGuard(async () => !busy && !draft.discarding && (await draft.canClose()))
     return () => onExitGuard(undefined)
@@ -73,6 +77,7 @@ export function ProjectForm({
       onSaved(id, warning)
     } catch (e) {
       setError(errorText(e))
+      setUpgradeRequired(e instanceof DomainError && e.detail.code === 'UPGRADE_REQUIRED')
       setBusy(false)
     }
   }
@@ -167,6 +172,25 @@ export function ProjectForm({
             ))}
           </fieldset>
           <ErrorMessage message={error} />
+          {upgradeRequired && !project && onUpgrade && (
+            <button
+              type="button"
+              className="button secondary"
+              disabled={busy}
+              onClick={() => {
+                setBusy(true)
+                void draft
+                  .pin()
+                  .then(onUpgrade)
+                  .catch((failure) => {
+                    setError(errorText(failure))
+                    setBusy(false)
+                  })
+              }}
+            >
+              Keep draft and see upgrade
+            </button>
+          )}
           <div className="dialog-actions">
             <button
               type="button"

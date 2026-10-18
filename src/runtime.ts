@@ -5,7 +5,9 @@ import { installDraftStoreFactory } from './drafts'
 import { accountUsageSchema } from './domain/remote-schema'
 import { canonicalJson } from './domain/canonical-json'
 import { DomainError, safeError } from './domain/errors'
-import type { SessionScope } from './domain/contracts'
+import type { SessionScope, CollectionInfo } from './domain/contracts'
+import { createEntitlementCache, type EntitlementCache } from './billing/entitlement-cache'
+import { createUpgradePrompts } from './billing/upgrade-prompts'
 import type { Repository } from './repositories/contracts'
 import type { DraftStore } from './repositories/drafts'
 import type { PlatformMedia, CredentialStore, SharePort } from './platform/contracts'
@@ -40,7 +42,10 @@ interface Storage {
   workflows: WorkflowStore
   captureRecovery?: NativeCaptureRecovery
 }
-async function openStorage(native: boolean): Promise<Storage> {
+async function openStorage(
+  native: boolean,
+  access: (info: CollectionInfo) => boolean,
+): Promise<Storage> {
   if (native) {
     const [repositoryModule, plans, drafts, devices, credentials, sharing, workflows, recovery] =
       await Promise.all([
@@ -53,7 +58,7 @@ async function openStorage(native: boolean): Promise<Storage> {
         import('./platform/native/workflow-store'),
         import('./platform/native/capture-recovery'),
       ])
-    const repository = await repositoryModule.openNativeRepository()
+    const repository = await repositoryModule.openNativeRepository({ access })
     await prepareNativeStorage(repository)
     return {
       repository,
@@ -74,7 +79,7 @@ async function openStorage(native: boolean): Promise<Storage> {
     import('./repositories/browser/device-store'),
     import('./repositories/browser/workflow-store'),
   ])
-  const repository = await repositoryModule.openBrowserRepository()
+  const repository = await repositoryModule.openBrowserRepository({ access })
   await prepareBrowserStorage(repository)
   return {
     repository,
@@ -88,9 +93,10 @@ async function openStorage(native: boolean): Promise<Storage> {
 
 /** One runtime per document. Forms remount on generation changes and capture their own draft store. */
 export async function createRuntime(environment: Readonly<Record<string, unknown>>) {
+  let access: EntitlementCache | undefined
   const native = Capacitor.isNativePlatform(),
     { config, errors } = loadPublicConfig(environment),
-    storage = await openStorage(native),
+    storage = await openStorage(native, (info) => access?.hasAccess(info) ?? false),
     { repository } = storage
   let online = navigator.onLine,
     foreground = document.visibilityState !== 'hidden'
@@ -219,6 +225,82 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     if (!value) throw new DomainError('ACCOUNT_CHANGED')
     return structuredClone(value)
   }
+  access = createEntitlementCache({ workflows: storage.workflows, current })
+  const billingContext = () => {
+    const session = current(),
+      selected = controller.getSnapshot().scope
+    return session && selected ? { session, scope: selected } : null
+  }
+  const billing = auth
+    ? (await import('./billing/coordinator')).createBillingCoordinator({
+        client: auth.functions,
+        workflows: storage.workflows,
+        current: billingContext,
+        platform: native ? (Capacitor.getPlatform() as 'ios' | 'android') : 'web',
+        access,
+        adapter: native
+          ? (await import('./platform/native/purchases')).createNativeBilling({
+              current: billingContext,
+              loadConfig: (platform, signal) =>
+                auth.functions.post('billing-config', { platform }, signal),
+            })
+          : (await import('./platform/browser/purchases')).createWebBilling({
+              current: billingContext,
+              client: auth.functions,
+            }),
+      })
+    : undefined
+  const purchaseRecovery = auth
+    ? (await import('./billing/recovery-service')).createPurchaseRecoveryService({
+        repository,
+        auth,
+        client: auth.functions,
+        workflows: storage.workflows,
+        current,
+      })
+    : undefined
+  const upgradePrompts = createUpgradePrompts({ workflows: storage.workflows, scope })
+  let billingIdentity = '',
+    billingRefresh: Promise<void> | undefined
+  async function refreshBilling(remote = true) {
+    if (!billing || billingRefresh) return
+    billingRefresh = (async () => {
+      const session = current(),
+        identity = canonicalJson(
+          session
+            ? {
+                account: session.accountId,
+                principal: session.billingPrincipalId,
+                deletion: session.deletionGeneration,
+              }
+            : null,
+        )
+      if (identity !== billingIdentity) {
+        billingIdentity = identity
+        await billing.initialize()
+      }
+      if (remote && session && online && foreground) await billing.refresh()
+    })().catch(() => {
+      /* The upgrade screen exposes errors; cached access remains available. */
+    })
+    await billingRefresh
+    billingRefresh = undefined
+    const session = current()
+    if (
+      billingIdentity !==
+      canonicalJson(
+        session
+          ? {
+              account: session.accountId,
+              principal: session.billingPrincipalId,
+              deletion: session.deletionGeneration,
+            }
+          : null,
+      )
+    )
+      void refreshBilling()
+  }
+  await refreshBilling(false)
   const data = createLocalDataAdapter({
     ...storage,
     scope,
@@ -323,6 +405,17 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   }
   const unsubscribe = controller.subscribe(() => {
     updateHints()
+    const session = current()
+    const identity = canonicalJson(
+      session
+        ? {
+            account: session.accountId,
+            principal: session.billingPrincipalId,
+            deletion: session.deletionGeneration,
+          }
+        : null,
+    )
+    if (identity !== billingIdentity) void refreshBilling()
     const state = controller.getSnapshot()
     const work = JSON.stringify([
       state.scope,
@@ -338,6 +431,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     online = navigator.onLine
     updateHints()
     schedule()
+    if (online) void refreshBilling()
   }
   const onVisibility = () => {
     foreground = document.visibilityState !== 'hidden'
@@ -345,7 +439,10 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     if (!foreground) {
       clearTimeout(timer)
       sync?.stop()
-    } else schedule()
+    } else {
+      schedule()
+      void refreshBilling()
+    }
   }
   window.addEventListener('online', onNetwork)
   window.addEventListener('offline', onNetwork)
@@ -360,12 +457,16 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         if (!foreground) {
           clearTimeout(timer)
           sync?.stop()
-        } else schedule()
+        } else {
+          schedule()
+          void refreshBilling()
+        }
       }
       if (event.type === 'network') {
         online = event.connected
         updateHints()
         schedule()
+        if (online) void refreshBilling()
       }
       if (event.type === 'url' && !events.size) queuedUrl = event
       for (const listener of events) listener(event)
@@ -373,11 +474,15 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   }
   schedule()
   updateHints()
+  void refreshBilling()
   return {
     native,
     config,
     controller,
     backups,
+    billing,
+    upgradePrompts,
+    purchaseRecovery,
     async ensureCheckpointMedia(
       checkpointId: string,
       signal: AbortSignal,
@@ -524,6 +629,12 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       }
       const origin = config.appOrigin ?? (!native ? location.origin : undefined)
       if (!origin) throw new DomainError('NOT_AVAILABLE')
+      if (url.origin === origin && url.pathname === '/purchase/return') {
+        if (!billing || native) throw new DomainError('PURCHASE_UNAVAILABLE')
+        const { parsePurchaseReturn } = await import('./links/purchase-return')
+        await billing.verifyReturn(parsePurchaseReturn(value, origin))
+        return 'account'
+      }
       const selected = scope()
       const project = await resolveProjectLink({
         target: parseProjectLink(value, origin),
@@ -538,6 +649,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     async dispose() {
       disposed = true
       hints?.dispose()
+      billing?.dispose()
       clearTimeout(timer)
       unsubscribe()
       window.removeEventListener('online', onNetwork)

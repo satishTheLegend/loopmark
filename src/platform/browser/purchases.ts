@@ -55,11 +55,6 @@ export function createWebBilling(options: WebBillingOptions): BillingAdapter {
       Date.parse(active.session.expiresAt) <= Date.now()
     )
       throw new DomainError('AUTH_REQUIRED')
-    if (
-      canonicalJson(active.session.collection) !== canonicalJson(active.scope.key) ||
-      canonicalJson(active.session.device) !== canonicalJson(active.scope.device)
-    )
-      throw new DomainError('ACCOUNT_CHANGED')
     return structuredClone(active)
   }
   function fence(bound: WebBillingContext) {
@@ -98,7 +93,9 @@ export function createWebBilling(options: WebBillingOptions): BillingAdapter {
           action: 'prepare',
           attemptId: intent.attemptId,
           productId: intent.productId,
-          collection: intent.collection,
+          // The maker may be upgrading a local-only collection. Billing binds to the
+          // enrolled account collection; the durable UI intent stays with its local draft.
+          collection: bound.session.collection,
         })
         if (!input.success) return unavailable()
         const response = checkoutPreparationSchema.safeParse(

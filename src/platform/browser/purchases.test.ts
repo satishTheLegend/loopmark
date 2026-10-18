@@ -56,6 +56,32 @@ function fixture(response: unknown = preparation) {
   }
 }
 describe('hosted checkout boundary (synthetic provider responses)', () => {
+  it('keeps a local draft bound to its device collection while preparing for the paying account', async () => {
+    const f = fixture(),
+      local = { namespace: 'guest', collectionId: 'local', epoch: 'local-epoch' }
+    f.setActive({
+      ...context(),
+      scope: {
+        ...context().scope,
+        key: local,
+        device: { id: 'local-device', generation: 'local-generation' },
+      },
+    })
+    expect(
+      await f.adapter.purchase({
+        ...intent,
+        collection: local,
+        returnAction: 'new-project',
+        draftKey: 'new',
+      }),
+    ).toMatchObject({ status: 'submitted' })
+    expect(f.post).toHaveBeenCalledWith(
+      'checkout',
+      expect.objectContaining({ collection: key }),
+      expect.any(AbortSignal),
+    )
+    expect(f.navigate).toHaveBeenCalledOnce()
+  })
   it('opens only a server-prepared exact link and returns no access grant', async () => {
     const f = fixture()
     expect(await f.adapter.purchase(intent)).toEqual({
