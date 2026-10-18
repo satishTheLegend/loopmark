@@ -19,6 +19,97 @@ const prepareRequest = (
   candidate,
 })
 describe('I07 atomic replacement and attachment', () => {
+  for (const first of ['append', 'replace'] as const)
+    it(`serializes actual checkpoint append and replacement when ${first} commits first`, async () => {
+      const a = await actor(),
+        created = await createProject(a),
+        replacementProject = project('finished')
+      const prepared = await request(
+        a.token,
+        'collection-replace',
+        prepareRequest(a, { projects: [replacementProject], checkpoints: [] }, '1'),
+      )
+      expect(prepared.status).toBe(200)
+      const checkpoint = {
+        id: crypto.randomUUID(),
+        projectId: created.project.id,
+        createdAt: new Date().toISOString(),
+        position: '17',
+        toolSize: '4mm',
+        nextStep: 'Retain concurrent append',
+        notes: '',
+      }
+      const append = await command(
+        a,
+        { kind: 'checkpoint.create', payload: { checkpoint, updatedAt: checkpoint.createdAt } },
+        { revision: '1' },
+      )
+      const replace = await command(
+        a,
+        {
+          kind: 'collection.replace',
+          payload: {
+            reservationId: prepared.body.replacement.reservationId,
+            candidateSha256: prepared.body.replacement.candidateSha256,
+            nextEpoch: prepared.body.nextEpoch,
+          },
+        },
+        { revision: '1' },
+      )
+      const heldCommand = first === 'append' ? append : replace,
+        waitingCommand = first === 'append' ? replace : append,
+        marker = `loopmark-replacement-${crypto.randomUUID()}`
+      const held = sql(
+        `begin;set local application_name=${quote(marker)};set local role authenticated;set local request.jwt.claim.sub=${quote(a.id)};select public.loopmark_push(${quote(JSON.stringify(heldCommand))}::jsonb);select pg_sleep(2);commit;`,
+      )
+      for (let attempt = 0; ; attempt++) {
+        if (
+          (await sql(
+            `select count(*) from pg_stat_activity where application_name=${quote(marker)} and wait_event='PgSleep'`,
+          )) === '1'
+        )
+          break
+        if (attempt === 49) throw new Error('Replacement order barrier unavailable')
+        await new Promise((resolve) => setTimeout(resolve, 40))
+      }
+      let finished = false
+      const waiting = request(a.token, 'sync-push', waitingCommand).then((response) => {
+        finished = true
+        return response
+      })
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      expect(finished).toBe(false)
+      await held
+      const rejected = await waiting
+      expect(rejected.status).toBe(409)
+      expect(rejected.body.error.code).toBe(
+        first === 'append' ? 'REVISION_CONFLICT' : 'SYNC_REBASE_REQUIRED',
+      )
+      const current = parseSnapshot(
+        (
+          await request(a.token, 'sync-snapshot', {
+            action: 'create',
+            purpose: 'hydrate',
+            collectionId: a.session.collection.collectionId,
+          })
+        ).body,
+      )
+      expect(current.epoch).toBe(
+        first === 'append' ? a.session.collection.epoch : prepared.body.nextEpoch,
+      )
+      expect(current.revision).toBe('2')
+      expect(current.projects.map((value) => value.id)).toEqual([
+        first === 'append' ? created.project.id : replacementProject.id,
+      ])
+      expect(current.checkpoints.map((value) => value.id)).toEqual(
+        first === 'append' ? [checkpoint.id] : [],
+      )
+      expect(
+        await sql(
+          `select count(*) from loopmark_private.operation_receipts where owner_id=${quote(a.id)}::uuid and operation_id=${quote(waitingCommand.operationId)}`,
+        ),
+      ).toBe('0')
+    })
   it('prepares a complete mapped attach, commits once across epoch, and recovers lost receipt', async () => {
     const a = await actor(),
       created = await createProject(a)

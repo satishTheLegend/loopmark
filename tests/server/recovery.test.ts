@@ -54,9 +54,48 @@ async function ownerWithMedia(seed: number) {
     ctx,
     `select object_key from loopmark_private.media where owner_id=${quote(a.id)}::uuid and id=${quote(fixture.ref.id)}`,
   )
-  return { a, fixture, objectKey }
+  return { a, fixture, objectKey, projectId: created.project.id }
 }
 describe('I11 real encrypted database/object recovery with current independent erasure ledger', () => {
+  it('backs up the live object inventory after legitimate collection while refusing missing ready bytes', async () => {
+    const { a, projectId, objectKey } = await ownerWithMedia(91)
+    const remove = await command(
+      a,
+      { kind: 'project.delete', payload: { projectId } },
+      { revision: '2' },
+    )
+    expect((await request(a.token, 'sync-push', remove)).status).toBe(200)
+    await sql(
+      ctx,
+      `update loopmark_private.media_objects set created_at=now()-interval '2 hours' where owner_id=${quote(a.id)}::uuid`,
+    )
+    expect((await job(ctx, 'sweep-media', 20, a.id)).counts.changed).toBe(1)
+    expect(
+      await sql(
+        ctx,
+        `select state from loopmark_private.media_objects where owner_id=${quote(a.id)}::uuid and object_key=${quote(objectKey)}`,
+      ),
+    ).toBe('deleted')
+    const point = await backupSnapshot(ctx)
+    expect(point.state).toBe('complete')
+    const verified = await verifyPoint(ctx, point.id)
+    expect(
+      verified.manifest.objects.some((object: { key: string }) => object.key === objectKey),
+    ).toBe(false)
+    // An authoritative ready object missing from Storage must still prevent a complete backup.
+    await sql(
+      ctx,
+      `update loopmark_private.media_objects set state='ready' where owner_id=${quote(a.id)}::uuid and object_key=${quote(objectKey)}`,
+    )
+    try {
+      await expect(backupSnapshot(ctx)).rejects.toThrow('MEDIA_UNAVAILABLE')
+    } finally {
+      await sql(
+        ctx,
+        `update loopmark_private.media_objects set state='deleted' where owner_id=${quote(a.id)}::uuid and object_key=${quote(objectKey)}`,
+      )
+    }
+  })
   it('makes dry-run status parseable without modifying catalogs or schedules', async () => {
     const before = await sql(
       ctx,

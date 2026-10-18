@@ -246,7 +246,7 @@ export async function backupSnapshot(ctx, { id = randomUUID(), signal, beforeCop
         throw new OpsError('TECHNICAL_CAPACITY_REACHED')
       const missing = await sql(
         ctx,
-        `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select count(*) from loopmark_private.media m where m.state='ready' and not exists(select 1 from storage.objects s where s.bucket_id='loopmark-private' and s.name=m.object_key);commit;`,
+        `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select count(*) from loopmark_private.media_objects o where o.state='ready' and not exists(select 1 from storage.objects s where s.bucket_id='loopmark-private' and s.name=o.object_key);commit;`,
       )
       if (missing !== '0') throw new OpsError('MEDIA_UNAVAILABLE')
       for (let offset = 0; offset < objects.length; offset += 100) {
