@@ -50,6 +50,38 @@ export function createRemoteMediaService(options: {
   mediaConcurrency?: number
 }): RemoteMediaService {
   const limit = limiter(options.mediaConcurrency ?? 2)
+  const downloadTails = new Map<string, Promise<void>>()
+  async function serializeDownload(key: string, signal: AbortSignal, work: () => Promise<void>) {
+    const previous = downloadTails.get(key) ?? Promise.resolve()
+    let release!: () => void
+    const gate = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    // A cancelled waiter releases its own gate, but its tail still waits for the owner.
+    // Keeping that tail registered prevents a later caller from overlapping the owner.
+    const tail = previous.then(() => gate)
+    downloadTails.set(key, tail)
+    void tail.then(() => {
+      if (downloadTails.get(key) === tail) downloadTails.delete(key)
+    })
+    try {
+      signal.throwIfAborted()
+      await new Promise<void>((resolve, reject) => {
+        const aborted = () => reject(signal.reason)
+        signal.addEventListener('abort', aborted, { once: true })
+        void previous.then(() => {
+          signal.removeEventListener('abort', aborted)
+          resolve()
+        })
+      })
+      signal.throwIfAborted()
+      // Waiters do not occupy the global media slots. Each rechecks verified cached
+      // bytes after its predecessor and keeps its own cancellation/snapshot authority.
+      await limit(work)
+    } finally {
+      release()
+    }
+  }
   async function check(scope: SessionScope, signal: AbortSignal) {
     signal.throwIfAborted()
     const session = options.current(),
@@ -172,33 +204,37 @@ export function createRemoteMediaService(options: {
         return state.reservation!
       }),
     ensureAvailable: (ref, scope, signal, snapshotId) =>
-      limit(async () => {
-        await check(scope, signal)
-        try {
-          const reader = (await options.media.open(ref, scope.key)).getReader()
-          await reader.cancel()
-          return
-        } catch (error) {
-          if (
-            !(error instanceof DomainError) ||
-            !['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+      serializeDownload(
+        canonicalJson({ scope, ref, snapshotId: snapshotId ?? null }),
+        signal,
+        async () => {
+          await check(scope, signal)
+          try {
+            const reader = (await options.media.open(ref, scope.key)).getReader()
+            await reader.cancel()
+            return
+          } catch (error) {
+            if (
+              !(error instanceof DomainError) ||
+              !['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+            )
+              throw error
+          }
+          const bytes = await options.transport.download(
+            {
+              collectionId: scope.key.collectionId,
+              epoch: scope.key.epoch,
+              mediaId: ref.id,
+              ...(snapshotId ? { snapshotId } : {}),
+            },
+            ref,
+            signal,
           )
-            throw error
-        }
-        const bytes = await options.transport.download(
-          {
-            collectionId: scope.key.collectionId,
-            epoch: scope.key.epoch,
-            mediaId: ref.id,
-            ...(snapshotId ? { snapshotId } : {}),
-          },
-          ref,
-          signal,
-        )
-        await check(scope, signal)
-        await options.media.storeVerified(ref, bytes, scope.key, scope.generation, {
-          downloaded: true,
-        })
-      }),
+          await check(scope, signal)
+          await options.media.storeVerified(ref, bytes, scope.key, scope.generation, {
+            downloaded: true,
+          })
+        },
+      ),
   }
 }

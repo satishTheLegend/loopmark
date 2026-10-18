@@ -195,3 +195,149 @@ it('T15 renews an expired ordinary reservation with a fresh request while preser
   expect(await f.repo.pending(f.scope.key)).toEqual([])
   vi.restoreAllMocks()
 })
+
+function deferred<T>() {
+  let resolve!: (value: T) => void
+  let reject!: (failure: unknown) => void
+  const promise = new Promise<T>((yes, no) => {
+    resolve = yes
+    reject = no
+  })
+  return { promise, resolve, reject }
+}
+it('serializes concurrent same-scope/ref downloads and the waiter reuses the verified durable bytes', async () => {
+  const f = await setup(),
+    held = deferred<Blob>()
+  f.transport.download.mockImplementationOnce(() => held.promise)
+  const first = f.service.ensureAvailable(f.media.ref, f.scope, new AbortController().signal)
+  await vi.waitFor(() => expect(f.transport.download).toHaveBeenCalledTimes(1))
+  const second = f.service.ensureAvailable(f.media.ref, f.scope, new AbortController().signal)
+  await new Promise((resolve) => setTimeout(resolve, 10))
+  expect(f.transport.download).toHaveBeenCalledTimes(1)
+  held.resolve(f.media.bytes)
+  await Promise.all([first, second])
+  expect(f.transport.download).toHaveBeenCalledTimes(1)
+  expect(
+    await new Response(await f.repo.media.open(f.media.ref, f.scope.key)).arrayBuffer(),
+  ).toEqual(await f.media.bytes.arrayBuffer())
+})
+it('a cancelled waiter rejects promptly, preserves the active owner, and cannot let a third caller overlap it', async () => {
+  const f = await setup(),
+    held = deferred<Blob>(),
+    cancelled = new AbortController(),
+    ownerSignal = new AbortController()
+  f.transport.download.mockImplementationOnce(() => held.promise)
+  const owner = f.service.ensureAvailable(f.media.ref, f.scope, ownerSignal.signal)
+  await vi.waitFor(() => expect(f.transport.download).toHaveBeenCalledTimes(1))
+  const waiter = f.service.ensureAvailable(f.media.ref, f.scope, cancelled.signal)
+  const rejected = expect(waiter).rejects.toMatchObject({ name: 'AbortError' })
+  cancelled.abort()
+  await rejected // Owner is deliberately still held: cancellation must not wait for it.
+  expect(ownerSignal.signal.aborted).toBe(false)
+  const third = f.service.ensureAvailable(f.media.ref, f.scope, new AbortController().signal)
+  await new Promise((resolve) => setTimeout(resolve, 10))
+  expect(f.transport.download).toHaveBeenCalledTimes(1)
+  held.resolve(f.media.bytes)
+  await Promise.all([owner, third])
+  expect(f.transport.download).toHaveBeenCalledTimes(1)
+})
+it('a live waiter retries with its own signal when the owning request is cancelled before caching', async () => {
+  const f = await setup(),
+    ownerSignal = new AbortController(),
+    waiterSignal = new AbortController()
+  f.transport.download.mockImplementationOnce(
+    (...args: unknown[]) =>
+      new Promise<Blob>((_resolve, reject) => {
+        const signal = args[2] as AbortSignal
+        signal.addEventListener('abort', () => reject(signal.reason), { once: true })
+      }),
+  )
+  const owner = f.service.ensureAvailable(f.media.ref, f.scope, ownerSignal.signal)
+  const rejected = expect(owner).rejects.toMatchObject({ name: 'AbortError' })
+  await vi.waitFor(() => expect(f.transport.download).toHaveBeenCalledTimes(1))
+  const waiter = f.service.ensureAvailable(f.media.ref, f.scope, waiterSignal.signal)
+  ownerSignal.abort()
+  await rejected
+  await waiter
+  expect(f.transport.download).toHaveBeenCalledTimes(2)
+  const calls = f.transport.download.mock.calls as unknown as Array<[unknown, unknown, AbortSignal]>
+  expect(calls[0][2]).toBe(ownerSignal.signal)
+  expect(calls[1][2]).toBe(waiterSignal.signal)
+  expect(waiterSignal.signal.aborted).toBe(false)
+})
+it('distinct snapshot authorities are not coalesced, and a new generation never adopts the old callback', async () => {
+  const f = await setup(),
+    old = deferred<Blob>(),
+    fresh = deferred<Blob>()
+  f.transport.download
+    .mockImplementationOnce(() => old.promise)
+    .mockImplementationOnce(() => fresh.promise)
+  const a = f.service.ensureAvailable(
+    f.media.ref,
+    f.scope,
+    new AbortController().signal,
+    'snapshot-one',
+  )
+  const b = f.service.ensureAvailable(
+    f.media.ref,
+    f.scope,
+    new AbortController().signal,
+    'snapshot-two',
+  )
+  await vi.waitFor(() => expect(f.transport.download).toHaveBeenCalledTimes(2))
+  const calls = f.transport.download.mock.calls as unknown as Array<[{ snapshotId: string }]>
+  expect(calls.map(([request]) => request.snapshotId).sort()).toEqual([
+    'snapshot-one',
+    'snapshot-two',
+  ])
+  old.resolve(f.media.bytes)
+  fresh.resolve(f.media.bytes)
+  await Promise.all([a, b])
+  await f.repo.media.release(f.media.ref, f.scope.key, 1)
+  const held = deferred<Blob>()
+  f.transport.download.mockImplementationOnce(() => held.promise)
+  const previous = f.service.ensureAvailable(f.media.ref, f.scope, new AbortController().signal)
+  const previousRejected = expect(previous).rejects.toMatchObject({
+    detail: { code: 'ACCOUNT_CHANGED' },
+  })
+  await vi.waitFor(() => expect(f.transport.download).toHaveBeenCalledTimes(3))
+  const next = { ...f.scope, generation: 2 }
+  await f.repo.activate(next)
+  await f.service.ensureAvailable(f.media.ref, next, new AbortController().signal)
+  expect(f.transport.download).toHaveBeenCalledTimes(4)
+  held.resolve(f.media.bytes)
+  await previousRejected
+  expect(await new Response(await f.repo.media.open(f.media.ref, next.key)).arrayBuffer()).toEqual(
+    await f.media.bytes.arrayBuffer(),
+  )
+})
+
+it('same media IDs in a newly selected account never join or accept the previous account download', async () => {
+  const f = await setup(),
+    held = deferred<Blob>()
+  f.transport.download.mockImplementationOnce(() => held.promise)
+  const old = f.service.ensureAvailable(f.media.ref, f.scope, new AbortController().signal)
+  const oldRejected = expect(old).rejects.toMatchObject({ detail: { code: 'ACCOUNT_CHANGED' } })
+  await vi.waitFor(() => expect(f.transport.download).toHaveBeenCalledTimes(1))
+  const other = { ...info(true, 'second'), accountId: 'second-account' }
+  await f.repo.createCollection(other)
+  const next = await f.repo.transition(f.scope, {
+    key: other.key,
+    device: { id: 'second-device', generation: 'second-generation' },
+  })
+  Object.assign(f.session, {
+    accountId: other.accountId,
+    collection: next.key,
+    device: next.device,
+  })
+  await f.service.ensureAvailable(f.media.ref, next, new AbortController().signal)
+  expect(f.transport.download).toHaveBeenCalledTimes(2)
+  held.resolve(f.media.bytes)
+  await oldRejected
+  await expect(f.repo.media.open(f.media.ref, f.scope.key)).rejects.toMatchObject({
+    detail: { code: 'BACKUP_INCOMPLETE' },
+  })
+  expect(await new Response(await f.repo.media.open(f.media.ref, next.key)).arrayBuffer()).toEqual(
+    await f.media.bytes.arrayBuffer(),
+  )
+})
