@@ -681,6 +681,22 @@ describe('I08 actual local SQL/HTTP with explicitly synthetic provider contract 
       action: 'revenuecat',
       purchase: { ...duplicate, store_purchase_identifier: 'different-store-receipt' },
     })
+    const searchPath = '/v2/projects/projSynthetic1234/purchases'
+    await fixture({
+      action: 'behavior',
+      path: searchPath,
+      response: {
+        items: [{ ...native, store_purchase_identifier: 'mismatched-receipt' }],
+        next_page: null,
+      },
+    })
+    try {
+      expect(
+        (await request(b.token, 'purchase-recovery', { action: 'status', requestId })).status,
+      ).toBe(404)
+    } finally {
+      await fixture({ action: 'behavior', path: searchPath })
+    }
     const recovered = await request(b.token, 'purchase-recovery', { action: 'status', requestId })
     expect(recovered.status, JSON.stringify(recovered.body)).toBe(200)
     expect(recovered.body.status).toBe('recovered')

@@ -79,6 +79,7 @@ export async function purchaseFromReceipt(
   const found = response.items[0]
   if (
     found.environment !== config.paymentEnvironment ||
+    found.store_purchase_identifier !== receipt ||
     found.customer_id !== found.original_customer_id
   )
     throw new DomainError('NOT_AVAILABLE')

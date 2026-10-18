@@ -42,7 +42,11 @@ createServer(async (request, response) => {
         return
       }
       if (body.action === 'behavior') {
-        controls.set(body.path, { delay: body.delay ?? 0, drop: body.drop ?? false })
+        controls.set(body.path, {
+          delay: body.delay ?? 0,
+          drop: body.drop ?? false,
+          response: body.response,
+        })
         json(response, 200, { configured: true })
         return
       }
@@ -183,6 +187,7 @@ createServer(async (request, response) => {
     // Capture a snapshot before delay to exercise genuinely stale provider observations.
     result = structuredClone(result)
     const behavior = controls.get(url.pathname)
+    if (behavior?.response !== undefined) result = structuredClone(behavior.response)
     if (behavior?.delay) await new Promise((resolve) => setTimeout(resolve, behavior.delay))
     if (behavior?.drop) {
       controls.delete(url.pathname)

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "scope": "I08 exact original store receipt binding review correction",
+  "observedAt": "2026-10-18T19:58:18+05:30",
+  "execution": {
+    "command": "node scripts/test-server.mjs --suite billing",
+    "passed": 22,
+    "tests": 22,
+    "skipped": 0,
+    "durationSeconds": 30.31
+  },
+  "assertion": "A provider search returning a unique purchase with a mismatched store_purchase_identifier is denied; the saved claim remains resumable after a correctly bound response. Real local Edge/SQL, synthetic authenticated provider fixture.",
+  "boundary": "An associated alias whose canonical store identifier differs fails closed and requires provider/support review. No real provider sandbox qualification.",
+  "sha256": {
+    "supabase/functions/_shared/providers/revenuecat.ts": "cbad4a788829ae7254cfef4db608f614833cedc8ca5626bb265d976bc4f748fd",
+    "supabase/billing-fixture/server.mjs": "5c8fee3467650486803099370d718a1fb2d98b5c929021ea420cbb6a6b67f5e6",
+    "tests/server/billing.test.ts": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7"
+  }
+}
