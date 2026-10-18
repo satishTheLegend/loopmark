@@ -200,6 +200,7 @@ export interface BillingStatus {
 }
 export type PurchaseRestoreRequest =
   | ({ action: 'prepare' } & PurchasePreparationInput)
+  | { action: 'cancel'; attemptId: string }
   | { action: 'reconcile'; requestId: string; provider: PurchaseProvider }
   | { action: 'status'; attemptId?: string }
 export interface PurchaseSubmitted {

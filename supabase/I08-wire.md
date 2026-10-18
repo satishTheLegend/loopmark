@@ -23,7 +23,7 @@ Provider creation uses the attempt UUID as unique `reference_id`, disables parti
 
 `billing-config` uses the previously frozen `{platform}` request and NativeBillingConfig response. It reveals approved public SDK configuration only when native enrollment is active. The SDK identifies the existing verified billingPrincipalId before purchase and uses approved non-consumable store products.
 
-`purchase-restore` accepts `{action:'prepare',attemptId,productId,collection}` before native purchase and returns `{status:'pending',attemptId}`. `{action:'reconcile',requestId,provider}` queues bounded authoritative discovery for the caller's existing principal; it never accepts another principal ID or transfers a receipt. `{action:'status',attemptId?}` returns BillingStatus. Native restore and SDK purchase completion trigger reconcile; neither grants access directly.
+`purchase-restore` accepts `{action:'prepare',attemptId,productId,collection}` before native purchase and returns `{status:'pending',attemptId}`. Native admission reservations expire after 15 minutes; the immutable attempt remains reconcilable. `{action:'cancel',attemptId}` releases an unresolved native intent after SDK cancellation and returns BillingStatus. It never refunds or suppresses a later provider-verified purchase; a successful observation resolves matching native intents. `{action:'reconcile',requestId,provider}` queues bounded authoritative discovery for the caller's existing principal; it never accepts another principal ID or transfers a receipt. `{action:'status',attemptId?}` returns BillingStatus. Native restore and SDK purchase completion trigger reconcile; neither grants access directly.
 
 ## Recovery keys and deleted-account recovery
 

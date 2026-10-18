@@ -532,6 +532,7 @@ export const billingStatusSchema = z
   .strict()
 export const purchaseRestoreRequestSchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('prepare'), ...purchasePreparationShape }).strict(),
+  z.object({ action: z.literal('cancel'), attemptId: z.string().uuid() }).strict(),
   z
     .object({
       action: z.literal('reconcile'),
