@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { collectionKeySchema, id, timestamp } from '../domain/schema'
 import type { PurchaseIntent, PurchaseOutcome } from '../domain/contracts'
+import type { PurchaseAttemptState } from '../domain/remote-contracts'
 import type { SafeError } from '../domain/errors'
 export const purchaseIntentSchema = z
   .object({
@@ -24,6 +25,7 @@ export interface PurchaseAttempt {
   phase: 'saved' | 'launched' | 'pending' | 'verified' | 'cancelled' | 'failed' | 'continued'
   outcome: PurchaseOutcome | null
   error: SafeError | null
+  serverState?: PurchaseAttemptState | null
 }
 export const attemptSchema = z
   .object({
@@ -35,5 +37,18 @@ export const attemptSchema = z
     phase: z.enum(['saved', 'launched', 'pending', 'verified', 'cancelled', 'failed', 'continued']),
     outcome: z.unknown().nullable(),
     error: z.unknown().nullable(),
+    serverState: z
+      .enum([
+        'preparing',
+        'ready',
+        'pending',
+        'verified',
+        'failed',
+        'disputed',
+        'refunded',
+        'revoked',
+      ])
+      .nullable()
+      .optional(),
   })
   .strict()

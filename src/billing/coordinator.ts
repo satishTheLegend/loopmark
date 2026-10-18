@@ -91,12 +91,7 @@ export function createBillingCoordinator(options: {
   const bound = () => {
     const value = options.current()
     if (disposed) throw new DomainError('ACCOUNT_CHANGED')
-    if (
-      !value ||
-      canonicalJson(value.session.collection) !== canonicalJson(value.scope.key) ||
-      canonicalJson(value.session.device) !== canonicalJson(value.scope.device)
-    )
-      throw new DomainError('AUTH_REQUIRED')
+    if (!value) throw new DomainError('AUTH_REQUIRED')
     return structuredClone(value)
   }
   const check = (captured: ReturnType<typeof bound>) => {
@@ -174,7 +169,7 @@ export function createBillingCoordinator(options: {
           : row.value.phase === 'cancelled'
             ? 'cancelled'
             : 'pending'
-      await save(row, { phase, error: null })
+      await save(row, { phase, error: null, serverState: parsed.data.attempt?.state ?? null })
     }
     return parsed.data
   }
@@ -282,7 +277,7 @@ export function createBillingCoordinator(options: {
                 action: 'prepare',
                 attemptId: row.value.intent.attemptId,
                 productId,
-                collection: captured.scope.key,
+                collection: captured.session.collection,
               },
               AbortSignal.timeout(15000),
             ),

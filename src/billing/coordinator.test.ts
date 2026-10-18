@@ -2,7 +2,7 @@ import { IDBFactory } from 'fake-indexeddb'
 import { afterEach, expect, it, vi } from 'vitest'
 import { openBrowserRepository, type BrowserRepository } from '../repositories/browser/repository'
 import { createBrowserWorkflowStore } from '../repositories/browser/workflow-store'
-import { info, now } from '../repositories/browser/fixtures.test-support'
+import { info, now, create } from '../repositories/browser/fixtures.test-support'
 import type { AccountSession, EntitlementProjection, SessionScope } from '../domain/contracts'
 import { createEntitlementCache } from './entitlement-cache'
 import { createBillingCoordinator } from './coordinator'
@@ -12,9 +12,11 @@ afterEach(async () => {
   for (const repo of repos.splice(0)) await repo.close()
 })
 async function setup(platform: 'web' | 'ios' = 'web') {
+  let accessRef: ReturnType<typeof createEntitlementCache> | undefined
   const repo = await openBrowserRepository({
     factory: new IDBFactory(),
     databaseName: crypto.randomUUID(),
+    access: (info) => accessRef?.hasAccess(info) ?? false,
   })
   repos.push(repo)
   const collection = { ...info(true), accountId: '11111111-1111-4111-8111-111111111111' },
@@ -35,6 +37,7 @@ async function setup(platform: 'web' | 'ios' = 'web') {
   }
   const workflows = createBrowserWorkflowStore(repo),
     access = createEntitlementCache({ workflows, current: () => session })
+  accessRef = access
   let projection: EntitlementProjection = {
     accountId: '11111111-1111-4111-8111-111111111111',
     billingPrincipalId: '22222222-2222-4222-8222-222222222222',
@@ -233,4 +236,39 @@ it('a queued action captured for account A cannot launch after account B replace
   expect(f.adapter.purchase).toHaveBeenCalledOnce()
   expect(f.coordinator.getSnapshot().attempts).toEqual([])
   expect(f.access.getSnapshot().projection).toBeNull()
+})
+
+it('a fourth local project draft stays local through purchase; preparation binds only the account cloud collection', async () => {
+  const f = await setup('ios'),
+    guest = info(false, 'local'),
+    cloudKey = structuredClone(f.session.collection)
+  await f.repo.createCollection(guest)
+  const selected = await f.repo.transition(f.scope, {
+    key: guest.key,
+    device: { id: 'guest-device', generation: 'guest-generation' },
+  })
+  Object.assign(f.scope, selected)
+  for (let n = 1; n <= 3; n++)
+    await f.repo.commitLocal(f.scope.key, create(`local-${n}`), f.scope.generation)
+  await expect(
+    f.repo.commitLocal(f.scope.key, create('fourth'), f.scope.generation),
+  ).rejects.toMatchObject({ detail: { code: 'UPGRADE_REQUIRED' } })
+  const attempt = await f.coordinator.purchase(
+    'upgrade',
+    { returnAction: 'new-project', draftKey: 'fourth-local-draft' },
+    'local-click',
+  )
+  expect(f.client.post.mock.calls[0][1]).toMatchObject({ action: 'prepare', collection: cloudKey })
+  expect(f.adapter.purchase.mock.calls[0][0].collection).toEqual(guest.key)
+  expect((await f.repo.readView(cloudKey)).projects).toEqual([])
+  f.setProjection({ upgraded: true, revision: '2' })
+  await f.coordinator.resume(attempt)
+  expect((await f.coordinator.continuePurchase(attempt)).draftKey).toBe('fourth-local-draft')
+  await f.repo.commitLocal(f.scope.key, create('fourth'), f.scope.generation)
+  f.setSession(null)
+  expect(f.access.hasAccess(guest)).toBe(false)
+  await expect(
+    f.repo.commitLocal(f.scope.key, create('fifth'), f.scope.generation),
+  ).rejects.toMatchObject({ detail: { code: 'UPGRADE_REQUIRED' } })
+  expect((await f.repo.readView(guest.key)).projects).toHaveLength(4)
 })

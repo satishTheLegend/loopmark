@@ -70,8 +70,7 @@ export function createEntitlementCache(options: {
       const session = options.current()
       return (
         !!session &&
-        info.kind === 'connected' &&
-        info.accountId === session.accountId &&
+        (info.kind !== 'connected' || info.accountId === session.accountId) &&
         !!cached?.projection.upgraded &&
         cached.projection.accountId === session.accountId &&
         cached.projection.billingPrincipalId === session.billingPrincipalId &&
