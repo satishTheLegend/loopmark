@@ -49,6 +49,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
     listeners = new Set<() => void>()
   let state: ControllerState = {
     phase: 'starting',
+    transitioning: false,
     scope: null,
     collections: [],
     view: null,
@@ -62,6 +63,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
     queue: Promise<void> = Promise.resolve(),
     refreshVersion = 0,
     busy = false,
+    pendingTransitions = 0,
     authenticating = false,
     authVersion = 0
   let recoveryReview: SyncRecoveryPreview | null = null
@@ -82,22 +84,27 @@ export function createAppController(options: AppControllerOptions): AppControlle
     return structuredClone(state.scope)
   }
   const serial = <T>(work: () => Promise<T>) => {
+    pendingTransitions++
     const result = queue.then(async () => {
-      if (disposed) throw new DomainError('ACCOUNT_CHANGED')
-      busy = true
       try {
+        if (disposed) throw new DomainError('ACCOUNT_CHANGED')
+        busy = true
         return await work()
       } catch (error) {
         publish({ error: safeError(error) })
         throw error
       } finally {
         ;((busy = false), (authenticating = false))
+        pendingTransitions--
+        if (pendingTransitions === 0) publish({ transitioning: false })
       }
     })
     queue = result.then(
       () => {},
       () => {},
     )
+    // Establish admission order before synchronous subscribers can enqueue more work.
+    if (!state.transitioning) publish({ transitioning: true })
     return result
   }
   const check = async (scope: SessionScope) => {

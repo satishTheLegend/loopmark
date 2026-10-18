@@ -29,6 +29,7 @@ import { prepareBrowserStorage, prepareNativeStorage } from './services/startup'
 import { createSyncCoordinator } from './sync/coordinator'
 import { createSyncTransport } from './sync/transport'
 import { createTabLease } from './sync/tab-lease'
+import { createRuntimeScheduler } from './sync/runtime-scheduler'
 import { parseProjectLink, type ProjectLink } from './links/link-service'
 import { createProjectContinuation } from './links/project-continuation'
 import { mapBounded } from './services/concurrency'
@@ -408,11 +409,14 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   const removeCapture = await storage.captureRecovery?.subscribe(captureChanged)
   const events = new Set<(event: NativeLifecycleEvent) => void>()
   let queuedUrl: NativeLifecycleEvent | undefined,
-    timer: ReturnType<typeof setTimeout> | undefined,
-    disposed = false,
-    running = false,
-    runAgain = false,
-    lastWork = ''
+    disposed = false
+  const scheduler = createRuntimeScheduler({
+    controller,
+    enabled: Boolean(sync),
+    foreground: () => foreground,
+    online: () => online,
+  })
+  const schedule = scheduler.request
   const hints =
     auth && cloudModules
       ? cloudModules[3].createRealtimeHints({
@@ -446,49 +450,6 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         /* Authoritative polling remains available. */
       })
   }
-  function schedule(delay = 150) {
-    clearTimeout(timer)
-    if (disposed || !foreground || !sync) return
-    // Saves or realtime hints arriving during hydration/pull must not be lost
-    // when that cycle schedules its ordinary 45-second idle poll.
-    if (running) {
-      runAgain = true
-      return
-    }
-    timer = setTimeout(() => void cycle(), delay)
-  }
-  async function cycle() {
-    if (disposed || !foreground || running) return
-    const state = controller.getSnapshot()
-    if (
-      state.phase !== 'ready' ||
-      state.auth !== 'authenticated' ||
-      state.view?.info.kind !== 'connected'
-    )
-      return
-    running = true
-    try {
-      await controller.runSync()
-    } catch {
-      // The controller publishes a redacted, actionable error. Polls never dismiss it.
-    } finally {
-      running = false
-      const followUp = runAgain
-      runAgain = false
-      const error = controller.getSnapshot().error
-      if (
-        !error ||
-        error.retryable ||
-        ![
-          'AUTH_REQUIRED',
-          'ACCOUNT_CHANGED',
-          'SYNC_REBASE_REQUIRED',
-          'CAPABILITY_UNAVAILABLE',
-        ].includes(error.code)
-      )
-        schedule(followUp ? 150 : 45_000)
-    }
-  }
   const unsubscribe = controller.subscribe(() => {
     updateHints()
     const session = current()
@@ -502,16 +463,6 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         : null,
     )
     if (identity !== billingIdentity) void refreshBilling()
-    const state = controller.getSnapshot()
-    const work = JSON.stringify([
-      state.scope,
-      state.auth,
-      state.view?.pending.map((item) => item.intent.operationId),
-    ])
-    if (work !== lastWork) {
-      lastWork = work
-      schedule()
-    }
   })
   const onNetwork = () => {
     online = navigator.onLine
@@ -523,7 +474,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     foreground = document.visibilityState !== 'hidden'
     updateHints()
     if (!foreground) {
-      clearTimeout(timer)
+      scheduler.cancel()
       sync?.stop()
     } else {
       schedule()
@@ -541,7 +492,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         foreground = event.active
         updateHints()
         if (!foreground) {
-          clearTimeout(timer)
+          scheduler.cancel()
           sync?.stop()
         } else {
           schedule()
@@ -739,7 +690,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       projectContinuation.dispose()
       hints?.dispose()
       billing?.dispose()
-      clearTimeout(timer)
+      scheduler.dispose()
       unsubscribe()
       window.removeEventListener('online', onNetwork)
       window.removeEventListener('offline', onNetwork)

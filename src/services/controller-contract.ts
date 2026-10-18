@@ -27,6 +27,8 @@ export type { AttachPreview } from '../domain/remote-contracts'
 import type { AttachPreview } from '../domain/remote-contracts'
 export interface ControllerState {
   phase: 'starting' | 'ready' | 'error'
+  /** Local selection/authentication work must settle before automatic sync starts. */
+  transitioning: boolean
   scope: SessionScope | null
   collections: CollectionSummary[]
   view: CollectionView | null
