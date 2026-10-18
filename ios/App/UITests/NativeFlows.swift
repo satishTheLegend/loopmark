@@ -99,3 +99,53 @@ final class ProductFlows: XCTestCase {
         tap(app.buttons["Close dialog"], app: app)
     }
 }
+
+@available(iOS 16.4, *)
+final class InboxProductFlows: XCTestCase {
+    private func document() throws -> URL {
+        let tag = UUID().uuidString, time = "2026-01-01T00:00:00.000Z"
+        let checkpoint: [String: Any] = ["id": "external_checkpoint", "createdAt": time, "position": "Row 24", "toolSize": "4 mm", "nextStep": "Turn and continue from the external backup", "notes": ""]
+        let project: [String: Any] = ["id": "external_project", "code": "EXT-1", "name": "iOS external backup " + tag, "craft": "Crochet", "color": "clay", "toolSize": "4 mm", "yarn": "Synthetic fixture", "notes": "", "status": "active", "createdAt": time, "updatedAt": time, "checkpoints": [checkpoint]]
+        let backup: [String: Any] = ["format": "loopmark", "version": 1, "exportedAt": time, "projects": [project]]
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("loopmark-external-" + tag + ".json")
+        try JSONSerialization.data(withJSONObject: backup, options: [.sortedKeys]).write(to: url)
+        return url
+    }
+    @MainActor
+    func testOSDocumentDeliveryToBenchmarkApp() throws {
+        continueAfterFailure = false
+        let file = try document(); defer { try? FileManager.default.removeItem(at: file) }
+        let app = XCUIApplication(bundleIdentifier: "app.loopmark.craft.benchmark")
+        app.terminate(); app.open(file)
+        XCTAssertTrue(app.webViews.firstMatch.waitForExistence(timeout: 30), app.debugDescription)
+        // The subsequent native bridge fixture verifies durable bytes, source fences and restore.
+    }
+    @MainActor
+    func testExternalBackupReviewCancelRelaunchRestoreAndRepeat() throws {
+        continueAfterFailure = false
+        let file = try document(); defer { try? FileManager.default.removeItem(at: file) }
+        let app = XCUIApplication(bundleIdentifier: "app.loopmark.craft")
+        app.terminate(); app.open(file)
+        let review = app.buttons["Review backup file"]
+        XCTAssertTrue(review.waitForExistence(timeout: 30), app.debugDescription)
+        review.tap()
+        XCTAssertTrue(app.buttons["Restore as separate collection"].waitForExistence(timeout: 30), app.debugDescription)
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(review.waitForExistence(timeout: 10), app.debugDescription)
+        app.terminate(); app.launch()
+        XCTAssertTrue(review.waitForExistence(timeout: 30), app.debugDescription)
+        review.tap()
+        let restore = app.buttons["Restore as separate collection"]
+        XCTAssertTrue(restore.waitForExistence(timeout: 30), app.debugDescription); restore.tap()
+        XCTAssertTrue(restore.waitForNonExistence(timeout: 30), app.debugDescription)
+        let restored = app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "Pick up iOS external backup")).firstMatch
+        XCTAssertTrue(restored.waitForExistence(timeout: 30), app.debugDescription)
+        app.open(file)
+        XCTAssertTrue(app.staticTexts["Backup file already handled"].waitForExistence(timeout: 30), app.debugDescription)
+        app.buttons["Dismiss backup file"].tap()
+        app.terminate(); app.launch()
+        XCTAssertTrue(restored.waitForExistence(timeout: 30), app.debugDescription)
+        XCTAssertEqual(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "Pick up iOS external backup")).count, 1)
+        XCTAssertFalse(review.exists)
+    }
+}
