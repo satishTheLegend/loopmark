@@ -71,6 +71,38 @@ it('uses verified identity and account-scoped server device generation instead o
   expect(devices.write).toHaveBeenCalledWith('owner', session.device)
   expect(JSON.parse(String(fetcher.mock.calls[0][1]?.body))).toEqual({ deviceId: 'device' })
 })
+it('rejects an expired code without fetching account data or exposing provider text', async () => {
+  const { auth, methods, devices, fetcher } = setup()
+  methods.verifyOtp.mockResolvedValue({
+    error: { status: 403, code: 'otp_expired', message: 'private@example.invalid' },
+  } as never)
+  await expect(
+    auth.verifyCode('maker@example.test', '123456', new AbortController().signal),
+  ).rejects.toMatchObject({ detail: { code: 'AUTH_CODE_EXPIRED' } })
+  expect(fetcher).not.toHaveBeenCalled()
+  expect(devices.writeVerified).not.toHaveBeenCalled()
+})
+it('maps server resend throttling to a bounded retry remedy without starting an account session', async () => {
+  const { auth, methods, fetcher } = setup()
+  methods.signInWithOtp.mockResolvedValue({
+    error: { status: 429, message: 'private@example.invalid' },
+  } as never)
+  await expect(
+    auth.requestCode('maker@example.test', new AbortController().signal),
+  ).rejects.toMatchObject({ detail: { code: 'RATE_LIMITED', retryAfterMs: 60000 } })
+  expect(fetcher).not.toHaveBeenCalled()
+})
+it('verification throttling cannot register a device or claim successful authentication', async () => {
+  const { auth, methods, devices, fetcher } = setup()
+  methods.verifyOtp.mockResolvedValue({
+    error: { status: 429, message: 'private@example.invalid' },
+  } as never)
+  await expect(
+    auth.verifyCode('maker@example.test', '123456', new AbortController().signal),
+  ).rejects.toMatchObject({ detail: { code: 'RATE_LIMITED' } })
+  expect(fetcher).not.toHaveBeenCalled()
+  expect(devices.write).not.toHaveBeenCalled()
+})
 it('fences a delayed verification before local logout and never registers its device', async () => {
   const { auth, methods, devices } = setup()
   let finish!: () => void
