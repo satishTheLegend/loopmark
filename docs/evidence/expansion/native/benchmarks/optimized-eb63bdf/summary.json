@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "eb63bdf65d0cfafe78902afcab1f0692977cda63",
+  "status": "measured-pass",
+  "window": {
+    "startedAt": "2026-10-18T16:25:34.983000+00:00",
+    "completedAt": "2026-10-18T16:27:55.191000+00:00",
+    "conditions": "Sequential platforms; parent browser/load tests and owned backend containers stopped"
+  },
+  "datasets": {
+    "small": {
+      "projects": 10,
+      "checkpoints": 100,
+      "portableBytes": 8214758
+    },
+    "limit": {
+      "projects": 200,
+      "checkpoints": 1000,
+      "portableBytes": 50331648
+    }
+  },
+  "scope": "Actual native SQLite/files through production services inside a synthetic benchmark app; not product UI startup or physical-device qualification",
+  "memoryMethod": "100ms polling of app+WebView-related process RSS; sum may double-count shared pages and miss inter-sample peaks. Available opening/ready sample is reported as baseline; last sample is not a post-GC/released-memory measurement. Fixture construction and strict verification contribute to overall peak. No forced GC.",
+  "limitations": [
+    "No pre-established native memory or latency pass budget; the desktop 5s import budget is not applied to native.",
+    "Baseline3141cd6 ran with different host contention/swap; elapsed comparisons are observations, not a controlled speedup claim.",
+    "Memory remains substantial and real-device memory-pressure/jetsam testing is blocked on physical hardware."
+  ],
+  "measurements": [
+    {
+      "platform": "ios",
+      "action": "startup",
+      "dataset": "small",
+      "raw": "ios-startup-small.json",
+      "sha256": "2a1c9adc09c29ba22babb3fb1be0bbc48778b4186a2d838391b88567c14fb448",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 934,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 690848,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 690848
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 911,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 690992,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 690992
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 882,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 690336,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 690336
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 915,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 690352,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 690352
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 922,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 670192,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "launching",
+            "rssKiB": 670192
+          }
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "action": "import",
+      "dataset": "small",
+      "raw": "ios-import-small.json",
+      "sha256": "dd989965e6763bdc892e74bec5e330892726760a60806cd06e9af117a50adf3f",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 846,
+          "operationMs": 3425.0000000000005,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 688144
+          },
+          "overallPeakRssKiB": 882160,
+          "operationPeakRssKiB": 882160,
+          "peakIncreaseFromAvailableBaselineKiB": 194016,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 841360
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 863,
+          "operationMs": 2389.0000000000005,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 914064,
+          "operationPeakRssKiB": 914064,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "cleanup",
+            "rssKiB": 910592
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1128,
+          "operationMs": 2650.0000000000005,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 921712,
+          "operationPeakRssKiB": 921712,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "cleanup",
+            "rssKiB": 917664
+          }
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "action": "export",
+      "dataset": "small",
+      "raw": "ios-export-small.json",
+      "sha256": "6313411f7548614110074d806e51e5162befa10d5abb4bdc5fe7705c9ce6b124",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1028,
+          "operationMs": 840,
+          "throughNativeFileMs": 1010,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 821664,
+          "operationPeakRssKiB": 821664,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "exporting",
+            "rssKiB": 821664
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1153,
+          "operationMs": 765,
+          "throughNativeFileMs": 926,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 851760,
+          "operationPeakRssKiB": 851760,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "verifying",
+            "rssKiB": 844672
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1241,
+          "operationMs": 872,
+          "throughNativeFileMs": 1041,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 860352,
+          "operationPeakRssKiB": 855392,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 860352
+          }
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "action": "startup",
+      "dataset": "limit",
+      "raw": "ios-startup-limit.json",
+      "sha256": "c13043501a2259f3cbf4983f2bdd36ece74405b07bbe42489aeb0edd97a753e5",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1274,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 693856,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 693856
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1150,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 678624
+          },
+          "overallPeakRssKiB": 678624,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 0,
+          "lastSample": {
+            "stage": "opening",
+            "rssKiB": 678624
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 999,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 694304,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 694304
+          }
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "action": "import",
+      "dataset": "limit",
+      "raw": "ios-import-limit.json",
+      "sha256": "086c09d0f5c4a64d5896f4d17656d415bba42c22a3bc8cee57edd5ba21dbd5c0",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1186,
+          "operationMs": 2388,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 1664976,
+          "operationPeakRssKiB": 1664976,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 1133808
+          }
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "action": "export",
+      "dataset": "limit",
+      "raw": "ios-export-limit.json",
+      "sha256": "5daead10bd81ba4ee8e760b9dde27b3398f0f59e5d4ba1be651e2e2ce22f3a32",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1202,
+          "operationMs": 1203.0000000000002,
+          "throughNativeFileMs": 1829,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 1462992,
+          "operationPeakRssKiB": 1399568,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 1462992
+          }
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "action": "startup",
+      "dataset": "small",
+      "raw": "android-startup-small.json",
+      "sha256": "283a8b70fcc07a489c171f22149148bbbbc7cb2001f06e8c5daabe3c6564e8a1",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1879,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": null,
+          "overallPeakRssKiB": 499604,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": null,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 499604
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2387,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 492640
+          },
+          "overallPeakRssKiB": 492640,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 0,
+          "lastSample": {
+            "stage": "opening",
+            "rssKiB": 492640
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2163,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 489744
+          },
+          "overallPeakRssKiB": 498272,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 8528,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 498272
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1985,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 485352
+          },
+          "overallPeakRssKiB": 493584,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 8232,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 493584
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2191,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 484672
+          },
+          "overallPeakRssKiB": 492928,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 8256,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 492928
+          }
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "action": "import",
+      "dataset": "small",
+      "raw": "android-import-small.json",
+      "sha256": "2a78c436c36ae7a1c2353f4eb11f1db80a3c81e97a81577ad4877d6d9d6016f5",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1995,
+          "operationMs": 7675.599999999977,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 497676
+          },
+          "overallPeakRssKiB": 625404,
+          "operationPeakRssKiB": 625404,
+          "peakIncreaseFromAvailableBaselineKiB": 127728,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 556420
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2039,
+          "operationMs": 4272.20000000007,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 491304
+          },
+          "overallPeakRssKiB": 596576,
+          "operationPeakRssKiB": 596576,
+          "peakIncreaseFromAvailableBaselineKiB": 105272,
+          "lastSample": {
+            "stage": "cleanup",
+            "rssKiB": 549384
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1679,
+          "operationMs": 4523.300000000047,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "ready",
+            "rssKiB": 495604
+          },
+          "overallPeakRssKiB": 617084,
+          "operationPeakRssKiB": 617084,
+          "peakIncreaseFromAvailableBaselineKiB": 121480,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 553712
+          }
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "action": "export",
+      "dataset": "small",
+      "raw": "android-export-small.json",
+      "sha256": "6030938e4bba4cfee32ab599ae3eae4adc66aa140f1692f25df1c5adf9203cdb",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2009,
+          "operationMs": 2512.8000000000466,
+          "throughNativeFileMs": 2863.1999999999534,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 486640
+          },
+          "overallPeakRssKiB": 595132,
+          "operationPeakRssKiB": 587876,
+          "peakIncreaseFromAvailableBaselineKiB": 108492,
+          "lastSample": {
+            "stage": "verifying",
+            "rssKiB": 595132
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2359,
+          "operationMs": 2356.3000000000466,
+          "throughNativeFileMs": 2706,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 491140
+          },
+          "overallPeakRssKiB": 558544,
+          "operationPeakRssKiB": 558544,
+          "peakIncreaseFromAvailableBaselineKiB": 67404,
+          "lastSample": {
+            "stage": "verifying",
+            "rssKiB": 558496
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2206,
+          "operationMs": 2245.9000000000233,
+          "throughNativeFileMs": 2567.9000000000233,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 491756
+          },
+          "overallPeakRssKiB": 588168,
+          "operationPeakRssKiB": 588168,
+          "peakIncreaseFromAvailableBaselineKiB": 96412,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 557000
+          }
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "action": "startup",
+      "dataset": "limit",
+      "raw": "android-startup-limit.json",
+      "sha256": "2d0327a7df6b3105415101e014282fdbc9f6bbd3877f81ff323365d2701d907c",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2500,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 488496
+          },
+          "overallPeakRssKiB": 489656,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 1160,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 489656
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2093,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 481028
+          },
+          "overallPeakRssKiB": 490968,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 9940,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 490968
+          }
+        },
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2198,
+          "operationMs": null,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 487244
+          },
+          "overallPeakRssKiB": 487244,
+          "operationPeakRssKiB": 0,
+          "peakIncreaseFromAvailableBaselineKiB": 0,
+          "lastSample": {
+            "stage": "opening",
+            "rssKiB": 487244
+          }
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "action": "import",
+      "dataset": "limit",
+      "raw": "android-import-limit.json",
+      "sha256": "c16b2a2c9f8cf435164fe1d4bc42673d6e63f5b2183ec5c3922f882397b52fc3",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 1881,
+          "operationMs": 4908.09999999986,
+          "throughNativeFileMs": null,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 489976
+          },
+          "overallPeakRssKiB": 1105328,
+          "operationPeakRssKiB": 1105328,
+          "peakIncreaseFromAvailableBaselineKiB": 615352,
+          "lastSample": {
+            "stage": "cleanup",
+            "rssKiB": 519500
+          }
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "action": "export",
+      "dataset": "limit",
+      "raw": "android-export-limit.json",
+      "sha256": "97e754b020bf65afb7e893c367f8856650cab8f95f6ee8dc296679a1cc0c2c92",
+      "samples": [
+        {
+          "passed": true,
+          "processToRepositoryReadyMs": 2453,
+          "operationMs": 4438.5,
+          "throughNativeFileMs": 6793.399999999907,
+          "preOperationSample": {
+            "stage": "opening",
+            "rssKiB": 487048
+          },
+          "overallPeakRssKiB": 1038348,
+          "operationPeakRssKiB": 946964,
+          "peakIncreaseFromAvailableBaselineKiB": 551300,
+          "lastSample": {
+            "stage": "complete",
+            "rssKiB": 725312
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -xctestrun ios/build/Build/Products/LoopmarkUITests_iphonesimulator27.1-arm64.xctestrun -destination "platform=iOS Simulator,id=AF7F7764-88DA-4BD8-A46A-660E9D848AC5" "-only-testing:LoopmarkUITests/BackupInboxStoreTests" -resultBundlePath ios/inbox-store-final.xcresult test-without-building
+
+Writing result bundle at path:
+	/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/inbox-store-final.xcresult
+
+2026-10-18 21:40:04.670 xcodebuild[47600:2827939] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:40:19.558230+0530 LoopmarkUITests-Runner[47831:2829412] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-18 21:40:22.271.
+Test Suite 'LoopmarkUITests.xctest' started at 2026-10-18 21:40:22.273.
+Test Suite 'BackupInboxStoreTests' started at 2026-10-18 21:40:22.273.
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testBusyInvalidAndOrphanCleanupPreserveOriginal]' started.
+    t =     0.00s Start Test at 2026-10-18 21:40:22.275
+    t =     0.62s Set Up
+    t =     0.87s Tear Down
+objc[47831]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x106218310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x106294398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testBusyInvalidAndOrphanCleanupPreserveOriginal]' passed (1.365 seconds).
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testDurableReopenRepeatedFileAndHandledReceipt]' started.
+    t =     0.00s Start Test at 2026-10-18 21:40:23.641
+    t =     0.03s Set Up
+    t =     0.11s Tear Down
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testDurableReopenRepeatedFileAndHandledReceipt]' passed (0.117 seconds).
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testFailedPrivateAndNoticeWritesExposeStorageFailure]' started.
+    t =     0.00s Start Test at 2026-10-18 21:40:23.758
+    t =     0.02s Set Up
+    t =     0.05s Tear Down
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testFailedPrivateAndNoticeWritesExposeStorageFailure]' passed (0.061 seconds).
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testMaximumHandledReceiptsRemainBoundedWithMultibyteName]' started.
+    t =     0.00s Start Test at 2026-10-18 21:40:23.820
+    t =     0.02s Set Up
+    t =     0.23s Tear Down
+Test Case '-[LoopmarkUITests.BackupInboxStoreTests testMaximumHandledReceiptsRemainBoundedWithMultibyteName]' passed (0.240 seconds).
+Test Suite 'BackupInboxStoreTests' passed at 2026-10-18 21:40:24.060.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1.784 (1.787) seconds
+Test Suite 'LoopmarkUITests.xctest' passed at 2026-10-18 21:40:24.061.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1.784 (1.788) seconds
+Test Suite 'Selected tests' passed at 2026-10-18 21:40:24.061.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1.784 (1.791) seconds
+2026-10-18 21:40:24.108 xcodebuild[47600:2827939] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:40:24.110 xcodebuild[47600:2827939] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:40:24.390 xcodebuild[47600:2827939] [MT] IDETestOperationsObserverDebug: 20.804 elapsed -- Testing started completed.
+2026-10-18 21:40:24.390 xcodebuild[47600:2827939] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-18 21:40:24.390 xcodebuild[47600:2827939] [MT] IDETestOperationsObserverDebug: 20.804 sec, +20.804 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/inbox-store-final.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

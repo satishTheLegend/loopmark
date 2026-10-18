@@ -1,0 +1,1235 @@
+{
+  "schemaVersion": 1,
+  "measurementWindow": "loopmark-team-coordinated",
+  "target": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "platform": "ios",
+  "runtimeVersion": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+  "sourceCommit": "eb63bdf65d0cfafe78902afcab1f0692977cda63",
+  "manifestFileSha256": "d2e85f5db04feae6b6f31e1bf289f52ecae7173b6a6870559a1f54979ceda72a",
+  "artifactSha256": "c3b4f27cd0746fe2a53ddd0207861004ac76412e303e34805b4b01e523b2f864",
+  "host": {
+    "platform": "darwin",
+    "release": "27.0.0",
+    "arch": "arm64",
+    "model": "Apple M5",
+    "memoryBytes": 17179869184
+  },
+  "memoryMetric": "sampled sum of RSS KiB for isolated app host and its WebView processes; shared pages may be counted twice; peaks between samples may be missed",
+  "sampleIntervalRequestedMs": 100,
+  "runs": [
+    {
+      "sample": 1,
+      "launchedAt": 1792340758087,
+      "completedAt": 1792340760171,
+      "processToRepositoryReadyMs": 1028,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "ios",
+        "origin": "capacitor://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "4060d520-b142-474b-9c28-9eb09079ee7e",
+        "action": "export",
+        "dataset": "small",
+        "repositoryReadyMs": 23.000000000000014,
+        "repositoryReadyWallTime": 1792340759115,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "exportMs": 840,
+        "exportBytes": 8214758,
+        "exportThroughNativeFileMs": 1010,
+        "nativeExportFileBytes": 8214758,
+        "roundtripHash": "4e4645f522727c1f2ddd3584c999d09bc308f4649b1d74d8da60d1aec1b79551",
+        "passed": true,
+        "completedAt": "2026-10-18T16:26:00.155Z"
+      },
+      "peak": {
+        "at": 1792340760109,
+        "stage": "exporting",
+        "hostKiB": 265632,
+        "webContentKiB": 298448,
+        "webSupportKiB": 257584,
+        "totalRssKiB": 821664,
+        "processes": [
+          {
+            "pid": 60192,
+            "rssKiB": 265632,
+            "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+          },
+          {
+            "pid": 60224,
+            "rssKiB": 146096,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+          },
+          {
+            "pid": 60231,
+            "rssKiB": 298448,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+          },
+          {
+            "pid": 60239,
+            "rssKiB": 111488,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792340760109,
+        "stage": "exporting",
+        "hostKiB": 265632,
+        "webContentKiB": 298448,
+        "webSupportKiB": 257584,
+        "totalRssKiB": 821664,
+        "processes": [
+          {
+            "pid": 60192,
+            "rssKiB": 265632,
+            "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+          },
+          {
+            "pid": 60224,
+            "rssKiB": 146096,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+          },
+          {
+            "pid": 60231,
+            "rssKiB": 298448,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+          },
+          {
+            "pid": 60239,
+            "rssKiB": 111488,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792340758281,
+          "stage": "launching",
+          "hostKiB": 6352,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 6352,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 6352,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340758419,
+          "stage": "launching",
+          "hostKiB": 21856,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 21856,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 21856,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340758564,
+          "stage": "launching",
+          "hostKiB": 224608,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 224608,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 224608,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340758704,
+          "stage": "launching",
+          "hostKiB": 220656,
+          "webContentKiB": 0,
+          "webSupportKiB": 10064,
+          "totalRssKiB": 230720,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 220656,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 10064,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            }
+          ]
+        },
+        {
+          "at": 1792340758870,
+          "stage": "launching",
+          "hostKiB": 268352,
+          "webContentKiB": 20880,
+          "webSupportKiB": 137808,
+          "totalRssKiB": 427040,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 268352,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 130560,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 20880,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 7248,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340759031,
+          "stage": "launching",
+          "hostKiB": 248048,
+          "webContentKiB": 123792,
+          "webSupportKiB": 222768,
+          "totalRssKiB": 594608,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 248048,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 135376,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 123792,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 87392,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340759188,
+          "stage": "exporting",
+          "hostKiB": 279408,
+          "webContentKiB": 168304,
+          "webSupportKiB": 258672,
+          "totalRssKiB": 706384,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 279408,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 138592,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 168304,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 120080,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340759346,
+          "stage": "exporting",
+          "hostKiB": 278800,
+          "webContentKiB": 204208,
+          "webSupportKiB": 260208,
+          "totalRssKiB": 743216,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 278800,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 140128,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 204208,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 120080,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340759564,
+          "stage": "exporting",
+          "hostKiB": 274064,
+          "webContentKiB": 208800,
+          "webSupportKiB": 251040,
+          "totalRssKiB": 733904,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 274064,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 131984,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 208800,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 119056,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340759760,
+          "stage": "exporting",
+          "hostKiB": 270992,
+          "webContentKiB": 221504,
+          "webSupportKiB": 247664,
+          "totalRssKiB": 740160,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 270992,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 131888,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 221504,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 115776,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340759904,
+          "stage": "exporting",
+          "hostKiB": 271136,
+          "webContentKiB": 255152,
+          "webSupportKiB": 247824,
+          "totalRssKiB": 774112,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 271136,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 132048,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 255152,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 115776,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340760109,
+          "stage": "exporting",
+          "hostKiB": 265632,
+          "webContentKiB": 298448,
+          "webSupportKiB": 257584,
+          "totalRssKiB": 821664,
+          "processes": [
+            {
+              "pid": 60192,
+              "rssKiB": 265632,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60224,
+              "rssKiB": 146096,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60231,
+              "rssKiB": 298448,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60239,
+              "rssKiB": 111488,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "launchedAt": 1792340760610,
+      "completedAt": 1792340762747,
+      "processToRepositoryReadyMs": 1153,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "ios",
+        "origin": "capacitor://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "0915324d-4d9f-4807-8625-7f3989e276cf",
+        "action": "export",
+        "dataset": "small",
+        "repositoryReadyMs": 27,
+        "repositoryReadyWallTime": 1792340761763,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "exportMs": 765,
+        "exportBytes": 8214758,
+        "exportThroughNativeFileMs": 926,
+        "nativeExportFileBytes": 8214758,
+        "roundtripHash": "4e4645f522727c1f2ddd3584c999d09bc308f4649b1d74d8da60d1aec1b79551",
+        "passed": true,
+        "completedAt": "2026-10-18T16:26:02.715Z"
+      },
+      "peak": {
+        "at": 1792340762543,
+        "stage": "exporting",
+        "hostKiB": 269792,
+        "webContentKiB": 317456,
+        "webSupportKiB": 264512,
+        "totalRssKiB": 851760,
+        "processes": [
+          {
+            "pid": 60393,
+            "rssKiB": 269792,
+            "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+          },
+          {
+            "pid": 60427,
+            "rssKiB": 148416,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+          },
+          {
+            "pid": 60428,
+            "rssKiB": 317456,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+          },
+          {
+            "pid": 60436,
+            "rssKiB": 116096,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792340762543,
+        "stage": "exporting",
+        "hostKiB": 269792,
+        "webContentKiB": 317456,
+        "webSupportKiB": 264512,
+        "totalRssKiB": 851760,
+        "processes": [
+          {
+            "pid": 60393,
+            "rssKiB": 269792,
+            "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+          },
+          {
+            "pid": 60427,
+            "rssKiB": 148416,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+          },
+          {
+            "pid": 60428,
+            "rssKiB": 317456,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+          },
+          {
+            "pid": 60436,
+            "rssKiB": 116096,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792340760857,
+          "stage": "launching",
+          "hostKiB": 6560,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 6560,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 6560,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340761006,
+          "stage": "launching",
+          "hostKiB": 21712,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 21712,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 21712,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340761161,
+          "stage": "launching",
+          "hostKiB": 227040,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 227040,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 227040,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340761336,
+          "stage": "launching",
+          "hostKiB": 278544,
+          "webContentKiB": 0,
+          "webSupportKiB": 9392,
+          "totalRssKiB": 287936,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 278544,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 9392,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            }
+          ]
+        },
+        {
+          "at": 1792340761511,
+          "stage": "launching",
+          "hostKiB": 266304,
+          "webContentKiB": 136608,
+          "webSupportKiB": 150448,
+          "totalRssKiB": 553360,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 266304,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 134064,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 136608,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 16384,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340761742,
+          "stage": "launching",
+          "hostKiB": 273440,
+          "webContentKiB": 157168,
+          "webSupportKiB": 255616,
+          "totalRssKiB": 686224,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 273440,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 136720,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 157168,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 118896,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340761910,
+          "stage": "exporting",
+          "hostKiB": 273984,
+          "webContentKiB": 194112,
+          "webSupportKiB": 261760,
+          "totalRssKiB": 729856,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 273984,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 141328,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 194112,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 120432,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340762089,
+          "stage": "exporting",
+          "hostKiB": 271872,
+          "webContentKiB": 201088,
+          "webSupportKiB": 253168,
+          "totalRssKiB": 726128,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 271872,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 132752,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 201088,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 120416,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340762235,
+          "stage": "exporting",
+          "hostKiB": 271200,
+          "webContentKiB": 208720,
+          "webSupportKiB": 250816,
+          "totalRssKiB": 730736,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 271200,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 132128,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 208720,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 118688,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340762389,
+          "stage": "exporting",
+          "hostKiB": 270400,
+          "webContentKiB": 223024,
+          "webSupportKiB": 250032,
+          "totalRssKiB": 743456,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 270400,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 132224,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 223024,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 117808,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340762543,
+          "stage": "exporting",
+          "hostKiB": 269792,
+          "webContentKiB": 317456,
+          "webSupportKiB": 264512,
+          "totalRssKiB": 851760,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 269792,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 148416,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 317456,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 116096,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340762707,
+          "stage": "verifying",
+          "hostKiB": 270080,
+          "webContentKiB": 309664,
+          "webSupportKiB": 264928,
+          "totalRssKiB": 844672,
+          "processes": [
+            {
+              "pid": 60393,
+              "rssKiB": 270080,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60427,
+              "rssKiB": 148528,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60428,
+              "rssKiB": 309664,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60436,
+              "rssKiB": 116400,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "launchedAt": 1792340763147,
+      "completedAt": 1792340765576,
+      "processToRepositoryReadyMs": 1241,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "ios",
+        "origin": "capacitor://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "4161868f-a8a0-4e58-af9f-5c400cb88ff2",
+        "action": "export",
+        "dataset": "small",
+        "repositoryReadyMs": 33,
+        "repositoryReadyWallTime": 1792340764388,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "exportMs": 872,
+        "exportBytes": 8214758,
+        "exportThroughNativeFileMs": 1041,
+        "nativeExportFileBytes": 8214758,
+        "roundtripHash": "4e4645f522727c1f2ddd3584c999d09bc308f4649b1d74d8da60d1aec1b79551",
+        "passed": true,
+        "completedAt": "2026-10-18T16:26:05.462Z"
+      },
+      "peak": {
+        "at": 1792340765524,
+        "stage": "complete",
+        "hostKiB": 272160,
+        "webContentKiB": 322576,
+        "webSupportKiB": 265616,
+        "totalRssKiB": 860352,
+        "processes": [
+          {
+            "pid": 60549,
+            "rssKiB": 272160,
+            "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+          },
+          {
+            "pid": 60585,
+            "rssKiB": 147296,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+          },
+          {
+            "pid": 60586,
+            "rssKiB": 322576,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+          },
+          {
+            "pid": 60594,
+            "rssKiB": 118320,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792340765374,
+        "stage": "exporting",
+        "hostKiB": 272224,
+        "webContentKiB": 317296,
+        "webSupportKiB": 265872,
+        "totalRssKiB": 855392,
+        "processes": [
+          {
+            "pid": 60549,
+            "rssKiB": 272224,
+            "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+          },
+          {
+            "pid": 60585,
+            "rssKiB": 147232,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+          },
+          {
+            "pid": 60586,
+            "rssKiB": 317296,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+          },
+          {
+            "pid": 60594,
+            "rssKiB": 118640,
+            "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792340763376,
+          "stage": "launching",
+          "hostKiB": 10704,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 10704,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 10704,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340763579,
+          "stage": "launching",
+          "hostKiB": 35840,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 35840,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 35840,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340763761,
+          "stage": "launching",
+          "hostKiB": 248448,
+          "webContentKiB": 0,
+          "webSupportKiB": 0,
+          "totalRssKiB": 248448,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 248448,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            }
+          ]
+        },
+        {
+          "at": 1792340763939,
+          "stage": "launching",
+          "hostKiB": 240192,
+          "webContentKiB": 21552,
+          "webSupportKiB": 19664,
+          "totalRssKiB": 281408,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 240192,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 19664,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 21552,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            }
+          ]
+        },
+        {
+          "at": 1792340764176,
+          "stage": "launching",
+          "hostKiB": 245232,
+          "webContentKiB": 123888,
+          "webSupportKiB": 152608,
+          "totalRssKiB": 521728,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 245232,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 133904,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 123888,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 18704,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340764337,
+          "stage": "launching",
+          "hostKiB": 269696,
+          "webContentKiB": 155648,
+          "webSupportKiB": 254752,
+          "totalRssKiB": 680096,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 269696,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 136352,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 155648,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 118400,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340764527,
+          "stage": "exporting",
+          "hostKiB": 272832,
+          "webContentKiB": 180960,
+          "webSupportKiB": 257984,
+          "totalRssKiB": 711776,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 272832,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 137760,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 180960,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 120224,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340764700,
+          "stage": "exporting",
+          "hostKiB": 272144,
+          "webContentKiB": 184960,
+          "webSupportKiB": 252064,
+          "totalRssKiB": 709168,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 272144,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 131840,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 184960,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 120224,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340764872,
+          "stage": "exporting",
+          "hostKiB": 271904,
+          "webContentKiB": 208288,
+          "webSupportKiB": 252016,
+          "totalRssKiB": 732208,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 271904,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 131664,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 208288,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 120352,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340765041,
+          "stage": "exporting",
+          "hostKiB": 271968,
+          "webContentKiB": 212272,
+          "webSupportKiB": 251872,
+          "totalRssKiB": 736112,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 271968,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 131520,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 212272,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 120352,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340765193,
+          "stage": "exporting",
+          "hostKiB": 271840,
+          "webContentKiB": 242048,
+          "webSupportKiB": 251360,
+          "totalRssKiB": 765248,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 271840,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 131120,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 242048,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 120240,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340765374,
+          "stage": "exporting",
+          "hostKiB": 272224,
+          "webContentKiB": 317296,
+          "webSupportKiB": 265872,
+          "totalRssKiB": 855392,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 272224,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 147232,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 317296,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 118640,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        },
+        {
+          "at": 1792340765524,
+          "stage": "complete",
+          "hostKiB": 272160,
+          "webContentKiB": 322576,
+          "webSupportKiB": 265616,
+          "totalRssKiB": 860352,
+          "processes": [
+            {
+              "pid": 60549,
+              "rssKiB": 272160,
+              "name": "/Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Bundle/Application/AEFAD5B9-781F-44C2-A63A-B0C8C324A734/App.app/App"
+            },
+            {
+              "pid": 60585,
+              "rssKiB": 147296,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/NetworkingExtension.appex/com.apple.WebKit.Networking"
+            },
+            {
+              "pid": 60586,
+              "rssKiB": 322576,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/WebContentExtension.appex/com.apple.WebKit.WebContent"
+            },
+            {
+              "pid": 60594,
+              "rssKiB": 118320,
+              "name": "/Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/ExtensionKit/Extensions/GPUExtension.appex/com.apple.WebKit.GPU"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

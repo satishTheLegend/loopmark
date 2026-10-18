@@ -1,0 +1,5260 @@
+{
+  "schemaVersion": 1,
+  "measurementWindow": "loopmark-team-coordinated",
+  "target": "emulator-5580",
+  "platform": "android",
+  "runtimeVersion": "16",
+  "sourceCommit": "eb63bdf65d0cfafe78902afcab1f0692977cda63",
+  "manifestFileSha256": "d2e85f5db04feae6b6f31e1bf289f52ecae7173b6a6870559a1f54979ceda72a",
+  "artifactSha256": "849c8459768fae5bfda0b651cccea2f22073a5cb128ddb19c917842f6092187e",
+  "host": {
+    "platform": "darwin",
+    "release": "27.0.0",
+    "arch": "arm64",
+    "model": "Apple M5",
+    "memoryBytes": 17179869184
+  },
+  "memoryMetric": "sampled sum of RSS KiB for isolated app host and its WebView processes; shared pages may be counted twice; peaks between samples may be missed",
+  "sampleIntervalRequestedMs": 100,
+  "runs": [
+    {
+      "sample": 1,
+      "launchedAt": 1792340799370,
+      "completedAt": 1792340809126,
+      "processToRepositoryReadyMs": 1995,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "android",
+        "origin": "https://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "fd3b115d-8f17-4d6c-9667-5006ad92a107",
+        "action": "import",
+        "dataset": "small",
+        "repositoryReadyMs": 438.19999999995343,
+        "repositoryReadyWallTime": 1792340801365,
+        "startingProjects": 200,
+        "startingCheckpoints": 1000,
+        "fixtureBytes": 8214758,
+        "expectedProjects": 10,
+        "expectedCheckpoints": 100,
+        "importMs": 7675.599999999977,
+        "importPhases": [
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 47.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 43.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 97.70000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 202.09999999997672
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 34.90000000002328
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 37.40000000002328
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 28.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 33.40000000002328
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.70000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 30.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 28.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.100000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 21.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 21.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.79999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.100000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.70000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 32.09999999997672
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 22.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 21.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 24.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 23.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 26.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 32.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 31.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 29.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 27.70000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 25.900000000023283
+          },
+          {
+            "operation": "importLocal",
+            "ms": 966.9000000000233
+          },
+          {
+            "operation": "release",
+            "ms": 28.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 25.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 26.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 25.5
+          },
+          {
+            "operation": "release",
+            "ms": 27.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 28.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 26.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 29.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 24.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 25.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 28.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 26.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 24.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 24.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 25.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 25.5
+          },
+          {
+            "operation": "release",
+            "ms": 28.5
+          },
+          {
+            "operation": "release",
+            "ms": 26.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 25.5
+          },
+          {
+            "operation": "release",
+            "ms": 24.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 24.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 25
+          },
+          {
+            "operation": "release",
+            "ms": 26.5
+          },
+          {
+            "operation": "release",
+            "ms": 28.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 24.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 24.5
+          },
+          {
+            "operation": "release",
+            "ms": 25.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 25.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 32
+          },
+          {
+            "operation": "release",
+            "ms": 32
+          },
+          {
+            "operation": "release",
+            "ms": 33.5
+          },
+          {
+            "operation": "release",
+            "ms": 31
+          },
+          {
+            "operation": "release",
+            "ms": 31
+          },
+          {
+            "operation": "release",
+            "ms": 44.09999999997672
+          },
+          {
+            "operation": "release",
+            "ms": 37.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 42.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 37.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 270.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 98.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 43.39999999990687
+          },
+          {
+            "operation": "release",
+            "ms": 44
+          },
+          {
+            "operation": "release",
+            "ms": 35.40000000002328
+          },
+          {
+            "operation": "release",
+            "ms": 33.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 32.39999999990687
+          },
+          {
+            "operation": "release",
+            "ms": 42.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 34
+          },
+          {
+            "operation": "release",
+            "ms": 39.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 34.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 33.40000000002328
+          },
+          {
+            "operation": "release",
+            "ms": 36.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 44.5
+          },
+          {
+            "operation": "release",
+            "ms": 31.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 32.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 31.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 33.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 39.5
+          },
+          {
+            "operation": "release",
+            "ms": 32.09999999997672
+          },
+          {
+            "operation": "release",
+            "ms": 31.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 34.39999999990687
+          },
+          {
+            "operation": "release",
+            "ms": 31
+          },
+          {
+            "operation": "release",
+            "ms": 33.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 29.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 28.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 28
+          },
+          {
+            "operation": "release",
+            "ms": 28.5
+          },
+          {
+            "operation": "release",
+            "ms": 30.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 30.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 27.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 27.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 26.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 28.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 29.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 27.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 26.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 27.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 27
+          },
+          {
+            "operation": "release",
+            "ms": 62.40000000002328
+          },
+          {
+            "operation": "release",
+            "ms": 31.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 26.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 26.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 26
+          },
+          {
+            "operation": "release",
+            "ms": 26.100000000093132
+          },
+          {
+            "operation": "release",
+            "ms": 29.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 30.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 26.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 26.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 25.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 25.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 29.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 29.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 27.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 28.5
+          },
+          {
+            "operation": "release",
+            "ms": 26.5
+          },
+          {
+            "operation": "release",
+            "ms": 27.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 30.5
+          },
+          {
+            "operation": "release",
+            "ms": 27.399999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 26.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 24.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 25.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 26
+          }
+        ],
+        "passed": true,
+        "completedAt": "2026-10-18T16:26:49.501Z"
+      },
+      "peak": {
+        "at": 1792340801616,
+        "stage": "importing",
+        "hostKiB": 273248,
+        "webContentKiB": 352156,
+        "webSupportKiB": 0,
+        "totalRssKiB": 625404,
+        "processes": [
+          {
+            "pid": 5557,
+            "rssKiB": 273248,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 5616,
+            "rssKiB": 352156,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792340801616,
+        "stage": "importing",
+        "hostKiB": 273248,
+        "webContentKiB": 352156,
+        "webSupportKiB": 0,
+        "totalRssKiB": 625404,
+        "processes": [
+          {
+            "pid": 5557,
+            "rssKiB": 273248,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 5616,
+            "rssKiB": 352156,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792340800302,
+          "stage": "launching",
+          "hostKiB": 252552,
+          "webContentKiB": 213524,
+          "webSupportKiB": 0,
+          "totalRssKiB": 466076,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 252552,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 213524,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340800525,
+          "stage": "opening",
+          "hostKiB": 258996,
+          "webContentKiB": 227332,
+          "webSupportKiB": 0,
+          "totalRssKiB": 486328,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 258996,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 227332,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340800722,
+          "stage": "opening",
+          "hostKiB": 270148,
+          "webContentKiB": 227528,
+          "webSupportKiB": 0,
+          "totalRssKiB": 497676,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 270148,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 227528,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340800946,
+          "stage": "generating",
+          "hostKiB": 274564,
+          "webContentKiB": 243024,
+          "webSupportKiB": 0,
+          "totalRssKiB": 517588,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 274564,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 243024,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340801120,
+          "stage": "generating",
+          "hostKiB": 268912,
+          "webContentKiB": 302232,
+          "webSupportKiB": 0,
+          "totalRssKiB": 571144,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268912,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 302232,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340801296,
+          "stage": "importing",
+          "hostKiB": 269168,
+          "webContentKiB": 295880,
+          "webSupportKiB": 0,
+          "totalRssKiB": 565048,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 269168,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 295880,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340801456,
+          "stage": "importing",
+          "hostKiB": 269168,
+          "webContentKiB": 298596,
+          "webSupportKiB": 0,
+          "totalRssKiB": 567764,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 269168,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 298596,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340801616,
+          "stage": "importing",
+          "hostKiB": 273248,
+          "webContentKiB": 352156,
+          "webSupportKiB": 0,
+          "totalRssKiB": 625404,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 273248,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 352156,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340801777,
+          "stage": "importing",
+          "hostKiB": 291204,
+          "webContentKiB": 280400,
+          "webSupportKiB": 0,
+          "totalRssKiB": 571604,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 291204,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 280400,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340801935,
+          "stage": "importing",
+          "hostKiB": 292960,
+          "webContentKiB": 281464,
+          "webSupportKiB": 0,
+          "totalRssKiB": 574424,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 292960,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 281464,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340802127,
+          "stage": "importing",
+          "hostKiB": 268572,
+          "webContentKiB": 285300,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553872,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268572,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 285300,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340802289,
+          "stage": "importing",
+          "hostKiB": 264680,
+          "webContentKiB": 277940,
+          "webSupportKiB": 0,
+          "totalRssKiB": 542620,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 264680,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 277940,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340802447,
+          "stage": "importing",
+          "hostKiB": 268352,
+          "webContentKiB": 285904,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554256,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268352,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 285904,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340802607,
+          "stage": "importing",
+          "hostKiB": 267316,
+          "webContentKiB": 277688,
+          "webSupportKiB": 0,
+          "totalRssKiB": 545004,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 267316,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 277688,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340802761,
+          "stage": "importing",
+          "hostKiB": 265288,
+          "webContentKiB": 287580,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552868,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 265288,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 287580,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340802917,
+          "stage": "importing",
+          "hostKiB": 268724,
+          "webContentKiB": 279504,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548228,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268724,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 279504,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803072,
+          "stage": "importing",
+          "hostKiB": 269748,
+          "webContentKiB": 289476,
+          "webSupportKiB": 0,
+          "totalRssKiB": 559224,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 269748,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 289476,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803226,
+          "stage": "importing",
+          "hostKiB": 262328,
+          "webContentKiB": 282572,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544900,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 262328,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 282572,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803381,
+          "stage": "importing",
+          "hostKiB": 262068,
+          "webContentKiB": 275616,
+          "webSupportKiB": 0,
+          "totalRssKiB": 537684,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 262068,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 275616,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803535,
+          "stage": "importing",
+          "hostKiB": 263236,
+          "webContentKiB": 286064,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549300,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263236,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 286064,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803688,
+          "stage": "importing",
+          "hostKiB": 262388,
+          "webContentKiB": 277920,
+          "webSupportKiB": 0,
+          "totalRssKiB": 540308,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 262388,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 277920,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803841,
+          "stage": "importing",
+          "hostKiB": 263736,
+          "webContentKiB": 288364,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552100,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263736,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 288364,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340803994,
+          "stage": "importing",
+          "hostKiB": 263032,
+          "webContentKiB": 280848,
+          "webSupportKiB": 0,
+          "totalRssKiB": 543880,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263032,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 280848,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340804148,
+          "stage": "importing",
+          "hostKiB": 267132,
+          "webContentKiB": 289712,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556844,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 267132,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 289712,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340804303,
+          "stage": "importing",
+          "hostKiB": 265580,
+          "webContentKiB": 283012,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548592,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 265580,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 283012,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340804454,
+          "stage": "importing",
+          "hostKiB": 265028,
+          "webContentKiB": 276456,
+          "webSupportKiB": 0,
+          "totalRssKiB": 541484,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 265028,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 276456,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340804613,
+          "stage": "importing",
+          "hostKiB": 262052,
+          "webContentKiB": 292356,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554408,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 262052,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 292356,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340804773,
+          "stage": "importing",
+          "hostKiB": 262588,
+          "webContentKiB": 284984,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547572,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 262588,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 284984,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340804936,
+          "stage": "importing",
+          "hostKiB": 264060,
+          "webContentKiB": 285712,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549772,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 264060,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 285712,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340805093,
+          "stage": "importing",
+          "hostKiB": 263944,
+          "webContentKiB": 289324,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553268,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263944,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 289324,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340805254,
+          "stage": "importing",
+          "hostKiB": 266136,
+          "webContentKiB": 292508,
+          "webSupportKiB": 0,
+          "totalRssKiB": 558644,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 266136,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 292508,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340805409,
+          "stage": "importing",
+          "hostKiB": 263880,
+          "webContentKiB": 281300,
+          "webSupportKiB": 0,
+          "totalRssKiB": 545180,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263880,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 281300,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340805565,
+          "stage": "importing",
+          "hostKiB": 263980,
+          "webContentKiB": 282060,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546040,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263980,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 282060,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340805718,
+          "stage": "importing",
+          "hostKiB": 266160,
+          "webContentKiB": 286672,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552832,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 266160,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 286672,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340805873,
+          "stage": "importing",
+          "hostKiB": 265248,
+          "webContentKiB": 281416,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546664,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 265248,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 281416,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340806025,
+          "stage": "importing",
+          "hostKiB": 263400,
+          "webContentKiB": 289648,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553048,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263400,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 289648,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340806178,
+          "stage": "importing",
+          "hostKiB": 263548,
+          "webContentKiB": 294164,
+          "webSupportKiB": 0,
+          "totalRssKiB": 557712,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263548,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 294164,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340806334,
+          "stage": "importing",
+          "hostKiB": 268784,
+          "webContentKiB": 299000,
+          "webSupportKiB": 0,
+          "totalRssKiB": 567784,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268784,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 299000,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340806493,
+          "stage": "importing",
+          "hostKiB": 266236,
+          "webContentKiB": 285232,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551468,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 266236,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 285232,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340806656,
+          "stage": "importing",
+          "hostKiB": 263832,
+          "webContentKiB": 287876,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551708,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 263832,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 287876,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340807051,
+          "stage": "importing",
+          "hostKiB": 270144,
+          "webContentKiB": 291428,
+          "webSupportKiB": 0,
+          "totalRssKiB": 561572,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 270144,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 291428,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340807232,
+          "stage": "importing",
+          "hostKiB": 267608,
+          "webContentKiB": 284944,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552552,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 267608,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 284944,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340807407,
+          "stage": "importing",
+          "hostKiB": 266596,
+          "webContentKiB": 286712,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553308,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 266596,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 286712,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340807586,
+          "stage": "importing",
+          "hostKiB": 267696,
+          "webContentKiB": 293400,
+          "webSupportKiB": 0,
+          "totalRssKiB": 561096,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 267696,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 293400,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340807757,
+          "stage": "importing",
+          "hostKiB": 267176,
+          "webContentKiB": 285864,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553040,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 267176,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 285864,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340807921,
+          "stage": "importing",
+          "hostKiB": 264120,
+          "webContentKiB": 290364,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554484,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 264120,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 290364,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340808085,
+          "stage": "importing",
+          "hostKiB": 268488,
+          "webContentKiB": 294772,
+          "webSupportKiB": 0,
+          "totalRssKiB": 563260,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268488,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 294772,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340808243,
+          "stage": "importing",
+          "hostKiB": 266232,
+          "webContentKiB": 282956,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549188,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 266232,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 282956,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340808439,
+          "stage": "importing",
+          "hostKiB": 265116,
+          "webContentKiB": 287952,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553068,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 265116,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 287952,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340808603,
+          "stage": "importing",
+          "hostKiB": 264432,
+          "webContentKiB": 292472,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556904,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 264432,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 292472,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340808757,
+          "stage": "importing",
+          "hostKiB": 268772,
+          "webContentKiB": 299944,
+          "webSupportKiB": 0,
+          "totalRssKiB": 568716,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268772,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 299944,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340808915,
+          "stage": "importing",
+          "hostKiB": 266596,
+          "webContentKiB": 287504,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554100,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 266596,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 287504,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340809070,
+          "stage": "complete",
+          "hostKiB": 268888,
+          "webContentKiB": 287532,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556420,
+          "processes": [
+            {
+              "pid": 5557,
+              "rssKiB": 268888,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 5616,
+              "rssKiB": 287532,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "launchedAt": 1792340809343,
+      "completedAt": 1792340815567,
+      "processToRepositoryReadyMs": 2039,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "android",
+        "origin": "https://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "8243aa3c-747a-454e-813d-d3263c410ead",
+        "action": "import",
+        "dataset": "small",
+        "repositoryReadyMs": 331.5,
+        "repositoryReadyWallTime": 1792340811382,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "fixtureBytes": 8214758,
+        "expectedProjects": 10,
+        "expectedCheckpoints": 100,
+        "importMs": 4272.20000000007,
+        "importPhases": [
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 10.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.200000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.20000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.200000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.799999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 10.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.100000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.200000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.799999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 11.100000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.700000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.100000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.200000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.700000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 101
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 101.19999999995343
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 69.19999999995343
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 11.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 10.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.70000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "importLocal",
+            "ms": 1043.7999999999302
+          },
+          {
+            "operation": "release",
+            "ms": 18.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 17.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 16.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 18.5
+          },
+          {
+            "operation": "release",
+            "ms": 20.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 17.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 17.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 16.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 15.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 17.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 19
+          },
+          {
+            "operation": "release",
+            "ms": 19.100000000093132
+          },
+          {
+            "operation": "release",
+            "ms": 17.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 16.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 16.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 17.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 16.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 16
+          },
+          {
+            "operation": "release",
+            "ms": 19.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 17.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 18.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 16.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 16.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 16
+          },
+          {
+            "operation": "release",
+            "ms": 15.5
+          },
+          {
+            "operation": "release",
+            "ms": 17
+          },
+          {
+            "operation": "release",
+            "ms": 16.100000000093132
+          },
+          {
+            "operation": "release",
+            "ms": 17.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 21.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 16.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 17.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 16.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 17.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 21.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 19.100000000093132
+          },
+          {
+            "operation": "release",
+            "ms": 17.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 16
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 16
+          },
+          {
+            "operation": "release",
+            "ms": 17
+          },
+          {
+            "operation": "release",
+            "ms": 21.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 19.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 19
+          },
+          {
+            "operation": "release",
+            "ms": 18.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 19
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 18.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 19.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 17.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 17.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 17
+          },
+          {
+            "operation": "release",
+            "ms": 17.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 18.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 19.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 17.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 17.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 15.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 16.5
+          },
+          {
+            "operation": "release",
+            "ms": 16.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 15.5
+          },
+          {
+            "operation": "release",
+            "ms": 17.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 16.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 18.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 17.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 17.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 16
+          },
+          {
+            "operation": "release",
+            "ms": 17
+          },
+          {
+            "operation": "release",
+            "ms": 16.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 17.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 19
+          },
+          {
+            "operation": "release",
+            "ms": 19.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 17.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 16.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 16.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 17.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 15.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 16.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.5
+          },
+          {
+            "operation": "release",
+            "ms": 19.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 17.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 15.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 16.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.5
+          },
+          {
+            "operation": "release",
+            "ms": 16
+          }
+        ],
+        "passed": true,
+        "completedAt": "2026-10-18T16:26:56.010Z"
+      },
+      "peak": {
+        "at": 1792340811553,
+        "stage": "importing",
+        "hostKiB": 279544,
+        "webContentKiB": 317032,
+        "webSupportKiB": 0,
+        "totalRssKiB": 596576,
+        "processes": [
+          {
+            "pid": 6032,
+            "rssKiB": 279544,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 6056,
+            "rssKiB": 317032,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792340811553,
+        "stage": "importing",
+        "hostKiB": 279544,
+        "webContentKiB": 317032,
+        "webSupportKiB": 0,
+        "totalRssKiB": 596576,
+        "processes": [
+          {
+            "pid": 6032,
+            "rssKiB": 279544,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 6056,
+            "rssKiB": 317032,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792340810508,
+          "stage": "launching",
+          "hostKiB": 256456,
+          "webContentKiB": 226660,
+          "webSupportKiB": 0,
+          "totalRssKiB": 483116,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 256456,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 226660,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340810744,
+          "stage": "opening",
+          "hostKiB": 263752,
+          "webContentKiB": 227552,
+          "webSupportKiB": 0,
+          "totalRssKiB": 491304,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263752,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 227552,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340810985,
+          "stage": "generating",
+          "hostKiB": 271760,
+          "webContentKiB": 244192,
+          "webSupportKiB": 0,
+          "totalRssKiB": 515952,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 271760,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 244192,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340811205,
+          "stage": "importing",
+          "hostKiB": 267660,
+          "webContentKiB": 310020,
+          "webSupportKiB": 0,
+          "totalRssKiB": 577680,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 267660,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 310020,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340811385,
+          "stage": "importing",
+          "hostKiB": 266564,
+          "webContentKiB": 322584,
+          "webSupportKiB": 0,
+          "totalRssKiB": 589148,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 266564,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 322584,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340811553,
+          "stage": "importing",
+          "hostKiB": 279544,
+          "webContentKiB": 317032,
+          "webSupportKiB": 0,
+          "totalRssKiB": 596576,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 279544,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 317032,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340811711,
+          "stage": "importing",
+          "hostKiB": 298384,
+          "webContentKiB": 278724,
+          "webSupportKiB": 0,
+          "totalRssKiB": 577108,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 298384,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 278724,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340811869,
+          "stage": "importing",
+          "hostKiB": 267308,
+          "webContentKiB": 277688,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544996,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 267308,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 277688,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812024,
+          "stage": "importing",
+          "hostKiB": 267356,
+          "webContentKiB": 276376,
+          "webSupportKiB": 0,
+          "totalRssKiB": 543732,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 267356,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 276376,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812190,
+          "stage": "importing",
+          "hostKiB": 264776,
+          "webContentKiB": 276904,
+          "webSupportKiB": 0,
+          "totalRssKiB": 541680,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 264776,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 276904,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812362,
+          "stage": "importing",
+          "hostKiB": 266140,
+          "webContentKiB": 281540,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547680,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 266140,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 281540,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812521,
+          "stage": "importing",
+          "hostKiB": 267416,
+          "webContentKiB": 280792,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548208,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 267416,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 280792,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812678,
+          "stage": "importing",
+          "hostKiB": 266644,
+          "webContentKiB": 300392,
+          "webSupportKiB": 0,
+          "totalRssKiB": 567036,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 266644,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 300392,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812836,
+          "stage": "importing",
+          "hostKiB": 265652,
+          "webContentKiB": 301308,
+          "webSupportKiB": 0,
+          "totalRssKiB": 566960,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 265652,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 301308,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340812989,
+          "stage": "importing",
+          "hostKiB": 261124,
+          "webContentKiB": 303688,
+          "webSupportKiB": 0,
+          "totalRssKiB": 564812,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 261124,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 303688,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340813141,
+          "stage": "importing",
+          "hostKiB": 262100,
+          "webContentKiB": 306392,
+          "webSupportKiB": 0,
+          "totalRssKiB": 568492,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 262100,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 306392,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340813306,
+          "stage": "importing",
+          "hostKiB": 261588,
+          "webContentKiB": 307300,
+          "webSupportKiB": 0,
+          "totalRssKiB": 568888,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 261588,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 307300,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340813458,
+          "stage": "importing",
+          "hostKiB": 262020,
+          "webContentKiB": 280524,
+          "webSupportKiB": 0,
+          "totalRssKiB": 542544,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 262020,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 280524,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340813624,
+          "stage": "importing",
+          "hostKiB": 264072,
+          "webContentKiB": 281352,
+          "webSupportKiB": 0,
+          "totalRssKiB": 545424,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 264072,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 281352,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340813781,
+          "stage": "importing",
+          "hostKiB": 263980,
+          "webContentKiB": 282488,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546468,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263980,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 282488,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340813937,
+          "stage": "importing",
+          "hostKiB": 263804,
+          "webContentKiB": 284440,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548244,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263804,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 284440,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340814091,
+          "stage": "importing",
+          "hostKiB": 264192,
+          "webContentKiB": 280580,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544772,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 264192,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 280580,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340814245,
+          "stage": "importing",
+          "hostKiB": 263640,
+          "webContentKiB": 282500,
+          "webSupportKiB": 0,
+          "totalRssKiB": 546140,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263640,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 282500,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340814401,
+          "stage": "importing",
+          "hostKiB": 263948,
+          "webContentKiB": 285036,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548984,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263948,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 285036,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340814559,
+          "stage": "importing",
+          "hostKiB": 264432,
+          "webContentKiB": 279708,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544140,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 264432,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 279708,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340814717,
+          "stage": "importing",
+          "hostKiB": 268592,
+          "webContentKiB": 282368,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550960,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 268592,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 282368,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340814874,
+          "stage": "importing",
+          "hostKiB": 267488,
+          "webContentKiB": 284116,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551604,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 267488,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 284116,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340815033,
+          "stage": "importing",
+          "hostKiB": 262796,
+          "webContentKiB": 285952,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548748,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 262796,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 285952,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340815189,
+          "stage": "importing",
+          "hostKiB": 263500,
+          "webContentKiB": 281812,
+          "webSupportKiB": 0,
+          "totalRssKiB": 545312,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263500,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 281812,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340815349,
+          "stage": "importing",
+          "hostKiB": 263340,
+          "webContentKiB": 283788,
+          "webSupportKiB": 0,
+          "totalRssKiB": 547128,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263340,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 283788,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340815502,
+          "stage": "cleanup",
+          "hostKiB": 263996,
+          "webContentKiB": 285388,
+          "webSupportKiB": 0,
+          "totalRssKiB": 549384,
+          "processes": [
+            {
+              "pid": 6032,
+              "rssKiB": 263996,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6056,
+              "rssKiB": 285388,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "launchedAt": 1792340815818,
+      "completedAt": 1792340822024,
+      "processToRepositoryReadyMs": 1679,
+      "result": {
+        "schemaVersion": 1,
+        "platform": "android",
+        "origin": "https://localhost",
+        "scope": "actual native SQLite/files and production backup service; synthetic fixture; no physical-device claim",
+        "runId": "93e0efb1-d29b-42a8-bdd7-6a7aa8350298",
+        "action": "import",
+        "dataset": "small",
+        "repositoryReadyMs": 182,
+        "repositoryReadyWallTime": 1792340817497,
+        "startingProjects": 10,
+        "startingCheckpoints": 100,
+        "fixtureBytes": 8214758,
+        "expectedProjects": 10,
+        "expectedCheckpoints": 100,
+        "importMs": 4523.300000000047,
+        "importPhases": [
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 12.29999999993015
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.20000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.700000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.799999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.200000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.600000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.799999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.799999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.700000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.100000000093132
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.700000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.399999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.299999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 10.899999999906868
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 31.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 95.19999999995343
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 93.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 62.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 17.199999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 11.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.099999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.400000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.599999999976717
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.699999999953434
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.900000000023283
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.800000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 18.20000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 8.70000000006985
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.300000000046566
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 9
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.799999999930151
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.700000000069849
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 7.5
+          },
+          {
+            "operation": "storeVerified",
+            "bytes": 61440,
+            "ms": 6.800000000046566
+          },
+          {
+            "operation": "importLocal",
+            "ms": 958.7000000000698
+          },
+          {
+            "operation": "release",
+            "ms": 25.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 21.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 20.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 18.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 19.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 20.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 21.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 24.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 25.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 22.5
+          },
+          {
+            "operation": "release",
+            "ms": 21.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 19.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 21.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18
+          },
+          {
+            "operation": "release",
+            "ms": 19.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 21.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 20.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 17.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 18.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 19
+          },
+          {
+            "operation": "release",
+            "ms": 17.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 17.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 20.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 20.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 18.399999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 18.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 18.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 18.5
+          },
+          {
+            "operation": "release",
+            "ms": 17.70000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 21.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 20.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 19.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 16.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 17.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 19.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 20.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 20.5
+          },
+          {
+            "operation": "release",
+            "ms": 22.5
+          },
+          {
+            "operation": "release",
+            "ms": 46.09999999997672
+          },
+          {
+            "operation": "release",
+            "ms": 21.5
+          },
+          {
+            "operation": "release",
+            "ms": 24.5
+          },
+          {
+            "operation": "release",
+            "ms": 24.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 20.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 20
+          },
+          {
+            "operation": "release",
+            "ms": 21.29999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 23.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 33
+          },
+          {
+            "operation": "release",
+            "ms": 22.79999999993015
+          },
+          {
+            "operation": "release",
+            "ms": 34.40000000002328
+          },
+          {
+            "operation": "release",
+            "ms": 23.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 21.5
+          },
+          {
+            "operation": "release",
+            "ms": 22.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 22.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 20.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 20.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 20
+          },
+          {
+            "operation": "release",
+            "ms": 19.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 19.399999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 20.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 19.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 19.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 19.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 17.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 18.600000000093132
+          },
+          {
+            "operation": "release",
+            "ms": 17.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 19
+          },
+          {
+            "operation": "release",
+            "ms": 19.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 19.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.5
+          },
+          {
+            "operation": "release",
+            "ms": 17.5
+          },
+          {
+            "operation": "release",
+            "ms": 17.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 17.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 17.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 22.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 19.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 20.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 20.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 18.400000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 18.599999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 18.300000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 20.699999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 19.800000000046566
+          },
+          {
+            "operation": "release",
+            "ms": 20.5
+          },
+          {
+            "operation": "release",
+            "ms": 18.099999999976717
+          },
+          {
+            "operation": "release",
+            "ms": 18.199999999953434
+          },
+          {
+            "operation": "release",
+            "ms": 17.900000000023283
+          },
+          {
+            "operation": "release",
+            "ms": 18
+          },
+          {
+            "operation": "release",
+            "ms": 21.20000000006985
+          },
+          {
+            "operation": "release",
+            "ms": 21
+          },
+          {
+            "operation": "release",
+            "ms": 18.899999999906868
+          },
+          {
+            "operation": "release",
+            "ms": 18.5
+          }
+        ],
+        "passed": true,
+        "completedAt": "2026-10-18T16:27:02.431Z"
+      },
+      "peak": {
+        "at": 1792340817918,
+        "stage": "importing",
+        "hostKiB": 307416,
+        "webContentKiB": 309668,
+        "webSupportKiB": 0,
+        "totalRssKiB": 617084,
+        "processes": [
+          {
+            "pid": 6331,
+            "rssKiB": 307416,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 6355,
+            "rssKiB": 309668,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "operationPeak": {
+        "at": 1792340817918,
+        "stage": "importing",
+        "hostKiB": 307416,
+        "webContentKiB": 309668,
+        "webSupportKiB": 0,
+        "totalRssKiB": 617084,
+        "processes": [
+          {
+            "pid": 6331,
+            "rssKiB": 307416,
+            "name": "app.loopmark.craft.benchmark"
+          },
+          {
+            "pid": 6355,
+            "rssKiB": 309668,
+            "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+          }
+        ]
+      },
+      "samples": [
+        {
+          "at": 1792340816788,
+          "stage": "launching",
+          "hostKiB": 253056,
+          "webContentKiB": 223080,
+          "webSupportKiB": 0,
+          "totalRssKiB": 476136,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 253056,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 223080,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340816999,
+          "stage": "ready",
+          "hostKiB": 262148,
+          "webContentKiB": 233456,
+          "webSupportKiB": 0,
+          "totalRssKiB": 495604,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 262148,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 233456,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340817201,
+          "stage": "generating",
+          "hostKiB": 270340,
+          "webContentKiB": 246272,
+          "webSupportKiB": 0,
+          "totalRssKiB": 516612,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 270340,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 246272,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340817407,
+          "stage": "importing",
+          "hostKiB": 272772,
+          "webContentKiB": 311948,
+          "webSupportKiB": 0,
+          "totalRssKiB": 584720,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 272772,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 311948,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340817593,
+          "stage": "importing",
+          "hostKiB": 266184,
+          "webContentKiB": 324876,
+          "webSupportKiB": 0,
+          "totalRssKiB": 591060,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266184,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 324876,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340817757,
+          "stage": "importing",
+          "hostKiB": 280576,
+          "webContentKiB": 296944,
+          "webSupportKiB": 0,
+          "totalRssKiB": 577520,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 280576,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 296944,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340817918,
+          "stage": "importing",
+          "hostKiB": 307416,
+          "webContentKiB": 309668,
+          "webSupportKiB": 0,
+          "totalRssKiB": 617084,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 307416,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 309668,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340818073,
+          "stage": "importing",
+          "hostKiB": 270424,
+          "webContentKiB": 324292,
+          "webSupportKiB": 0,
+          "totalRssKiB": 594716,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 270424,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 324292,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340818229,
+          "stage": "importing",
+          "hostKiB": 267808,
+          "webContentKiB": 284476,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552284,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 267808,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 284476,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340818385,
+          "stage": "importing",
+          "hostKiB": 267996,
+          "webContentKiB": 288408,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556404,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 267996,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 288408,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340818570,
+          "stage": "importing",
+          "hostKiB": 268368,
+          "webContentKiB": 290200,
+          "webSupportKiB": 0,
+          "totalRssKiB": 558568,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 268368,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 290200,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340818749,
+          "stage": "importing",
+          "hostKiB": 267568,
+          "webContentKiB": 288960,
+          "webSupportKiB": 0,
+          "totalRssKiB": 556528,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 267568,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 288960,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340818922,
+          "stage": "importing",
+          "hostKiB": 261784,
+          "webContentKiB": 305932,
+          "webSupportKiB": 0,
+          "totalRssKiB": 567716,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 261784,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 305932,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340819080,
+          "stage": "importing",
+          "hostKiB": 262604,
+          "webContentKiB": 307344,
+          "webSupportKiB": 0,
+          "totalRssKiB": 569948,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 262604,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 307344,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340819233,
+          "stage": "importing",
+          "hostKiB": 260988,
+          "webContentKiB": 309088,
+          "webSupportKiB": 0,
+          "totalRssKiB": 570076,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 260988,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 309088,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340819389,
+          "stage": "importing",
+          "hostKiB": 262304,
+          "webContentKiB": 310972,
+          "webSupportKiB": 0,
+          "totalRssKiB": 573276,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 262304,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 310972,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340819543,
+          "stage": "importing",
+          "hostKiB": 261948,
+          "webContentKiB": 282404,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544352,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 261948,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 282404,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340819706,
+          "stage": "importing",
+          "hostKiB": 261212,
+          "webContentKiB": 283496,
+          "webSupportKiB": 0,
+          "totalRssKiB": 544708,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 261212,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 283496,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340819864,
+          "stage": "importing",
+          "hostKiB": 266060,
+          "webContentKiB": 284180,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550240,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266060,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 284180,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340820018,
+          "stage": "importing",
+          "hostKiB": 263828,
+          "webContentKiB": 286172,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550000,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 263828,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 286172,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340820189,
+          "stage": "importing",
+          "hostKiB": 266160,
+          "webContentKiB": 282792,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548952,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266160,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 282792,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340820350,
+          "stage": "importing",
+          "hostKiB": 263968,
+          "webContentKiB": 284392,
+          "webSupportKiB": 0,
+          "totalRssKiB": 548360,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 263968,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 284392,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340820508,
+          "stage": "importing",
+          "hostKiB": 262508,
+          "webContentKiB": 287700,
+          "webSupportKiB": 0,
+          "totalRssKiB": 550208,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 262508,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 287700,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340820664,
+          "stage": "importing",
+          "hostKiB": 265932,
+          "webContentKiB": 289348,
+          "webSupportKiB": 0,
+          "totalRssKiB": 555280,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 265932,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 289348,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340820858,
+          "stage": "importing",
+          "hostKiB": 266300,
+          "webContentKiB": 290868,
+          "webSupportKiB": 0,
+          "totalRssKiB": 557168,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266300,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 290868,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821029,
+          "stage": "importing",
+          "hostKiB": 267832,
+          "webContentKiB": 283484,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551316,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 267832,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 283484,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821192,
+          "stage": "importing",
+          "hostKiB": 266976,
+          "webContentKiB": 285764,
+          "webSupportKiB": 0,
+          "totalRssKiB": 552740,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266976,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 285764,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821347,
+          "stage": "importing",
+          "hostKiB": 263252,
+          "webContentKiB": 287788,
+          "webSupportKiB": 0,
+          "totalRssKiB": 551040,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 263252,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 287788,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821502,
+          "stage": "importing",
+          "hostKiB": 266608,
+          "webContentKiB": 290400,
+          "webSupportKiB": 0,
+          "totalRssKiB": 557008,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266608,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 290400,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821659,
+          "stage": "importing",
+          "hostKiB": 270160,
+          "webContentKiB": 284084,
+          "webSupportKiB": 0,
+          "totalRssKiB": 554244,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 270160,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 284084,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821816,
+          "stage": "importing",
+          "hostKiB": 266876,
+          "webContentKiB": 286460,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553336,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266876,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 286460,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        },
+        {
+          "at": 1792340821970,
+          "stage": "complete",
+          "hostKiB": 266308,
+          "webContentKiB": 287404,
+          "webSupportKiB": 0,
+          "totalRssKiB": 553712,
+          "processes": [
+            {
+              "pid": 6331,
+              "rssKiB": 266308,
+              "name": "app.loopmark.craft.benchmark"
+            },
+            {
+              "pid": 6355,
+              "rssKiB": 287404,
+              "name": "com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

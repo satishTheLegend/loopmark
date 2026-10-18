@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "Actual native adapters on selected simulator/emulator. Shared transport inputs are synthetic; functional runs are not performance qualification. Each raw report records its own exact source/bundle/artifact.",
+  "files": {
+    "android-inbox-small.json": "8eeaa430c92fd0a9845f1c1041ead8d73f6e922099d1a45be86d063b3431c4bd",
+    "android-rebase-small.json": "b7436f80702ce17d558a75d9c773b54acf5692425e8133ba764afc33df8b261a",
+    "ios-repair-small.json": "154c9b49c8a0ca2fa7e6072d0a5231b0270457637874f83ebaa748f14d6ce297",
+    "ios-downloads-small.json": "8e7c4951bd74dba7387800be9e598479d7d1abdb92d3a663076019047cf4d20d",
+    "android-downloads-small.json": "d5685b6c69135a50d13f981653fb859cd8cf973d51b9e080e2a66dd9a99ccc01",
+    "android-repair-small.json": "5e6da3f0c9a54cb949057d2e0af8041481634133bbcdf4faff7ea42d10b00856",
+    "ios-inbox-small.json": "e043c97884fde3e226955f14d9e71ba877931adf46ea6c07fafc44c81470ecbf",
+    "android-examples-small.json": "1cd26cdba182538dd05a0e1ee0b4e7eaef70ed1fd8ea13e7d6163295a15a5857",
+    "ios-examples-small.json": "c1a59a9d10e5cb0c90d92777d40a7c78a671aa53aeb41e2489978a7b4e892462",
+    "ios-rebase-small.json": "c6b49f65d659347717a94d249280cfc273863e5c6c8fa1989510a263e8398e7e"
+  }
+}

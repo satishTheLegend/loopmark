@@ -1,0 +1,49 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -xctestrun ios/build/Build/Products/LoopmarkUITests_iphonesimulator27.1-arm64.xctestrun -destination "platform=iOS Simulator,id=AF7F7764-88DA-4BD8-A46A-660E9D848AC5" "-only-testing:LoopmarkUITests/InboxProductFlows/testOSDocumentDeliveryToBenchmarkApp" -resultBundlePath ios/inbox-delivery-coerced.xcresult test-without-building
+
+Writing result bundle at path:
+	/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/inbox-delivery-coerced.xcresult
+
+2026-10-18 21:54:35.119 xcodebuild[56860:2884147] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:54:36.794907+0530 LoopmarkUITests-Runner[56936:2884418] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-18 21:54:37.498.
+Test Suite 'LoopmarkUITests.xctest' started at 2026-10-18 21:54:37.498.
+Test Suite 'InboxProductFlows' started at 2026-10-18 21:54:37.498.
+Test Case '-[LoopmarkUITests.InboxProductFlows testOSDocumentDeliveryToBenchmarkApp]' started.
+    t =     0.00s Start Test at 2026-10-18 21:54:37.499
+    t =     0.12s Set Up
+    t =     0.12s Terminate app.loopmark.craft.benchmark:0
+    t =     0.12s Open app.loopmark.craft.benchmark with URL file:///Users/lalaji/Library/Developer/CoreSimulator/Devices/AF7F7764-88DA-4BD8-A46A-660E9D848AC5/data/Containers/Data/Application/DC52731E-1E9B-4A87-AC56-63805E3BA7D5/tmp/loopmark-external-A9264C9B-8EEA-400C-90A3-7D281DD2868C.json
+    t =     0.12s     Launch app.loopmark.craft.benchmark
+2026-10-18 21:54:37.864 xcodebuild[56860:2884147] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-18 21:54:37.864 xcodebuild[56860:2884147] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-18 21:54:37.880 xcodebuild[56860:2884147] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+objc[56936]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x1060d8310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x106154398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+    t =     1.21s         Setting up automation session
+    t =     1.94s         Wait for app.loopmark.craft.benchmark to idle
+    t =     3.23s Waiting 30.0s for "Incoming OS file ready" StaticText to exist
+    t =     4.31s     Checking `Expect predicate `existsNoRetry == 1` for object "Incoming OS file ready" StaticText`
+    t =     4.31s         Checking existence of `"Incoming OS file ready" StaticText`
+    t =     4.35s Tear Down
+Test Case '-[LoopmarkUITests.InboxProductFlows testOSDocumentDeliveryToBenchmarkApp]' passed (4.599 seconds).
+Test Suite 'InboxProductFlows' passed at 2026-10-18 21:54:42.098.
+	 Executed 1 test, with 0 failures (0 unexpected) in 4.599 (4.600) seconds
+Test Suite 'LoopmarkUITests.xctest' passed at 2026-10-18 21:54:42.099.
+	 Executed 1 test, with 0 failures (0 unexpected) in 4.599 (4.600) seconds
+Test Suite 'Selected tests' passed at 2026-10-18 21:54:42.099.
+	 Executed 1 test, with 0 failures (0 unexpected) in 4.599 (4.601) seconds
+2026-10-18 21:54:42.125 xcodebuild[56860:2884147] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:54:42.125 xcodebuild[56860:2884147] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:54:42.152 xcodebuild[56860:2884147] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:54:42.153 xcodebuild[56860:2884147] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 21:54:42.416 xcodebuild[56860:2884147] [MT] IDETestOperationsObserverDebug: 7.484 elapsed -- Testing started completed.
+2026-10-18 21:54:42.416 xcodebuild[56860:2884147] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-18 21:54:42.416 xcodebuild[56860:2884147] [MT] IDETestOperationsObserverDebug: 7.484 sec, +7.484 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/inbox-delivery-coerced.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

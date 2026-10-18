@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "scope": "Actual iOS simulator and Android emulator; synthetic files and accounts; no physical or store qualification",
+  "sourceCommit": "eb63bdf65d0cfafe78902afcab1f0692977cda63",
+  "storeCodeTestedFrom": "1af3496",
+  "storageTests": {
+    "ios": {
+      "passed": 4,
+      "failed": 0
+    },
+    "android": {
+      "passed": 4,
+      "failed": 0
+    }
+  },
+  "osDelivery": {
+    "ios": "XCTest opens a file URL through the OS; waits for actual native pending-ready; actual JS bridge then restores",
+    "android": "Separate UID test activity/provider issues VIEW and SEND with URI grant; actual bridge restores, then repeated SEND yields handled receipt"
+  },
+  "files": {
+    "android-first-import.json": "1b4631113bbf3cc32f7face0de65af2c88768f826d848f245079b98b2dd18ee6",
+    "ios-first-import.json": "76cec34e923de800f925cbb51703a4991c3894a2f0b0954e9f40aac1ede19122",
+    "ios-busy-notice.json": "323805d8bbe1637b5c98c97565408bbd4cd96365c1e66cb0e034ca76fb579017",
+    "android-store.log": "62b9e5e8bbea4844d5bb9a96b878ced008b8d26cd42c4ee7d74472089366acee",
+    "ios-store.log": "be7e6c0064b926c870822878573e949b9d6565531057e72dda84bec3d1b2b8c0",
+    "ios-os-delivery.log": "e28f17050bd0bc52a436f75c846afca9c84cd8d0cb0068f22b974337cdd06407"
+  },
+  "limitations": [
+    "Simulator/emulator only; physical document provider behavior remains a release gate.",
+    "Storage-failure tests use actual invalid private filesystem path, not physical full-volume exhaustion.",
+    "Download cleanup rejection uses an explicit injected deletion callback; real SQLite rollback and subsequent actual file deletion/reopen are exercised.",
+    "Runtime product UI flow is recorded separately after final product asset build."
+  ]
+}
