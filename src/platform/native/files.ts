@@ -55,20 +55,36 @@ export class NativeMedia implements PlatformMedia {
     if (!validMedia(dataUrl, ref.kind)) throw new DomainError('VALIDATION')
     if (ref.kind === 'photo') await this.decodePhoto(bytes)
     const scopeId = scopeKey(scope)
-    const fileKey = await canonicalHash({ scope, id: ref.id })
-    await this.database.transaction(async (db) => {
+    // A repair publishes new immutable bytes, then changes only the SQLite file pointer.
+    // No reader or snapshot can observe a delete-before-write gap.
+    const fileKey = await canonicalHash({ scope, id: ref.id, publication: crypto.randomUUID() })
+    const available = await this.database.transaction(async (db) => {
       await assertGeneration(db, scope, generation)
       const existing = (
-        await db.query('SELECT body FROM media WHERE scope=? AND id=?', [scopeId, ref.id])
+        await db.query('SELECT body,file_key FROM media WHERE scope=? AND id=?', [scopeId, ref.id])
       ).values?.[0]
       if (existing && !sameRef(JSON.parse(existing.body as string) as MediaRef, ref))
-        throw new DomainError('VALIDATION')
+        throw new DomainError('MEDIA_INVALID')
+      if (existing) {
+        try {
+          await this.readVerifiedFile(existing.file_key as string, ref)
+          return true
+        } catch (error) {
+          if (
+            !(error instanceof DomainError) ||
+            !['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+          )
+            throw error
+        }
+      }
       await db.run(
         'INSERT OR IGNORE INTO prepared_files(file_key,scope,media_id,created_at) VALUES(?,?,?,?)',
         [fileKey, scopeId, ref.id, Date.now()],
         false,
       )
+      return false
     })
+    if (available) return
     // Native flush/close/same-volume publication occurs before any visible record can reference it.
     await durableFiles.put({
       key: fileKey,
@@ -81,9 +97,9 @@ export class NativeMedia implements PlatformMedia {
         await db.query('SELECT body FROM media WHERE scope=? AND id=?', [scopeId, ref.id])
       ).values?.[0]
       if (existing && !sameRef(JSON.parse(existing.body as string) as MediaRef, ref))
-        throw new DomainError('VALIDATION')
+        throw new DomainError('MEDIA_INVALID')
       await db.run(
-        'INSERT OR IGNORE INTO media(scope,id,body,file_key,prepared_at) VALUES(?,?,?,?,?)',
+        'INSERT INTO media(scope,id,body,file_key,prepared_at) VALUES(?,?,?,?,?) ON CONFLICT(scope,id) DO UPDATE SET file_key=excluded.file_key,prepared_at=excluded.prepared_at',
         [scopeId, ref.id, JSON.stringify(ref), fileKey, Date.now()],
         false,
       )
@@ -118,14 +134,29 @@ export class NativeMedia implements PlatformMedia {
         ])
       ).values?.[0]
       if (!record || !sameRef(JSON.parse(record.body as string) as MediaRef, ref))
-        throw new DomainError('NOT_AVAILABLE')
-      const result = await durableFiles.read({ key: record.file_key as string })
-      const bytes = Uint8Array.from(atob(result.base64), (c) => c.charCodeAt(0))
-      const blob = new Blob([bytes], { type: ref.mimeType })
-      if (blob.size !== ref.bytes || (await digest(blob)) !== ref.sha256)
-        throw new DomainError('VALIDATION')
-      return blob.stream()
+        throw new DomainError('BACKUP_INCOMPLETE')
+      return (await this.readVerifiedFile(record.file_key as string, ref)).stream()
     })
+  }
+  private async readVerifiedFile(key: string, ref: MediaRef): Promise<Blob> {
+    let encoded: string
+    try {
+      encoded = (await durableFiles.read({ key })).base64
+    } catch (error) {
+      if (!(await durableFiles.list()).files.some((file) => file.key === key))
+        throw new DomainError('BACKUP_INCOMPLETE')
+      throw error
+    }
+    let bytes: Uint8Array<ArrayBuffer>
+    try {
+      bytes = Uint8Array.from(atob(encoded), (c) => c.charCodeAt(0))
+    } catch {
+      throw new DomainError('MEDIA_INVALID')
+    }
+    const blob = new Blob([bytes], { type: ref.mimeType })
+    if (blob.size !== ref.bytes || (await digest(blob)) !== ref.sha256)
+      throw new DomainError('MEDIA_INVALID')
+    return blob
   }
   async release(ref: MediaRef, scope: CollectionKey, generation: Generation): Promise<void> {
     const scopeId = scopeKey(scope)
