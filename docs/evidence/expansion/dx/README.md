@@ -7,7 +7,7 @@ Automation and human setup are separate evidence. A warm dependency cache or an 
 | Executable contributor examples | Run `npm run test:examples`; exact output belongs with the reviewed commit |
 | Documentation references/scripts/config | Run `npm run test:docs` on the integrated checkout |
 | Missing Docker, occupied port, wrong project, remote refusal, missing provider config, secret exclusion | Run `npm run test:dx`; isolated negative fixtures never reset a real stack |
-| Guest saved/reloaded checkpoint | Browser regression evidence exists separately; clean-install timing must be recorded below |
+| Automated clean checkout | [Actual fresh checkout record](../native/clean-contributor.json): no initial dependencies, environment file or build; `npm ci` 5.81 seconds with a warm download cache; guest save/photo/reload/full backup/separate restore passed at `bb8f051`. Lockfile unchanged through the final integration. This is not a cold human walkthrough. |
 | Linux cold human walkthrough | UNMEASURED |
 | macOS cold human walkthrough | UNMEASURED |
 | Windows contributor path | UNQUALIFIED; do not infer support from Node compatibility |

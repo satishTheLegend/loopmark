@@ -10,3 +10,6 @@ test-results-*/
 .env*
 !.env.example
 supabase/.temp/
+
+# Locally built unsigned/simulator deliverables, reproduced from committed source.
+artifacts/native/
