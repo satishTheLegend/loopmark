@@ -30,8 +30,22 @@ function setup() {
     signOut: vi.fn(async () => ({ error: null })),
     exchangeCodeForSession: vi.fn(async () => ({ error: null })),
     stopAutoRefresh: vi.fn(),
+    onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
   }
-  const devices = { read: vi.fn(async () => ({ id: 'device' })), write: vi.fn(async () => {}) }
+  const devices = {
+    read: vi.fn(async () => ({ id: 'device' })),
+    write: vi.fn(async () => {}),
+    readVerified: vi.fn(async () => null),
+    writeVerified: vi.fn(async () => {}),
+    clearVerified: vi.fn(async () => {}),
+  }
+  methods.signOut.mockImplementation(async () => {
+    methods.getSession.mockImplementation(async () => ({
+      data: { session: null as unknown as { access_token: string } },
+      error: null,
+    }))
+    return { error: null }
+  })
   const fetcher = vi.fn<typeof fetch>(
     async () => new Response(JSON.stringify(session), { status: 200 }),
   )
@@ -128,4 +142,75 @@ it('serializes secure-vault key changes and never stores credentials in a prefer
   expect(await storage.getItem('verifier')).toBe('pkce')
   await storage.removeItem('verifier')
   expect(value).toBeNull()
+})
+it('the installed Supabase SDK clears durable credentials when remote logout is unavailable', async () => {
+  let raw: string | null = null
+  const vault = {
+    read: async () => raw,
+    write: async (value: string) => {
+      raw = value
+    },
+    clear: async () => {
+      raw = null
+    },
+  }
+  const storage = credentialStorage(vault)
+  const sdkSession = {
+    access_token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvd25lciIsImV4cCI6NDAwMDAwMDAwMH0.c2ln',
+    refresh_token: 'synthetic-refresh',
+    token_type: 'bearer',
+    expires_at: 4000000000,
+    expires_in: 3600,
+    user: {
+      id: 'owner',
+      email: 'verified@example.test',
+      app_metadata: {},
+      user_metadata: {},
+      aud: 'authenticated',
+      created_at: '2026-01-01T00:00:00.000Z',
+    },
+  }
+  await storage.setItem('loopmark-auth-v2', JSON.stringify(sdkSession))
+  const devices = {
+    read: async () => ({ id: 'device' }),
+    write: async () => {},
+    readVerified: async () => null,
+    writeVerified: async () => {},
+    clearVerified: vi.fn(async () => {}),
+  }
+  const auth = createAccountAuth({
+    config,
+    credentials: vault,
+    devices,
+    fetch: async () =>
+      new Response(JSON.stringify({ message: 'unavailable' }), {
+        status: 503,
+        headers: { 'content-type': 'application/json' },
+      }),
+  })
+  try {
+    await auth.signOut()
+    expect(raw).toBeNull()
+    expect(await auth.accessToken()).toBeNull()
+    expect(devices.clearVerified).toHaveBeenCalled()
+  } finally {
+    auth.dispose()
+  }
+})
+it('a failed vault clear cannot report successful sign-out or discard the verified cache', async () => {
+  const { methods, devices } = setup()
+  const auth = createAccountAuth({
+    config,
+    client: { auth: methods } as unknown as SupabaseClient,
+    devices,
+    credentials: {
+      read: async () => null,
+      write: async () => {},
+      clear: async () => {
+        throw new Error('disk fault')
+      },
+    },
+  })
+  await expect(auth.signOut()).rejects.toThrow('disk fault')
+  expect(devices.clearVerified).not.toHaveBeenCalled()
 })

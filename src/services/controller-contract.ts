@@ -8,6 +8,7 @@ import type {
 import type { SafeError } from '../domain/errors'
 export interface LocalWorkCounts {
   drafts: number
+  unsentProjectChanges: number
   unsentCheckpoints: number
   pendingAttachments: number
   failedAttachments: number
@@ -59,6 +60,7 @@ export type ConflictChoice =
   | { action: 'merged'; fields: ProjectFields }
   | { action: 'later' }
 export interface AppController {
+  initialize(): Promise<void>
   getSnapshot(): ControllerState
   subscribe(listener: () => void): () => void
   requestCode(email: string): Promise<{ retryAt: string }>
@@ -67,6 +69,8 @@ export interface AppController {
   signOut(options: { keepLocal: boolean; discardUniqueWork?: boolean }): Promise<void>
   chooseCollection(key: CollectionKey): Promise<void>
   runSync(): Promise<void>
+  retryOperations(operationIds: string[]): Promise<void>
+  loadConflict(operationId: string): Promise<{ view: CollectionView; acknowledged: CollectionView }>
   previewAttach(source: CollectionKey): Promise<AttachPreview>
   confirmAttach(preview: AttachPreview): Promise<void>
   resolveConflict(

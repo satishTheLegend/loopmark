@@ -13,6 +13,8 @@ export interface VerifiedIdentity {
 }
 export interface AccountAuth extends AuthPort {
   verifiedIdentity(): Promise<VerifiedIdentity | null>
+  cachedSession(): Promise<{ session: AccountSession; identity: VerifiedIdentity } | null>
+  subscribeIdentity(listener: (accountId: string | null) => void): () => void
   accessToken(): Promise<string | null>
   functions: FunctionClient
   completeCallback(url: string, signal: AbortSignal): Promise<AccountSession>
@@ -21,6 +23,9 @@ export interface AccountAuth extends AuthPort {
 export interface DeviceStore {
   read(accountId: string): Promise<{ id: string; generation?: string }>
   write(accountId: string, value: DeviceIdentity): Promise<void>
+  readVerified(): Promise<{ session: AccountSession; identity: VerifiedIdentity } | null>
+  writeVerified(value: { session: AccountSession; identity: VerifiedIdentity }): Promise<void>
+  clearVerified(): Promise<void>
 }
 /** CredentialStore is a secure native vault on native platforms; browser uses its own local storage. */
 export function credentialStorage(store: CredentialStore) {
@@ -70,6 +75,35 @@ export function createAccountAuth(options: {
 }): AccountAuth {
   if (!options.config.cloud.enabled) throw new DomainError('CAPABILITY_UNAVAILABLE')
   const cloud = options.config.cloud
+  const credentials =
+    options.credentials ??
+    (options.client
+      ? undefined
+      : {
+          read: async () => {
+            try {
+              return localStorage.getItem('loopmark-credentials-v2')
+            } catch {
+              throw new DomainError('LOCAL_STORAGE_FAILED')
+            }
+          },
+          write: async (value: string) => {
+            try {
+              localStorage.setItem('loopmark-credentials-v2', value)
+              if (localStorage.getItem('loopmark-credentials-v2') !== value) throw new Error()
+            } catch {
+              throw new DomainError('LOCAL_STORAGE_FAILED')
+            }
+          },
+          clear: async () => {
+            try {
+              localStorage.removeItem('loopmark-credentials-v2')
+              if (localStorage.getItem('loopmark-credentials-v2') !== null) throw new Error()
+            } catch {
+              throw new DomainError('LOCAL_STORAGE_FAILED')
+            }
+          },
+        })
   const client =
     options.client ??
     createClient(cloud.url, cloud.publicKey, {
@@ -79,13 +113,22 @@ export function createAccountAuth(options: {
         persistSession: true,
         autoRefreshToken: true,
         storageKey: 'loopmark-auth-v2',
-        ...(options.credentials ? { storage: credentialStorage(options.credentials) } : {}),
+        ...(credentials ? { storage: credentialStorage(credentials) } : {}),
       },
       ...(options.fetch ? { global: { fetch: options.fetch } } : {}),
     })
   let generation = 0,
     identity: VerifiedIdentity | null = null,
     queue: Promise<void> = Promise.resolve()
+  const listeners = new Set<(accountId: string | null) => void>()
+  const subscription = client.auth.onAuthStateChange((_event, value) => {
+    const accountId = value?.user.id ?? null
+    if (identity && accountId !== identity.accountId) {
+      generation++
+      identity = null
+    }
+    for (const listener of listeners) listener(accountId)
+  }).data.subscription
   const serial = <T>(work: () => Promise<T>): Promise<T> => {
     const result = queue.then(work)
     queue = result.then(
@@ -153,10 +196,17 @@ export function createAccountAuth(options: {
       throw new DomainError('SYNC_PAGE_INVALID')
     await options.devices.write(owner.accountId, parsed.data.device)
     assert(expected, signal)
+    await options.devices.writeVerified({ session: parsed.data, identity: owner })
+    assert(expected, signal)
     return parsed.data
   }
   return {
     functions,
+    cachedSession: () => options.devices.readVerified(),
+    subscribeIdentity(listener) {
+      listeners.add(listener)
+      return () => listeners.delete(listener)
+    },
     verifiedIdentity: verified,
     accessToken: token,
     requestCode(email, signal) {
@@ -216,8 +266,16 @@ export function createAccountAuth(options: {
       generation++
       identity = null
       return serial(async () => {
-        const { error } = await client.auth.signOut({ scope: 'local' })
-        if (error) throw new DomainError('SERVICE_UNAVAILABLE')
+        client.auth.stopAutoRefresh()
+        // This installed SDK clears on remote logout errors, but an early refresh failure can bypass it.
+        await client.auth.signOut({ scope: 'local' })
+        if (credentials) {
+          await credentials.clear()
+          if ((await credentials.read()) !== null) throw new DomainError('LOCAL_STORAGE_FAILED')
+        }
+        const remaining = await client.auth.getSession()
+        if (remaining.error || remaining.data.session) throw new DomainError('LOCAL_STORAGE_FAILED')
+        await options.devices.clearVerified()
       })
     },
     completeCallback(value, signal) {
@@ -251,6 +309,8 @@ export function createAccountAuth(options: {
     dispose() {
       generation++
       client.auth.stopAutoRefresh()
+      subscription.unsubscribe()
+      listeners.clear()
     },
   }
 }
