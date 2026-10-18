@@ -247,3 +247,98 @@ it('missing server bytes reject a complete export and release both leases withou
   expect(release).toHaveBeenCalledOnce()
   expect(transport.releaseSnapshot).toHaveBeenCalledOnce()
 })
+
+it('cancel during remote export drains active downloads, preserves the collection and releases both leases', async () => {
+  const connected = info(true, 'cancel')
+  await repo.createCollection(connected)
+  scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+  const prepared = await prepareBackupRecords(backup, repo.media, scope)
+  const manifest = {
+    protocolVersion: 2 as const,
+    snapshotId: 'cancel-lease',
+    collectionId: scope.key.collectionId,
+    epoch: scope.key.epoch,
+    cursor: '1',
+    revision: '1',
+    expiresAt: '2030-01-01T00:00:00.000Z',
+    after: null,
+    nextPage: null,
+    projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+    checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+    media: prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!]),
+  }
+  await repo.hydrate(scope.key, [manifest], scope.generation)
+  const bytes = await Promise.all(
+    manifest.media.map(
+      async (ref) =>
+        new Blob([await new Response(await repo.media.open(ref, scope.key)).arrayBuffer()], {
+          type: ref.mimeType,
+        }),
+    ),
+  )
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    for (const ref of manifest.media) tx.objectStore('media').delete(mediaKey(scope.key, ref.id))
+  })
+  const before = await repo.readView(scope.key),
+    abort = new AbortController()
+  let secondStarted!: () => void, releaseSecond!: () => void
+  const started = new Promise<void>((resolve) => {
+    secondStarted = resolve
+  })
+  const held = new Promise<void>((resolve) => {
+    releaseSecond = resolve
+  })
+  const cancelled = new Promise<void>((resolve) =>
+    abort.signal.addEventListener('abort', () => resolve(), { once: true }),
+  )
+  let calls = 0
+  const ensureAvailable = vi.fn(async (ref, bound) => {
+    const index = calls++
+    if (index === 0) {
+      await started
+      await repo.media.storeVerified(ref, bytes[index], bound.key, bound.generation)
+      abort.abort(new DOMException('Export cancelled', 'AbortError'))
+    } else {
+      secondStarted()
+      await held
+      await repo.media.storeVerified(ref, bytes[index], bound.key, bound.generation)
+    }
+  })
+  const transport = {
+    snapshot: vi.fn(async () => manifest),
+    releaseSnapshot: vi.fn(async () => {}),
+    push: vi.fn(),
+    pull: vi.fn(),
+  }
+  const release = vi.spyOn(repo, 'releaseSnapshot')
+  const exporter = createBackupService({
+    repository: repo,
+    media: repo.media,
+    data: {} as never,
+    scope: () => scope,
+    remote: {
+      transport,
+      media: { ensureAvailable, upload: vi.fn() },
+      current: () => ({
+        accountId: 'account',
+        billingPrincipalId: 'principal',
+        collection: scope.key,
+        device: scope.device,
+        deletionGeneration: '0',
+        expiresAt: '2030-01-01T00:00:00.000Z',
+      }),
+    },
+  })
+  const progress = vi.fn()
+  const outcome = exporter.exportComplete(abort.signal, progress).catch((error) => error)
+  await cancelled
+  expect(release).not.toHaveBeenCalled()
+  expect(transport.releaseSnapshot).not.toHaveBeenCalled()
+  releaseSecond()
+  expect(await outcome).toMatchObject({ name: 'AbortError' })
+  expect(release).toHaveBeenCalledOnce()
+  expect(transport.releaseSnapshot).toHaveBeenCalledOnce()
+  expect(progress.mock.calls.some(([value]) => value.stage === 'downloading')).toBe(true)
+  expect(progress.mock.calls.some(([value]) => value.stage === 'encoding')).toBe(false)
+  expect(await repo.readView(scope.key)).toEqual(before)
+})

@@ -22,14 +22,27 @@ export async function mapBounded<T, R>(
 ): Promise<R[]> {
   const result = new Array<R>(items.length)
   let next = 0
+  let failed = false,
+    failure: unknown
   await Promise.all(
     Array.from({ length: Math.min(max, items.length) }, async () => {
       for (;;) {
+        if (failed) return
         const index = next++
         if (index >= items.length) return
-        result[index] = await work(items[index])
+        try {
+          result[index] = await work(items[index])
+        } catch (error) {
+          if (!failed) {
+            failed = true
+            failure = error
+          }
+          return
+        }
       }
     }),
   )
+  // Drain in-flight workers before callers release snapshots or other shared resources.
+  if (failed) throw failure
   return result
 }

@@ -17,6 +17,11 @@ import { prepareBackupRecords, encodeSnapshotBackup } from './local-data-service
 import type { RemoteMediaService } from './media-service'
 import { collectSnapshot, releaseSnapshotQuietly } from '../sync/snapshots'
 import { mapBounded } from './concurrency'
+export interface ExportProgress {
+  stage: 'checking' | 'downloading' | 'encoding'
+  done: number
+  total: number
+}
 export function createBackupService(options: {
   repository: Repository
   media: PlatformMedia
@@ -30,7 +35,11 @@ export function createBackupService(options: {
   mediaConcurrency?: number
 }) {
   return {
-    async exportComplete(signal = new AbortController().signal): Promise<Backup> {
+    async exportComplete(
+      signal = new AbortController().signal,
+      onProgress?: (progress: ExportProgress) => void,
+    ): Promise<Backup> {
+      signal.throwIfAborted()
       const scope = structuredClone(options.scope()),
         local = await options.repository.snapshot(scope.key, { allowMissingMedia: true })
       let remoteId: string | undefined
@@ -46,9 +55,13 @@ export function createBackupService(options: {
       try {
         await check()
         const missing: MediaRef[] = []
+        const refs = mediaRefs(local.view.checkpoints)
+        let checked = 0
+        onProgress?.({ stage: 'checking', done: 0, total: refs.length })
         await mapBounded(
-          mediaRefs(local.view.checkpoints),
+          refs,
           async (ref) => {
+            await check()
             try {
               await (await options.media.open(ref, scope.key)).cancel()
             } catch (error) {
@@ -56,6 +69,8 @@ export function createBackupService(options: {
                 missing.push(ref)
               else throw error
             }
+            signal.throwIfAborted()
+            onProgress?.({ stage: 'checking', done: ++checked, total: refs.length })
           },
           options.mediaConcurrency ?? 2,
         )
@@ -77,21 +92,27 @@ export function createBackupService(options: {
             )
           )
             throw new DomainError('BACKUP_INCOMPLETE')
+          let downloaded = 0
+          onProgress?.({ stage: 'downloading', done: 0, total: missing.length })
           await mapBounded(
             missing,
             async (ref) => {
               await check()
               await remote.media.ensureAvailable(ref, scope, signal, remoteId)
+              await check()
+              onProgress?.({ stage: 'downloading', done: ++downloaded, total: missing.length })
             },
             options.mediaConcurrency ?? 2,
           )
         }
         await check()
+        onProgress?.({ stage: 'encoding', done: 0, total: local.view.projects.length })
         const backup = await encodeSnapshotBackup(
           local,
           options.media,
           scope,
           options.mediaConcurrency,
+          { signal, onProject: (done, total) => onProgress?.({ stage: 'encoding', done, total }) },
         )
         await check()
         return backup

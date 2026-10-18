@@ -63,11 +63,18 @@ async function expandProject(
   scope: SessionScope,
   allowMissing: boolean,
   limit: ReturnType<typeof limiter>,
+  signal?: AbortSignal,
 ): Promise<Project> {
+  signal?.throwIfAborted()
   const { revision: _revision, ...fields } = project
   const inline = async (ref: NonNullable<CheckpointRecord['photo']>) => {
     try {
-      return await limit(() => inlineMedia(ref, deps.media, scope))
+      return await limit(async () => {
+        signal?.throwIfAborted()
+        const value = await inlineMedia(ref, deps.media, scope)
+        signal?.throwIfAborted()
+        return value
+      })
     } catch (error) {
       if (allowMissing && error instanceof DomainError && error.detail.code === 'BACKUP_INCOMPLETE')
         return undefined
@@ -94,19 +101,36 @@ export async function encodeSnapshotBackup(
   media: PlatformMedia,
   scope: SessionScope,
   mediaConcurrency = 2,
+  progress?: { signal?: AbortSignal; onProject?: (done: number, total: number) => void },
 ): Promise<Backup> {
+  progress?.signal?.throwIfAborted()
   const limit = limiter(mediaConcurrency)
+  let done = 0
   const backup: Backup = {
     format: 'loopmark',
     version: 1,
     exportedAt: new Date().toISOString(),
-    projects: await mapBounded(snapshot.view.projects, (p) =>
-      expandProject(p, snapshot.view.checkpoints, { media }, scope, false, limit),
-    ),
+    projects: await mapBounded(snapshot.view.projects, async (p) => {
+      progress?.signal?.throwIfAborted()
+      const project = await expandProject(
+        p,
+        snapshot.view.checkpoints,
+        { media },
+        scope,
+        false,
+        limit,
+        progress?.signal,
+      )
+      progress?.signal?.throwIfAborted()
+      progress?.onProject?.(++done, snapshot.view.projects.length)
+      return project
+    }),
   }
+  progress?.signal?.throwIfAborted()
   if (utf8Bytes(backup) > MAX_BACKUP_BYTES) throw new DomainError('TECHNICAL_CAPACITY_REACHED')
   const validated = parseBackup(JSON.stringify(backup))
   await validateBackupMedia(validated)
+  progress?.signal?.throwIfAborted()
   return validated
 }
 export async function prepareBackupRecords(
