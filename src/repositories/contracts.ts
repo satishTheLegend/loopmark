@@ -16,7 +16,20 @@ import type {
 } from '../domain/contracts'
 import type { SafeError } from '../domain/errors'
 
+export interface LocalCollectionReview {
+  key: CollectionKey
+  revision: string
+  drafts: Array<{ key: string; revision: string }>
+}
 export interface Repository {
+  readActive(): Promise<SessionScope | null>
+  reviewLocal(key: CollectionKey): Promise<LocalCollectionReview>
+  /** Atomic complete-scope CAS, optional collection/draft-set CAS, and generation increment. */
+  transition(
+    expected: SessionScope | null,
+    target: Pick<SessionScope, 'key' | 'device'>,
+    review?: LocalCollectionReview,
+  ): Promise<SessionScope>
   listCollections(): Promise<CollectionInfo[]>
   createCollection(info: CollectionInfo): Promise<void>
   importLocal(

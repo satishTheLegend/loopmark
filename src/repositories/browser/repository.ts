@@ -1,4 +1,4 @@
-import type { Repository } from '../contracts'
+import type { Repository, LocalCollectionReview } from '../contracts'
 import type {
   CollectionInfo,
   CollectionKey,
@@ -83,6 +83,49 @@ export class BrowserRepository implements Repository {
   private publish(): void {
     this.dispatch()
     this.channel?.postMessage('changed')
+  }
+  async readActive(): Promise<SessionScope | null> {
+    return transaction(this.database, 'readonly', async (tx) => (await activeScope(tx)) ?? null)
+  }
+  private async reviewIn(tx: IDBTransaction, key: CollectionKey): Promise<LocalCollectionReview> {
+    const state = await getState(tx, key)
+    const rows = await requestResult<
+      Array<{ scope: CollectionKey; value: { key: string; revision: string } }>
+    >(tx.objectStore('drafts').getAll())
+    return {
+      key,
+      revision: state.version,
+      drafts: rows
+        .filter((row) => keyOf(row.scope) === keyOf(key))
+        .map((row) => ({ key: row.value.key, revision: row.value.revision }))
+        .sort((a, b) => a.key.localeCompare(b.key)),
+    }
+  }
+  async reviewLocal(key: CollectionKey): Promise<LocalCollectionReview> {
+    return transaction(this.database, 'readonly', (tx) => this.reviewIn(tx, key))
+  }
+  async transition(
+    expected: SessionScope | null,
+    target: Pick<SessionScope, 'key' | 'device'>,
+    review?: LocalCollectionReview,
+  ): Promise<SessionScope> {
+    if (!id.safeParse(target.device.id).success || !id.safeParse(target.device.generation).success)
+      throw new DomainError('VALIDATION')
+    const result = await transaction(this.database, 'readwrite', async (tx) => {
+      const active = (await activeScope(tx)) ?? null
+      if (canonicalJson(active) !== canonicalJson(expected))
+        throw new DomainError('ACCOUNT_CHANGED')
+      await getState(tx, target.key)
+      if (review && canonicalJson(await this.reviewIn(tx, review.key)) !== canonicalJson(review))
+        throw new DomainError('REVISION_CONFLICT')
+      const generation = (active?.generation ?? -1) + 1
+      if (!Number.isSafeInteger(generation)) throw new DomainError('INVARIANT_VIOLATION')
+      const scope = { ...target, generation }
+      tx.objectStore('meta').put({ key: 'active', value: scope })
+      return scope
+    })
+    this.publish()
+    return result
   }
   async listCollections(): Promise<CollectionInfo[]> {
     return transaction(this.database, 'readonly', async (tx) =>
@@ -486,8 +529,26 @@ export class BrowserRepository implements Repository {
       await assertGeneration(tx, key, generation)
       const source = await getState(tx, key)
       if (source.version !== revision) throw new DomainError('REVISION_CONFLICT')
-      const view = viewOf(source),
-        refs = mediaRefs(view.checkpoints)
+      const view = viewOf(source)
+      const drafts = recovered
+        ? []
+        : (
+            await requestResult<
+              Array<{
+                key: string
+                scope: CollectionKey
+                value: { key: string; revision: string }
+                media?: import('../../domain/contracts').MediaRef[]
+              }>
+            >(tx.objectStore('drafts').getAll())
+          ).filter((row) => keyOf(row.scope) === keyOf(key))
+      const refs = [
+        ...new Map(
+          [...mediaRefs(view.checkpoints), ...drafts.flatMap((row) => row.media ?? [])].map(
+            (ref) => [ref.id, ref],
+          ),
+        ).values(),
+      ]
       await assertMediaPresent(tx, key, refs)
       const copied = emptyCollection({
         ...source.info,
@@ -515,6 +576,12 @@ export class BrowserRepository implements Repository {
         )
         tx.objectStore('media').add({ ...row, key: mediaKey(target, ref.id), scope: target })
       }
+      for (const draft of drafts)
+        tx.objectStore('drafts').add({
+          ...draft,
+          key: JSON.stringify([keyOf(target), draft.value.key]),
+          scope: target,
+        })
       putState(tx, copied)
       if (recovered) {
         source.pending = []
