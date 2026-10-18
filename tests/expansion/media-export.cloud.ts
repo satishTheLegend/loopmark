@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
+import type { Command, PullPage, Receipt } from '../../src/domain/contracts'
 import { readFile } from 'node:fs/promises'
 import { PNG } from 'pngjs'
 import { signIn, chooseAccount, createProject, origin } from '../cloud/helpers'
@@ -7,6 +8,53 @@ const photo = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=',
   'base64',
 )
+
+async function createSyncedProject(page: Page, name: string) {
+  // The previous cycle's current label can remain visible just after a save.
+  // Observe this exact operation before creation, then its authoritative pull.
+  const pushed = page.waitForResponse(
+    (response) => {
+      if (
+        !response.url().endsWith('/functions/v1/sync-push') ||
+        response.request().method() !== 'POST' ||
+        !response.ok()
+      )
+        return false
+      const command = response.request().postDataJSON() as Command
+      return command.kind === 'project.create' && command.payload.project.name === name
+    },
+    { timeout: 20000 },
+  )
+  const pulled = page.waitForResponse(
+    async (response) => {
+      if (
+        !response.url().endsWith('/functions/v1/sync-pull') ||
+        response.request().method() !== 'POST' ||
+        !response.ok()
+      )
+        return false
+      const body = (await response.json()) as PullPage
+      const command = (await pushed).request().postDataJSON() as Command
+      return (
+        body.collectionId === command.collectionId &&
+        body.epoch === command.epoch &&
+        body.entries.some((entry) => entry.operationId === command.operationId)
+      )
+    },
+    { timeout: 20000 },
+  )
+  await createProject(page, name)
+  const [pushResponse, pullResponse] = await Promise.all([pushed, pulled])
+  const command = pushResponse.request().postDataJSON() as Command
+  const receipt = (await pushResponse.json()) as Receipt
+  const result = (await pullResponse.json()) as PullPage
+  expect(receipt.operationId).toBe(command.operationId)
+  expect(result.entries.find((entry) => entry.operationId === command.operationId)).toEqual(receipt)
+  expect(BigInt(result.nextCursor)).toBeGreaterThanOrEqual(BigInt(receipt.cursor))
+  const label = page.locator('.sync-status > span:not(.sr-only)')
+  await expect(label).toBeVisible()
+  await expect(label).toHaveText('Synced to your account', { timeout: 20000 })
+}
 
 test('actual complete export names the missing checkpoint and retries only its absent bytes', async ({
   browser,
@@ -167,10 +215,7 @@ test('actual fresh-device export downloads missing photo bytes, permits cancella
     expect(backup.projects[0].checkpoints[0].photo).toBe(savedPhoto)
     expect(backup.projects[0].checkpoints[0].nextStep).toBe('Match the border in this photo.')
     await b.goto(origin + '/#projects')
-    await createProject(b, 'Old-only saved work')
-    await expect(b.locator('.sync-status')).toContainText('Synced to your account', {
-      timeout: 20000,
-    })
+    await createSyncedProject(b, 'Old-only saved work')
     await b.goto(origin + '/#backup')
     await b.getByLabel('Restore backup file').setInputFiles({
       name: 'complete.json',

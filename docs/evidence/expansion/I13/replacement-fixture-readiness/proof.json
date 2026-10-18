@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "productSourceCommit": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+  "originalTraceSha256": "e185bf52667640ee1045aec4132273a9bcf9914a83fd5d2b1be1cbf5607a65fe",
+  "failedProfile": "webkit-mobile",
+  "failedTest": "actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy",
+  "originalEvents": [
+    {
+      "event": "Old-only project heading visible",
+      "startMonotonicMs": 540636.836,
+      "endMonotonicMs": 540640.113
+    },
+    {
+      "event": "Previous Synced text assertion passes",
+      "startMonotonicMs": 540641.907,
+      "endMonotonicMs": 540645.421
+    },
+    {
+      "event": "Restore as separate collection click",
+      "startMonotonicMs": 540684.037,
+      "endMonotonicMs": 540958
+    },
+    {
+      "event": "Old-only project push",
+      "startedAt": "2026-10-18T18:21:58.183Z",
+      "durationMs": 169.20300000009593,
+      "status": -1,
+      "result": "aborted; no successful acknowledgment visible in this page trace"
+    },
+    {
+      "event": "Review replacement click",
+      "startMonotonicMs": 541360.8,
+      "endMonotonicMs": 541492.827
+    },
+    {
+      "event": "Replacement refused before confirmation UI",
+      "code": "SYNC_REBASE_REQUIRED"
+    }
+  ],
+  "sourceGuard": "src/services/replacement-service.ts preview rejects destination.pending.length before collecting the remote snapshot or preparing replacement",
+  "diagnosis": "The fixture switched away before its newly saved project completed its sync cycle. The locally retained pending destination work correctly prevents replacement. The preceding current text was not an operation-specific completion oracle.",
+  "correction": "Observe the exact named project.create successful response and matching receipt through pull before switching collections. Preserve full backup/media equality, explicit consent, replacement and Previous Account copy assertions.",
+  "limits": "No product change. Raw trace remains private because it contains synthetic authentication material. This bounded record omits identities, OTPs, capabilities and object IDs. Runtime follow-up pending."
+}

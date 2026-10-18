@@ -1,0 +1,289 @@
+
+> loopmark@1.0.0 test:sync
+> node scripts/test-sync-smoke.mjs --workers=3
+
+[WebServer] (node:69879) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:69902) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 80 tests using 3 workers
+
+(node:69909) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69910) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (20.6s)
+  ✓   2 [chromium] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (22.4s)
+  ✓   4 [chromium] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (4.2s)
+  ✓   5 [chromium] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.5s)
+  ✓   3 [chromium] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (25.8s)
+  ✓   8 [chromium] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (17.9s)
+  ✓   6 [chromium] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (23.1s)
+  ✓   7 [chromium] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (26.5s)
+  ✓   9 [chromium] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (18.1s)
+  ✓  11 [chromium] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (12.3s)
+  ✓  10 [chromium] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (18.2s)
+  ✓  12 [chromium] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (15.2s)
+  ✓  14 [chromium] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (11.3s)
+  ✓  15 [chromium] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (9.0s)
+  ✓  13 [chromium] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (23.5s)
+(node:71376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:71386) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [chromium] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (14.2s)
+(node:71498) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [firefox] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (41.7s)
+  ✓  19 [firefox] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (38.1s)
+  ✘  21 [firefox] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (13.0s)
+  ✓  20 [firefox] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (17.6s)
+(node:72171) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 [firefox] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (57.9s)
+  ✓  24 [firefox] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (18.4s)
+  ✓  23 [firefox] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (24.6s)
+  ✓  22 [firefox] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (28.0s)
+  ✓  25 [firefox] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (19.5s)
+  ✓  27 [firefox] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (11.4s)
+  ✓  26 [firefox] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (22.6s)
+  ✓  28 [firefox] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (23.7s)
+  ✓  30 [firefox] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (16.3s)
+  ✓  29 [firefox] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (30.1s)
+(node:74026) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  31 [firefox] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (12.4s)
+(node:74243) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  32 [firefox] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (17.4s)
+(node:74437) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [webkit] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (14.9s)
+  ✓  36 [webkit] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (4.8s)
+  ✓  37 [webkit] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.6s)
+  ✓  35 [webkit] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (14.9s)
+  ✓  34 [webkit] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (21.5s)
+  ✓  40 [webkit] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (28.1s)
+  ✓  38 [webkit] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (39.4s)
+  ✓  39 [webkit] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (43.3s)
+  ✓  41 [webkit] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (23.3s)
+  ✓  42 [webkit] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (23.7s)
+  ✓  43 [webkit] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (15.5s)
+  ✓  44 [webkit] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (37.0s)
+  ✓  46 [webkit] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (30.4s)
+  ✓  47 [webkit] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (13.4s)
+(node:75686) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  45 [webkit] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (48.1s)
+  ✓  48 [webkit] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (19.5s)
+(node:75743) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:75765) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  49 [chromium-mobile] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (15.0s)
+  ✓  51 [chromium-mobile] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (14.2s)
+  ✓  52 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (6.9s)
+  ✓  53 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (4.5s)
+  ✓  50 [chromium-mobile] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (22.0s)
+  ✓  56 [chromium-mobile] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (26.3s)
+  ✓  54 [chromium-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (31.3s)
+  ✓  55 [chromium-mobile] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (55.8s)
+  ✓  58 [chromium-mobile] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (52.0s)
+  ✓  57 [chromium-mobile] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (54.8s)
+  ✓  59 [chromium-mobile] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (29.9s)
+  ✘  60 [chromium-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (12.4s)
+(node:76865) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  62 [chromium-mobile] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (12.9s)
+  ✓  63 [chromium-mobile] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (9.7s)
+(node:77032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  61 [chromium-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (23.5s)
+(node:77101) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  64 [chromium-mobile] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (10.9s)
+(node:77125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  65 [webkit-mobile] › tests/expansion/accounts.cloud.ts:79:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (11.9s)
+  ✓  68 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (2.9s)
+  ✓  69 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.0s)
+  ✓  67 [webkit-mobile] › tests/expansion/accounts.cloud.ts:192:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (11.4s)
+  ✓  66 [webkit-mobile] › tests/expansion/accounts.cloud.ts:122:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (17.2s)
+  ✓  72 [webkit-mobile] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (12.6s)
+  ✓  70 [webkit-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (19.2s)
+  ✓  71 [webkit-mobile] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (21.1s)
+  ✓  75 [webkit-mobile] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (7.3s)
+  ✓  74 [webkit-mobile] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (15.4s)
+  ✘  73 [webkit-mobile] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (22.7s)
+(node:77618) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  76 [webkit-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (17.1s)
+  ✓  78 [webkit-mobile] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (11.4s)
+  ✓  79 [webkit-mobile] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (7.5s)
+  ✓  77 [webkit-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (22.0s)
+  ✓  80 [webkit-mobile] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (9.4s)
+
+
+  1) [firefox] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 429
+    Received: 200
+
+      89 |   )
+      90 |   await page.getByRole('button', { name: 'Send sign-in code' }).click()
+    > 91 |   expect((await limited).status()).toBe(429)
+         |                                    ^
+      92 |   await expect(page.getByRole('alert')).toContainText('RATE_LIMITED')
+      93 |   await expect(page.getByRole('button', { name: /Try again in/ })).toBeDisabled()
+      94 |   await expect(page.locator('.account-identity')).toHaveCount(0)
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/auth-errors.cloud.ts:91:36
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/auth-errors.cloud.ts-reloa-46b3f-he-UI-offers-a-timed-remedy-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [webkit] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.sync-status')
+    Expected substring: "Synced to your account"
+    Received string:    " Changes need your reviewSync detailsChanges need your review"
+    Timeout: 20000ms
+
+    Call log:
+      - Expect "toContainText" locator('.sync-status') with timeout 20000ms
+      - waiting for locator('.sync-status')
+        2 × locator resolved to <div class="sync-status sync-working readable-controls">…</div>
+          - unexpected value " Syncing with your accountSync details"
+        2 × locator resolved to <div class="sync-status sync-waiting readable-controls">…</div>
+          - unexpected value " More account changes are waiting to syncSync details"
+        - locator resolved to <div class="sync-status sync-waiting readable-controls">…</div>
+        - unexpected value " 1 item waiting to syncSync details"
+        - locator resolved to <div class="sync-status sync-working readable-controls">…</div>
+        - unexpected value " Syncing with your accountSync details"
+        36 × locator resolved to <div class="sync-status sync-conflict readable-controls">…</div>
+           - unexpected value " Changes need your reviewSync detailsChanges need your review"
+
+
+      158 |         await b.getByRole('button', { name: 'Save details', exact: true }).click()
+      159 |         await expect(b.getByRole('dialog')).toHaveCount(0)
+    > 160 |         await expect(b.locator('.sync-status')).toContainText('Synced to your account', {
+          |                                                 ^
+      161 |           timeout: 20000,
+      162 |         })
+      163 |       }
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/rebase.cloud.ts:160:49
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/rebase.cloud.ts-actual-exp-71757-hen-accepts-a-fresh-command-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/rebase.cloud.ts-actual-exp-71757-hen-accepts-a-fresh-command-webkit/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/rebase.cloud.ts-actual-exp-71757-hen-accepts-a-fresh-command-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/rebase.cloud.ts-actual-exp-71757-hen-accepts-a-fresh-command-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/rebase.cloud.ts-actual-exp-71757-hen-accepts-a-fresh-command-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command 
+
+    Error: response.json: Protocol error (Network.getResponseBody): No data found for resource with given identifier
+    Response body is not available for a response that was navigated away from. Read response.body() before triggering any navigation.
+
+      184 |       const response = await denied
+      185 |       expect(response.status()).toBe(409)
+    > 186 |       expect((await response.json()).error.code).toBe(
+          |                              ^
+      187 |         trigger === 'retired' ? 'SYNC_REBASE_REQUIRED' : 'REVISION_CONFLICT',
+      188 |       )
+      189 |       await a.unroute('**/functions/v1/sync-push')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/rebase.cloud.ts:186:30
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/rebase.cloud.ts-actual-ret-4f36e-hen-accepts-a-fresh-command-chromium-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/rebase.cloud.ts-actual-ret-4f36e-hen-accepts-a-fresh-command-chromium-mobile/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/rebase.cloud.ts-actual-ret-4f36e-hen-accepts-a-fresh-command-chromium-mobile/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/rebase.cloud.ts-actual-ret-4f36e-hen-accepts-a-fresh-command-chromium-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/rebase.cloud.ts-actual-ret-4f36e-hen-accepts-a-fresh-command-chromium-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [webkit-mobile] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy 
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator: getByRole('dialog').getByRole('button', { name: 'Confirm account replacement', exact: true })
+    Expected: disabled
+    Timeout: 8000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeDisabled" getByRole('dialog').getByRole('button', { name: 'Confirm account replacement', exact: true }) with timeout 8000ms
+      - waiting for getByRole('dialog').getByRole('button', { name: 'Confirm account replacement', exact: true })
+
+
+      190 |     await expect(
+      191 |       review.getByRole('button', { name: 'Confirm account replacement', exact: true }),
+    > 192 |     ).toBeDisabled()
+          |       ^
+      193 |     await review.getByRole('checkbox').check()
+      194 |     await review.getByRole('button', { name: 'Confirm account replacement', exact: true }).click()
+      195 |     await expect(b.locator('.collection-heading')).toContainText('Account projects')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/media-export.cloud.ts:192:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/media-export.cloud.ts-actu-2f6fe-es-a-complete-separate-copy-webkit-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/media-export.cloud.ts-actu-2f6fe-es-a-complete-separate-copy-webkit-mobile/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/media-export.cloud.ts-actu-2f6fe-es-a-complete-separate-copy-webkit-mobile/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/media-export.cloud.ts-actu-2f6fe-es-a-complete-separate-copy-webkit-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/media-export.cloud.ts-actu-2f6fe-es-a-complete-separate-copy-webkit-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [firefox] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy 
+    [webkit] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command 
+    [chromium-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command 
+    [webkit-mobile] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy 
+  76 passed (9.6m)
