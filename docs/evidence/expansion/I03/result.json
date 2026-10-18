@@ -16,9 +16,9 @@
   ],
   "status": "implementation-verified-awaiting-independent-review",
   "baseCommit": "c9e980fa4421f2a465c3bd5d186e7517f58de41f",
-  "resultCommit": "0d89275d26ace840f41e374e421fa37713d51518",
+  "resultCommit": "5d568ec14cc1ffa90136582cec41f18dbcc26002",
   "sharedSnapshotCommit": "709eb051c47be89216adb6b980be8d80fa30e4c2",
-  "recordedAt": "2026-10-18T12:03:30.382Z",
+  "recordedAt": "2026-10-18T12:20:35.984Z",
   "lockfileSha256": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d",
   "environment": {
     "platform": "Darwin arm64",
@@ -135,21 +135,23 @@
   },
   "verification": {
     "command": "node scripts/test-server.mjs --suite schema",
+    "startedAt": "2026-10-18T12:16:51.970Z",
+    "endedAt": "2026-10-18T12:17:05.846Z",
     "exitCode": 0,
-    "startedAt": "2026-10-18T12:01:17Z",
-    "endedAt": "2026-10-18T12:01:26.300Z",
-    "timestampPrecision": "start reported to second; end derived from reported 9.30s duration",
-    "passed": 16,
+    "passed": 19,
     "failed": 0,
     "skipped": 0,
-    "files": 3,
+    "files": 4,
+    "durationMsReported": 13320,
     "fixtureCounts": {
-      "accounts": 16,
-      "projects": 67,
-      "checkpoints": 2
+      "accounts": 20,
+      "projects": 68,
+      "checkpoints": 57
     },
+    "fixtureCountsObservedAt": "2026-10-18T12:20:36.037Z",
     "log": "schema-run.txt",
-    "logSha256": "4b05388a44cbb3eb234e1bab0bda2522190a087bc121eb7047f1a1e86f6fbecf"
+    "logSha256": "c724edcb9ab7e274665f62df977bc90621429b956fca5c7295c126412174fb52",
+    "logNormalization": "Trailing blank lines removed; retained command output is otherwise unchanged."
   },
   "otherChecks": [
     {
@@ -174,21 +176,33 @@
     },
     {
       "command": "node scripts/doctor.mjs --capability local-sync --json",
-      "result": "FAIL exit 3: root-owned doctor still reads source config template instead of generated .gstack/local/profile runtime. Integrator notified; integration fix pending."
+      "result": "PASS ready/0 on actual stack using root6380fec doctor source",
+      "artifact": "doctor.json",
+      "sha256": "759ae755df5ea6ec12726bb13412c6c29331c014a1faac3dbf8c1612a2190cc5"
+    },
+    {
+      "command": "node_modules/.bin/tsc -b --pretty false",
+      "result": "PASS; includes real server tests and scripts/local.d.mts"
     }
   ],
   "reviewers": [
     {
-      "name": "Worker C and root",
-      "status": "requested; pending"
+      "name": "native_implementation (Worker C)",
+      "status": "Initial independent authority review found three defects; all fixed with actual regressions, re-review requested on 5d568ec"
+    },
+    {
+      "name": "root",
+      "status": "Native CORS/types/doctor findings addressed; final review pending"
     }
   ],
   "sourceHashes": {
     "package-lock.json": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d",
+    "scripts/doctor.mjs": "c0225b316b172983ee9b21e124325408deb573698b7d496036b8c69533b1c43b",
     "scripts/lib/config.d.mts": "a131552fb3263ee09d5538ea74d1cb1d806ee68c3018d2c624a5291d9a6155ec",
     "scripts/lib/config.mjs": "cbb482f5ac63ed99bfb1e7af47a9054988baf91fb7a1ee7944c515d02303710c",
-    "scripts/local.mjs": "6dff33f5b2a6630617d41ce7578cae74f290f72338f223476905eb1d6dd57001",
-    "scripts/test-server.mjs": "9000bf939698b1f929fe4df41999945ce977b635951e22e1701d8a66b926a2a3",
+    "scripts/local.d.mts": "adff42e8132d4d30eb7bc9e47088fda8133ce22ac30d3db6a4078595647dfe85",
+    "scripts/local.mjs": "7eba26d4f0386d93588d48d7ffe6c4f31eb8f943a47c95a6502e9425231f3716",
+    "scripts/test-server.mjs": "f1bec53bb446bda0337a0f5ffbb77dd06ad67a63d3c511704b9d467c0b4f97b1",
     "src/domain/canonical-json.ts": "9d9bc1279c6e99acbdebdff2dca75316edceb4dcfa75a56a9dddd0c76265d774",
     "src/domain/contracts.test.ts": "1c31c06873a12843cf88a3c21d81ec668512b4fda7a23d1c16001452c128706e",
     "src/domain/contracts.ts": "1bffd02783f2fd3562b2d3a888735fbff5de71c2b0458474ea80810e1969d077",
@@ -202,11 +216,12 @@
     "src/domain/schema.ts": "b2648d8e5e4810c0afec30bafbcae251cabff056e972ade0c6d47ade39206285",
     "src/help/errors.ts": "8e413356327dded5ae535171080665380e7b563c578c9bd5ff8bddddcedd52c0",
     "src/media-validation.ts": "1f4782cce0606ce00214f44ecf351ed99ae2f9ab40c4d48f21fb725c1e477fe6",
+    "src/repositories/state.ts": "deadfd82e5168a47d6ea0098e175142e2e9efb692974578802f0222c1ee4ce1c",
     "supabase/.gitignore": "507699eb91144818edf61d3a079212cacf31d8db520eae428e3b48fcf0d6919c",
     "supabase/command.schema.json": "c147b02d54fc6a2b69d9932b87049a62cfec0356d5db90c48a25d7e33d22cca7",
     "supabase/config.toml": "314f81acabf6629c6cd0afe4d86fa21f40933233d0da274bac7bcb2b049e13fb",
     "supabase/functions/_shared/auth.ts": "af5b2ed742919e9cbf1fc85a8f7834c596b51a76fe09a5e08d7edf75a0ef0888",
-    "supabase/functions/_shared/command.ts": "32e9f21f6365332538abbeceed99b53761c52c833352f7e56a3f1dad6b79a140",
+    "supabase/functions/_shared/command.ts": "4423210133618e40cf96d268d2977934eed04ab7df7bcee9899efe80ba31bf34",
     "supabase/functions/_shared/config.ts": "d568b1cceb3d711e0cbd438653cdb58eff47f8ceaa57e0c554653fc538999582",
     "supabase/functions/_shared/limits.ts": "d36cc9b1db5b001410ca0f007e3f9a1eeacf8ba217d05be4581f042f49bc69e6",
     "supabase/functions/account-session/index.ts": "3b5d784575e066b9ea4775b722b7b159ca1a1782f1ebacf7b0fee8d40162e88e",
@@ -214,9 +229,9 @@
     "supabase/functions/sync-pull/index.ts": "48c4c10371b39ebc7c8937e81f049e1e277543b278d9db859bb4f48107c71cd9",
     "supabase/functions/sync-push/index.ts": "e6d03bd8efe24d5a2c0717c26d890287223affd68350bc762ff6d7ed9433631e",
     "supabase/functions/sync-snapshot/index.ts": "a5c129c22603ebb80ab7813d3824cc9a97343b21cf38cba1a4b548d8ac0b9324",
-    "supabase/migrations/202610180001_foundation.sql": "e00aec6e8d1d3160c667168d6ccb72b050a4082b506ed1d862a214138b57a703",
+    "supabase/migrations/202610180001_foundation.sql": "3126aa87bf3da4e0a1b5a0946d7d802fcb88de81c98afe444b845683937110b8",
     "supabase/migrations/202610180002_commands.sql": "82023e4f68360a523d97742ba08dcb056eba820591b61f89d9d15b13296678d8",
-    "supabase/migrations/202610180003_reads_retention.sql": "8866759cd5fdd7d66b373326166dcfb2578833087badcb1ed631f6b5c91cfe76",
+    "supabase/migrations/202610180003_reads_retention.sql": "81f5d2196c948eb4b552fadd60ff08234f6b47947021742f952204dd42d2e31f",
     "supabase/migrations/202610180004_reauthentication.sql": "b6cadcffa5d2390f0cd278bb556267c2f710cda00327b387e2e4f4c80b560a90",
     "supabase/seed.sql": "b0f5fd71f53b1be3c36e8c784dcfadd4119931380fb17fb9668dca005ef32c20",
     "supabase/templates/magic-link.html": "69f78b2537a47cd8219c27f3774f8e7b590875eaeee2b2ec70692e389a9f43f8",
@@ -224,7 +239,8 @@
     "supabase/tests/ownership.test.sql": "cac1e4c0ed2c8b6472dea25fcb21f4019ada1dfe95b4a2efc1c02864b5f195f5",
     "tests/server/boundaries.test.ts": "756e544524b4b34db3812f207e028d8f41cb338058b659583b514adce465e639",
     "tests/server/helpers.ts": "41f2caeee6f3d147ce3fa4a3e841f74c242128950eaadb077f21b7b659895f7e",
-    "tests/server/schema.test.ts": "fcd425d235f7ef6e78b10042dc0c47cee149724968a3770eaf4c204adcfbaefa",
+    "tests/server/review-regressions.test.ts": "b71e326e69a06c70fdd934107ff877c54ee97f3bd154168fd75c8ca362ce76ab",
+    "tests/server/schema.test.ts": "8b842c6cccf5487fe510a72fdfc7750414c8746b6b4786506554f94ead61a397",
     "tests/server/sync-ordering.test.ts": "dcd6e3beea5e4005839710c303e818bc3df5a948d15624e74a9f384c359e5dc8",
     "vitest.server.config.ts": "fe3432c0ee626d4c75d2d0ae710de901227952ff7bc907f7a90be2a05005545b"
   },
@@ -236,6 +252,39 @@
     "SQL/HTTP tests use real PostgreSQL roles, real RLS, actual Auth JWTs and real Edge/PostgREST. They include rolled-back mutations, delayed commits, sequence gaps following rejected CAS, response replay, cross-owner and same-owner bypass, bounded snapshots/devices, streaming size rejection, and 90-day compaction floors.",
     "Database quotas count exact portable JSON bytes including escaped MIME codec quotes and Unicode; canonical JSON/hash vectors and generated SQL command schema match the shared source.",
     "Successful final test used all current source hashes. Earlier observed failures (stale Edge module graph, ambiguous SQL identifiers, and bind-mounted template inode replacement) were corrected before this result.",
-    "No 100/1000-account load test or production throughput claim. Test fixture scale is recorded above."
-  ]
+    "No 100/1000-account load test or production throughput claim. Test fixture scale is recorded above.",
+    "Independent review regressions hydrate 55 maximum-field CJK checkpoints with a shared photo and 55 distinct voice descriptors through actual HTTP snapshots and the exact shared hydrateState. Media declarations are unique across the whole chain, each page obeys 512 KiB, and cursor chaining retains every record.",
+    "Compaction orders active accounts by last successful compaction then ID; sequential batches of 2 visit all active accounts rather than repeatedly selecting the first IDs.",
+    "Exact configured web origin, capacitor://localhost and https://localhost pass authenticated HTTP calls; lookalike/unknown/null origins reject 403. The pinned Supabase Kong gateway handles OPTIONS and overwrites CORS response headers with a wildcard. This does not bypass the Edge origin check or JWT/active-owner authority on actual POSTs. No claim that Edge controls gateway preflight headers.",
+    "Worker A was granted a subsequent two-browser smoke window on the same stable stack; additional synthetic rows after these tests are separate evidence."
+  ],
+  "history": [
+    {
+      "resultCommit": "0d89275d26ace840f41e374e421fa37713d51518",
+      "verification": {
+        "command": "node scripts/test-server.mjs --suite schema",
+        "exitCode": 0,
+        "startedAt": "2026-10-18T12:01:17Z",
+        "endedAt": "2026-10-18T12:01:26.300Z",
+        "timestampPrecision": "start reported to second; end derived from reported 9.30s duration",
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0,
+        "files": 3,
+        "fixtureCounts": {
+          "accounts": 16,
+          "projects": 67,
+          "checkpoints": 2
+        },
+        "log": "schema-run-initial.txt",
+        "logSha256": "4b05388a44cbb3eb234e1bab0bda2522190a087bc121eb7047f1a1e86f6fbecf"
+      },
+      "note": "Initial16-test candidate; independent review then found the three covered snapshot/retention gaps."
+    }
+  ],
+  "sharedDependencies": {
+    "doctorCommit": "6380fecf089dbecbeba620d1c7f483db1853110a",
+    "repositoryStateSourceCommit": "809614133ba116553e9f5ea8493e6432d704498f",
+    "note": "Exact root doctor and repository state copied into worker for verification and excluded from backend commits; their hashes are recorded below. Root Vitest server config similarly supplied by integrator."
+  }
 }

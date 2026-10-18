@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "capability": "local-sync",
+  "status": "ready",
+  "exitCode": 0,
+  "evidence": "read-only-prerequisites",
+  "projectId": "loopmark-loopmark-expansi-eeac3023",
+  "profile": "loopmark-expansi-eeac3023",
+  "ports": {
+    "app": 56620,
+    "api": 56621,
+    "db": 56622,
+    "studio": 56623,
+    "mail": 56624
+  },
+  "checks": [
+    {
+      "id": "configuration",
+      "status": "ready",
+      "problem": "Local profile is valid; process environment takes precedence over .env.local.",
+      "nextAction": ""
+    },
+    {
+      "id": "node",
+      "status": "ready",
+      "problem": "Node 26.8.2.",
+      "nextAction": "Use Node 24 LTS or a compatible version satisfying package.json."
+    },
+    {
+      "id": "npm",
+      "status": "ready",
+      "problem": "npm is available.",
+      "nextAction": "Install a compatible Node/npm distribution."
+    },
+    {
+      "id": "file:package.json",
+      "status": "ready",
+      "problem": "package.json is present.",
+      "nextAction": "Use a complete project checkout."
+    },
+    {
+      "id": "file:package-lock.json",
+      "status": "ready",
+      "problem": "package-lock.json is present.",
+      "nextAction": "Use a complete project checkout."
+    },
+    {
+      "id": "file:index.html",
+      "status": "ready",
+      "problem": "index.html is present.",
+      "nextAction": "Use a complete project checkout."
+    },
+    {
+      "id": "file:src/main.tsx",
+      "status": "ready",
+      "problem": "src/main.tsx is present.",
+      "nextAction": "Use a complete project checkout."
+    },
+    {
+      "id": "file:node_modules/vite/bin/vite.js",
+      "status": "ready",
+      "problem": "node_modules/vite/bin/vite.js is present.",
+      "nextAction": "Run npm ci in this worktree."
+    },
+    {
+      "id": "app-port",
+      "status": "ready",
+      "problem": "The profile app port is free.",
+      "nextAction": "Stop the known local server or select LOOPMARK_DEV_APP_PORT; do not reuse an unknown process."
+    },
+    {
+      "id": "supabase-cli",
+      "status": "ready",
+      "problem": "Project-local Supabase CLI is present.",
+      "nextAction": "Install the project-pinned dependencies with npm ci."
+    },
+    {
+      "id": "supabase-cli-health",
+      "status": "ready",
+      "problem": "Supabase CLI responds.",
+      "nextAction": "Repair the project-local CLI installation."
+    },
+    {
+      "id": "local-project",
+      "status": "ready",
+      "problem": "Supabase project identity matches this worktree profile.",
+      "nextAction": "Run the local setup instructions for this profile; never reset another project."
+    },
+    {
+      "id": "docker-context",
+      "status": "ready",
+      "problem": "Docker uses a local socket.",
+      "nextAction": "Start a local Docker-compatible runtime and select its local context; remote contexts are refused."
+    },
+    {
+      "id": "docker-runtime",
+      "status": "ready",
+      "problem": "Local Docker runtime responds.",
+      "nextAction": "Start the selected local runtime and rerun doctor."
+    },
+    {
+      "id": "port:api",
+      "status": "ready",
+      "problem": "The api port matches the selected running stack.",
+      "nextAction": "Choose another LOOPMARK_DEV_PROFILE or documented port override."
+    },
+    {
+      "id": "port:db",
+      "status": "ready",
+      "problem": "The db port matches the selected running stack.",
+      "nextAction": "Choose another LOOPMARK_DEV_PROFILE or documented port override."
+    },
+    {
+      "id": "port:studio",
+      "status": "ready",
+      "problem": "The studio port is free.",
+      "nextAction": "Choose another LOOPMARK_DEV_PROFILE or documented port override."
+    },
+    {
+      "id": "port:mail",
+      "status": "ready",
+      "problem": "The mail port matches the selected running stack.",
+      "nextAction": "Choose another LOOPMARK_DEV_PROFILE or documented port override."
+    },
+    {
+      "id": "scope",
+      "status": "ready",
+      "problem": "These checks establish local prerequisites only; run the sync smoke suite to verify convergence and ownership.",
+      "nextAction": ""
+    }
+  ]
+}
