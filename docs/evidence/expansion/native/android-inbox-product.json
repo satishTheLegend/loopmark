@@ -1,10 +1,10 @@
 {
-  "sourceCommit": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
-  "manifestFileSha256": "9ae5abc8e2d76b6fa5ac82864564608ac6b217672df78f876dc5f018a9482226",
-  "artifactSha256": "ced977f8c40c171e74966addad89e03f8082cd984ebd412d9b6f6e306553a471",
+  "sourceCommit": "8d3141c02d13168c125fe0ff6d366486cfc0c5d8",
+  "manifestFileSha256": "b0f774406e27667bd93e44ea041622bace1000dae399045c03d7ac92611cc259",
+  "artifactSha256": "69d1bf14789a11f9b7ad5090dbff27a843342623c9c819189918b79be7ee40ee",
   "platform": "android",
   "emulator": "emulator-5580",
-  "completedAt": "2026-10-18T16:51:58.386Z",
+  "completedAt": "2026-10-18T17:14:44.094Z",
   "passed": true,
   "assertions": [
     "separate-UID OS content read grant and VIEW delivery",

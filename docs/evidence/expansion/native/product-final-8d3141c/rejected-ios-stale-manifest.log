@@ -1,0 +1,12 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+[Error: ENOENT: no such file or directory, open '/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/App/public/assets/attachment-queue-CrHikUih.js'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/App/public/assets/attachment-queue-CrHikUih.js'
+}
+
+Node.js v26.8.2

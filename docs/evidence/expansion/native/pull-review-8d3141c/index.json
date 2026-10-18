@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "8d3141c",
+  "productFixEquivalent": "0b518fa",
+  "testCommits": [
+    "5e44328",
+    "8d3141c"
+  ],
+  "scope": "Actual native SQLite/plugins in separate synthetic test apps on iOS simulator and Android emulator. Functional assertions only; no performance claim from recorded runner metrics.",
+  "assertions": [
+    "empty same-cursor poll performs no row writes under actual SQLite rejecting DML triggers",
+    "SQL total_changes, stored body, review revision, and subscriber count remain unchanged",
+    "wrong scope, epoch, cursor, generation and guest namespace reject",
+    "cursor advancement requires a valid contiguous receipt; real changes still write and publish",
+    "review CAS survives empty poll and SQLite close/reopen"
+  ],
+  "files": {
+    "bundle.json": "878cee2b0d37a1d2439489f4be1e5364d1a8bda77067238447bf134746556e07",
+    "ios-pull.json": "0f695317ae4d07333402d42e2383e05519797031c4c5704223e4ae041b4ef62d",
+    "android-pull.json": "5f5de6dd5e153ec78fba24ee39b0b38093703b1299a8b230994e9c855f24117b",
+    "ios-runtime.log": "1d9d3860dcac9d1abcf8804e54e04fbe44669f85e37552ccd7203bbee6f19a09",
+    "android-runtime.log": "5f46c5e962c47d77937ecfde065566255cfa815cb75a8447faf63cd1e16729fb"
+  }
+}

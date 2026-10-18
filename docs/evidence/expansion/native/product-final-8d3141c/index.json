@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "8d3141c02d13168c125fe0ff6d366486cfc0c5d8",
+  "webSourceEquivalent": "0b518fa",
+  "testFixtureCommits": [
+    "33aea9b",
+    "d7fc461",
+    "0ba8433"
+  ],
+  "recordedAt": "2026-10-18T17:15:58.989Z",
+  "performanceClaim": false,
+  "scope": "Actual production assets in iOS 26.5 simulator and Android 16/API36 emulator; local ad hoc/debug signatures. Both checkpoint/diagnostic and OS backup journeys verify the exact installed artifact.",
+  "files": {
+    "ios-product.log": "17a6f1341ce89123a4e5a3a48e1927df242b42cdf5d7d15ad679ab7f1d303dd3",
+    "ios-inbox.log": "d6f5acddf38f6ab0e3877965f095f23965cf47c20793c6efc48f00d24b1fc18c",
+    "android-product.log": "78894ca58701f42be6c0067287c4e7cdbe0fdd6097d323d2486391b2882da049",
+    "android-inbox.log": "125ef7de740faa12306c5b746d2d79f2930719a97104db8f76c12b496cb46256",
+    "rejected-ios-stale-manifest.log": "7e90fe87423dbd1d7ca7c1ad87b406c95cc998aa8e4e779d1f06a40de0531314",
+    "rejected-android-stale-manifest.log": "0e32fd40f70ddf5c250700c7c1825cb9530766f6628a0251496f3232de487189",
+    "rejected-android-dismissal-race.log": "1c65586e0ddb087ad54e9fc0e38060ddee0c3cfab0d17859fda24d5b194be2d4",
+    "ios-product.json": "4f32c8ef83fc87e37e63b6307f4d305064e70034f262cadd1d7c46f3585a3579",
+    "ios-inbox-product.json": "08617d2861ebfc829833d657850a8c2f33990ee2aa2ccfe321c3375a2dbb5547",
+    "android-product.json": "0fe05dc3f5ec00d5830c7f77a1da2477d531fa5fa188a3e481ff91a4c5daa988",
+    "android-inbox-product.json": "bca198915efa66a909e5e4b17422fdcf08bc270af2e4a3e95f2539a374e6f6ec",
+    "product-bundle.json": "b0f774406e27667bd93e44ea041622bace1000dae399045c03d7ac92611cc259"
+  },
+  "artifactManifest": {
+    "schemaVersion": 1,
+    "sourceCommit": "8d3141c02d13168c125fe0ff6d366486cfc0c5d8",
+    "webSourceEquivalent": "0b518fa",
+    "productionWebAssets": true,
+    "storeDistribution": false,
+    "ios": {
+      "file": "loopmark-ios-simulator-8d3141c.tar.gz",
+      "sha256": "19f89838c7f052aa9c0dfbf4a7bca338a23c24d50929710a9a34f0014aef5dc9",
+      "appDirectorySha256": "765a48ac02a5d568c1d27be3521060dee72dbaced2ae509c89b840fc3c89ec57",
+      "target": "iOS Simulator arm64, ad hoc local simulator signature"
+    },
+    "android": {
+      "file": "loopmark-android-debug-8d3141c.apk",
+      "sha256": "69d1bf14789a11f9b7ad5090dbff27a843342623c9c819189918b79be7ee40ee",
+      "target": "Android debug APK; local debug key, no release/store signing"
+    }
+  },
+  "archiveExtractionVerified": true,
+  "setupRejections": "Initial product runners rejected the old product-manifest hashes immediately after production sync; current dist hashes were recorded and verified before either UI journey ran.",
+  "initialFixtureFailure": {
+    "file": "rejected-android-dismissal-race.log",
+    "reason": "The fixture clicked Dismiss then force-stopped the app before asynchronous durable finish completed. The old handled notice survived and obscured the later unique malformed file. Test0ba8433 now waits for the notice to disappear before process restart or the next fixture.",
+    "observedNoticeId": "509d3a00c87a3527f23456bb7bf97b948e4e91a81686f76717570b6bb38fb9cc",
+    "observedPendingId": "5ecf0d5d1bfff2cf828af1cdab41575f81668b3447c5b684dfff64ebda5ae9ac",
+    "observedPendingBytes": 60,
+    "installedSenderSha256": "ed9ce4a421a5d0c498b1049146d47e15e42f5a18b6c73e4bfd2c4e91adf9ac8c",
+    "recovery": "Explicit product-UI dismissal of the known synthetic handled notice revealed the preserved malformed pending file. Its preview was rejected, it was explicitly dismissed, and the complete corrected journey passed with a new unique synthetic input. No craft records were reset."
+  },
+  "limitations": [
+    "Simulator/emulator proof only; physical document provider, camera/audio, memory-pressure and device transfer gates remain separate.",
+    "No distribution signing or live provider/store transaction qualification.",
+    "No performance claim; earlier isolated native metrics and all-byte staged-export evidence remain separate."
+  ]
+}

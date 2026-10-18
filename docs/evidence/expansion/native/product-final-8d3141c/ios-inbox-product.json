@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "sourceCommit": "8d3141c02d13168c125fe0ff6d366486cfc0c5d8",
+  "manifestFileSha256": "b0f774406e27667bd93e44ea041622bace1000dae399045c03d7ac92611cc259",
+  "artifactSha256": "765a48ac02a5d568c1d27be3521060dee72dbaced2ae509c89b840fc3c89ec57",
+  "artifactFormat": "app-directory-sha256",
+  "passed": true,
+  "completedAt": "2026-10-18T17:12:36.831Z",
+  "assertions": [
+    "OS file URL opens the production app and presents review without importing",
+    "cancel and process relaunch preserve the pending file",
+    "explicit confirmation restores a separate collection",
+    "repeated same file produces handled notice; relaunch has one restored project"
+  ],
+  "limitation": "Simulator OS delivery only; physical document providers remain an operator qualification gate."
+}
