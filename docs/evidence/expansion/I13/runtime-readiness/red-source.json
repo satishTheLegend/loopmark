@@ -1,0 +1,15 @@
+{
+  "baseline": "a1a3b72",
+  "testSource": "06b705c642c4640e6782b50c2439caf8f422dcb9",
+  "startedAt": "2026-10-18T18:09:31.341803+00:00",
+  "endedAt": "2026-10-18T18:09:31.881052+00:00",
+  "exitCode": 1,
+  "files": {
+    "src/services/controller-contract.ts": "3942004b63afd612648716fe39db9cdd111bcc90f1cf012e18a785cb95a63133",
+    "src/services/app-controller.ts": "46655577a667f8d08efa3ecc30264496f67410e9c751477512f3f2810cd44e3a",
+    "src/runtime.ts": "5a9c1ab9c3ea1792c42e360f4a9ff1df280eb95ad9d17561f496243bc25d2963",
+    "src/sync/runtime-scheduler.ts": "4519f359f54ace4abcfc937fad383a4ea74ef60a0f8707fea0da7ed9602c12b8",
+    "src/sync/runtime-scheduler.test.ts": "a20c49c8ea1e6c9a5494521dd5b4ce10aaf91beff6b78ae7d6bfdd3632d50ea5"
+  },
+  "scope": "Real AppController, IndexedDB repository and SyncCoordinator with controlled async authentication-resume delay; extracted pre-fix scheduler behavior. No network/backend/browser or native runtime."
+}

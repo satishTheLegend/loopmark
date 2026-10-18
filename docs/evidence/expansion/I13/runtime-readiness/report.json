@@ -1,0 +1,61 @@
+{
+  "sourceCommit": "c0e9bddd769a10021a641e002e54ec779f006333",
+  "baseCommit": "a1a3b72",
+  "recordedAt": "2026-10-18T18:11:39.340221+00:00",
+  "scope": "Isolated frozen source, actual browser repository with fake-indexeddb, real AppController and SyncCoordinator, timer-only fake clock and controlled resumeAfterAuthentication delay. No network or backend mutation.",
+  "result": {
+    "unitPassed": 382,
+    "unitFailed": 0,
+    "unitSkipped": 0,
+    "typecheckExitCode": 0,
+    "schedulerRegressions": 9,
+    "existingControllerTests": 35
+  },
+  "sourceHashes": {
+    "src/services/controller-contract.ts": "d2387de771def2cc11826689e064e6c029d2825a6effcb12472fe7ca8126171c",
+    "src/services/app-controller.ts": "cb8ec4e2b8aedf0f16fd6b42e5ace2a107081ae4ab4d129f3b5adf02fb3111b5",
+    "src/runtime.ts": "25a8f41f0a006ef49489e55e80bd2cfe14cc2f8a72c3654baa9d78392cb47325",
+    "src/sync/runtime-scheduler.ts": "cd36245333c7eca3443ae4d3c8cc17a8ff3afcbbf1fd03b804ff58d392a4dfd0",
+    "src/sync/runtime-scheduler.test.ts": "f285c7d8a83f8a0bc042c9ecd63a3bf356056d39f38b268bbce2c51f55166747"
+  },
+  "redProofs": [
+    {
+      "report": "red.raw.json",
+      "sourceManifest": "red-source.json",
+      "expectedFailures": 1,
+      "purpose": "Pre-fix authenticated startup drops initial automatic sync while local resume is still busy; after actual local settlement no pull occurs at150ms, before45s fallback."
+    },
+    {
+      "report": "reentrant-red.raw.json",
+      "sourceManifest": "reentrant-red-source.json",
+      "expectedFailures": 1,
+      "purpose": "Initial candidate notifies subscribers before queue admission, allowing a later reentrant selection to overtake the first; final source queues before publishing."
+    }
+  ],
+  "originalFailure": {
+    "traceSha256": "c1fbdb2c1c0f2e74bd126a631ca9a381ad2405a703b4a1786b15ec21f79a85c6",
+    "observed": "Reload cancels a pull after checkpoint conflict; new document verifies account-session, opens Realtime and sends no pull during8s assertion. Read-only SQL confirms active account, compacted cursor2, local recorded cursor1 and no receipt for rejected checkpoint.",
+    "causality": "Original trace is consistent with the independently reproduced readiness defect; it does not record controller busy/timer state. Lease or host scheduling alternatives are unproven. No claim of exact original internal timing."
+  },
+  "preservedBoundaries": [
+    "runSync retains immediate scope/generation/busy guard; it does not await and capture a future selection",
+    "Queued transitions expose one continuous unavailable interval; synchronous subscribers cannot overtake admission order",
+    "Hidden/offline/disposed states prevent settlement-triggered network work",
+    "Different identity and queued guest/account ABA preserve ownership and select only the final generation",
+    "Fatal rebase error is not retried by hints or idle timer",
+    "Local work arriving during an in-flight sync schedules the immediate follow-up",
+    "Realtime subscription eligibility unchanged; only automatic sync scheduling observes readiness"
+  ],
+  "rawReports": {
+    "red-source.json": "b75f459fb60c382024a4640a61e459834ba330e43f1dd6b6e241d0e8aa61a8b2",
+    "red.log": "ff6ea4f2d93b5aa84f2b1c8d304748637461e2154eb73b44ed41236a6668fea3",
+    "green.log": "f3c2f86eb6cfb0a1220aaaf0cc94a9400a5d8a5a347ad9e04e57f442cf1b3bc8",
+    "typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reentrant-red.raw.json": "2ad88d85f2adbadc215039684aba63fc966d91de578666c5c05cfafeb72a3f33",
+    "reentrant-red-source.json": "566f0d58e2f03093736706d49ded3d868af25e031beee364a0f4eaa11ff233ac",
+    "red.raw.json": "a9732ece948a285092475f69ad63bb7d264ab8fb15b30a147d926a599d279e27",
+    "red-runtime-scheduler.ts": "4519f359f54ace4abcfc937fad383a4ea74ef60a0f8707fea0da7ed9602c12b8",
+    "green.raw.json": "50f8761fd2f167daaaf35c3f13dd6810707dce7870835a7ed2a6335a2cb91694",
+    "reentrant-red.log": "f352c104c448a5468369649b31d3c6e3d21f9c2e2b64ac854aed5dba8434ed84"
+  }
+}

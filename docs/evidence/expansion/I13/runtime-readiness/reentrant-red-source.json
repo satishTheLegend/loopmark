@@ -1,0 +1,8 @@
+{
+  "candidate": "06b705c642c4640e6782b50c2439caf8f422dcb9",
+  "difference": "Additional regression only; optional hint gate already removed, irrelevant to controller-only test.",
+  "files": {
+    "src/services/app-controller.ts": "cd45d94ca19099a0ceb8c8c553366773854b6b2b1f8a9ed022ca6d881d4631c7",
+    "src/sync/runtime-scheduler.test.ts": "f285c7d8a83f8a0bc042c9ecd63a3bf356056d39f38b268bbce2c51f55166747"
+  }
+}
