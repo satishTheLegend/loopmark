@@ -234,6 +234,49 @@ try {
     const staged = await stageNativeExport({ name: 'synthetic-benchmark.json', bytes: blob })
     report.exportThroughNativeFileMs = performance.now() - started
     report.nativeExportFileBytes = (await Filesystem.stat({ path: staged.uri })).size
+    // Outside the measured export interval: verify every byte actually staged for
+    // OS sharing. A matching byte count alone cannot detect equal-length corruption.
+    await progress('verifying-native-file')
+    const expectedBytes = new TextEncoder().encode(serialized)
+    let verifiedBytes = 0
+    await new Promise<void>((resolve, reject) => {
+      let settled = false
+      const fail = (error: unknown) => {
+        settled = true
+        reject(error)
+      }
+      void Filesystem.readFileInChunks(
+        { path: staged.uri, chunkSize: 512 * 1024 },
+        (chunk, error) => {
+          if (settled) return
+          try {
+            if (error || !chunk || typeof chunk.data !== 'string')
+              throw new Error('Native staged file read failed.')
+            if (chunk.data === '') {
+              if (verifiedBytes !== expectedBytes.length)
+                throw new Error('Native staged file ended before all bytes were verified.')
+              settled = true
+              resolve()
+              return
+            }
+            const bytes = decodeBase64Bytes(chunk.data)
+            if (verifiedBytes + bytes.length > expectedBytes.length)
+              throw new Error('Native staged file exceeds expected bytes.')
+            for (let index = 0; index < bytes.length; index++)
+              if (bytes[index] !== expectedBytes[verifiedBytes + index])
+                throw new Error('Native staged file differs from the complete serialized backup.')
+            verifiedBytes += bytes.length
+          } catch (error) {
+            fail(error)
+          }
+        },
+      ).catch(fail)
+    })
+    report.nativeExportVerifiedBytes = verifiedBytes
+    report.nativeExportFileSha256 = Array.from(
+      new Uint8Array(await crypto.subtle.digest('SHA-256', expectedBytes)),
+      (value) => value.toString(16).padStart(2, '0'),
+    ).join('')
     await Filesystem.rmdir({ path: staged.directory, directory: Directory.Cache, recursive: true })
     await progress('verifying', { exportBytes: blob.size })
     if ((await canonicalHash(backup.projects)) !== expected.hash)
