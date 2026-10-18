@@ -37,7 +37,7 @@ vi.mock('@capacitor/camera', () => ({
   CameraSource: { Prompt: 'prompt' },
 }))
 import { NativeAudio } from './audio'
-import { NativeCamera } from './camera'
+import { NativeCamera, type CameraContinuation } from './camera'
 describe('supplemental native capture dispatch guards (not device evidence)', () => {
   beforeEach(() => {
     vi.resetAllMocks()
@@ -86,6 +86,29 @@ describe('supplemental native capture dispatch guards (not device evidence)', ()
     current = false
     release({ format: 'jpeg', base64String: 'not-read' })
     expect(await pending).toEqual({ status: 'cancelled', mayHaveCommitted: false })
+  })
+  it('late camera delivery preserves its original durable continuation for explicit recovery', async () => {
+    let current = true
+    const recovery = {
+      begin: vi.fn(async () => 'capture'),
+      restore: vi.fn(async () => 'capture'),
+      finish: vi.fn(),
+    }
+    fixture.photo.mockImplementation(async () => {
+      current = false
+      return { format: 'jpeg', base64String: 'fixture' }
+    })
+    const continuation = {
+      recovery,
+      source: { scope: {}, draftKey: 'draft' },
+    } as unknown as CameraContinuation
+    expect(await new NativeCamera(() => current, continuation).photo()).toMatchObject({
+      status: 'cancelled',
+    })
+    expect(recovery.restore).toHaveBeenCalledWith(
+      expect.objectContaining({ pluginId: 'Camera', success: true }),
+    )
+    expect(recovery.finish).not.toHaveBeenCalled()
   })
   it('separate form instances cannot start or cancel each other’s recorder', async () => {
     fixture.check.mockResolvedValue({ recordAudio: 'granted' })

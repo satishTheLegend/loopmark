@@ -2,10 +2,21 @@ import XCTest
 
 final class NativeFlows: XCTestCase {
     @MainActor
+    func testMicrophoneDenialNeverStartsRecording() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "app.loopmark.craft")
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Native UI fixtures ready"].waitForExistence(timeout: 60))
+        XCTAssertTrue(app.buttons["Record fixture"].waitForExistence(timeout: 30))
+        app.buttons["Record fixture"].tap()
+        XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "PERMISSION_DENIED")).firstMatch.waitForExistence(timeout: 10), app.debugDescription)
+    }
+    @MainActor
     func testNativeSystemSheetsCancelWithoutErrors() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "app.loopmark.craft")
         app.launch()
+        XCTAssertTrue(app.staticTexts["Native UI fixtures ready"].waitForExistence(timeout: 60))
         let share = app.buttons["Share fixture"]
         XCTAssertTrue(share.waitForExistence(timeout: 30))
         share.tap()

@@ -73,6 +73,14 @@
           "passed": true
         },
         {
+          "name": "native billing remains unconfigured without an authenticated enrolled account",
+          "passed": true
+        },
+        {
+          "name": "native restored-camera staging survives reopen and applies only to its original draft revision",
+          "passed": true
+        },
+        {
           "name": "native per-account device identity and verified offline label persist and clear",
           "passed": true
         },
@@ -159,6 +167,14 @@
         },
         {
           "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native billing remains unconfigured without an authenticated enrolled account",
+          "passed": true
+        },
+        {
+          "name": "native restored-camera staging survives reopen and applies only to its original draft revision",
           "passed": true
         },
         {

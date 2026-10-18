@@ -184,8 +184,15 @@ export class NativeMedia implements PlatformMedia {
           await db.run('DELETE FROM media WHERE scope=? AND id=?', [row.scope, row.id])
         }
       }
+      const captureRow = (
+        await db.query("SELECT body FROM metadata WHERE key='native-camera-continuation'")
+      ).values?.[0]
+      const captureFile = captureRow
+        ? (JSON.parse(captureRow.body as string) as { fileKey?: string }).fileKey
+        : undefined
       for (const file of (await durableFiles.list()).files) {
         if (!/^[a-f0-9]{64}$/.test(file.key) || file.modifiedAt >= cutoff) continue
+        if (file.key === captureFile) continue
         const live = (await db.query('SELECT file_key FROM media WHERE file_key=?', [file.key]))
           .values?.length
         const journal = (

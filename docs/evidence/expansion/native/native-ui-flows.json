@@ -1,6 +1,6 @@
 {
   "date": "2026-10-18",
-  "scope": "Test-owned simulators; synthetic JSON only; no share recipient or network transfer selected",
+  "scope": "Test-owned simulators; synthetic files; Android emulator has -no-audio; no share recipient or network transfer selected",
   "android": [
     {
       "action": "share",
@@ -19,6 +19,26 @@
       "status": "ok",
       "bytes": 36,
       "type": "application/json"
+    },
+    {
+      "action": "audio-start",
+      "status": "ok"
+    },
+    {
+      "action": "audio-stop",
+      "status": "ok",
+      "bytes": 66913,
+      "type": "audio/mp4"
+    },
+    {
+      "action": "audio-start",
+      "status": "ok"
+    },
+    {
+      "action": "audio-interrupted",
+      "status": "ok",
+      "bytes": 29610,
+      "type": "audio/mp4"
     }
   ],
   "ios": [
@@ -33,7 +53,14 @@
     {
       "action": "photo",
       "status": "cancelled"
+    },
+    {
+      "action": "audio-start",
+      "status": "rejected",
+      "code": "PERMISSION_DENIED",
+      "precondition": "simctl privacy revoke microphone app.loopmark.craft on dedicated simulator"
     }
   ],
-  "iosXCTest": "NativeFlows.testNativeSystemSheetsCancelWithoutErrors PASS"
+  "iosXCTest": "NativeFlows.testNativeSystemSheetsCancelWithoutErrors PASS",
+  "iosMicrophoneXCTest": "NativeFlows.testMicrophoneDenialNeverStartsRecording PASS; OS denial established by simctl, prompt UI not tested"
 }

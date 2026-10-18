@@ -6,6 +6,13 @@ import { preparePhoto } from '../../media'
 import { dataUrlToBlob } from '../../services/media-codec'
 import { LIMITS } from '../../domain/policy'
 import { cancelled, nativeFailure, requireNative } from './boundary'
+import type { NativeCaptureRecovery, NativeCaptureSource } from './capture-recovery'
+
+let cameraBusy = false
+export interface CameraContinuation {
+  recovery: NativeCaptureRecovery
+  source: NativeCaptureSource
+}
 
 /** Re-encode resized pixels so the stored photo has predictable MIME/size and no source EXIF. */
 export async function normalizeNativePhoto(value: unknown): Promise<MediaInput> {
@@ -25,13 +32,19 @@ export async function normalizeNativePhoto(value: unknown): Promise<MediaInput> 
   return { kind: 'photo', bytes: converted }
 }
 export class NativeCamera {
-  private busy = false
-  constructor(private isCurrent: () => boolean) {}
+  constructor(
+    private isCurrent: () => boolean,
+    private continuation?: CameraContinuation,
+  ) {}
   async photo(): Promise<BoundaryResult<MediaInput>> {
-    if (this.busy) return nativeFailure(new DomainError('CAPABILITY_UNAVAILABLE'))
-    this.busy = true
+    if (cameraBusy) return nativeFailure(new DomainError('CAPABILITY_UNAVAILABLE'))
+    cameraBusy = true
+    let continuationId: string | undefined
     try {
       requireNative()
+      if (!this.isCurrent()) return cancelled()
+      if (this.continuation)
+        continuationId = await this.continuation.recovery.begin(this.continuation.source)
       if (!this.isCurrent()) return cancelled()
       const photo = await Camera.getPhoto({
         quality: 85,
@@ -46,13 +59,38 @@ export class NativeCamera {
         promptLabelPhoto: 'Choose photo',
         promptLabelPicture: 'Take photo',
       })
-      if (!this.isCurrent()) return cancelled()
+      if (!this.isCurrent()) {
+        if (continuationId && this.continuation) {
+          await this.continuation.recovery.restore({
+            pluginId: 'Camera',
+            methodName: 'getPhoto',
+            success: true,
+            data: photo,
+          })
+          continuationId = undefined
+        }
+        return cancelled()
+      }
       const value = await normalizeNativePhoto(photo)
-      return this.isCurrent() ? { status: 'ok', value } : cancelled()
+      if (!this.isCurrent()) {
+        if (continuationId && this.continuation) {
+          await this.continuation.recovery.restore({
+            pluginId: 'Camera',
+            methodName: 'getPhoto',
+            success: true,
+            data: photo,
+          })
+          continuationId = undefined
+        }
+        return cancelled()
+      }
+      return { status: 'ok', value }
     } catch (error) {
       return nativeFailure(error)
     } finally {
-      this.busy = false
+      if (continuationId)
+        await this.continuation?.recovery.finish(continuationId).catch(() => undefined)
+      cameraBusy = false
     }
   }
 }

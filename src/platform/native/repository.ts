@@ -104,15 +104,25 @@ export class NativeRepository implements Repository {
           prefix,
         ])
       ).values ?? []
+    const drafts = rows.map((row) => {
+      const draft = JSON.parse(row.body as string) as NativeDraft
+      return { key: draft.id, revision: draft.revision }
+    })
+    const captureRow = (
+      await db.query("SELECT body FROM metadata WHERE key='native-camera-continuation'")
+    ).values?.[0]
+    if (captureRow) {
+      const capture = JSON.parse(captureRow.body as string)
+      if (scopeKey(capture.source.scope.key) === scopeKey(key))
+        drafts.push({
+          key: `native-camera:${capture.id}`,
+          revision: `${capture.id}:${capture.state}:${capture.sha256 ?? ''}`,
+        })
+    }
     return {
       key,
       revision: state.version,
-      drafts: rows
-        .map((row) => {
-          const draft = JSON.parse(row.body as string) as NativeDraft
-          return { key: draft.id, revision: draft.revision }
-        })
-        .sort((a, b) => a.key.localeCompare(b.key)),
+      drafts: drafts.sort((a, b) => a.key.localeCompare(b.key)),
     }
   }
   async reviewLocal(key: CollectionKey): Promise<LocalCollectionReview> {
@@ -780,6 +790,28 @@ export class NativeRepository implements Repository {
               false,
             )
         }
+        if (!recovered) {
+          const row = (
+            await db.query("SELECT body FROM metadata WHERE key='native-camera-continuation'")
+          ).values?.[0]
+          const capture = row ? JSON.parse(row.body as string) : null
+          if (capture && scopeKey(capture.source.scope.key) === scopeKey(key)) {
+            if (capture.state === 'ready') {
+              const file = await durableFiles.read({ key: capture.fileKey })
+              await durableFiles.put({
+                key: capture.fileKey,
+                base64: file.base64,
+                sha256: capture.sha256,
+              })
+            }
+            capture.source.scope.key = target
+            await db.run(
+              "UPDATE metadata SET body=? WHERE key='native-camera-continuation'",
+              [JSON.stringify(capture)],
+              false,
+            )
+          }
+        }
         if (recovered) {
           source.pending = []
           source.anchors = { projects: [], checkpoints: [] }
@@ -828,6 +860,14 @@ export class NativeRepository implements Repository {
           [`${kind}:${scopeKey(key)}:`, `${kind}:${scopeKey(key)}:`],
           false,
         )
+      const capture = (
+        await db.query("SELECT body FROM metadata WHERE key='native-camera-continuation'")
+      ).values?.[0]
+      if (
+        capture &&
+        scopeKey(JSON.parse(capture.body as string).source.scope.key) === scopeKey(key)
+      )
+        await db.run("DELETE FROM metadata WHERE key='native-camera-continuation'", [], false)
       await db.run('DELETE FROM collections WHERE key=?', [scopeKey(key)], false)
     })
     this.publish()

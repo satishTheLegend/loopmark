@@ -1,13 +1,13 @@
 import type { CapturePort } from '../contracts'
-import { NativeCamera } from './camera'
+import { NativeCamera, type CameraContinuation } from './camera'
 import { NativeAudio, type NativeAudioOptions } from './audio'
 
 export function createNativeCapture(
-  options: NativeAudioOptions,
+  options: NativeAudioOptions & { cameraContinuation?: CameraContinuation },
 ): CapturePort & { dispose(): Promise<void> } {
   let disposed = false
   const isCurrent = () => !disposed && options.isCurrent()
-  const camera = new NativeCamera(isCurrent)
+  const camera = new NativeCamera(isCurrent, options.cameraContinuation)
   const audio = new NativeAudio({ ...options, isCurrent })
   return {
     photo: () => camera.photo(),

@@ -8,6 +8,9 @@ if (
   )
 )
   throw new Error('Build the synthetic native harness before running OS sheet UI tests.')
+// Establish an actual OS-denied state on this explicitly selected fixture simulator.
+// Avoid XCTest's default alert handler, which may grant microphone access automatically.
+await run('xcrun', ['simctl', 'privacy', device, 'revoke', 'microphone', 'app.loopmark.craft'])
 await run('xcodebuild', [
   '-project',
   'ios/App/App.xcodeproj',
