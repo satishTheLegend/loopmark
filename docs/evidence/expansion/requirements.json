@@ -673,7 +673,7 @@
       }
     },
     "unitFinal373": {
-      "path": "docs/evidence/expansion/I13/web/unit-qualification.json",
+      "path": "docs/evidence/expansion/I13/web/unit-qualification-a1a3b72.json",
       "sha256": "fb24cc89c30d702c12a7c7a86a62c7b1591636d30052260d73006deaae610cd0",
       "scope": "Untouched actual Vitest JSON reporter:373 passed exact cases/46 source-hashed files. Independent object equality with raw assertionResults and source hashes verified; unit/contract evidence does not substitute for current browser/native execution.",
       "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
@@ -869,6 +869,30 @@
         "tests/expansion/purchases.cloud.ts": "b46e38c633a2731bd09c98c35509455be1a96cf3be3f068a9740bccb9b6503f3",
         "tests/expansion/rebase.cloud.ts": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d",
         "tests/expansion/sync-smoke.spec.ts": "eab21cdb4bb54ab6de862a11cbc1ebdf86bd2d1ac11c2892dc16ff328ba876d3"
+      }
+    },
+    "webGuestA1Targeted": {
+      "path": "docs/evidence/expansion/I13/web/final-scope-guest.log",
+      "sha256": "9bbe75f9c90b7a739563ad5b45a48bbf9e11493d1a1099df429016b0afa13a6e",
+      "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+      "reviewedAgainstRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+      "currentFreezeQualified": true,
+      "scope": "Targeted100 guest cases (20 exact titles×5 profiles) pass after unchanged-source preview rebuild. Derived raw Playwright list parsing, not JSON-reporter output; prior runner failure executed zero cases and is separately retained. Functional overlap is not a performance qualification.",
+      "testSourceHashes": {
+        "tests/draft-recovery.spec.ts": "818c0c83b6a11a29205afcbc216c3181d06ee9a32a9dd7d69f2c2477a1358955",
+        "tests/expansion/app-startup.spec.ts": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+        "tests/expansion/upgrade-guest.spec.ts": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+        "tests/journeys.spec.ts": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+        "tests/reliability.spec.ts": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e"
+      },
+      "outcomes": {
+        "passed": 100
+      },
+      "priorRunnerFailure": {
+        "path": "docs/evidence/expansion/I13/web/guest-preview-preflight.json",
+        "sha256": "2357c0d34a93813af322dce930225f189d4be1803e28e100acb36930759dd130",
+        "executedCases": 0,
+        "limitation": "Preview build absent at startup; removal cause unestablished. No application-case failure or product correction inferred."
       }
     }
   },
@@ -1608,7 +1632,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/upgrade-guest.spec.ts",
@@ -1711,6 +1736,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
           "durationAsReported": "3.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 9,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "2.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 29,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "2.6s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 49,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "2.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 69,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "2.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 89,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "2.4s"
         }
       ]
     },
@@ -1722,7 +1797,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/upgrade-guest.spec.ts",
@@ -1825,6 +1901,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
           "durationAsReported": "769ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid payment return is scrubbed immediately and never grants access",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 10,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "242ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid payment return is scrubbed immediately and never grants access",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 30,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "1.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid payment return is scrubbed immediately and never grants access",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 50,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "502ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid payment return is scrubbed immediately and never grants access",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 70,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "276ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid payment return is scrubbed immediately and never grants access",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 90,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+          "durationAsReported": "537ms"
         }
       ]
     },
@@ -1836,7 +1962,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
@@ -1939,6 +2066,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
           "durationAsReported": "17.8s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 11,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.4s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 31,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "3.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 51,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "3.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 71,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "15.9s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 91,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "18.8s"
         }
       ]
     },
@@ -2121,7 +2298,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
@@ -2224,6 +2402,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
           "durationAsReported": "4.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid imports preserve current data; valid restore is confirmed into a separate collection",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 12,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.6s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid imports preserve current data; valid restore is confirmed into a separate collection",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 32,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "3.4s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid imports preserve current data; valid restore is confirmed into a separate collection",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 52,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "3.9s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid imports preserve current data; valid restore is confirmed into a separate collection",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 72,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "3.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "invalid imports preserve current data; valid restore is confirmed into a separate collection",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 92,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "4.7s"
         }
       ]
     },
@@ -2235,7 +2463,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
@@ -2338,6 +2567,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
           "durationAsReported": "2.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "browser storage write failures retain form values and leave existing checkpoints intact",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 13,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "browser storage write failures retain form values and leave existing checkpoints intact",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 33,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.9s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "browser storage write failures retain form values and leave existing checkpoints intact",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 53,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.7s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "browser storage write failures retain form values and leave existing checkpoints intact",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 73,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "browser storage write failures retain form values and leave existing checkpoints intact",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 93,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.6s"
         }
       ]
     },
@@ -2349,7 +2628,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
@@ -2452,6 +2732,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
           "durationAsReported": "2.9s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "failed restore rolls back the entire transaction",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 14,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.2s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "failed restore rolls back the entire transaction",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 34,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "failed restore rolls back the entire transaction",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 54,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "failed restore rolls back the entire transaction",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 74,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "failed restore rolls back the entire transaction",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 94,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.0s"
         }
       ]
     },
@@ -2463,7 +2793,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
@@ -2566,6 +2897,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
           "durationAsReported": "3.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "two tabs retain concurrent checkpoints and reject stale detail edits",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 15,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "two tabs retain concurrent checkpoints and reject stale detail edits",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 35,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.6s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "two tabs retain concurrent checkpoints and reject stale detail edits",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 55,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "two tabs retain concurrent checkpoints and reject stale detail edits",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 75,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.9s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "two tabs retain concurrent checkpoints and reject stale detail edits",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 95,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.9s"
         }
       ]
     },
@@ -2691,7 +3072,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/journeys.spec.ts",
@@ -2794,6 +3176,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
           "durationAsReported": "1.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production cache permits offline reload, capture, and later reload without remote requests",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 16,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production cache permits offline reload, capture, and later reload without remote requests",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 36,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.7s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production cache permits offline reload, capture, and later reload without remote requests",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 56,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.6s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production cache permits offline reload, capture, and later reload without remote requests",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 76,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "1.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production cache permits offline reload, capture, and later reload without remote requests",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 96,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+          "durationAsReported": "2.1s"
         }
       ]
     },
@@ -4645,7 +5077,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -4748,6 +5181,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "1.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 5,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "877ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 25,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "1.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 45,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "984ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 65,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "924ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 85,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "1.2s"
         }
       ]
     },
@@ -4759,7 +5242,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -4862,6 +5346,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "2.7s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 6,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "2.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 26,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "2.8s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 46,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "2.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 66,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "2.6s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "complete backup restores separately and collection selection preserves source projects and drafts",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 86,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "2.5s"
         }
       ]
     },
@@ -4873,7 +5407,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -4976,6 +5511,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "533ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 7,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "190ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 27,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "270ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 47,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "364ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 67,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "278ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "unavailable storage shows recovery guidance without creating an empty workbasket",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 87,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "383ms"
         }
       ]
     },
@@ -4987,7 +5572,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/expansion/app-startup.spec.ts",
@@ -5090,6 +5676,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
           "durationAsReported": "2.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 8,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "261ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 28,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "426ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 48,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "583ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 68,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "338ms"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "delayed route focus preserves a field the maker has already focused",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 88,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+          "durationAsReported": "540ms"
         }
       ]
     },
@@ -8054,7 +8690,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/reliability.spec.ts",
@@ -8157,6 +8794,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
           "durationAsReported": "2.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a recovered edit draft cannot overwrite details saved later in another tab",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 17,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a recovered edit draft cannot overwrite details saved later in another tab",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 37,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.4s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a recovered edit draft cannot overwrite details saved later in another tab",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 57,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.2s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a recovered edit draft cannot overwrite details saved later in another tab",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 77,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.8s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a recovered edit draft cannot overwrite details saved later in another tab",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 97,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.7s"
         }
       ]
     },
@@ -8168,7 +8855,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/reliability.spec.ts",
@@ -8271,6 +8959,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
           "durationAsReported": "1.2s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "competing tabs preserve the first stored draft and warn before losing the second input",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 18,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "competing tabs preserve the first stored draft and warn before losing the second input",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 38,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.7s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "competing tabs preserve the first stored draft and warn before losing the second input",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 58,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.2s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "competing tabs preserve the first stored draft and warn before losing the second input",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 78,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "competing tabs preserve the first stored draft and warn before losing the second input",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 98,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.5s"
         }
       ]
     },
@@ -8396,7 +9134,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/reliability.spec.ts",
@@ -8499,6 +9238,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
           "durationAsReported": "2.3s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 19,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.8s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 39,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.1s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 59,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 79,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 99,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.6s"
         }
       ]
     },
@@ -8624,7 +9413,8 @@
       "level": "actual-product-browser",
       "executedProofRefs": [
         "webGuestFrozen",
-        "webGuest0b"
+        "webGuest0b",
+        "webGuestA1Targeted"
       ],
       "frozenSource": {
         "path": "tests/reliability.spec.ts",
@@ -8727,6 +9517,56 @@
           "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
           "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
           "durationAsReported": "4.5s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a separate restore preserves work saved after its preview in the original collection",
+          "profile": "chromium",
+          "status": "passed",
+          "ordinal": 20,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.0s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a separate restore preserves work saved after its preview in the original collection",
+          "profile": "firefox",
+          "status": "passed",
+          "ordinal": 40,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.8s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a separate restore preserves work saved after its preview in the original collection",
+          "profile": "webkit",
+          "status": "passed",
+          "ordinal": 60,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.2s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a separate restore preserves work saved after its preview in the original collection",
+          "profile": "chromium-mobile",
+          "status": "passed",
+          "ordinal": 80,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "1.8s"
+        },
+        {
+          "proofRef": "webGuestA1Targeted",
+          "testName": "a separate restore preserves work saved after its preview in the original collection",
+          "profile": "webkit-mobile",
+          "status": "passed",
+          "ordinal": 100,
+          "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+          "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+          "durationAsReported": "2.5s"
         }
       ]
     },
@@ -30735,11 +31575,62 @@
               "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
               "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
               "durationAsReported": "17.8s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "chromium",
+              "status": "passed",
+              "ordinal": 11,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "2.4s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "firefox",
+              "status": "passed",
+              "ordinal": 31,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "3.3s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "webkit",
+              "status": "passed",
+              "ordinal": 51,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "3.1s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "chromium-mobile",
+              "status": "passed",
+              "ordinal": 71,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "15.9s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "webkit-mobile",
+              "status": "passed",
+              "ordinal": 91,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "18.8s"
             }
           ],
           "proofRefs": [
             "webGuestFrozen",
-            "webGuest0b"
+            "webGuest0b",
+            "webGuestA1Targeted"
           ]
         },
         {
@@ -30849,11 +31740,62 @@
               "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
               "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
               "durationAsReported": "3.1s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+              "profile": "chromium",
+              "status": "passed",
+              "ordinal": 9,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+              "durationAsReported": "2.5s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+              "profile": "firefox",
+              "status": "passed",
+              "ordinal": 29,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+              "durationAsReported": "2.6s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+              "profile": "webkit",
+              "status": "passed",
+              "ordinal": 49,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+              "durationAsReported": "2.0s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+              "profile": "chromium-mobile",
+              "status": "passed",
+              "ordinal": 69,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+              "durationAsReported": "2.1s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest",
+              "profile": "webkit-mobile",
+              "status": "passed",
+              "ordinal": 89,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "232700f4b75a797a480bf95f8036052bf5c4893ce089c826ccc0d4909843dcc3",
+              "durationAsReported": "2.4s"
             }
           ],
           "proofRefs": [
             "webGuestFrozen",
-            "webGuest0b"
+            "webGuest0b",
+            "webGuestA1Targeted"
           ]
         },
         {
@@ -30996,11 +31938,62 @@
               "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
               "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
               "durationAsReported": "17.8s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "chromium",
+              "status": "passed",
+              "ordinal": 11,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "2.4s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "firefox",
+              "status": "passed",
+              "ordinal": 31,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "3.3s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "webkit",
+              "status": "passed",
+              "ordinal": 51,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "3.1s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "chromium-mobile",
+              "status": "passed",
+              "ordinal": 71,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "15.9s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+              "profile": "webkit-mobile",
+              "status": "passed",
+              "ordinal": 91,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+              "durationAsReported": "18.8s"
             }
           ],
           "proofRefs": [
             "webGuestFrozen",
-            "webGuest0b"
+            "webGuest0b",
+            "webGuestA1Targeted"
           ]
         },
         {
@@ -31093,7 +32086,8 @@
         "webGuestFrozen",
         "unitFinal353",
         "webGuest0b",
-        "unitFinal373"
+        "unitFinal373",
+        "webGuestA1Targeted"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -33583,11 +34577,62 @@
               "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
               "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
               "durationAsReported": "2.3s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+              "profile": "chromium",
+              "status": "passed",
+              "ordinal": 19,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+              "durationAsReported": "1.8s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+              "profile": "firefox",
+              "status": "passed",
+              "ordinal": 39,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+              "durationAsReported": "2.1s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+              "profile": "webkit",
+              "status": "passed",
+              "ordinal": 59,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+              "durationAsReported": "2.0s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+              "profile": "chromium-mobile",
+              "status": "passed",
+              "ordinal": 79,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+              "durationAsReported": "2.0s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again",
+              "profile": "webkit-mobile",
+              "status": "passed",
+              "ordinal": 99,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "ea0b9e96366a4cdf74f6c52db7539294a3815769caee4bcd68846e896554d72e",
+              "durationAsReported": "2.6s"
             }
           ],
           "proofRefs": [
             "webGuestFrozen",
-            "webGuest0b"
+            "webGuest0b",
+            "webGuestA1Targeted"
           ]
         }
       ],
@@ -33612,7 +34657,8 @@
         "webGuestFrozen",
         "unitFinal353",
         "webGuest0b",
-        "unitFinal373"
+        "unitFinal373",
+        "webGuestA1Targeted"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -47817,11 +48863,62 @@
               "testSourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
               "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
               "durationAsReported": "1.0s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "profile": "chromium",
+              "status": "passed",
+              "ordinal": 5,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+              "durationAsReported": "877ms"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "profile": "firefox",
+              "status": "passed",
+              "ordinal": 25,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+              "durationAsReported": "1.5s"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "profile": "webkit",
+              "status": "passed",
+              "ordinal": 45,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+              "durationAsReported": "984ms"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "profile": "chromium-mobile",
+              "status": "passed",
+              "ordinal": 65,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+              "durationAsReported": "924ms"
+            },
+            {
+              "proofRef": "webGuestA1Targeted",
+              "testName": "production startup migrates legacy saved work and draft, then uses the normalized repository",
+              "profile": "webkit-mobile",
+              "status": "passed",
+              "ordinal": 85,
+              "testSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+              "testSourceSha256": "6cd55e13d09a2a61c4b7847e9cb36b9f610751d0ec0ba60ef3b6681384bab822",
+              "durationAsReported": "1.2s"
             }
           ],
           "proofRefs": [
             "webGuestFrozen",
-            "webGuest0b"
+            "webGuest0b",
+            "webGuestA1Targeted"
           ]
         },
         {
@@ -47961,7 +49058,8 @@
         "webGuest0b",
         "unitFinal373",
         "freshCheckout",
-        "integrationChecksA1"
+        "integrationChecksA1",
+        "webGuestA1Targeted"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
