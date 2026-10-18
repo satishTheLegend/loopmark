@@ -1,0 +1,27 @@
+{
+  "kind": "controlled rendered component regression; synthetic direct events, no cloud calls",
+  "baseCommit": "f41855ebdd50c426d2c966b28ebd7d8f31ccc69a",
+  "command": [
+    "npm",
+    "run",
+    "test:ui",
+    "--",
+    "tests/ui/account-states.ui.ts",
+    "tests/ui/expanded-accessibility.ui.ts",
+    "--workers=1",
+    "--grep",
+    "known saved-change checking|sync announces each actionable"
+  ],
+  "files": {
+    "src/components/SyncStatus.tsx": "97fe77d08c16315c55f7963ae59614a34d4c24998b3b658bbd4934fb28be7c76",
+    "src/App.tsx": "be6365421c6542b923a1c10e8443d407bf3212dfa0068d2cbb735dd7cdac31a9",
+    "tests/ui/main.tsx": "10c3d922bade834993e7fb0ebce57223a5a4e210557c58935903d96eebabcf1b",
+    "tests/ui/account-states.ui.ts": "6548d157ce47a7a9350b400846651d8073f5207bbdab7b773fb28383f26626c7"
+  },
+  "exitCode": 1,
+  "elapsedSeconds": 34.387,
+  "rawTraceSha256": {
+    "webkit": "8c66cc61eaa6e11506b09ae795c7e4bf72d9e7c038fcc3b1bd274f26917c825e",
+    "webkit-mobile": "b0f00e9c93647e7124576f4db35ada53f87b584a4cae1d023b89fb75ed0d55ef"
+  }
+}

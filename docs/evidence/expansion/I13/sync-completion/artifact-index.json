@@ -1,0 +1,17 @@
+{
+  "candidateCommit": "8bfd398f90507454b337708415f92ff172c4eeb8",
+  "artifacts": {
+    "README.md": "4ad61a8f0af74a4347c4d7bce677ff4725946d38b942134a3685dfe34a39bdec",
+    "fixture-error-red-fixture.patch": "f6a201d4a6932242a6e919260de1b25937ebd5404766f965b680c89220e5fe81",
+    "fixture-error-red.json": "f811a7dea1f26ba4f8db11a8c8d9ec543d9430c32c1887c18ea1c5b3992de150",
+    "fixture-error-red.log": "68f3f0ad78902b99937f86c22aeb88e9d8975b920f5041f6fdb21bf561c6dde0",
+    "focus-fixture-green.json": "6dcd1527126cc29f12b4157002ed810b72e3b575b39e320fcf643bf4f4cb3ddb",
+    "focus-fixture-green.log": "901839b6e6f5e12574b5325162168167b006c616d4d952e69beb72873dc89bc1",
+    "green.json": "b6dbc0f38be68615a0d2e269a7b27ef03cff51e1497b750ef82bf1f44f1dff91",
+    "green.log": "40ca2fa6a72713d8de19e61ed6d643249188d6d6e56f2f2f11cb4ecaabcaa5d0",
+    "red-fixture.patch": "67e0f51839f406b2f067ede41976e5c8e9f780efa6ebe6494a685674ce4c6a22",
+    "red.json": "699ab9a85a4bdcfffe137682e6ea7129a946f6df0fabe272e4a3c87b037ca444",
+    "red.log": "42b6dea85b94a934695dfcd0a60edcdabee2cdd518c81de1929d30b9e7bc5af5",
+    "verification.json": "8f32fb3dc08212b6ac28048ad6d21f5af224f554d1baf16586d4f14eee4fdb9e"
+  }
+}

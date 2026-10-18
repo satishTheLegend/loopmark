@@ -1,0 +1,24 @@
+{
+  "kind": "controlled rendered component regression; synthetic direct events, no cloud calls",
+  "sourceCommit": "f41855ebdd50c426d2c966b28ebd7d8f31ccc69a",
+  "productionEquivalentTo": "5094bab2b1411a6f3ab00dbdb607da87228ccd67",
+  "command": [
+    "npm",
+    "run",
+    "test:ui",
+    "--",
+    "tests/ui/account-states.ui.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--grep",
+    "known saved-change checking"
+  ],
+  "files": {
+    "src/components/SyncStatus.tsx": "beae074708f1fefb4bb5b5c2d426bf1f406f00c970316754e97790f83dba1472",
+    "src/App.tsx": "7adf49d70206072251d8092436798210530df8ef1bbe5c2e5e26c38e0dd894ee",
+    "tests/ui/main.tsx": "fb3a3197cd9a654653e666a24b5bc3214b9263d8467d8c2cd64e08a3b6fe73f8",
+    "tests/ui/account-states.ui.ts": "7a5e9af2b4c1f8fd7485e3442789837036c0a47cf9bac83644ba8a93cb6ec98e"
+  },
+  "exitCode": 1,
+  "elapsedSeconds": 10.957
+}

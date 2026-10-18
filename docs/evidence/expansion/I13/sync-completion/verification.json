@@ -1,0 +1,23 @@
+{
+  "candidateCommit": "8bfd398f90507454b337708415f92ff172c4eeb8",
+  "checks": [
+    {
+      "command": "npx tsc -b --pretty false",
+      "exitCode": 0,
+      "stdout": "",
+      "recordSource": "tool result; no separate raw log captured"
+    },
+    {
+      "command": "npx prettier --check src/App.tsx src/components/SyncStatus.tsx tests/ui/main.tsx tests/ui/account-states.ui.ts",
+      "exitCode": 0,
+      "stdout": "Checking formatting...\nAll matched files use Prettier code style!\n",
+      "recordSource": "tool result; no separate raw log captured"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "stdout": "",
+      "recordSource": "tool result; no separate raw log captured"
+    }
+  ]
+}

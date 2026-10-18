@@ -1,0 +1,79 @@
+
+> loopmark@1.0.0 test:ui
+> playwright test --config=playwright.ui.config.ts tests/ui/account-states.ui.ts tests/ui/expanded-accessibility.ui.ts --workers=1 --grep known saved-change checking|sync announces each actionable
+
+[WebServer] (node:92814) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:92836) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:92838) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] 
+[WebServer] - /Users/lalaji/Repos/CGProjects/loopmark-expansion-client
+[WebServer] - /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/vite/dist/client
+[WebServer] 
+[WebServer] Refer to docs https://vite.dev/config/server-options.html#server-fs-allow for configurations and more details.
+[WebServer] 
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   1 [chromium] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (1.8s)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   2 [chromium] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (644ms)
+(node:92857) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   3 [firefox] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (2.7s)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   4 [firefox] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (569ms)
+(node:92874) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   5 [webkit] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (2.0s)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   6 [webkit] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (551ms)
+(node:92894) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   7 [chromium-mobile] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (1.7s)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   8 [chromium-mobile] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (606ms)
+(node:92913) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓   9 [webkit-mobile] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (1.7s)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✓  10 [webkit-mobile] › tests/ui/expanded-accessibility.ui.ts:3:1 › sync announces each actionable transition once without repeating polling updates (528ms)
+
+  10 passed (16.1s)

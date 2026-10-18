@@ -1,0 +1,164 @@
+diff --git a/tests/ui/account-states.ui.ts b/tests/ui/account-states.ui.ts
+index 0656308..c67896e 100644
+--- a/tests/ui/account-states.ui.ts
++++ b/tests/ui/account-states.ui.ts
+@@ -113,6 +113,14 @@ test('known saved-change checking replaces current without repeated announcement
+   const label = page.locator('.sync-status > span:not(.sr-only)')
+   const announcement = page.locator('.sync-status [role=status]')
+   const checking = page.getByRole('button', { name: 'Check saved change', exact: true })
++  await page.locator('.sync-status-host').evaluate((node) => {
++    const state = window as typeof window & { completions?: string[] }
++    state.completions = []
++    new MutationObserver(() => {
++      const text = node.querySelector('[role=status]')?.textContent
++      if (text === 'Synced to your account') state.completions!.push(text)
++    }).observe(node, { subtree: true, characterData: true, childList: true })
++  })
+   await expect(label).toHaveText('Synced to your account')
+   await checking.focus()
+   await checking.click()
+@@ -123,9 +131,32 @@ test('known saved-change checking replaces current without repeated announcement
+   await expect(announcement).toHaveText('')
+   await page.getByRole('button', { name: 'Publish pending change', exact: true }).click()
+   await expect(label).toHaveText('1 item waiting to sync')
++  await page.getByRole('button', { name: 'Drain pending while syncing', exact: true }).click()
++  await expect(label).toHaveText('Syncing with your account')
++  await expect(announcement).toHaveText('')
++  await checking.click()
++  await expect(label).toHaveText('Checking saved changes')
++  await expect(announcement).toHaveText('')
+   await page.getByRole('button', { name: 'Publish confirmed sync', exact: true }).click()
+   await expect(label).toHaveText('Synced to your account')
+   await expect(announcement).toHaveText('Synced to your account')
++  for (let i = 0; i < 3; i++) {
++    await checking.click()
++    await page.getByRole('button', { name: 'Publish confirmed sync', exact: true }).click()
++  }
++  await expect(announcement).toHaveText('')
++  for (const part of ['collection', 'account', 'generation', 'device', 'device generation']) {
++    await page.getByRole('button', { name: 'Publish pending change', exact: true }).click()
++    await expect(label).toHaveText('1 item waiting to sync')
++    await page.getByRole('button', { name: `Change announcement ${part}`, exact: true }).click()
++    await expect(label).toHaveText('Checking saved changes')
++    await page.getByRole('button', { name: 'Publish confirmed sync', exact: true }).click()
++    await expect(label).toHaveText('Synced to your account')
++    await expect(announcement).toHaveText('')
++  }
++  expect(
++    await page.evaluate(() => (window as typeof window & { completions: string[] }).completions),
++  ).toEqual(['Synced to your account'])
+   await page.getByRole('button', { name: 'Check saved change', exact: true }).click()
+   await page.getByRole('button', { name: 'Receive conflict before view', exact: true }).click()
+   await expect(label).toHaveText('Changes need your review')
+diff --git a/tests/ui/main.tsx b/tests/ui/main.tsx
+index a55dc1d..8e3eb3e 100644
+--- a/tests/ui/main.tsx
++++ b/tests/ui/main.tsx
+@@ -12,6 +12,7 @@ import { ConflictReview } from '../../src/components/ConflictReview'
+ import { SignOutReview } from '../../src/components/SignOutReview'
+ import { SyncStatus } from '../../src/components/SyncStatus'
+ import { summarizeSync, type SyncSummary } from '../../src/components/sync-summary'
++import { canonicalJson } from '../../src/domain/canonical-json'
+ import { DomainError } from '../../src/domain/errors'
+ import { info, project, now } from '../../src/repositories/browser/fixtures.test-support'
+ import type { DeletionReceipt, CollectionView, PendingIntent } from '../../src/domain/contracts'
+@@ -99,8 +100,13 @@ function Harness() {
+   const scenario = new URLSearchParams(location.search).get('scenario') || 'account'
+   const [open, setOpen] = useState(true)
+   const [freshness, setFreshness] = useState<
+-    'idle' | 'checking' | 'pending' | 'conflict' | 'error'
++    'idle' | 'checking' | 'syncing' | 'pending' | 'conflict' | 'error'
+   >('idle')
++  const [syncScope, setSyncScope] = useState({
++    key: info(true).key,
++    generation: 1,
++    device: { id: 'device', generation: 'generation' },
++  })
+   const [stale, setStale] = useState(scenario === 'conflict-stale')
+   const [result, setResult] = useState('')
+   const [syncSummary, setSyncSummary] = useState<SyncSummary>({
+@@ -120,30 +126,65 @@ function Harness() {
+       <output aria-label="Action result">{result}</output>
+       {scenario === 'sync-checking' && (
+         <>
+-          <SyncStatus
+-            summary={summarizeSync({
+-              view:
+-                freshness === 'pending'
+-                  ? { ...acknowledged, pending: [{ ...pending, state: 'queued' }] }
+-                  : acknowledged,
+-              online: true,
+-              working: false,
+-              syncState: freshness,
+-              lastSyncedAt: now,
+-              syncError:
+-                freshness === 'conflict'
+-                  ? new DomainError('REVISION_CONFLICT').detail
+-                  : freshness === 'error'
+-                    ? new DomainError('MEDIA_CAPACITY_REACHED').detail
+-                    : undefined,
+-            })}
+-            onDetails={() => {}}
+-          />
++          <div className="sync-status-host">
++            <SyncStatus
++              key={canonicalJson(syncScope)}
++              summary={summarizeSync({
++                view:
++                  freshness === 'pending'
++                    ? { ...acknowledged, pending: [{ ...pending, state: 'queued' }] }
++                    : acknowledged,
++                online: true,
++                working: freshness === 'syncing',
++                syncState: freshness,
++                lastSyncedAt: now,
++                syncError:
++                  freshness === 'conflict'
++                    ? new DomainError('REVISION_CONFLICT').detail
++                    : freshness === 'error'
++                      ? new DomainError('MEDIA_CAPACITY_REACHED').detail
++                      : undefined,
++              })}
++              onDetails={() => {}}
++            />
++          </div>
+           <button onClick={() => setFreshness('checking')}>Check saved change</button>
++          <button onClick={() => setFreshness('syncing')}>Drain pending while syncing</button>
+           <button onClick={() => setFreshness('pending')}>Publish pending change</button>
+           <button onClick={() => setFreshness('idle')}>Publish confirmed sync</button>
+           <button onClick={() => setFreshness('conflict')}>Receive conflict before view</button>
+           <button onClick={() => setFreshness('error')}>Receive capacity before view</button>
++          {(['collection', 'account', 'generation', 'device', 'device generation'] as const).map(
++            (part) => (
++              <button
++                key={part}
++                onClick={() => {
++                  setFreshness('checking')
++                  setSyncScope((scope) => ({
++                    key: {
++                      ...scope.key,
++                      collectionId:
++                        part === 'collection'
++                          ? `${scope.key.collectionId}-next`
++                          : scope.key.collectionId,
++                      namespace:
++                        part === 'account' ? `${scope.key.namespace}-next` : scope.key.namespace,
++                    },
++                    generation: scope.generation + (part === 'generation' ? 1 : 0),
++                    device: {
++                      id: part === 'device' ? `${scope.device.id}-next` : scope.device.id,
++                      generation:
++                        part === 'device generation'
++                          ? `${scope.device.generation}-next`
++                          : scope.device.generation,
++                    },
++                  }))
++                }}
++              >
++                Change announcement {part}
++              </button>
++            ),
++          )}
+         </>
+       )}
+       {scenario === 'sync-announcement' && (

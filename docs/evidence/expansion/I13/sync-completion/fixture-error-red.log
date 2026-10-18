@@ -1,0 +1,67 @@
+
+> loopmark@1.0.0 test:ui
+> playwright test --config=playwright.ui.config.ts tests/ui/account-states.ui.ts --project=chromium --workers=1 --grep known saved-change checking
+
+[WebServer] (node:91042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:91063) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:91092) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] 
+[WebServer] - /Users/lalaji/Repos/CGProjects/loopmark-expansion-client
+[WebServer] - /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/vite/dist/client
+[WebServer] 
+[WebServer] Refer to docs https://vite.dev/config/server-options.html#server-fs-allow for configurations and more details.
+[WebServer] 
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/lora/files/lora-latin-400-normal.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff" is outside of Vite serving allow list.
+  ✘  1 [chromium] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies (8.9s)
+
+
+  1) [chromium] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('.sync-status > span:not(.sr-only)')
+    Expected: "Syncing with your account"
+    Received: " Synced to your account"
+    Timeout:  8000ms
+
+    Call log:
+      - Expect "toHaveText" locator('.sync-status > span:not(.sr-only)') with timeout 8000ms
+      - waiting for locator('.sync-status > span:not(.sr-only)')
+        20 × locator resolved to <span>…</span>
+           - unexpected value " Synced to your account"
+
+
+      133 |   await expect(label).toHaveText('1 item waiting to sync')
+      134 |   await page.getByRole('button', { name: 'Drain pending while syncing', exact: true }).click()
+    > 135 |   await expect(label).toHaveText('Syncing with your account')
+          |                       ^
+      136 |   await expect(announcement).toHaveText('')
+      137 |   await checking.click()
+      138 |   await expect(label).toHaveText('Checking saved changes')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-client/tests/ui/account-states.ui.ts:135:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-ui/account-states.ui.ts-known-2f0b0--and-preserves-new-remedies-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-ui/account-states.ui.ts-known-2f0b0--and-preserves-new-remedies-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-ui/account-states.ui.ts-known-2f0b0--and-preserves-new-remedies-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-ui/account-states.ui.ts-known-2f0b0--and-preserves-new-remedies-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/ui/account-states.ui.ts:109:1 › known saved-change checking replaces current without repeated announcements and preserves new remedies 
