@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "purpose": "synthetic native persistence and boundary qualification",
+  "files": {
+    "assets/base-CiG6rEkH.js": "da3676af613fd17315fadb4fc9c675d7828836f49baaadd14839d8b462cb2373",
+    "assets/definitions-ButVlssN.js": "8cd1d3c758351f8d1c2544e67da4d8c7c3ac43daf4e8d869efbb1ab438be081d",
+    "assets/definitions-CU3lgwCH.js": "61222a72bd068a9d196d51b0dc20957ecd348f1e2af2f614dc21c7421709d5a9",
+    "assets/definitions-DlpntO5o.js": "386d6863bee205584abf6e3c5c7b71353d92150155a3d8093a8a919380bc85a5",
+    "assets/dist-BZ5u_Dz8.js": "52c69d9157330e0086ddd495ced1e552402335a98c7312f33c12fb8a0c09e5b6",
+    "assets/dist-BcK8Rfyd.js": "4900a91b25550612d60a2c16b361d83b1ec358611ac8ffef740461293f1b52a5",
+    "assets/index-O6i5gyqd.js": "cf3474c87fbb3ab1bf4e5cc680ad2226d24b9b99185c73bc9f020c60d0436067",
+    "assets/native-BXciAeFQ.js": "3fc31a7a0e6d6210373d523eac5035e4e3033a73f55bd5ecc771426e21ca0ef4",
+    "assets/web-4eY72Xl8.js": "0982aa5dec81d80d9925ad9b9f70e055f015c964a6ef8406af88d1f230473571",
+    "assets/web-BZvxFGqY.js": "a130270997dd6af7cc992a6f27a0039141c0267f51553ab9409ef014dda21e18",
+    "assets/web-CUQERv3_.js": "d10fcf03a9fe5048213fdb5572e85325ac8208cea0d0d9f87a683ae135fb46be",
+    "assets/web-CvRDMScu.js": "d5a9f52e275ab22f515d31db87e2186fd5422da723df7a167006f31baf680afe",
+    "assets/web-Czl0aKAx.js": "b0fe3a28812f4d1912b627e390b63d46967a9cf5c9e89870db8340ff96a3f3aa",
+    "assets/web-DGqMPyLy.js": "c2bdaac759718dae165130e902ea48aa35bfa627601055a13a666d640df77797",
+    "assets/web-VagHJNeJ.js": "0165cb0f9c59784f8ce7d603c50f5973ab854530597c7af4c23a2be3f1584e5e",
+    "assets/web-b2oQL9ca.js": "d6a0ad940e63d04051c821002de9b3578f2f855def9f79db37498448d65ef1d5",
+    "index.html": "b2acf10ebf95d96977e965f7ea602139941073dcb61b581d5f658cc1cb5b6f91"
+  }
+}

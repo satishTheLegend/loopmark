@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="app.loopmark.craft.BackupInboxTest" tests="6" failures="0" errors="0" skipped="0" time="0.748" timestamp="2026-10-18T19:03:42" hostname="localhost">
+  <properties>
+    <property name="device" value="loopmark_i04_api36(AVD) - 16" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="maximumReceiptsWithMultibyteNamesFitBound" classname="app.loopmark.craft.BackupInboxTest" time="0.164" />
+  <testcase name="busyLimitsAndOrphanCleanupPreserveOriginal" classname="app.loopmark.craft.BackupInboxTest" time="0.108" />
+  <testcase name="reopenRepeatedFileAndHandledReceipt" classname="app.loopmark.craft.BackupInboxTest" time="0.001" />
+  <testcase name="failedPrivateAndNoticeWritesExposeFailure" classname="app.loopmark.craft.BackupInboxTest" time="0.029" />
+  <testcase name="rejectsTraversalAndCorruptionWithoutPublication" classname="app.loopmark.craft.DurableFilesTest" time="0.001" />
+  <testcase name="immutableByteRoundtripAcrossStoreReopen" classname="app.loopmark.craft.DurableFilesTest" time="0.001" />
+</testsuite>

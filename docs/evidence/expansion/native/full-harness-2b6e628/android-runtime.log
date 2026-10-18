@@ -1,0 +1,386 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+> Configure project :capacitor-cordova-android-plugins
+WARNING: Using flatDir should be avoided because it doesn't support any meta-data formats.
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+The Kotlin Gradle plugin was loaded multiple times in different subprojects, which is not supported and may break the build. 
+This might happen in subprojects that apply the Kotlin plugins with the Gradle 'plugins { ... }' DSL if they specify explicit versions, even if the versions are equal.
+Please add the Kotlin plugin to the common parent project or the root project, then remove the versions in the subprojects.
+If the parent project does not need the plugin, add 'apply false' to the plugin line.
+See: https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl
+The Kotlin plugin was loaded in the following projects: ':capacitor-camera', ':revenuecat-purchases-capacitor'
+
+> Task :aparajita-capacitor-secure-storage:preBuild UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:preDebugBuild UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:generateDebugResValues UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:generateDebugResources UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:packageDebugResources UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:processDebugNavigationResources UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:parseDebugLocalResources UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:generateDebugRFile UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-android:preBuild UP-TO-DATE
+> Task :capacitor-android:preDebugBuild UP-TO-DATE
+> Task :capacitor-android:generateDebugResValues UP-TO-DATE
+> Task :capacitor-android:generateDebugResources UP-TO-DATE
+> Task :capacitor-android:packageDebugResources UP-TO-DATE
+> Task :capacitor-android:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-android:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-android:generateDebugRFile UP-TO-DATE
+> Task :capacitor-android:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-android:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capacitor-android:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:compileDebugJavaWithJavac UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:compileDebugLibraryResources UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-android:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-app:preBuild UP-TO-DATE
+> Task :capacitor-app:preDebugBuild UP-TO-DATE
+> Task :capacitor-app:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-camera:preBuild UP-TO-DATE
+> Task :capacitor-camera:preDebugBuild UP-TO-DATE
+> Task :capacitor-camera:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-community-sqlite:preBuild UP-TO-DATE
+> Task :capacitor-community-sqlite:preDebugBuild UP-TO-DATE
+> Task :capacitor-community-sqlite:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:preBuild UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:preDebugBuild UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-filesystem:preBuild UP-TO-DATE
+> Task :capacitor-filesystem:preDebugBuild UP-TO-DATE
+> Task :capacitor-filesystem:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-network:preBuild UP-TO-DATE
+> Task :capacitor-network:preDebugBuild UP-TO-DATE
+> Task :capacitor-network:writeDebugAarMetadata UP-TO-DATE
+> Task :capacitor-share:preBuild UP-TO-DATE
+> Task :capacitor-share:preDebugBuild UP-TO-DATE
+> Task :capacitor-share:writeDebugAarMetadata UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:preBuild UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:preDebugBuild UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:writeDebugAarMetadata UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:preBuild UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:preDebugBuild UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :capacitor-app:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-camera:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-community-sqlite:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-filesystem:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-network:processDebugNavigationResources UP-TO-DATE
+> Task :capacitor-share:processDebugNavigationResources UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:processDebugNavigationResources UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:processDebugNavigationResources UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :capacitor-app:generateDebugResValues UP-TO-DATE
+> Task :capacitor-app:generateDebugResources UP-TO-DATE
+> Task :capacitor-app:packageDebugResources UP-TO-DATE
+> Task :capacitor-camera:generateDebugResValues UP-TO-DATE
+> Task :capacitor-camera:generateDebugResources UP-TO-DATE
+> Task :capacitor-camera:packageDebugResources UP-TO-DATE
+> Task :capacitor-community-sqlite:generateDebugResValues UP-TO-DATE
+> Task :capacitor-community-sqlite:generateDebugResources UP-TO-DATE
+> Task :capacitor-community-sqlite:packageDebugResources UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:generateDebugResValues UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:generateDebugResources UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:packageDebugResources UP-TO-DATE
+> Task :capacitor-filesystem:generateDebugResValues UP-TO-DATE
+> Task :capacitor-filesystem:generateDebugResources UP-TO-DATE
+> Task :capacitor-filesystem:packageDebugResources UP-TO-DATE
+> Task :capacitor-network:generateDebugResValues UP-TO-DATE
+> Task :capacitor-network:generateDebugResources UP-TO-DATE
+> Task :capacitor-network:packageDebugResources UP-TO-DATE
+> Task :capacitor-share:generateDebugResValues UP-TO-DATE
+> Task :capacitor-share:generateDebugResources UP-TO-DATE
+> Task :capacitor-share:packageDebugResources UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:generateDebugResValues UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:generateDebugResources UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:packageDebugResources UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:generateDebugResValues UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:generateDebugResources UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:packageDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:extractDeepLinksDebug UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:processDebugManifest UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-android:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-android:processDebugManifest UP-TO-DATE
+> Task :capacitor-app:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-app:processDebugManifest UP-TO-DATE
+> Task :capacitor-camera:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-camera:processDebugManifest UP-TO-DATE
+> Task :capacitor-community-sqlite:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-community-sqlite:processDebugManifest UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:processDebugManifest UP-TO-DATE
+> Task :capacitor-filesystem:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-filesystem:processDebugManifest UP-TO-DATE
+> Task :capacitor-network:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-network:processDebugManifest UP-TO-DATE
+> Task :capacitor-share:extractDeepLinksDebug UP-TO-DATE
+> Task :capacitor-share:processDebugManifest UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:extractDeepLinksDebug UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:processDebugManifest UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:extractDeepLinksDebug UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :capacitor-android:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-app:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-app:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-app:generateDebugRFile UP-TO-DATE
+> Task :capacitor-camera:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-camera:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-camera:generateDebugRFile UP-TO-DATE
+> Task :capacitor-community-sqlite:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-community-sqlite:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-community-sqlite:generateDebugRFile UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:generateDebugRFile UP-TO-DATE
+> Task :capacitor-filesystem:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-filesystem:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-filesystem:generateDebugRFile UP-TO-DATE
+> Task :capacitor-network:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-network:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-network:generateDebugRFile UP-TO-DATE
+> Task :capacitor-share:compileDebugLibraryResources UP-TO-DATE
+> Task :capacitor-share:parseDebugLocalResources UP-TO-DATE
+> Task :capacitor-share:generateDebugRFile UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:compileDebugLibraryResources UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:parseDebugLocalResources UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:generateDebugRFile UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:compileDebugLibraryResources UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:parseDebugLocalResources UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:generateDebugRFile UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :capacitor-app:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capacitor-app:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capacitor-camera:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :capacitor-camera:compileDebugKotlin UP-TO-DATE
+> Task :capacitor-camera:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-camera:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capacitor-camera:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capacitor-community-sqlite:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-community-sqlite:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capacitor-community-sqlite:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:compileDebugJavaWithJavac NO-SOURCE
+> Task :capacitor-cordova-android-plugins:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capacitor-filesystem:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :capacitor-filesystem:compileDebugKotlin UP-TO-DATE
+> Task :capacitor-filesystem:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-filesystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :capacitor-filesystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capacitor-network:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-network:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capacitor-network:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capacitor-share:javaPreCompileDebug UP-TO-DATE
+> Task :capacitor-share:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capacitor-share:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:javaPreCompileDebug UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:compileDebugJavaWithJavac UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :revenuecat-purchases-capacitor:compileDebugKotlin UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:javaPreCompileDebug UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:compileDebugJavaWithJavac NO-SOURCE
+> Task :revenuecat-purchases-capacitor:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:processDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:compileDebugAndroidTestNavigationResources
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:generateDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:processDebugAndroidTestManifest
+> Task :aparajita-capacitor-secure-storage:mergeDebugShaders UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:compileDebugShaders NO-SOURCE
+> Task :aparajita-capacitor-secure-storage:generateDebugAssets UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :capacitor-android:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-android:compileDebugShaders NO-SOURCE
+> Task :capacitor-android:generateDebugAssets UP-TO-DATE
+> Task :capacitor-android:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-app:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-app:compileDebugShaders NO-SOURCE
+> Task :capacitor-app:generateDebugAssets UP-TO-DATE
+> Task :capacitor-app:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-camera:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-camera:compileDebugShaders NO-SOURCE
+> Task :capacitor-camera:generateDebugAssets UP-TO-DATE
+> Task :capacitor-camera:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-community-sqlite:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-community-sqlite:compileDebugShaders NO-SOURCE
+> Task :capacitor-community-sqlite:generateDebugAssets UP-TO-DATE
+> Task :capacitor-community-sqlite:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:compileDebugShaders NO-SOURCE
+> Task :capacitor-cordova-android-plugins:generateDebugAssets UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-filesystem:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-filesystem:compileDebugShaders NO-SOURCE
+> Task :capacitor-filesystem:generateDebugAssets UP-TO-DATE
+> Task :capacitor-filesystem:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-network:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-network:compileDebugShaders NO-SOURCE
+> Task :capacitor-network:generateDebugAssets UP-TO-DATE
+> Task :capacitor-network:mergeDebugAssets UP-TO-DATE
+> Task :capacitor-share:mergeDebugShaders UP-TO-DATE
+> Task :capacitor-share:compileDebugShaders NO-SOURCE
+> Task :capacitor-share:generateDebugAssets UP-TO-DATE
+> Task :capacitor-share:mergeDebugAssets UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:mergeDebugShaders UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:compileDebugShaders NO-SOURCE
+> Task :capgo-capacitor-audio-recorder:generateDebugAssets UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:mergeDebugAssets UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:mergeDebugShaders UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:compileDebugShaders NO-SOURCE
+> Task :revenuecat-purchases-capacitor:generateDebugAssets UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-community-sqlite:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-app:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-camera:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-filesystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-network:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-share:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-android:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:dexBuilderDebug UP-TO-DATE
+> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:processDebugJavaRes NO-SOURCE
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :capacitor-android:processDebugJavaRes NO-SOURCE
+> Task :capacitor-app:processDebugJavaRes NO-SOURCE
+> Task :capacitor-camera:processDebugJavaRes UP-TO-DATE
+> Task :capacitor-community-sqlite:processDebugJavaRes UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:processDebugJavaRes NO-SOURCE
+> Task :capacitor-filesystem:processDebugJavaRes UP-TO-DATE
+> Task :capacitor-network:processDebugJavaRes NO-SOURCE
+> Task :capacitor-share:processDebugJavaRes NO-SOURCE
+> Task :capgo-capacitor-audio-recorder:processDebugJavaRes NO-SOURCE
+> Task :revenuecat-purchases-capacitor:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-community-sqlite:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-app:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-camera:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-filesystem:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-network:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-share:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-android:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :app:mergeProjectDexDebug UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:mergeDebugJniLibFolders UP-TO-DATE
+> Task :aparajita-capacitor-secure-storage:mergeDebugNativeLibs NO-SOURCE
+> Task :aparajita-capacitor-secure-storage:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-android:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-android:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-android:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :capacitor-app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-app:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-app:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capacitor-camera:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-camera:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-camera:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capacitor-community-sqlite:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-community-sqlite:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-community-sqlite:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-cordova-android-plugins:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-cordova-android-plugins:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capacitor-filesystem:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-filesystem:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-filesystem:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capacitor-network:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-network:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-network:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capacitor-share:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capacitor-share:mergeDebugNativeLibs NO-SOURCE
+> Task :capacitor-share:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:mergeDebugJniLibFolders UP-TO-DATE
+> Task :capgo-capacitor-audio-recorder:mergeDebugNativeLibs NO-SOURCE
+> Task :capgo-capacitor-audio-recorder:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:mergeDebugJniLibFolders UP-TO-DATE
+> Task :revenuecat-purchases-capacitor:mergeDebugNativeLibs NO-SOURCE
+> Task :revenuecat-purchases-capacitor:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:processDebugAndroidTestResources
+> Task :app:packageDebug UP-TO-DATE
+> Task :app:compileDebugAndroidTestJavaWithJavac
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:mergeDebugAndroidTestShaders
+> Task :app:compileDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeDebugAndroidTestAssets
+> Task :app:compressDebugAndroidTestAssets
+> Task :app:desugarDebugAndroidTestFileDependencies
+> Task :app:dexBuilderDebugAndroidTest
+> Task :app:processDebugAndroidTestJavaRes NO-SOURCE
+> Task :app:mergeDebugAndroidTestGlobalSynthetics
+> Task :app:mergeDebugAndroidTestJniLibFolders
+> Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:mergeLibDexDebugAndroidTest
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:mergeProjectDexDebugAndroidTest
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:mergeDebugAndroidTestJavaResource
+> Task :app:writeDebugAndroidTestSigningConfigVersions
+> Task :app:mergeExtDexDebugAndroidTest
+> Task :app:packageDebugAndroidTest
+> Task :app:createDebugAndroidTestApkListingFileRedirect
+
+> Task :app:connectedDebugAndroidTest
+Starting 6 tests on loopmark_i04_api36(AVD) - 16
+
+Finished 6 tests on loopmark_i04_api36(AVD) - 16
+
+BUILD SUCCESSFUL in 29s
+278 actionable tasks: 27 executed, 251 up-to-date
+Performing Streamed Install
+Success
+Starting: Intent { cmp=app.loopmark.craft/.MainActivity }
+Starting: Intent { cmp=app.loopmark.craft/.MainActivity }
+PASS: 31 native groups, twice, including actual process relaunch.

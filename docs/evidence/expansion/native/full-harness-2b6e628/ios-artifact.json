@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "platform": "ios",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "d56a6947e9f20d70f88729efdcde0d938053b5f25e5802a068de4063e57787b8",
+  "runId": "1765643c-64bc-44d1-8e09-c1aa80b2a239",
+  "phases": [
+    1,
+    2
+  ],
+  "performanceClaim": false,
+  "storeDistribution": false,
+  "file": "loopmark-ios-harness-2b6e628.tar.gz",
+  "sha256": "87a8dcf710df43921d8cc87df2adc023d9a465c448fa45ecdf6dd6c6dc3fd7de",
+  "appDirectorySha256": "435c24844242c68c48347bc451cd38af7624e77dc426af07c5251834d09248e5",
+  "archiveExtractionVerified": true
+}

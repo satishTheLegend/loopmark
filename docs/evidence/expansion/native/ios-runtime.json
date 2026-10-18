@@ -1,9 +1,16 @@
 {
   "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
+  "runId": "1765643c-64bc-44d1-8e09-c1aa80b2a239",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "d56a6947e9f20d70f88729efdcde0d938053b5f25e5802a068de4063e57787b8",
+  "artifactSha256": "435c24844242c68c48347bc451cd38af7624e77dc426af07c5251834d09248e5",
+  "artifactFormat": "app-directory-sha256",
+  "completedAt": "2026-10-18T19:02:10.086Z",
   "runs": [
     {
       "schemaVersion": 1,
-      "restartPhase": 2,
+      "runId": "1765643c-64bc-44d1-8e09-c1aa80b2a239",
+      "restartPhase": 1,
       "platform": "ios",
       "origin": "capacitor://localhost",
       "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
@@ -45,6 +52,18 @@
           "passed": true
         },
         {
+          "name": "native corrupt/missing cache repair preserves draft/export pins and transaction fences",
+          "passed": true
+        },
+        {
+          "name": "native source-preserving rebase validates review and archives drafts, media and old commands atomically",
+          "passed": true
+        },
+        {
+          "name": "native document URLs stay outside ordinary project URL routing",
+          "passed": true
+        },
+        {
           "name": "native reviewed retention keeps missing saved refs but refuses missing draft media",
           "passed": true
         },
@@ -74,6 +93,22 @@
         },
         {
           "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native downloaded cache eviction preserves protected/source bytes and retries physical cleanup",
+          "passed": true
+        },
+        {
+          "name": "empty unchanged-cursor pull preserves real SQLite state, subscriptions and review CAS",
+          "passed": true
+        },
+        {
+          "name": "late sync cleanup preserves a deliberate guest switch in the actual controller and SQLite",
+          "passed": true
+        },
+        {
+          "name": "native runtime scheduler waits for startup and queued selection settlement",
           "passed": true
         },
         {
@@ -108,6 +143,7 @@
     },
     {
       "schemaVersion": 1,
+      "runId": "1765643c-64bc-44d1-8e09-c1aa80b2a239",
       "restartPhase": 2,
       "platform": "ios",
       "origin": "capacitor://localhost",
@@ -150,6 +186,18 @@
           "passed": true
         },
         {
+          "name": "native corrupt/missing cache repair preserves draft/export pins and transaction fences",
+          "passed": true
+        },
+        {
+          "name": "native source-preserving rebase validates review and archives drafts, media and old commands atomically",
+          "passed": true
+        },
+        {
+          "name": "native document URLs stay outside ordinary project URL routing",
+          "passed": true
+        },
+        {
           "name": "native reviewed retention keeps missing saved refs but refuses missing draft media",
           "passed": true
         },
@@ -179,6 +227,22 @@
         },
         {
           "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native downloaded cache eviction preserves protected/source bytes and retries physical cleanup",
+          "passed": true
+        },
+        {
+          "name": "empty unchanged-cursor pull preserves real SQLite state, subscriptions and review CAS",
+          "passed": true
+        },
+        {
+          "name": "late sync cleanup preserves a deliberate guest switch in the actual controller and SQLite",
+          "passed": true
+        },
+        {
+          "name": "native runtime scheduler waits for startup and queued selection settlement",
           "passed": true
         },
         {

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "emulator": "emulator-5580",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "d56a6947e9f20d70f88729efdcde0d938053b5f25e5802a068de4063e57787b8",
+  "artifactSha256": "58a9f142c7cbdc0d872e3b695ed71ea68dc70f4853fec99f1b696f6d988cf406",
+  "artifactFormat": "apk",
+  "completedAt": "2026-10-18T19:04:11.736Z",
+  "passed": true,
+  "scope": "Actual Android recorder and HOME/background lifecycle; test-owned emulator with host audio disabled (-no-audio). Synthetic recording only; no microphone fidelity, iOS recording, lock/call interruption or physical-device qualification.",
+  "flows": [
+    {
+      "action": "audio-start",
+      "status": "ok"
+    },
+    {
+      "action": "audio-stop",
+      "status": "ok",
+      "bytes": 10268,
+      "type": "audio/mp4"
+    },
+    {
+      "action": "audio-start",
+      "status": "ok"
+    },
+    {
+      "action": "audio-interrupted",
+      "status": "ok",
+      "bytes": 20694,
+      "type": "audio/mp4"
+    }
+  ]
+}

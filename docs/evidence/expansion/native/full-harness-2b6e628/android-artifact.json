@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "platform": "android",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "manifestFileSha256": "d56a6947e9f20d70f88729efdcde0d938053b5f25e5802a068de4063e57787b8",
+  "runId": "b6c53e4d-15fb-456d-94bb-0bda95f8e964",
+  "phases": [
+    1,
+    2
+  ],
+  "performanceClaim": false,
+  "storeDistribution": false,
+  "file": "loopmark-android-harness-2b6e628.apk",
+  "sha256": "58a9f142c7cbdc0d872e3b695ed71ea68dc70f4853fec99f1b696f6d988cf406"
+}

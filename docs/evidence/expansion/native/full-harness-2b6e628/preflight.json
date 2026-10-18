@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-18T18:50:08.743322+00:00",
+  "sourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "branch": "qualification/native-final-2b6e628",
+  "trackedClean": true,
+  "sourceFiles": {
+    "package-lock.json": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d",
+    "capacitor.config.ts": "b1bea9e7542f89e4029c0724bd6b965dcbe7e486c8d1737bde8a5d2252f9cc46",
+    "scripts/native/harness.mjs": "7118e0f9fb23f2a62d5c062ecacb52928455124363ea7f2769882988c8dd5b0a",
+    "scripts/native/test-ios.mjs": "68faabca88dc0961294f9cad687bc39bf2f519f839a593caf9b901aa8490ed38",
+    "scripts/native/test-android.mjs": "4dc56472f148c0ac18a5072054021da46c05c72bb1427e3c93d76a40a8fbf3fa",
+    "scripts/native/test-android-audio.mjs": "a9377c57b194fc79396a290a1203bd16790f0b0eab32bc1c91c000e22e5642be",
+    "scripts/native/test-ios-product.mjs": "e2e3b3163bc33bf25b69142cf57ded18ddea7cbfbbb038efa0bf38e8b77ca961",
+    "scripts/native/test-android-product.mjs": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+    "scripts/native/test-ios-inbox-product.mjs": "750fad0d75dd4ad0a4a97f0c4daefcf91b5cf4553a2f373aca840defe1e90b55",
+    "scripts/native/test-android-inbox-product.mjs": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+    "tests/native/harness/runtime-scheduler.ts": "a0ac1632ff481b029ba950da96a9dc0f7203d89f175e674cdec8527cd72b4ded",
+    "tests/native/harness/persistence.ts": "4c8a6e0b8da8064b64b0292c66dddf2391d4948c629779052eb257c6b406d09b"
+  },
+  "toolBinaries": {
+    "java": {
+      "path": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-native/.tools/jdk-21.0.12.1+1/Contents/Home/bin/java",
+      "sha256": "9be1d0a740ff6502df1a762145e62860f5de4b7e17658d9cb9498da3acf9d16c"
+    },
+    "adb": {
+      "path": "/Users/lalaji/Library/Android/sdk/platform-tools/adb",
+      "sha256": "1811e253b21b12cbfda7201ebaf86c10e7ddcb5c606a7a81f7c82b4c429c2d3b"
+    },
+    "xcodebuild": {
+      "path": "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
+      "sha256": "d37fbcb4198c2474d847e5d7d4bf8394a1a9443890ad0153a76bc3e1d5576ec1"
+    },
+    "node": {
+      "path": "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "sha256": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253"
+    }
+  },
+  "versions": {
+    "node": "v26.8.2",
+    "java": "Temurin21.0.12.1+1-LTS",
+    "xcode": "27.1 (27A9275)",
+    "adb": "37.0.1-15733141"
+  },
+  "devicesStarted": false,
+  "buildsStarted": false
+}
