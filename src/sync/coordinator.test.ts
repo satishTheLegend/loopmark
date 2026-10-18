@@ -135,6 +135,42 @@ it.each(['initial-pending', 'final-pending', 'final-attachments', 'catch-attachm
     coordinator.dispose()
   },
 )
+it.each(['initial', 'final'] as const)(
+  'stop in the %s scope-check completion microtask prevents publication',
+  async (stage) => {
+    const { repo, scope, snapshot, coordinator } = await setup()
+    await repo.hydrate(scope.key, [snapshot], scope.generation)
+    let armed = stage === 'initial'
+    if (stage === 'final') {
+      const pending = repo.pending.bind(repo)
+      let reads = 0
+      vi.spyOn(repo, 'pending').mockImplementation(async (key) => {
+        const result = await pending(key)
+        if (++reads === 2) armed = true
+        return result
+      })
+    }
+    const changed = vi.fn(),
+      read = repo.readActive.bind(repo)
+    coordinator.subscribe(changed)
+    vi.spyOn(repo, 'readActive').mockImplementation(() => {
+      if (!armed) return read()
+      armed = false
+      // First microtask precedes check's continuation; the second follows its
+      // final signal check but precedes the caller's awaited-check continuation.
+      queueMicrotask(() =>
+        queueMicrotask(() => {
+          coordinator.stop()
+          changed.mockClear()
+        }),
+      )
+      return Promise.resolve(scope)
+    })
+    await coordinator.run(scope)
+    expect(changed).not.toHaveBeenCalled()
+    coordinator.dispose()
+  },
+)
 it('hydrates before selection use and reconciles the feed with no pending work', async () => {
   const { repo, scope, coordinator, transport } = await setup()
   await coordinator.run(scope)

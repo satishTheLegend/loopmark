@@ -113,6 +113,7 @@ export function createSyncCoordinator(options: {
     if (view.info.kind !== 'connected') return
     const pending = await repository.pending(scope.key)
     await check(scope, signal)
+    signal.throwIfAborted()
     if (
       only &&
       (new Set(only).size !== only.length ||
@@ -239,6 +240,7 @@ export function createSyncCoordinator(options: {
       failedAttachments = attachments.filter((item) => item.state === 'failed').length
     const remaining = await repository.pending(scope.key)
     await check(scope, signal)
+    signal.throwIfAborted()
     publish({
       pendingAttachments,
       failedAttachments,
