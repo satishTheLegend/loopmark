@@ -17,6 +17,7 @@ export function SyncDetails({
   onReview,
   onSignIn,
   onCapacity,
+  onSync,
 }: {
   summary: SyncSummary
   onClose: () => void
@@ -24,6 +25,7 @@ export function SyncDetails({
   onReview: (operationId: string) => void
   onSignIn: () => void
   onCapacity: () => void
+  onSync?: () => Promise<void>
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -51,13 +53,45 @@ export function SyncDetails({
             <time dateTime={summary.lastSyncedAt}>{fullDate(summary.lastSyncedAt)}</time>.
           </p>
         )}
-        <ErrorMessage message={error} />
+        <ErrorMessage
+          message={
+            error || (summary.error ? `${summary.error.problem} ${summary.error.nextAction}` : '')
+          }
+        />
         {summary.items.length === 0 && (
           <p>
-            Nothing is waiting. Each attachment still needs to be downloaded before it is available
-            offline on this device.
+            {summary.kind === 'current' || summary.kind === 'local'
+              ? 'No local changes are waiting.'
+              : 'No local changes are queued; account updates may still be waiting.'}{' '}
+            Each attachment still needs to be downloaded before it is available offline on this
+            device.
           </p>
         )}
+        {summary.kind === 'account' && (
+          <button className="button primary" onClick={onSignIn}>
+            Sign in to continue
+          </button>
+        )}
+        {onSync &&
+          ['failed', 'waiting'].includes(summary.kind) &&
+          (!summary.error || summary.error.retryable) && (
+            <button
+              className="button secondary"
+              disabled={busy}
+              onClick={() => {
+                setBusy(true)
+                setError('')
+                void onSync()
+                  .catch((failure) => {
+                    const detail = safeError(failure)
+                    setError(`${detail.problem} ${detail.nextAction}`)
+                  })
+                  .finally(() => setBusy(false))
+              }}
+            >
+              {busy ? 'Syncing…' : 'Try syncing now'}
+            </button>
+          )}
         {(['account', 'conflict', 'quota', 'failed', 'waiting'] as const).map((kind) => {
           const group = summary.items.filter((item) => item.category === kind)
           if (!group.length) return null

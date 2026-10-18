@@ -46,6 +46,7 @@ import { ConflictReview } from './components/ConflictReview'
 import { SyncStatus } from './components/SyncStatus'
 import { SyncDetails } from './components/SyncDetails'
 import { summarizeSync } from './components/sync-summary'
+import { appLinkOrigin, type AppRuntime } from './runtime'
 type Route = 'projects' | 'finished' | 'backup' | 'guide' | 'account' | `project=${string}`
 type Modal = 'new' | 'edit' | 'checkpoint' | 'label' | 'delete' | null
 function readRoute(): Route {
@@ -58,15 +59,17 @@ const noSnapshot = () => null
 export default function App({
   controller,
   cloudAvailable = false,
+  runtime,
 }: {
   controller?: AppController
   cloudAvailable?: boolean
+  runtime?: AppRuntime
 }) {
   const state = useSyncExternalStore(
     controller?.subscribe ?? noSubscribe,
     controller?.getSnapshot ?? noSnapshot,
   )
-  const offlineSupport = useOfflineSupport()
+  const offlineSupport = useOfflineSupport(runtime?.native)
   const [projects, setProjects] = useState<Project[]>([]),
     [loading, setLoading] = useState(true),
     [loadError, setLoadError] = useState(''),
@@ -92,6 +95,8 @@ export default function App({
   const exitGuard = useRef<(() => Promise<boolean>) | undefined>(undefined)
   const currentRoute = useRef(route)
   currentRoute.current = route
+  const currentMobileOpen = useRef(mobileOpen)
+  currentMobileOpen.current = mobileOpen
   const setExitGuard = useCallback((guard?: () => Promise<boolean>) => {
     exitGuard.current = guard
   }, [])
@@ -131,6 +136,61 @@ export default function App({
   useEffect(() => {
     void refreshRef.current()
   }, [route, state?.scope?.generation])
+  useEffect(() => {
+    if (!runtime) return
+    let active = true
+    const open = async (url: string) => {
+      if (exitGuard.current && !(await exitGuard.current())) return
+      try {
+        const target = await runtime.openUrl(url)
+        if (active) {
+          setModal(null)
+          navigate(target)
+        }
+      } catch (error) {
+        if (active) notify(errorText(error), true)
+      }
+    }
+    const initial = location.href
+    if (location.pathname === '/auth/callback') {
+      // Remove the one-use code before any subsequent navigation or network activity.
+      history.replaceState(null, '', '/#account')
+      setRoute('account')
+      void open(initial)
+    } else if (location.pathname.startsWith('/p/')) {
+      history.replaceState(null, '', '/')
+      void open(initial)
+    }
+    const remove = runtime.subscribePlatform((event) => {
+      if (event.type === 'url') void open(event.url)
+      if (event.type === 'back')
+        void (async () => {
+          const dialog = Array.from(document.querySelectorAll('dialog[open]')).at(-1)
+          if (dialog) {
+            // Dialog cancellation owns async draft preservation and busy guards.
+            dialog.dispatchEvent(new Event('cancel', { cancelable: true }))
+            return
+          }
+          if (exitGuard.current && !(await exitGuard.current())) return
+          if (currentMobileOpen.current) {
+            setMobileOpen(false)
+            return
+          }
+          if (currentRoute.current !== 'projects') {
+            navigate('projects')
+            return
+          }
+          const { minimizeNativeApp } = await import('./platform/native/lifecycle')
+          await minimizeNativeApp()
+        })().catch((error) => notify(errorText(error), true))
+    })
+    return () => {
+      active = false
+      remove()
+    }
+    // URL processing belongs to this collection generation; late completions cannot navigate a new one.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [runtime])
   useEffect(() => {
     const change = async () => {
       const next = readRoute()
@@ -204,6 +264,8 @@ export default function App({
     working: state?.sync.state === 'syncing',
     authRequired: state?.auth === 'expired',
     lastSyncedAt: state?.sync.lastSyncedAt,
+    syncState: state?.sync.state,
+    syncError: state?.error ?? undefined,
   })
   useEffect(() => {
     document.title = project
@@ -515,8 +577,8 @@ export default function App({
             </Empty>
           ) : projectId && !project ? (
             <Empty
-              title="This project isn’t in this browser"
-              text="Bag labels open a local record. Use the browser and site where you saved this project, or restore a full backup here first."
+              title="This project isn’t available in this collection"
+              text="Choose the collection where you saved this project, sign in to its account, or restore a full backup. A bag label does not grant access to a project."
             >
               <div className="empty-actions">
                 <button className="button primary" onClick={() => navigate('backup')}>
@@ -554,6 +616,20 @@ export default function App({
               connected={state?.view?.info.kind === 'connected'}
               accountEmail={state?.account?.email}
               collectionName={state?.view?.info.name}
+              restoreRecovered={
+                runtime
+                  ? async (backup, token) => {
+                      const key = await runtime.backups.restoreAsRecovered(
+                        backup,
+                        `Restored ${new Date().toLocaleDateString()}`,
+                        token,
+                      )
+                      await controller!.chooseCollection(key)
+                    }
+                  : undefined
+              }
+              share={runtime?.share}
+              native={runtime?.native}
             />
           ) : route === 'guide' ? (
             <Guide
@@ -610,6 +686,7 @@ export default function App({
       {syncDetails && controller && (
         <SyncDetails
           summary={summary}
+          onSync={() => controller.runSync()}
           onClose={() => setSyncDetails(false)}
           onRetry={async (items) => {
             await controller.retryOperations(items.map((item) => item.id))
@@ -695,19 +772,35 @@ export default function App({
           onSave={saveProject}
           onSaved={projectSaved}
           onExitGuard={setExitGuard}
+          destination={
+            state?.view
+              ? `${state.view.info.name} · ${state.view.info.kind === 'connected' ? (state.account?.email ?? 'Account projects') : 'On this device'}`
+              : undefined
+          }
         />
       )}{' '}
       {modal === 'checkpoint' && project && (
         <CheckpointForm
+          runtime={runtime}
           project={project}
           onClose={() => setModal(null)}
           onSave={saveCheckpoint}
           onSaved={checkpointSaved}
           onExitGuard={setExitGuard}
+          destination={
+            state?.view
+              ? `${state.view.info.name} · ${state.view.info.kind === 'connected' ? (state.account?.email ?? 'Account projects') : 'On this device'}`
+              : undefined
+          }
         />
       )}{' '}
       {modal === 'label' && project && (
-        <BagLabel project={project} onClose={() => setModal(null)} />
+        <BagLabel
+          project={project}
+          onClose={() => setModal(null)}
+          appOrigin={runtime ? appLinkOrigin(runtime.config, runtime.native) : location.origin}
+          connected={state?.view?.info.kind === 'connected'}
+        />
       )}
       {modal === 'delete' && editSnapshot && (
         <Dialog

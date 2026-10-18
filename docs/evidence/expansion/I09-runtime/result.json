@@ -1,0 +1,71 @@
+{
+  "checkedAt": "2026-10-18T12:47:32.156950+00:00",
+  "scope": "Production browser app startup/storage and core local journeys. Not native product UI, hosted cloud, payment, physical-device or store qualification. NativeVoiceNote wiring compiles but is not covered by these browser journeys.",
+  "commands": [
+    {
+      "command": "npm test",
+      "passed": 191,
+      "files": 23,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run build",
+      "result": "PASS",
+      "serviceWorkerCache": "loopmark-997dbc510967",
+      "mainJsBytes": 416520,
+      "mainGzipBytes": 129180
+    },
+    {
+      "command": "LOOPMARK_TEST_PORT=4187 npx playwright test tests/expansion/app-startup.spec.ts tests/draft-recovery.spec.ts tests/journeys.spec.ts --grep 'production startup|complete backup restores separately|unavailable storage|new project and checkpoint drafts|a recovered draft can be discarded|search, craft|create, edit' --workers=3",
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "durationSeconds": 48,
+      "profiles": [
+        "chromium",
+        "firefox",
+        "webkit",
+        "chromium-mobile",
+        "webkit-mobile"
+      ]
+    }
+  ],
+  "checks": [
+    "Legacy saved project/checkpoint/draft copied at actual app startup; version-1 writers fenced",
+    "normalized repository persists new saves and scoped drafts across document reload",
+    "complete photo backup restored separately; original collection and its draft remain",
+    "unavailable storage gives recovery guidance without an empty shelf",
+    "create/edit/photo/latest/history/finish/reopen/delete and sample search/filter",
+    "unit: read-only old-data export survives repeated migration fences and never creates empty source storage"
+  ],
+  "testCorrections": [
+    "Wait for checkpoint save dialog to close before navigating in backup test; the unsaved-form navigation guard correctly prevented a premature navigation.",
+    "Updated unavailable-project copy expectation for collection/account context.",
+    "Earlier quick smoke using reused port4173 was discarded as stale-server evidence; all reported product results used exclusive fresh preview port4187."
+  ],
+  "sha256": {
+    "src/main.tsx": "0a30f94442e5a0b8b9143fce33a98d39d65880a14c9b79ec1ba2caea547a026b",
+    "src/runtime.ts": "255a457f758b93d0e7a868f30a959ced3f8d22775f351296e31bd44b45134419",
+    "src/App.tsx": "1409b8918665057923affb3ef217b121c36fd39c9afc884f4a0b72f80089af6b",
+    "src/drafts.ts": "b68190b568b13884dcbc05eb3ea03d4e2d2d726f421f0e9649aa39da53e8324c",
+    "src/services/startup.ts": "f1d76f51afe70df9642cbe8e95b56b3aa1a6271f288746e43074c3c9d54794d1",
+    "src/services/legacy-recovery.ts": "0d2febe1dc52862a0a8ddb1fd59d18fd3a41cf4f5d6e44f6c607373950916ffc",
+    "src/components/BackupView.tsx": "149c10cbc9c0b219f04c4b83c978e67cb189a2df6043288691d1f0c24e0ecd93",
+    "src/components/Forms.tsx": "75223277f8153ae05a900b399cc061ec2cd9dbd83e5b8d08b1229994354c1499",
+    "src/components/NativeVoiceNote.tsx": "7ce6e4e58abdddccc15cf13bb2a5978a476a6c54a551f9c42da699d5d89d9523",
+    "tests/expansion/app-startup.spec.ts": "3ed19cf2018d4ccd43249b4638aeb74a91648e4a096e1e8b5a1e3fe64424bf2e",
+    "tests/journeys.spec.ts": "700536e4a5701cff8ba01de2cbab8fa610e81bc7352bbaa11095eba368d7a34f",
+    "tests/draft-recovery.spec.ts": "5a6593a4e6a0908d0ccf809b2734ee7ad7277fbf6b2cf5fb5b8bbc7ef8cf9bfe"
+  },
+  "componentRecheck": {
+    "checkedAt": "2026-10-18T12:51:35.061340+00:00",
+    "command": "npx playwright test --config=playwright.ui.config.ts --workers=3",
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "durationSeconds": 72,
+    "scope": "Production components in fixture callbacks, all five browser profiles; not full cloud product flow."
+  },
+  "subsequentNativeOnlyChanges": "Native Back routes through dialog cancel handlers and respects busy/draft preservation; installed native shell reports local asset readiness without Service Worker. Typechecked; actual native product verification pending."
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 type InstallEvent = Event & { prompt: () => Promise<{ outcome: 'accepted' | 'dismissed' }> }
-export function useOfflineSupport() {
+export function useOfflineSupport(native = false) {
   const [ready, setReady] = useState(false)
   const [status, setStatus] = useState('Checking offline availability…')
   const [update, setUpdate] = useState(false)
@@ -11,6 +11,13 @@ export function useOfflineSupport() {
   const [attempt, setAttempt] = useState(0)
   const [script, setScript] = useState('/sw.js')
   useEffect(() => {
+    if (native) {
+      setReady(true)
+      setStatus(
+        'The installed app opens offline. Download each project’s attachments before using them offline.',
+      )
+      return
+    }
     let alive = true
     const cleanups: (() => void)[] = []
     let generation = 0
@@ -94,7 +101,7 @@ export function useOfflineSupport() {
       alive = false
       cleanups.forEach((fn) => fn())
     }
-  }, [attempt, script])
+  }, [attempt, script, native])
   useEffect(() => {
     const prompt = (event: Event) => {
       event.preventDefault()

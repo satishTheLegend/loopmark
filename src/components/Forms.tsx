@@ -5,18 +5,22 @@ import { Dialog, ErrorMessage, errorText } from './ui'
 import { preparePhoto } from '../media'
 import { VoiceNote } from './VoiceNote'
 import { useDraft } from '../drafts'
+import { NativeVoiceNote } from './NativeVoiceNote'
+import type { AppRuntime } from '../runtime'
 export function ProjectForm({
   project,
   onSave,
   onClose,
   onSaved,
   onExitGuard,
+  destination,
 }: {
   project?: Project
   onSave: (v: ProjectInput, expectedRevision?: string, draftToken?: string) => Promise<string>
   onSaved: (id: string, warning?: string) => void
   onClose: () => void
   onExitGuard: (guard?: () => Promise<boolean>) => void
+  destination?: string
 }) {
   const draft = useDraft<ProjectInput>(
     project ? `edit:${project.id}` : 'new',
@@ -82,6 +86,11 @@ export function ProjectForm({
       <p className="dialog-intro">
         A few little details. You can add a checkpoint whenever you pause.
       </p>
+      {destination && (
+        <p className="hint">
+          Saving to <strong>{destination}</strong>
+        </p>
+      )}
       <DraftStatus draft={draft} disabled={busy || draft.discarding} />
       <form ref={formRef} onSubmit={submit}>
         <fieldset disabled={!draft.ready || busy || draft.discarding} className="form-fields">
@@ -182,12 +191,16 @@ export function CheckpointForm({
   onClose,
   onSaved,
   onExitGuard,
+  destination,
+  runtime,
 }: {
   project: Project
   onSave: (v: CheckpointInput, draftToken?: string) => Promise<void>
   onSaved: (warning?: string) => void
   onClose: () => void
   onExitGuard: (guard?: () => Promise<boolean>) => void
+  destination?: string
+  runtime?: AppRuntime
 }) {
   const latest = project.checkpoints[0]
   const draft = useDraft<CheckpointInput>(
@@ -203,6 +216,8 @@ export function CheckpointForm({
     project.updatedAt,
   )
   const { position, toolSize, nextStep, notes, photo, voice } = draft.value
+  const currentDraft = useRef(draft)
+  currentDraft.current = draft
   const formRef = useRef<HTMLFormElement>(null)
   useEffect(() => {
     if (draft.ready) formRef.current?.querySelector<HTMLTextAreaElement>('textarea')?.focus()
@@ -287,6 +302,11 @@ export function CheckpointForm({
       <p className="dialog-intro">
         For the next time you pick up <strong>{project.name}</strong>.
       </p>
+      {destination && (
+        <p className="hint">
+          Saving to <strong>{destination}</strong>
+        </p>
+      )}
       <DraftStatus draft={draft} disabled={busy || draft.discarding || mediaBusy || voiceBusy} />
       <form ref={formRef} onSubmit={submit}>
         <fieldset disabled={!draft.ready || busy || draft.discarding} className="form-fields">
@@ -372,12 +392,25 @@ export function CheckpointForm({
                 </label>
               )}
             </div>
-            <VoiceNote
-              value={voice}
-              onChange={(value) => draft.change('voice', value)}
-              onBusy={setVoiceBusy}
-              onFinishReady={setFinishVoice}
-            />
+            {runtime?.native ? (
+              <NativeVoiceNote
+                runtime={runtime}
+                value={voice}
+                onChange={async (value) => {
+                  currentDraft.current.change('voice', value)
+                  await currentDraft.current.pin()
+                }}
+                onBusy={setVoiceBusy}
+                onFinishReady={setFinishVoice}
+              />
+            ) : (
+              <VoiceNote
+                value={voice}
+                onChange={(value) => draft.change('voice', value)}
+                onBusy={setVoiceBusy}
+                onFinishReady={setFinishVoice}
+              />
+            )}
           </div>
           <label>
             Anything else to remember? <span className="optional">optional</span>

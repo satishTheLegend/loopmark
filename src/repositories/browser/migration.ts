@@ -12,7 +12,7 @@ import { canonicalHash, sha256Bytes, canonicalJson } from '../../domain/canonica
 import { validateBackupMedia } from '../../media-validation'
 import { DomainError } from '../../domain/errors'
 import { emptyCollection, assertRecords, keyOf } from '../state'
-import { BrowserRepository } from './repository'
+import type { BrowserRepository } from './repository'
 import { dataUrlToBlob, bytesToDataUrl, verifyBytes } from './media-store'
 import {
   transaction,

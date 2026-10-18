@@ -27,6 +27,7 @@ export interface SyncSummary {
   actionable: boolean
   items: SyncItem[]
   lastSyncedAt: string | null
+  error?: SafeError
 }
 const permanent = new Set([
   'AUTH_REQUIRED',
@@ -62,6 +63,8 @@ export function summarizeSync({
   disabled = false,
   lastSyncedAt = null,
   attachments = [],
+  syncState,
+  syncError,
 }: {
   view: CollectionView | null
   online: boolean
@@ -70,6 +73,8 @@ export function summarizeSync({
   disabled?: boolean
   lastSyncedAt?: string | null
   attachments?: SyncItem[]
+  syncState?: 'offline' | 'idle' | 'syncing' | 'pending' | 'conflict' | 'error'
+  syncError?: SafeError
 }): SyncSummary {
   const items: SyncItem[] = (view?.pending ?? [])
     .map((pending) => {
@@ -108,10 +113,15 @@ export function summarizeSync({
     actionable,
     items,
     lastSyncedAt,
+    error: syncError,
   })
   if (view?.info.kind !== 'connected') return result('local', 'On this device')
   if (disabled) return result('disabled', 'Account access is disabled', true)
-  if (authRequired || items.some((item) => item.category === 'account'))
+  if (
+    authRequired ||
+    ['AUTH_REQUIRED', 'ACCOUNT_CHANGED'].includes(syncError?.code ?? '') ||
+    items.some((item) => item.category === 'account')
+  )
     return result('account', 'Sign in to continue syncing', true)
   if (items.some((item) => item.category === 'conflict'))
     return result('conflict', 'Changes need your review', true)
@@ -119,6 +129,7 @@ export function summarizeSync({
     return result('quota', 'Capacity needs your attention', true)
   if (items.some((item) => item.category === 'failed'))
     return result('failed', 'Some items could not sync', true)
+  if (syncState === 'error') return result('failed', 'Sync needs your attention', true)
   if (!online)
     return result(
       'offline',
@@ -136,5 +147,6 @@ export function summarizeSync({
       'waiting',
       `${items.length} ${items.length === 1 ? 'item waiting' : 'items waiting'} to sync`,
     )
+  if (syncState === 'pending') return result('waiting', 'More account changes are waiting to sync')
   return result('current', lastSyncedAt ? 'Synced to your account' : 'Ready to sync')
 }

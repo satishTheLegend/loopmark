@@ -121,11 +121,12 @@ export function ConnectionPreview({
           <button className="button secondary" disabled={busy} onClick={onClose}>
             Keep using this device
           </button>
-          {stale ? (
+          {(stale || !!error) && (
             <button className="button primary" disabled={busy} onClick={() => void act(onRefresh)}>
               {busy ? 'Checking collections…' : 'Refresh preview'}
             </button>
-          ) : (
+          )}
+          {!stale && (
             <button
               className="button primary"
               disabled={busy || overCapacity}

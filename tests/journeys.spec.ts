@@ -136,7 +136,7 @@ test('create, edit, capture photo, resume latest, browse immutable history, fini
   await expect(page.getByText('Let’s keep your place.')).toBeVisible()
   await page.goto(projectUrl)
   await expect(
-    page.getByRole('heading', { name: 'This project isn’t in this browser' }),
+    page.getByRole('heading', { name: 'This project isn’t available in this collection' }),
   ).toBeVisible()
   await expect(page.getByRole('button', { name: 'Restore a backup' })).toBeVisible()
 })

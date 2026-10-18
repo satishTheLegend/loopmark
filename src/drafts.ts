@@ -228,6 +228,42 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
       ? revision.current
       : commitToken.current
   }
+  /** A native capture continuation must reference a durable, exact draft revision. */
+  async function pin(): Promise<Draft<T>> {
+    const operation = queue.current.then(async () => {
+      if (!ready || blocked.current || discardLock.current)
+        throw new Error('Keep this form open until the draft can be saved on this device.')
+      if (
+        !revision.current ||
+        JSON.stringify(savedValue.current) !== JSON.stringify(current.current)
+      ) {
+        const next = crypto.randomUUID()
+        await store.write(key, revision.current, {
+          key,
+          value: current.current,
+          revision: next,
+          baseRevision: base.current,
+        })
+        revision.current = next
+        savedValue.current = current.current
+      }
+      setStatus('Draft kept on this device. Save to add it to your backup.')
+      return {
+        key,
+        value: structuredClone(current.current),
+        revision: revision.current!,
+        baseRevision: base.current,
+      }
+    })
+    queue.current = operation.then(
+      () => {},
+      (error: Error) => {
+        blocked.current = true
+        setError(error.message)
+      },
+    )
+    return operation
+  }
   async function canClose() {
     if (discardLock.current) return false
     await flush()
@@ -243,6 +279,7 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
   }
   return {
     prepareCommit,
+    pin,
     closeSafely,
     canClose,
     discarding,

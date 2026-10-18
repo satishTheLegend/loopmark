@@ -35,6 +35,37 @@ function view(items: PendingIntent[] = []): CollectionView {
   }
 }
 describe('sync status preserves independent work and priority', () => {
+  it('keeps incomplete feed and authentication failure visible without queued local work', () => {
+    expect(
+      summarizeSync({
+        view: view(),
+        online: true,
+        working: false,
+        syncState: 'pending',
+        lastSyncedAt: now,
+      }).kind,
+    ).toBe('waiting')
+    expect(
+      summarizeSync({
+        view: view(),
+        online: true,
+        working: false,
+        syncState: 'error',
+        syncError: new DomainError('AUTH_REQUIRED').detail,
+        lastSyncedAt: now,
+      }).kind,
+    ).toBe('account')
+    expect(
+      summarizeSync({
+        view: view(),
+        online: true,
+        working: false,
+        syncState: 'error',
+        syncError: new DomainError('SERVICE_UNAVAILABLE').detail,
+        lastSyncedAt: now,
+      }).kind,
+    ).toBe('failed')
+  })
   it('uses auth before conflict before quota without hiding lower-priority items', () => {
     const input = view([
       pending('REVISION_CONFLICT'),

@@ -3,13 +3,28 @@ import QRCode from 'qrcode'
 import { IconPrinter, IconTag } from '@tabler/icons-react'
 import type { Project } from '../types'
 import { Dialog, Brand, ErrorMessage } from './ui'
-export function BagLabel({ project: p, onClose }: { project: Project; onClose: () => void }) {
+import { projectLink } from '../links/link-service'
+export function BagLabel({
+  project: p,
+  onClose,
+  appOrigin,
+  connected = false,
+}: {
+  project: Project
+  onClose: () => void
+  appOrigin?: string
+  connected?: boolean
+}) {
   const [qr, setQr] = useState(''),
     [error, setError] = useState(''),
     cp = p.checkpoints[0]
-  const url = `${location.origin}/#project=${encodeURIComponent(p.id)}`
+  const url = appOrigin ? projectLink(p.id, appOrigin) : undefined
   useEffect(() => {
     let cancelled = false
+    if (!url) {
+      setQr('')
+      return
+    }
     QRCode.toDataURL(url, { width: 240, margin: 2, color: { dark: '#332D27', light: '#FFFFFF' } })
       .then((v) => {
         if (!cancelled) setQr(v)
@@ -46,11 +61,13 @@ export function BagLabel({ project: p, onClose }: { project: Project; onClose: (
             <img src={qr} width="100" height="100" alt="QR code to this project on this site" />
           )}
           <span>
-            Scan to find your place.
+            {url ? 'Scan to find your place.' : 'Use the readable project code to find your place.'}
             <br />
             <small>
-              Opens on this site in the browser where your project is saved. This code is not a
-              backup.
+              {connected
+                ? 'Sign in to the matching account and choose its collection to open this project.'
+                : 'Open the collection where this project is saved.'}{' '}
+              This code is not a backup.
             </small>
           </span>
         </div>
@@ -58,8 +75,11 @@ export function BagLabel({ project: p, onClose }: { project: Project; onClose: (
       <ErrorMessage message={error} />
       <p className="label-warning">
         <IconTag size={18} />
-        Using another device? Restore your backup there first, on the same site. A localhost link
-        works only on its original computer.
+        {url
+          ? connected
+            ? 'The link does not grant access. Other devices need your account and a connection to load saved work.'
+            : 'Using another device? Restore your backup there first, on the same site. A localhost link works only on its original computer.'
+          : 'A public app address is needed for QR links. The project name, code and next step can still be printed.'}
       </p>
       <div className="dialog-actions">
         <button className="button subtle" onClick={onClose}>

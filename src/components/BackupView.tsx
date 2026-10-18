@@ -18,16 +18,23 @@ import {
 import type { LibraryState } from '../data'
 import type { Backup } from '../types'
 import { Dialog, ErrorMessage, errorText, fullDate } from './ui'
+import type { SharePort } from '../platform/contracts'
 export function BackupView({
   onMessage,
   connected = false,
   accountEmail,
   collectionName,
+  restoreRecovered,
+  share,
+  native = false,
 }: {
   onMessage: (s: string) => void
   connected?: boolean
   accountEmail?: string
   collectionName?: string
+  restoreRecovered?: (backup: Backup, operationToken: string) => Promise<void>
+  share?: SharePort
+  native?: boolean
 }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -40,6 +47,7 @@ export function BackupView({
     ),
     [storageFeedback, setStorageFeedback] = useState('')
   const input = useRef<HTMLInputElement>(null)
+  const restoreToken = useRef(crypto.randomUUID())
   const mounted = useRef(true)
   useEffect(() => {
     mounted.current = true
@@ -79,8 +87,21 @@ export function BackupView({
     try {
       const backup = await exportBackup()
       if (!mounted.current) return
-      const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' }),
-        url = URL.createObjectURL(blob),
+      const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' })
+      if (share) {
+        const result = await share.shareFile({
+          name: `loopmark-backup-${new Date().toISOString().slice(0, 10)}.json`,
+          mimeType: 'application/json',
+          bytes: blob,
+        })
+        if ('error' in result) throw new Error(`${result.error.problem} ${result.error.nextAction}`)
+        if (result.status === 'ok')
+          onMessage(
+            'The backup was handed to the share sheet. Check that it was saved where you chose.',
+          )
+        return
+      }
+      const url = URL.createObjectURL(blob),
         link = document.createElement('a')
       link.href = url
       link.download = `loopmark-backup-${new Date().toISOString().slice(0, 10)}.json`
@@ -93,7 +114,7 @@ export function BackupView({
       setBusy(false)
     }
   }
-  async function importFile(file?: File) {
+  async function importFile(file?: Blob) {
     if (!file) return
     setError('')
     setBusy(true)
@@ -106,6 +127,7 @@ export function BackupView({
       await validateBackupMedia(backup)
       setCurrentCollection(current)
       setChanged(false)
+      restoreToken.current = crypto.randomUUID()
       setPending(backup)
     } catch (e) {
       setError(errorText(e))
@@ -124,7 +146,8 @@ export function BackupView({
         setChanged(false)
         return
       }
-      await restoreBackup(pending, currentCollection.revision)
+      if (restoreRecovered) await restoreRecovered(pending, restoreToken.current)
+      else await restoreBackup(pending, currentCollection.revision)
       setPending(null)
       onMessage('Your projects and their checkpoints have been restored.')
     } catch (e) {
@@ -192,12 +215,26 @@ export function BackupView({
           <IconUpload size={28} />
           <h2>Unpack your projects</h2>
           <p>
-            Choose a Loopmark backup. We’ll check it before you decide to replace the projects
-            currently on this device.
+            {restoreRecovered
+              ? 'Choose a Loopmark backup. We’ll check it, then restore it as a separate collection on this device. Your current collection stays intact.'
+              : 'Choose a Loopmark backup. We’ll check it before you decide to replace the projects currently on this device.'}
           </p>
           <button
             className="button secondary"
-            onClick={() => input.current?.click()}
+            onClick={() => {
+              if (!share) {
+                input.current?.click()
+                return
+              }
+              void share
+                .chooseFile()
+                .then((result) => {
+                  if (result.status === 'ok') void importFile(result.value)
+                  else if ('error' in result)
+                    setError(`${result.error.problem} ${result.error.nextAction}`)
+                })
+                .catch((error) => setError(errorText(error)))
+            }}
             disabled={busy}
           >
             <IconUpload size={18} />
@@ -216,64 +253,66 @@ export function BackupView({
         </section>
       </div>
       <ErrorMessage message={pending ? '' : error} />
-      <section className="storage-note">
-        <IconDeviceDesktop size={23} />
-        <div>
-          <h3>A little extra protection</h3>
-          <p>
-            You can ask your browser to keep this site’s storage. It helps reduce automatic cleanup,
-            but a downloaded backup is still essential.
-          </p>
-          <p role="status">
-            {storageStatus === 'checking'
-              ? 'Checking storage protection…'
-              : storageStatus === 'unsupported'
-                ? 'This browser does not support storage protection. Keep a downloaded backup.'
-                : storageFeedback ||
-                  (protectedStorage
-                    ? 'Storage protection is enabled on this device.'
-                    : 'Storage protection is not enabled on this device.')}
-          </p>
-          <button
-            className="text-button"
-            disabled={
-              protectedStorage || storageStatus === 'checking' || storageStatus === 'unsupported'
-            }
-            onClick={async () => {
-              setStorageStatus('checking')
-              setStorageFeedback('')
-              try {
-                if (!navigator.storage?.persist) {
-                  setStorageStatus('unsupported')
-                  return
-                }
-                const granted = await navigator.storage.persist()
-                setProtected(granted)
-                setStorageStatus('ready')
-                setStorageFeedback(
-                  granted
-                    ? 'Storage protection is enabled. Keep making regular backups.'
-                    : 'Your browser did not grant storage protection. Download a backup to keep your projects safe.',
-                )
-              } catch {
-                setStorageStatus('error')
-                setStorageFeedback(
-                  'Storage protection could not be requested. Try again or download a backup to keep your projects safe.',
-                )
+      {!native && (
+        <section className="storage-note">
+          <IconDeviceDesktop size={23} />
+          <div>
+            <h3>A little extra protection</h3>
+            <p>
+              You can ask your browser to keep this site’s storage. It helps reduce automatic
+              cleanup, but a downloaded backup is still essential.
+            </p>
+            <p role="status">
+              {storageStatus === 'checking'
+                ? 'Checking storage protection…'
+                : storageStatus === 'unsupported'
+                  ? 'This browser does not support storage protection. Keep a downloaded backup.'
+                  : storageFeedback ||
+                    (protectedStorage
+                      ? 'Storage protection is enabled on this device.'
+                      : 'Storage protection is not enabled on this device.')}
+            </p>
+            <button
+              className="text-button"
+              disabled={
+                protectedStorage || storageStatus === 'checking' || storageStatus === 'unsupported'
               }
-            }}
-          >
-            {protectedStorage ? (
-              <>
-                <IconCheck size={16} />
-                Storage protection enabled
-              </>
-            ) : (
-              'Ask to keep this device’s data'
-            )}
-          </button>
-        </div>
-      </section>
+              onClick={async () => {
+                setStorageStatus('checking')
+                setStorageFeedback('')
+                try {
+                  if (!navigator.storage?.persist) {
+                    setStorageStatus('unsupported')
+                    return
+                  }
+                  const granted = await navigator.storage.persist()
+                  setProtected(granted)
+                  setStorageStatus('ready')
+                  setStorageFeedback(
+                    granted
+                      ? 'Storage protection is enabled. Keep making regular backups.'
+                      : 'Your browser did not grant storage protection. Download a backup to keep your projects safe.',
+                  )
+                } catch {
+                  setStorageStatus('error')
+                  setStorageFeedback(
+                    'Storage protection could not be requested. Try again or download a backup to keep your projects safe.',
+                  )
+                }
+              }}
+            >
+              {protectedStorage ? (
+                <>
+                  <IconCheck size={16} />
+                  Storage protection enabled
+                </>
+              ) : (
+                'Ask to keep this device’s data'
+              )}
+            </button>
+          </div>
+        </section>
+      )}
       {pending && (
         <Dialog
           title="Restore this little collection?"
@@ -294,11 +333,19 @@ export function BackupView({
               <p>Backup saved {fullDate(pending.exportedAt)}</p>
             </div>
           </div>
-          <p>
-            This will <strong>replace every project in the selected collection</strong>, including
-            its photos and voice notes. Download a backup of your current collection first if you
-            want to keep it.
-          </p>
+          {restoreRecovered ? (
+            <p>
+              This creates a <strong>separate recovered collection on this device</strong>. Your
+              current collection and account stay intact. Restoring a file does not upload it or
+              grant paid access.
+            </p>
+          ) : (
+            <p>
+              This will <strong>replace every project in the selected collection</strong>, including
+              its photos and voice notes. Download a backup of your current collection first if you
+              want to keep it.
+            </p>
+          )}
           {currentCollection && (
             <p>
               Current collection: {currentCollection.projects} projects ·{' '}
@@ -311,7 +358,13 @@ export function BackupView({
               Cancel
             </button>
             <button className="button primary" disabled={busy} onClick={restore}>
-              {busy ? 'Working…' : changed ? 'Review latest collection' : 'Replace and restore'}
+              {busy
+                ? 'Working…'
+                : changed
+                  ? 'Review latest collection'
+                  : restoreRecovered
+                    ? 'Restore as separate collection'
+                    : 'Replace and restore'}
             </button>
           </div>
         </Dialog>
