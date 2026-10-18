@@ -31,7 +31,9 @@ export function useOfflineSupport(native = false) {
     }
     async function verify(reg: ServiceWorkerRegistration) {
       if (!alive) return
-      setUpdate(!!reg.waiting)
+      // The first installation briefly waits before activation too. It is only an
+      // update when there is an existing active worker to replace.
+      setUpdate(!!reg.active && !!reg.waiting)
       if (!reg.active) return
       const checkGeneration = ++generation
       const channel = new MessageChannel()
