@@ -11,6 +11,7 @@ export function AccountView({
   onRequestCode,
   onVerifyCode,
   onSignOut,
+  onDiagnostics,
 }: {
   cloudAvailable: boolean
   accountEmail?: string
@@ -19,6 +20,7 @@ export function AccountView({
   onRequestCode: (email: string) => Promise<{ retryAt: string }>
   onVerifyCode: (email: string, code: string) => Promise<void>
   onSignOut: () => void
+  onDiagnostics?: () => void
 }) {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
@@ -193,6 +195,11 @@ export function AccountView({
           A complete export includes your private notes and attachments. Keep the file somewhere
           safe. A label or a synced copy is not a backup.
         </p>
+        {onDiagnostics && (
+          <button className="button secondary" onClick={(event) => { event.currentTarget.focus(); onDiagnostics() }}>
+            Preview diagnostic report
+          </button>
+        )}
         <nav className="account-actions" aria-label="Privacy and help">
           <a href="/privacy">Privacy</a>
           <a href="/support">Support</a>

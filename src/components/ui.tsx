@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import { IconX, IconNeedleThread } from '@tabler/icons-react'
 import type { Project } from '../types'
-import { DomainError } from '../domain/errors'
+import { DomainError, UserFacingError, safeError } from '../domain/errors'
 
 export function Dialog({
   title,
@@ -131,7 +131,7 @@ export function fullDate(value: string) {
 }
 export function errorText(error: unknown) {
   if (error instanceof DomainError) return `${error.detail.problem} ${error.detail.nextAction}`
-  return error instanceof Error
-    ? error.message
-    : 'Something went wrong. Your previous data is still here. Please try again.'
+  if (error instanceof UserFacingError) return error.message
+  const detail = safeError(error)
+  return `${detail.problem} ${detail.nextAction} Diagnostic code: ${detail.code} (${detail.correlationId}). Help: ${detail.helpRef}.`
 }

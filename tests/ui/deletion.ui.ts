@@ -77,3 +77,23 @@ test('deletion and receipt remain accessible and reflow at phone and desktop wid
     }
   }
 })
+
+test('receipt distinguishes support, live removal and complete retention without exposing a status token', async ({
+  page,
+}) => {
+  for (const [state, expected] of [
+    ['needs-help', 'This request needs support. Reference:'],
+    ['live-data-removed', 'Backup retention ends'],
+    ['complete', 'Deletion completed'],
+  ]) {
+    await page.goto('/tests/ui/index.html?scenario=receipt&receipt=' + state)
+    const region = page.getByRole('region', { name: 'Account deletion receipt' })
+    await expect(region.getByRole('status')).toContainText(expected)
+    await expect(region).not.toContainText('receiptToken')
+    await expect(region.getByRole('link', { name: 'Get help' })).toHaveAttribute('href', '/support')
+    if (state !== 'complete')
+      await expect(region.getByRole('status')).not.toContainText('Deletion completed')
+    if (state === 'needs-help')
+      await expect(region.getByRole('status')).toContainText('12345678-1234-4123-8123-123456789abc')
+  }
+})

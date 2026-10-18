@@ -11,9 +11,23 @@ import { ConnectionPreview } from '../../src/components/ConnectionPreview'
 import { ConflictReview } from '../../src/components/ConflictReview'
 import { SignOutReview } from '../../src/components/SignOutReview'
 import { info, project, now } from '../../src/repositories/browser/fixtures.test-support'
-import type { CollectionView, PendingIntent } from '../../src/domain/contracts'
+import type { DeletionReceipt, CollectionView, PendingIntent } from '../../src/domain/contracts'
 import type { AttachPreview } from '../../src/services/controller-contract'
 
+function receiptFixture(): DeletionReceipt | null {
+  const status = new URLSearchParams(location.search).get('receipt')
+  if (status === 'unknown') return null
+  if (status === 'needs-help')
+    return {
+      status,
+      helpRef: 'account#deletion',
+      correlationId: '12345678-1234-4123-8123-123456789abc',
+    }
+  if (status === 'complete') return { status, completedAt: now }
+  if (status === 'live-data-removed')
+    return { status, removedAt: now, backupExpiresAt: '2099-01-08T12:00:00.000Z' }
+  return { status: 'pending', requestedAt: now }
+}
 const email = 'maker.with.a.long.address@example.test'
 const cloud = project('project', '4')
 const device = {
@@ -114,11 +128,7 @@ function Harness() {
       )}
       {scenario === 'receipt' && (
         <DeletionReceiptView
-          receipt={
-            new URLSearchParams(location.search).get('receipt') === 'unknown'
-              ? null
-              : { status: 'pending', requestedAt: now }
-          }
+          receipt={receiptFixture()}
           requestedAt={now}
           localOutcome="not-completed"
           onRefresh={async () => {

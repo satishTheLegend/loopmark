@@ -1,3 +1,4 @@
+import { UserFacingError, DomainError } from '../domain/errors'
 import { useEffect, useRef, useState } from 'react'
 import {
   IconDownload,
@@ -116,7 +117,8 @@ export function BackupView({
           mimeType: 'application/json',
           bytes: blob,
         })
-        if ('error' in result) throw new Error(`${result.error.problem} ${result.error.nextAction}`)
+        if ('error' in result)
+          throw new DomainError(result.error.code, { correlationId: result.error.correlationId })
         if (result.status === 'ok')
           onMessage(
             'The backup was handed to the share sheet. Check that it was saved where you chose.',
@@ -152,7 +154,7 @@ export function BackupView({
       // Capture before reading/decoding so even writes during validation invalidate this preview.
       const current = await getLibraryState()
       if (file.size > 50 * 1024 * 1024)
-        throw new Error('Choose a Loopmark backup smaller than 50 MB.')
+        throw new UserFacingError('Choose a Loopmark backup smaller than 50 MB.')
       const backup = parseBackup(await file.text())
       await validateBackupMedia(backup)
       setCurrentCollection(current)

@@ -1,0 +1,58 @@
+name: Build native debug apps
+# Compilation only. Simulator/emulator tests and provider qualification have
+# separate evidence; this workflow does not sign or publish a store release.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify Xcode supports Capacitor 8
+        run: |
+          xcodebuild -version
+          python3 -c 'import subprocess; v=subprocess.check_output(["xcodebuild","-version"],text=True).splitlines()[0].split()[1]; assert int(v.split(".")[0]) >= 26, "Capacitor 8 requires Xcode 26+"'
+      - run: npm run build
+      - run: npx cap sync ios
+        env:
+          CI: 1
+      - run: npm run native:ios:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: loopmark-ios-simulator-debug
+          path: ios/build/Build/Products/Debug-iphonesimulator/App.app/
+          if-no-files-found: error
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - name: Verify Android SDK 36 prerequisite
+        run: test -f "$ANDROID_HOME/platforms/android-36/android.jar"
+      - run: npm run build
+      - run: npx cap sync android
+        env:
+          CI: 1
+      - run: npm run native:android:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: loopmark-android-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error

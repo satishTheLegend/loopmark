@@ -174,13 +174,11 @@ test('a separate restore preserves work saved after its preview in the original 
   const projectUrl = page.url()
   const replacement = await downloadBackup(page)
   replacement.projects[0].name = 'Confirmed recovered copy'
-  await page
-    .getByLabel('Restore backup file')
-    .setInputFiles({
-      name: 'replacement.json',
-      mimeType: 'application/json',
-      buffer: Buffer.from(JSON.stringify(replacement)),
-    })
+  await page.getByLabel('Restore backup file').setInputFiles({
+    name: 'replacement.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(replacement)),
+  })
   await expect(page.getByRole('dialog')).toContainText(
     'Current collection: 1 projects · 0 checkpoints.',
   )

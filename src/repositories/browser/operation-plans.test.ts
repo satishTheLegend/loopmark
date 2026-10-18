@@ -46,7 +46,9 @@ it('pins retry-plan media until commit and removes scoped plans with the collect
       intent,
     })
     await repo.media.release(ref, scope.key, 1)
-    expect((await new Response(await repo.media.open(ref, scope.key)).arrayBuffer()).byteLength).toBe(ref.bytes)
+    expect(
+      (await new Response(await repo.media.open(ref, scope.key)).arrayBuffer()).byteLength,
+    ).toBe(ref.bytes)
     await repo.commitLocal(scope.key, intent, 1)
     const view = await repo.readView(scope.key)
     await repo.commitLocal(

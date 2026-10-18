@@ -18,6 +18,7 @@ export function SyncDetails({
   onSignIn,
   onCapacity,
   onSync,
+  onDiagnostics,
 }: {
   summary: SyncSummary
   onClose: () => void
@@ -26,6 +27,7 @@ export function SyncDetails({
   onSignIn: () => void
   onCapacity: () => void
   onSync?: () => Promise<void>
+  onDiagnostics?: () => void
 }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -158,6 +160,11 @@ export function SyncDetails({
         <p className="hint">
           Conflicts, account access, invalid files and capacity limits need their own action.
         </p>
+        {onDiagnostics && (
+          <button className="button secondary" onClick={onDiagnostics}>
+            Preview diagnostic report
+          </button>
+        )}
       </div>
     </Dialog>
   )

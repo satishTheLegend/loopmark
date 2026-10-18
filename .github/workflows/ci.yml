@@ -16,6 +16,14 @@ jobs:
       - run: npm run format:check
       - run: npm run build
       - run: npm test
+      - run: npm run test:compat
+      - run: npm run test:security
+      - run: npm run test:release:contracts
+      - run: npm run test:sandbox:contracts
+      - run: npm run test:native:evidence
+      - run: npm run test:examples
+      - run: npm run test:docs
+      - run: npm run test:dx
   browsers:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -39,12 +47,14 @@ jobs:
       - run: npx playwright install --with-deps ${{ matrix.engine }}
       - run: npm run build
       - run: npm run test:e2e -- ${{ matrix.projects }}
+      - run: npm run test:ui -- ${{ matrix.projects }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: browser-test-results-${{ matrix.engine }}
           path: |
             test-results/
+            test-results-ui/
             playwright-report/
   local-sync:
     runs-on: ubuntu-latest
@@ -67,7 +77,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm run local:up
+      - run: npm run local:up -- --billing-fixture
       - run: npm run test:server
       - run: npm run test:sync -- --project=chromium
       - run: npm run local:down

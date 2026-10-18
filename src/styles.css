@@ -981,6 +981,7 @@ h1 {
 }
 .dialog-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
@@ -2820,6 +2821,15 @@ h1 {
 .readable-controls {
   font-size: 16px;
   line-height: 1.5;
+}
+.readable-controls .dialog-actions .button {
+  white-space: normal;
+  max-width: 100%;
+}
+.diagnostic-preview textarea {
+  width: 100%;
+  overflow-wrap: anywhere;
+  font-family: monospace;
 }
 .readable-controls :is(button, input, textarea, select) {
   min-height: 44px;

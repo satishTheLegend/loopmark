@@ -1,3 +1,4 @@
+import { UserFacingError } from '../domain/errors'
 import { useEffect, useRef, useState } from 'react'
 import { IconMicrophone, IconPlayerStop, IconTrash } from '@tabler/icons-react'
 import { readFile } from '../media'
@@ -63,7 +64,7 @@ export function VoiceNote({
     onBusy(true)
     try {
       if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder)
-        throw new Error(
+        throw new UserFacingError(
           'Voice recording is unavailable here. Add the details in your written note instead. Use HTTPS or localhost for microphone access.',
         )
       const input = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -99,9 +100,9 @@ export function VoiceNote({
         try {
           const blob = new Blob(chunks, { type: rec.mimeType })
           if (blob.size > 8 * 1024 * 1024)
-            throw new Error('This voice note is too large. Try a shorter recording.')
+            throw new UserFacingError('This voice note is too large. Try a shorter recording.')
           if (!blob.size)
-            throw new Error('The microphone did not capture any audio. Please try again.')
+            throw new UserFacingError('The microphone did not capture any audio. Please try again.')
           const data = await readFile(blob)
           if (alive.current) {
             onChange(data)

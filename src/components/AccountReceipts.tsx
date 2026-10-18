@@ -1,3 +1,4 @@
+import { DomainError } from '../domain/errors'
 import { useCallback, useEffect, useState } from 'react'
 import type { AppRuntime } from '../runtime'
 import type { SavedDeletionReceipt } from '../services/deletion-service'
@@ -24,7 +25,8 @@ export function AccountReceipts({ runtime }: { runtime: AppRuntime }) {
     const name = 'loopmark-private-deletion-receipt.json'
     if (runtime.share) {
       const result = await runtime.share.shareFile({ name, mimeType: 'application/json', bytes })
-      if ('error' in result) throw new Error(`${result.error.problem} ${result.error.nextAction}`)
+      if ('error' in result)
+        throw new DomainError(result.error.code, { correlationId: result.error.correlationId })
       return
     }
     const url = URL.createObjectURL(bytes)

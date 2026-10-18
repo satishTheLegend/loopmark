@@ -2,6 +2,8 @@ import { errorHelp } from '../help/errors'
 import type { Conflict } from './contracts'
 
 export type ErrorCode = keyof typeof errorHelp
+/** Authored local validation/remedy text only. Never wrap a provider or runtime message. */
+export class UserFacingError extends Error {}
 export interface SafeError {
   code: ErrorCode
   problem: string
@@ -41,7 +43,16 @@ export class ConflictError extends DomainError {
     this.conflict = conflict
   }
 }
+const unexpected = new WeakMap<object, SafeError>()
 export function safeError(error: unknown): SafeError {
   // Never propagate a provider body, URL, token, email or arbitrary exception text.
-  return error instanceof DomainError ? error.detail : new DomainError('UNEXPECTED').detail
+  if (error instanceof DomainError) return error.detail
+  if (error && typeof error === 'object') {
+    const previous = unexpected.get(error)
+    if (previous) return previous
+    const detail = new DomainError('UNEXPECTED').detail
+    unexpected.set(error, detail)
+    return detail
+  }
+  return new DomainError('UNEXPECTED').detail
 }

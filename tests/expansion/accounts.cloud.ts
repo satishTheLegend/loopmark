@@ -2,6 +2,50 @@ import { test, expect } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 import { signIn, chooseAccount, createProject, deliveredCode, origin } from '../cloud/helpers'
 
+test('actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work', async ({
+  page,
+}) => {
+  test.setTimeout(90000)
+  const email = `loopmark-delete-remove-${crypto.randomUUID()}@example.invalid`
+  await page.goto(origin)
+  await createProject(page, 'Separate personal scarf')
+  await signIn(page, email)
+  await chooseAccount(page)
+  await createProject(page, 'Account copy to remove')
+  await expect(page.locator('.sync-status')).toContainText('Synced to your account', {
+    timeout: 20000,
+  })
+  await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
+  await page.getByLabel('What will you do next?').fill('Unsent draft explicitly discarded')
+  await page.getByRole('button', { name: 'Close dialog' }).click()
+  await page.goto(origin + '/#account')
+  await page.getByRole('button', { name: 'Review account deletion' }).click()
+  await page.getByRole('radio', { name: /Remove this account’s device copy/ }).check()
+  await page.waitForTimeout(5100)
+  const code = await deliveredCode(email, () =>
+    page.getByRole('button', { name: 'Send deletion code' }).click(),
+  )
+  await page.getByLabel('Deletion code', { exact: true }).fill(code)
+  await page.getByRole('checkbox', { name: /Delete this cloud account/ }).check()
+  await expect(page.getByRole('button', { name: 'Delete account', exact: true })).toBeDisabled()
+  await page.getByRole('checkbox', { name: /Discard the unsent/ }).check()
+  await page.getByRole('button', { name: 'Delete account', exact: true }).click()
+  const receipt = page.getByRole('region', { name: 'Account deletion receipt' })
+  await expect(receipt).toContainText('request is accepted', { timeout: 30000 })
+  await expect(receipt).toContainText('device copies were removed')
+  await page.reload()
+  await expect(receipt).toContainText('device copies were removed')
+  await page.goto(origin + '/#projects')
+  await expect(page.getByRole('button', { name: /^Open Separate personal scarf\./ })).toBeVisible()
+  await expect(page.getByRole('button', { name: /^Open Account copy to remove\./ })).toHaveCount(0)
+  await page.getByRole('button', { name: 'Change collection' }).click()
+  await expect(
+    page
+      .getByRole('dialog')
+      .getByRole('button', { name: /Account projects|Recovered|Kept on this device/ }),
+  ).toHaveCount(0)
+})
+
 test('actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out', async ({
   browser,
 }) => {

@@ -1,10 +1,11 @@
+import { UserFacingError } from './domain/errors'
 import { useEffect, useRef, useState } from 'react'
 import type { DraftRecord as Draft, DraftStore } from './repositories/drafts'
 
 let storeFactory: (() => DraftStore) | undefined
 export function installDraftStoreFactory(factory: () => DraftStore): void {
   if (storeFactory && storeFactory !== factory)
-    throw new Error('Draft storage is already installed.')
+    throw new UserFacingError('Draft storage is already installed.')
   storeFactory = factory
 }
 export function captureDraftStore(): DraftStore {
@@ -16,7 +17,7 @@ const open = () =>
     let abandoned = false
     const timeout = setTimeout(() => {
       abandoned = true
-      reject(new Error('Draft storage is busy. Keep this form open until you save.'))
+      reject(new UserFacingError('Draft storage is busy. Keep this form open until you save.'))
     }, 5000)
     request.onupgradeneeded = () => request.result.createObjectStore('drafts', { keyPath: 'key' })
     request.onsuccess = () => {
@@ -26,7 +27,9 @@ const open = () =>
     }
     request.onerror = () => {
       clearTimeout(timeout)
-      reject(new Error('Draft recovery is unavailable. Keep this form open until you save.'))
+      reject(
+        new UserFacingError('Draft recovery is unavailable. Keep this form open until you save.'),
+      )
     }
   })
 async function read<T>(key: string): Promise<Draft<T> | undefined> {
@@ -65,7 +68,7 @@ async function write<T>(key: string, previous: string | undefined, draft?: Draft
       tx.oncomplete = () => resolve()
       tx.onabort = tx.onerror = () =>
         reject(
-          new Error(
+          new UserFacingError(
             conflict
               ? 'This draft changed in another tab. Your input is still here. Save it as a project or checkpoint, or close and reopen to recover the other draft.'
               : 'The draft could not be kept on this device. Keep this form open until you save.',
@@ -87,7 +90,7 @@ async function removeLegacyProjectDrafts(projectId: string) {
       tx.oncomplete = () => resolve()
       tx.onabort = tx.onerror = () =>
         reject(
-          new Error(
+          new UserFacingError(
             'Project deleted, but its unsaved draft could not be cleared. Retry clearing site data after making a full backup.',
           ),
         )
@@ -232,7 +235,9 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
   async function pin(): Promise<Draft<T>> {
     const operation = queue.current.then(async () => {
       if (!ready || blocked.current || discardLock.current)
-        throw new Error('Keep this form open until the draft can be saved on this device.')
+        throw new UserFacingError(
+          'Keep this form open until the draft can be saved on this device.',
+        )
       const capturedValue = structuredClone(current.current)
       const capturedBase = base.current
       if (

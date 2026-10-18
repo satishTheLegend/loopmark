@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { validMedia } from '../media-validation'
 import { MAX_PROJECTS, MAX_CHECKPOINTS } from './policy'
+import { UserFacingError } from './errors'
 
 export const id = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/, 'Invalid record ID')
 export function supportedTimestamp(value: unknown): value is string {
@@ -104,7 +105,50 @@ export function validated<T>(schema: z.ZodType<T>, value: unknown): T {
   const result = schema.safeParse(value)
   if (!result.success) {
     const issue = result.error.issues[0]
-    throw new Error(`${issue.path.length ? `${issue.path.join('.')}: ` : ''}${issue.message}`)
+    // Zod's default messages can include untrusted unknown keys or values. Only
+    // our authored remedies and known schema field names may reach the screen.
+    const messages = new Set([
+      'Invalid record ID',
+      'Invalid date',
+      'Must not be blank',
+      'Invalid project code',
+      'Photo must be a valid JPEG, PNG or WebP data URL up to 4 MiB',
+      'Voice note must be a supported audio data URL up to 8 MiB',
+      'Project IDs and codes must be unique',
+      'Checkpoint IDs must be unique',
+      'All record IDs must be unique',
+      `A library can contain up to ${MAX_CHECKPOINTS} checkpoints`,
+    ])
+    const fields = new Set([
+      'format',
+      'version',
+      'exportedAt',
+      'projects',
+      'id',
+      'code',
+      'name',
+      'craft',
+      'color',
+      'yarn',
+      'toolSize',
+      'notes',
+      'status',
+      'createdAt',
+      'updatedAt',
+      'checkpoints',
+      'sample',
+      'position',
+      'nextStep',
+      'photo',
+      'voice',
+    ])
+    const path = issue.path
+      .filter((part) => typeof part === 'number' || fields.has(String(part)))
+      .join('.')
+    const message = messages.has(issue.message)
+      ? issue.message
+      : 'This value is missing, unsupported or outside the allowed limits. Check the file or form and try again.'
+    throw new UserFacingError(`${path ? `${path}: ` : ''}${message}`)
   }
   return result.data
 }

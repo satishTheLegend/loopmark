@@ -1,3 +1,4 @@
+import { UserFacingError } from './domain/errors'
 import { z } from 'zod'
 import type { Backup, CheckpointInput, Project, ProjectInput } from './types'
 import { validateBackupMedia } from './media-validation'
@@ -44,7 +45,8 @@ export interface DataAdapter {
 }
 let adapter: DataAdapter | undefined
 export function installDataAdapter(destination: DataAdapter): void {
-  if (adapter && adapter !== destination) throw new Error('The data adapter is already installed.')
+  if (adapter && adapter !== destination)
+    throw new UserFacingError('The data adapter is already installed.')
   adapter = destination
 }
 
@@ -67,15 +69,15 @@ const emptyStats = (): Stats => ({ key: 'library', bytes: 0, projects: 0, checkp
 const size = (value: unknown) => encoder.encode(JSON.stringify(value)).byteLength
 function assertCapacity(stats: Stats) {
   if (stats.projects > MAX_PROJECTS)
-    throw new Error(
+    throw new UserFacingError(
       `This library can hold ${MAX_PROJECTS} projects. Export a backup before removing older projects.`,
     )
   if (stats.checkpoints > MAX_CHECKPOINTS)
-    throw new Error(
+    throw new UserFacingError(
       `This library can hold ${MAX_CHECKPOINTS} checkpoints. Export a backup before removing older projects.`,
     )
   if (stats.bytes > MAX_LIBRARY_BYTES)
-    throw new Error(
+    throw new UserFacingError(
       'This library is full (48 MiB). Export a backup, then remove an older project before saving more media.',
     )
 }
@@ -86,7 +88,7 @@ function openDatabase(): Promise<IDBDatabase> {
   database = new Promise<IDBDatabase>((resolve, reject) => {
     if (typeof indexedDB === 'undefined') {
       reject(
-        new Error(
+        new UserFacingError(
           'Local storage is unavailable in this browser. Your changes have not been saved.',
         ),
       )
@@ -102,9 +104,14 @@ function openDatabase(): Promise<IDBDatabase> {
     }
     request.onblocked = () => {
       blocked = true
-      reject(new Error('Close other Loopmark tabs, then reload to finish opening local storage.'))
+      reject(
+        new UserFacingError(
+          'Close other Loopmark tabs, then reload to finish opening local storage.',
+        ),
+      )
     }
-    request.onerror = () => reject(request.error ?? new Error('Local storage could not be opened.'))
+    request.onerror = () =>
+      reject(request.error ?? new UserFacingError('Local storage could not be opened.'))
     request.onsuccess = () => {
       const db = request.result
       if (blocked) {
@@ -129,12 +136,12 @@ function openDatabase(): Promise<IDBDatabase> {
 
 function friendlyError(error: unknown): Error {
   if (error instanceof Error && error.name === 'QuotaExceededError')
-    return new Error(
+    return new UserFacingError(
       'Your browser storage is full. Your changes were not saved. Export a backup and free some space, then try again.',
     )
   return error instanceof Error
     ? error
-    : new Error('Local storage failed. Your changes were not saved.')
+    : new UserFacingError('Local storage failed. Your changes were not saved.')
 }
 
 async function transaction<T>(
@@ -213,18 +220,18 @@ const nextTimestamp = (...previous: (string | undefined)[]) => {
     Math.max(Date.now(), ...previous.flatMap((value) => (value ? [Date.parse(value) + 1] : []))),
   )
   if (!Number.isFinite(next.getTime()) || next.getUTCFullYear() > 9999 || next.getUTCFullYear() < 0)
-    throw new Error(
+    throw new UserFacingError(
       'The saved date is outside the supported range. Restore a backup with valid dates.',
     )
   return next.toISOString()
 }
 function requireCurrent(project: Project | undefined, expected?: string): Project {
   if (!project)
-    throw new Error(
+    throw new UserFacingError(
       'This project is no longer in your library. Refresh to see the current projects.',
     )
   if (expected !== undefined && project.updatedAt !== expected)
-    throw new Error(
+    throw new UserFacingError(
       'This project changed in another tab. Your other tab’s changes are safe. If an unfinished edit returns, copy anything you need, discard that draft, and reopen the latest details.',
     )
   return project
@@ -320,7 +327,7 @@ export async function getLibraryState(): Promise<LibraryState> {
 export async function getLibraryRevision(): Promise<string> {
   return (await getLibraryState()).revision
 }
-export class LibraryChangedError extends Error {
+export class LibraryChangedError extends UserFacingError {
   constructor() {
     super(
       'Your collection changed while this restore was open. Review the latest collection before confirming replacement again. Your newer changes are safe.',
@@ -376,7 +383,7 @@ function retryOrWrite(
         receipt.fingerprint !== operation.fingerprint ||
         (projectId !== undefined && receipt.projectId !== projectId)
       )
-        throw new Error(
+        throw new UserFacingError(
           'This save token was already used for different input. Reopen the form before saving these changes.',
         )
       const saved = tx.objectStore('projects').get(receipt.projectId)
@@ -388,7 +395,7 @@ function retryOrWrite(
             !project.checkpoints.some((checkpoint) => checkpoint.id === receipt.checkpointId))
         ) {
           fail(
-            new Error(
+            new UserFacingError(
               'The previously saved result is no longer available. Reopen this form before trying again.',
             ),
           )
@@ -545,7 +552,9 @@ export async function addCheckpoint(
     idValue,
     (project) => {
       if (project.status === 'finished')
-        throw new Error('This project is finished. Reopen it before saving another checkpoint.')
+        throw new UserFacingError(
+          'This project is finished. Reopen it before saving another checkpoint.',
+        )
       const now = nextTimestamp(project.updatedAt)
       return {
         ...project,
@@ -573,12 +582,12 @@ export async function exportBackup(): Promise<Backup> {
 
 export function parseBackup(text: string): Backup {
   if (encoder.encode(text).byteLength > MAX_BACKUP_BYTES)
-    throw new Error('Choose a Loopmark backup smaller than 50 MiB.')
+    throw new UserFacingError('Choose a Loopmark backup smaller than 50 MiB.')
   let value: unknown
   try {
     value = JSON.parse(text)
   } catch {
-    throw new Error('This file is not valid JSON. Choose an exported Loopmark backup.')
+    throw new UserFacingError('This file is not valid JSON. Choose an exported Loopmark backup.')
   }
   const backup = validated(backupSchema, value)
   assertCapacity({
@@ -611,7 +620,7 @@ async function applyBackup(
           if (expectedRevision !== undefined && revisionOf(metadata.result) !== expectedRevision)
             throw new LibraryChangedError()
           if (onlyWhenEmpty && request.result.length)
-            throw new Error(
+            throw new UserFacingError(
               'Sample projects can only be added to an empty collection. Your existing projects are safe.',
             )
           // Explicit restore can recover old releases that accepted impossible revision clocks.

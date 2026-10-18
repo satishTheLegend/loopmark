@@ -1,3 +1,7 @@
+import { UserFacingError } from './domain/errors'
+import { Capacitor } from '@capacitor/core'
+import { DiagnosticsView } from './components/DiagnosticsView'
+import { createDiagnosticReport, type DiagnosticReport } from './services/diagnostics'
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import {
   IconLayoutGrid,
@@ -94,6 +98,7 @@ export default function App({
   const [attachmentState, setAttachmentState] = useState<ProjectMediaAvailability[]>([])
   const [attachmentQueue, setAttachmentQueue] = useState<SyncItem[]>([])
   const [syncDetails, setSyncDetails] = useState(false)
+  const [diagnostics, setDiagnostics] = useState<DiagnosticReport | null>(null)
   const [reopenUpgrade, setReopenUpgrade] = useState<string | null>(null)
   const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
   const [connectionMode, setConnectionMode] = useState<'attach' | 'replace'>('attach')
@@ -353,7 +358,8 @@ export default function App({
     notify(warning || 'Your project is saved.', !!warning)
   }
   async function saveCheckpoint(input: CheckpointInput, draftToken?: string) {
-    if (!project) throw new Error('This project is no longer available. Your draft is still here.')
+    if (!project)
+      throw new UserFacingError('This project is no longer available. Your draft is still here.')
     await addCheckpoint(project.id, input, draftToken)
     await refresh()
   }
@@ -439,13 +445,13 @@ export default function App({
   async function continueUpgrade(action: PurchaseAction) {
     if (action.returnAction === 'new-project') {
       if (action.draftKey !== 'new' || !(await runtime?.draftStore().read('new')))
-        throw new Error(
+        throw new UserFacingError(
           'The original draft is no longer on this device. Your upgrade remains available; start a new project from My projects.',
         )
       setModal('new')
     } else if (action.returnAction === 'reopen-project' && action.projectId) {
       if (!(await getProject(action.projectId)))
-        throw new Error(
+        throw new UserFacingError(
           'The original project is no longer in this collection. Your upgrade remains available.',
         )
       navigate(`project=${action.projectId}`)
@@ -782,6 +788,9 @@ export default function App({
               onRequestCode={(email) => controller!.requestCode(email)}
               onVerifyCode={(email, code) => controller!.verifyCode(email, code)}
               onSignOut={() => void reviewSignOut()}
+              onDiagnostics={() =>
+                setDiagnostics(createDiagnosticReport(summary, Capacitor.getPlatform()))
+              }
             >
               {runtime && (
                 <UpgradeView
@@ -882,6 +891,10 @@ export default function App({
           summary={summary}
           onSync={() => controller.runSync()}
           onClose={() => setSyncDetails(false)}
+          onDiagnostics={() => {
+            setSyncDetails(false)
+            setDiagnostics(createDiagnosticReport(summary, Capacitor.getPlatform()))
+          }}
           onRetry={async (items) => {
             const mediaIds = items
               .filter((item) => item.kind === 'attachment')
@@ -901,6 +914,13 @@ export default function App({
             setSyncDetails(false)
             navigate('account')
           }}
+        />
+      )}
+      {diagnostics && (
+        <DiagnosticsView
+          report={diagnostics}
+          share={runtime?.share}
+          onClose={() => setDiagnostics(null)}
         />
       )}
       {connectionPreview && controller && (

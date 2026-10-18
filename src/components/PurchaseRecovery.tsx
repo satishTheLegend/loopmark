@@ -1,3 +1,4 @@
+import { DomainError } from '../domain/errors'
 import { useEffect, useRef, useState } from 'react'
 import type { AppRuntime } from '../runtime'
 import type { SavedPurchaseRecovery } from '../billing/recovery-service'
@@ -85,7 +86,8 @@ export function PurchaseRecovery({
       name = 'loopmark-purchase-recovery.json'
     if (runtime.share) {
       const result = await runtime.share.shareFile({ name, mimeType: 'application/json', bytes })
-      if ('error' in result) throw new Error(`${result.error.problem} ${result.error.nextAction}`)
+      if ('error' in result)
+        throw new DomainError(result.error.code, { correlationId: result.error.correlationId })
     } else {
       const url = URL.createObjectURL(bytes),
         link = document.createElement('a')

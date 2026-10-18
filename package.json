@@ -38,7 +38,8 @@
     "test:compat": "node scripts/test-compat.mjs",
     "test:examples": "node scripts/test-examples.mjs",
     "test:docs": "node scripts/test-docs.mjs",
-    "test:dx": "node scripts/test-dx.mjs"
+    "test:dx": "node scripts/test-dx.mjs",
+    "test:ui:purchases": "playwright test --config=tests/ui/purchases.config.ts"
   },
   "engines": {
     "node": ">=22.12.0"

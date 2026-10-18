@@ -1,3 +1,4 @@
+import { UserFacingError } from './domain/errors'
 import type { Backup } from './types'
 
 const ascii = (bytes: Uint8Array, start: number, length: number) =>
@@ -289,7 +290,9 @@ export async function validateBackupMedia(backup: Backup): Promise<void> {
       const timer = setTimeout(
         () =>
           finish(
-            new Error('A backup photo could not be decoded. Your current collection is unchanged.'),
+            new UserFacingError(
+              'A backup photo could not be decoded. Your current collection is unchanged.',
+            ),
           ),
         10000,
       )
@@ -304,11 +307,11 @@ export async function validateBackupMedia(backup: Backup): Promise<void> {
         finish(
           image.naturalWidth > 0 && image.naturalHeight > 0
             ? undefined
-            : new Error('A backup photo has invalid dimensions.'),
+            : new UserFacingError('A backup photo has invalid dimensions.'),
         )
       image.onerror = () =>
         finish(
-          new Error(
+          new UserFacingError(
             'A backup photo is damaged or unsupported. Your current collection is unchanged.',
           ),
         )
