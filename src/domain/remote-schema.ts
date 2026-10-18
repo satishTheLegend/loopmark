@@ -38,14 +38,8 @@ export function candidatePortableBytes(candidate: CandidateMetadata): number {
         return { ...fields, ...(photo ? { photo: '' } : {}), ...(voice ? { voice: '' } : {}) }
       }),
   }))
-  return (
-    utf8Bytes({
-      format: 'loopmark',
-      version: 1,
-      exportedAt: '2000-01-01T00:00:00.000Z',
-      projects,
-    }) + attachmentBytes
-  )
+  // Logical capacity counts serialized project objects; the complete backup has its own 50 MiB guard.
+  return projects.reduce((sum, project) => sum + utf8Bytes(project), 0) + attachmentBytes
 }
 export const candidateMetadataSchema = z
   .object({

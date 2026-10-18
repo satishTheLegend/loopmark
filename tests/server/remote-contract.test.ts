@@ -43,7 +43,7 @@ const candidate: CandidateMetadata = {
   ],
 }
 describe('remote candidate contracts', () => {
-  it('accounts for the complete compact portable envelope and escaped MIME bytes', () => {
+  it('accounts for serialized project objects and escaped MIME bytes', () => {
     const { projectId: _parent, voice: _ref, ...checkpoint } = candidate.checkpoints[0]
     const portable = {
       format: 'loopmark',
@@ -57,7 +57,7 @@ describe('remote candidate contracts', () => {
       ],
     }
     expect(candidatePortableBytes(candidate)).toBe(
-      new TextEncoder().encode(JSON.stringify(portable)).length,
+      new TextEncoder().encode(JSON.stringify(portable.projects[0])).length,
     )
     expect(candidateMetadataSchema.safeParse(candidate).success).toBe(true)
   })

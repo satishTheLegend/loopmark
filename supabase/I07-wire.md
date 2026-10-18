@@ -4,7 +4,7 @@ Status: approved protocol, runtime implementation in progress. Canonical types a
 
 ## Candidate metadata and atomic attachment/replacement
 
-`CandidateMetadata = { projects: ProjectCreate[], checkpoints: CheckpointCreate[] }`. These are existing domain types: no local revision, grant, sample flag, ownership field, inline bytes, or provider object. MediaRefs remain attached to checkpoints. Validation covers unique record IDs/codes, all project relationships, consistent repeated media descriptors, field limits, exact portable bytes, and the complete collection caps. Metadata is bounded at 8 MiB before parsing.
+`CandidateMetadata = { projects: ProjectCreate[], checkpoints: CheckpointCreate[] }`. These are existing domain types: no local revision, grant, sample flag, ownership field, inline bytes, or provider object. MediaRefs remain attached to checkpoints. Validation covers unique record IDs/codes, all project relationships, consistent repeated media descriptors, field limits, exact sum of serialized v1 project bytes (the separate compact backup envelope remains below 50 MiB), and the complete collection caps. Metadata is bounded at 8 MiB before parsing.
 
 `collection-attach` prepare request:
 
@@ -27,7 +27,7 @@ Commit is the existing immutable `collection.replace` command sent through `sync
 
 ## Ordinary and candidate media
 
-`media-upload` JSON reserve request is `{ action:'reserve', requestId, upload: UploadRequest, candidateId?:string }`; response is the existing UploadReservation. The stable request ID identifies the reservation. Optional candidateId routes admission to the separately bounded replacement reservation and its exact descriptor inventory. It does not bypass the candidate's expiry, ownership, epoch, deletion generation or 40 MiB/80 MiB limits. Ordinary reservations retain four-upload/32 MiB/15-minute limits.
+`media-upload` JSON reserve request is `{ action:'reserve', requestId, upload: UploadRequest, candidateId?:string }`; response is the existing UploadReservation. The stable request ID identifies the reservation. For a candidate, upload.epoch is CandidatePreparation.nextEpoch and candidateId is replacement.reservationId. Optional candidateId routes admission to the separately bounded replacement reservation and its exact descriptor inventory. It does not bypass the candidate's expiry, ownership, epoch, deletion generation or 40 MiB/80 MiB limits. Ordinary reservations retain four-upload/32 MiB/15-minute limits.
 
 For the bytes, POST `application/octet-stream` to `media-upload` with `x-loopmark-reservation-id`, bearer JWT and apikey. The server obtains expected kind/type/bytes/hash from the reservation, caps the stream and deadline, verifies actual bytes, and writes a new private immutable object without upsert. Response `{ reservationId, verified:true }` acknowledges verified staging only. Retrying must verify equal bytes and cannot overwrite a committed object. `{ action:'cancel', reservationId }` returns `{ cancelled:true }` and schedules reference-safe cleanup.
 
