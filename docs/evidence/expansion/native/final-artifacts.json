@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "fb52c6e5adbb2ae24aac7134716c098d9247f6a4",
+  "webSourceEquivalent": "feb71f4",
+  "productionWebAssets": true,
+  "storeDistribution": false,
+  "ios": {
+    "file": "loopmark-ios-simulator-fb52c6e.tar.gz",
+    "sha256": "b9d5794fb339d4a8cc818c81dd45f3a9497b1cfccf7bde0e97454afe16cdd066",
+    "appDirectorySha256": "9d21730e58a20a76a80a21adb27a44c5b9ca50909740a55e227fefa589fca425",
+    "target": "iOS Simulator arm64, ad hoc local simulator signature"
+  },
+  "android": {
+    "file": "loopmark-android-debug-fb52c6e.apk",
+    "sha256": "4ef02708a93568a2d253e4b0f82be37f4164f88a7ed1160935ffe78ff59faf31",
+    "target": "Android debug APK; local debug key, no release/store signing"
+  }
+}

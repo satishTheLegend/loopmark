@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "fb52c6e5adbb2ae24aac7134716c098d9247f6a4",
+  "uiFixtureCommit": "f97a787",
+  "scope": "Actual production assets in iOS simulator and Android emulator, not a synthetic coordinator harness. Local ad hoc/debug signatures, no store qualification.",
+  "files": {
+    "ios-product.log": "73c983c4df054885ab2ed2c92c78f4068a2b62630eb96dd6461a3e71ea74126b",
+    "ios-inbox.log": "409a68e34f1de823f12aac6c5153476c35ac10ec9eef8c18eda14920987e563e",
+    "android-product.log": "78894ca58701f42be6c0067287c4e7cdbe0fdd6097d323d2486391b2882da049",
+    "android-inbox.log": "125ef7de740faa12306c5b746d2d79f2930719a97104db8f76c12b496cb46256",
+    "rejected-android-inbox-fixture.log": "6ec272e7f557d673402427eece3923716cb76bad3689048731322042fb7b047b"
+  },
+  "initialFixtureFailure": "The first T32 fixture expected automatic navigation after restore. The product remains on Backup & restore; corrected fixtures explicitly navigate via My projects. The native restore itself succeeded."
+}

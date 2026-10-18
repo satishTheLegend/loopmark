@@ -1,8 +1,12 @@
 {
   "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
   "passed": true,
-  "completedAt": "2026-10-18T13:36:19.634Z",
-  "bundle": "1a1e2fc73e8e37d4e155404aa7c1480d4ca495b91193faaee4c2fe327d5842e9",
+  "completedAt": "2026-10-18T16:30:39.756Z",
+  "bundle": "ef893be318334b0b30c015040562d35ac6e45eab0cbd55f359511f81da0ee4b4",
+  "sourceCommit": "fb52c6e5adbb2ae24aac7134716c098d9247f6a4",
+  "manifestFileSha256": "bd5489153294a07448785a54adb6dd56788e48882cfa1bfbf6579a7a086533bd",
+  "artifactSha256": "9d21730e58a20a76a80a21adb27a44c5b9ca50909740a55e227fefa589fca425",
+  "artifactFormat": "app-directory-sha256",
   "assertions": [
     "project creation",
     "text-only draft",
@@ -10,6 +14,7 @@
     "OS-denied microphone",
     "checkpoint save",
     "terminate and relaunch with saved next step",
-    "account navigation"
+    "account navigation",
+    "redacted native diagnostic preview and OS share-sheet cancellation"
   ]
 }

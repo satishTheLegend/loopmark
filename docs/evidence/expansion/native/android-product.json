@@ -1,8 +1,12 @@
 {
   "emulator": "emulator-5580",
   "passed": true,
-  "completedAt": "2026-10-18T13:36:54.569Z",
-  "bundle": "1a1e2fc73e8e37d4e155404aa7c1480d4ca495b91193faaee4c2fe327d5842e9",
+  "completedAt": "2026-10-18T16:30:25.470Z",
+  "bundle": "ef893be318334b0b30c015040562d35ac6e45eab0cbd55f359511f81da0ee4b4",
+  "sourceCommit": "fb52c6e5adbb2ae24aac7134716c098d9247f6a4",
+  "manifestFileSha256": "bd5489153294a07448785a54adb6dd56788e48882cfa1bfbf6579a7a086533bd",
+  "artifactSha256": "4ef02708a93568a2d253e4b0f82be37f4164f88a7ed1160935ffe78ff59faf31",
+  "artifactFormat": "apk",
   "assertions": [
     "project creation or fixture reopen",
     "text-only draft",
@@ -11,6 +15,7 @@
     "checkpoint save",
     "process relaunch and saved next step",
     "account unavailable without configuration",
+    "redacted native diagnostic preview and OS share-sheet cancellation",
     "hardware back to workbasket"
   ]
 }
