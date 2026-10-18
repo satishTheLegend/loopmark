@@ -6,6 +6,8 @@
 - Added optional accounts, fenced offline sync, explicit connection previews, conflict recovery, complete media export and account deletion receipt continuation.
 - Added native SQLite/filesystem/secure-storage bridges and separate unsigned iOS/Android verification paths.
 - Added hosted web and native purchase coordination, verified entitlement caching, original-draft continuation and purchase recovery. Provider activation still requires real sandbox qualification.
+- Added project file availability, protected download removal, and reviewed iOS/Android backup-file intake with durable repeated-file handling.
+- Fixed first-install update-banner movement, unchanged sync polls invalidating reviews, and obsolete sync completions replacing a newly selected collection.
 - Added public help and explicit account/storage states while preserving private-route indexing protections.
 - Added executable contributor examples and separate guest, local backend, native and provider setup guides.
 
