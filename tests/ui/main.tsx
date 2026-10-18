@@ -118,6 +118,7 @@ function Harness() {
             unsentCheckpoints: 3,
             pendingAttachments: 1,
             failedAttachments: 2,
+            missingAttachments: 0,
             recoveredCollections: 1,
           }}
           onConfirm={done}

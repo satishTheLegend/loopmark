@@ -233,26 +233,28 @@ export function useDraft<T>(key: string, initial: T, baseRevision?: string) {
     const operation = queue.current.then(async () => {
       if (!ready || blocked.current || discardLock.current)
         throw new Error('Keep this form open until the draft can be saved on this device.')
+      const capturedValue = structuredClone(current.current)
+      const capturedBase = base.current
       if (
         !revision.current ||
-        JSON.stringify(savedValue.current) !== JSON.stringify(current.current)
+        JSON.stringify(savedValue.current) !== JSON.stringify(capturedValue)
       ) {
         const next = crypto.randomUUID()
         await store.write(key, revision.current, {
           key,
-          value: current.current,
+          value: capturedValue,
           revision: next,
-          baseRevision: base.current,
+          baseRevision: capturedBase,
         })
         revision.current = next
-        savedValue.current = current.current
+        savedValue.current = capturedValue
       }
       setStatus('Draft kept on this device. Save to add it to your backup.')
       return {
         key,
-        value: structuredClone(current.current),
+        value: capturedValue,
         revision: revision.current!,
-        baseRevision: base.current,
+        baseRevision: capturedBase,
       }
     })
     queue.current = operation.then(

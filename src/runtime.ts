@@ -11,6 +11,8 @@ import type { OperationPlanStore } from './services/operation-plans'
 import type { DeviceStore } from './auth/auth-service'
 import type { NativeLifecycleEvent } from './platform/native/lifecycle'
 import type { NativeAudioOptions } from './platform/native/audio'
+import type { NativeCaptureRecovery, NativeCaptureSource } from './platform/native/capture-recovery'
+import type { WorkflowStore } from './services/workflow-store'
 import { createAppController } from './services/app-controller'
 import { createLocalDataAdapter } from './services/local-data-service'
 import { createBackupService } from './services/backup-service'
@@ -28,21 +30,28 @@ interface Storage {
   drafts(scope: SessionScope): DraftStore
   credentials?: CredentialStore
   share?: SharePort
+  workflows: WorkflowStore
+  captureRecovery?: NativeCaptureRecovery
 }
 async function openStorage(native: boolean): Promise<Storage> {
   if (native) {
-    const [repositoryModule, plans, drafts, devices, credentials, sharing] = await Promise.all([
-      import('./platform/native/repository'),
-      import('./platform/native/operation-plans'),
-      import('./platform/native/drafts'),
-      import('./platform/native/device-store'),
-      import('./platform/native/session-storage'),
-      import('./platform/native/share'),
-    ])
+    const [repositoryModule, plans, drafts, devices, credentials, sharing, workflows, recovery] =
+      await Promise.all([
+        import('./platform/native/repository'),
+        import('./platform/native/operation-plans'),
+        import('./platform/native/drafts'),
+        import('./platform/native/device-store'),
+        import('./platform/native/session-storage'),
+        import('./platform/native/share'),
+        import('./platform/native/workflow-store'),
+        import('./platform/native/capture-recovery'),
+      ])
     const repository = await repositoryModule.openNativeRepository()
     await prepareNativeStorage(repository)
     return {
       repository,
+      workflows: workflows.createNativeWorkflowStore(repository),
+      captureRecovery: new recovery.NativeCaptureRecovery(repository),
       media: repository.media,
       plans: plans.createNativeOperationPlanStore(repository),
       devices: devices.createNativeDeviceStore(repository),
@@ -51,16 +60,18 @@ async function openStorage(native: boolean): Promise<Storage> {
       share: new sharing.NativeShare(),
     }
   }
-  const [repositoryModule, plans, drafts, devices] = await Promise.all([
+  const [repositoryModule, plans, drafts, devices, workflows] = await Promise.all([
     import('./repositories/browser/repository'),
     import('./repositories/browser/operation-plans'),
     import('./repositories/browser/draft-store'),
     import('./repositories/browser/device-store'),
+    import('./repositories/browser/workflow-store'),
   ])
   const repository = await repositoryModule.openBrowserRepository()
   await prepareBrowserStorage(repository)
   return {
     repository,
+    workflows: workflows.createBrowserWorkflowStore(repository),
     media: repository.media,
     plans: plans.createBrowserOperationPlanStore(repository),
     devices: devices.createBrowserDeviceStore(repository),
@@ -91,7 +102,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         online: () => online,
       })
     : undefined
-  const controller = createAppController({ repository, auth, sync })
+  const controller = createAppController({ repository, auth, sync, media: storage.media })
   await controller.initialize()
   const scope = () => {
     const value = controller.getSnapshot().scope
@@ -107,6 +118,11 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   installDraftStoreFactory(() => storage.drafts(scope()))
   const backups = createBackupService({ ...storage, data, scope })
   const captureModule = native ? await import('./platform/native/capture') : undefined
+  const captureListeners = new Set<() => void>()
+  const captureChanged = () => {
+    for (const listener of captureListeners) listener()
+  }
+  const removeCapture = await storage.captureRecovery?.subscribe(captureChanged)
   const events = new Set<(event: NativeLifecycleEvent) => void>()
   let queuedUrl: NativeLifecycleEvent | undefined,
     timer: ReturnType<typeof setTimeout> | undefined,
@@ -204,6 +220,35 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     configurationErrors: errors,
     scope,
     draftStore: () => storage.drafts(scope()),
+    captureRecovery: storage.captureRecovery,
+    subscribeCapture(listener: () => void) {
+      captureListeners.add(listener)
+      return () => {
+        captureListeners.delete(listener)
+      }
+    },
+    async capturePhoto(source: NativeCaptureSource, isCurrent: () => boolean) {
+      if (!captureModule || !storage.captureRecovery)
+        throw new DomainError('CAPABILITY_UNAVAILABLE')
+      const captured = JSON.stringify(source.scope)
+      const capture = captureModule.createNativeCapture({
+        isCurrent: () => isCurrent() && JSON.stringify(controller.getSnapshot().scope) === captured,
+        onInterrupted: () => {},
+        cameraContinuation: { recovery: storage.captureRecovery, source },
+      })
+      try {
+        const result = await capture.photo()
+        return { result, id: capture.capturedPhotoId() }
+      } finally {
+        await capture.dispose()
+        captureChanged()
+      }
+    },
+    async acknowledgePhoto(id: string, captured: SessionScope) {
+      if (!storage.captureRecovery) throw new DomainError('CAPABILITY_UNAVAILABLE')
+      await storage.captureRecovery.acknowledge(id, captured)
+      captureChanged()
+    },
     createVoiceCapture(options: NativeAudioOptions) {
       const captured = JSON.stringify(scope())
       return captureModule?.createNativeCapture({
@@ -258,6 +303,8 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       window.removeEventListener('offline', onNetwork)
       document.removeEventListener('visibilitychange', onVisibility)
       await removeNative?.()
+      await removeCapture?.()
+      captureListeners.clear()
       await controller.dispose()
       events.clear()
     },

@@ -12,12 +12,20 @@ export function SignOutReview({
 }: {
   counts: LocalWorkCounts
   accountEmail: string
-  onConfirm: (options: { keepLocal: boolean; discardUniqueWork?: boolean }) => Promise<void>
+  onConfirm: (options: {
+    keepLocal: boolean
+    discardUniqueWork?: boolean
+    allowMissingAttachments?: boolean
+  }) => Promise<void>
   onBackup: () => void
   onClose: () => void
 }) {
   const [keepLocal, setKeepLocal] = useState(true)
   const [discard, setDiscard] = useState(false)
+  const [allowMissing, setAllowMissing] = useState(false)
+  const cannotKeep =
+    keepLocal &&
+    (counts.missingAttachments === null || (counts.missingAttachments > 0 && !allowMissing))
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const unique =
@@ -27,11 +35,15 @@ export function SignOutReview({
     counts.pendingAttachments +
     counts.failedAttachments
   async function confirm() {
-    if (busy || (!keepLocal && unique > 0 && !discard)) return
+    if (busy || cannotKeep || (!keepLocal && unique > 0 && !discard)) return
     setBusy(true)
     setError('')
     try {
-      await onConfirm({ keepLocal, discardUniqueWork: !keepLocal && discard })
+      await onConfirm({
+        keepLocal,
+        discardUniqueWork: !keepLocal && discard,
+        allowMissingAttachments: keepLocal && allowMissing,
+      })
     } catch (failure) {
       const detail = safeError(failure)
       setError(`${detail.problem} ${detail.nextAction}`)
@@ -113,6 +125,27 @@ export function SignOutReview({
             </span>
           </label>
         </fieldset>
+        {keepLocal && counts.missingAttachments === null && (
+          <p role="status">
+            Attachment availability could not be checked. Keep signed in and try again before
+            keeping a local copy.
+          </p>
+        )}
+        {keepLocal && counts.missingAttachments !== null && counts.missingAttachments > 0 && (
+          <label className="confirm-choice">
+            <input
+              type="checkbox"
+              checked={allowMissing}
+              disabled={busy}
+              onChange={(event) => setAllowMissing(event.target.checked)}
+            />
+            <span>
+              Keep saved notes and cached files. {counts.missingAttachments} attachments are missing
+              from this device and will remain unavailable in the local copy. Synced originals
+              remain in my account.
+            </span>
+          </label>
+        )}
         {!keepLocal && unique > 0 && (
           <label className="confirm-choice">
             <input
@@ -137,7 +170,7 @@ export function SignOutReview({
           </button>
           <button
             className={`button ${keepLocal ? 'primary' : 'danger'}`}
-            disabled={busy || (!keepLocal && unique > 0 && !discard)}
+            disabled={busy || cannotKeep || (!keepLocal && unique > 0 && !discard)}
             onClick={() => void confirm()}
           >
             {busy

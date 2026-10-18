@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { IconCamera, IconCheck, IconTrash } from '@tabler/icons-react'
 import type { Project, ProjectInput, CheckpointInput, Craft } from '../types'
 import { Dialog, ErrorMessage, errorText } from './ui'
-import { preparePhoto } from '../media'
+import { preparePhoto, readFile } from '../media'
 import { VoiceNote } from './VoiceNote'
 import { useDraft } from '../drafts'
 import { NativeVoiceNote } from './NativeVoiceNote'
@@ -363,6 +363,46 @@ export function CheckpointForm({
                     <IconTrash size={18} />
                   </button>
                 </div>
+              ) : runtime?.native ? (
+                <button
+                  type="button"
+                  className="photo-upload"
+                  disabled={mediaBusy || voiceBusy}
+                  onClick={async () => {
+                    const capturedScope = runtime.scope()
+                    setMediaBusy(true)
+                    setError('')
+                    try {
+                      const saved = await currentDraft.current.pin()
+                      if (!alive.current) return
+                      const { result, id } = await runtime.capturePhoto(
+                        {
+                          scope: capturedScope,
+                          draftKey: saved.key,
+                          draftRevision: saved.revision,
+                        },
+                        () => alive.current,
+                      )
+                      if (result.status === 'ok' && alive.current) {
+                        const value = await readFile(result.value.bytes)
+                        if (!alive.current) return
+                        currentDraft.current.change('photo', value)
+                        await currentDraft.current.pin()
+                        if (id) await runtime.acknowledgePhoto(id, capturedScope)
+                      } else if ('error' in result) {
+                        setError(`${result.error.problem} ${result.error.nextAction}`)
+                      }
+                    } catch (failure) {
+                      if (alive.current) setError(errorText(failure))
+                    } finally {
+                      if (alive.current) setMediaBusy(false)
+                    }
+                  }}
+                >
+                  <IconCamera size={25} aria-hidden />
+                  <span>{mediaBusy ? 'Preparing your photo…' : 'Add a photo'}</span>
+                  <small>Take a photo or choose one from this device</small>
+                </button>
               ) : (
                 <label className="photo-upload">
                   <IconCamera size={25} />

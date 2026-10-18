@@ -46,6 +46,7 @@ import { ConflictReview } from './components/ConflictReview'
 import { SyncStatus } from './components/SyncStatus'
 import { SyncDetails } from './components/SyncDetails'
 import { summarizeSync } from './components/sync-summary'
+import { NativeCaptureNotice } from './components/NativeCaptureNotice'
 import { appLinkOrigin, type AppRuntime } from './runtime'
 type Route = 'projects' | 'finished' | 'backup' | 'guide' | 'account' | `project=${string}`
 type Modal = 'new' | 'edit' | 'checkpoint' | 'label' | 'delete' | null
@@ -537,6 +538,7 @@ export default function App({
               <SyncStatus summary={summary} onDetails={() => setSyncDetails(true)} />
             </div>
           )}
+          {runtime?.native && !modal && <NativeCaptureNotice runtime={runtime} />}
           {loading ? (
             <div className="loading-state">
               <img src="/icon.svg" width="42" height="42" alt="" />
