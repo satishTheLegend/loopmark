@@ -31,6 +31,8 @@ import {
   assertRecords,
   mediaRefs,
   parseInfo,
+  prepareResolution,
+  type ConflictResolution,
   type StoredCollection,
 } from '../../repositories/state'
 import { NativeDatabase } from './database'
@@ -133,6 +135,158 @@ export class NativeRepository implements Repository {
   async readView(key: CollectionKey): Promise<CollectionView> {
     return this.database.serial(async (db) => viewOf(await getState(db, key)))
   }
+  async readAcknowledged(key: CollectionKey): Promise<CollectionView> {
+    return this.database.serial(async (db) => {
+      const state = await getState(db, key)
+      return viewOf({ ...state, pending: [], anchors: { projects: [], checkpoints: [] } })
+    })
+  }
+  private async copyFiles(
+    db: SQLiteDBConnection,
+    source: CollectionKey,
+    target: CollectionKey,
+    refs: MediaRef[],
+  ) {
+    await assertMediaPresent(db, source, refs)
+    const files: { ref: MediaRef; fileKey: string }[] = []
+    for (const ref of refs) {
+      const row = (
+        await db.query('SELECT file_key FROM media WHERE scope=? AND id=?', [
+          scopeKey(source),
+          ref.id,
+        ])
+      ).values![0]
+      const bytes = await durableFiles.read({ key: row.file_key as string })
+      if (atob(bytes.base64).length !== ref.bytes) throw new DomainError('MEDIA_INVALID')
+      const fileKey = await canonicalHash({ scope: target, id: ref.id })
+      await db.run(
+        'INSERT INTO prepared_files(file_key,scope,media_id,created_at) VALUES(?,?,?,?)',
+        [fileKey, scopeKey(target), ref.id, Date.now()],
+      )
+      await durableFiles.put({ key: fileKey, base64: bytes.base64, sha256: ref.sha256 })
+      files.push({ ref, fileKey })
+    }
+    return files
+  }
+  async resolvePending(
+    key: CollectionKey,
+    resolution: ConflictResolution,
+    generation: number,
+  ): Promise<{ recovered: CollectionKey | null; commit: LocalCommit | null }> {
+    const fingerprint = await canonicalHash(resolution)
+    const receiptKey = `resolution:${scopeKey(key)}:${resolution.operationId}:${resolution.expectedRevision}`
+    // Keep the local queue through durable copy and transaction; activation/GC cannot interleave.
+    const result = await this.database.serial(async (db) => {
+      await assertGeneration(db, key, generation, true)
+      const previous = (await db.query('SELECT body FROM metadata WHERE key=?', [receiptKey]))
+        .values?.[0]
+      if (previous) {
+        const receipt = JSON.parse(previous.body as string) as {
+          fingerprint: string
+          value: { recovered: CollectionKey | null; commit: LocalCommit | null }
+        }
+        if (receipt.fingerprint !== fingerprint) throw new DomainError('OPERATION_REUSED')
+        return receipt.value
+      }
+      const state = await getState(db, key),
+        scope = (await activeScope(db))!
+      const preserved = prepareResolution(state, resolution)
+      const recoveryKey: CollectionKey = {
+        namespace: `guest_${crypto.randomUUID()}`,
+        collectionId: crypto.randomUUID(),
+        epoch: crypto.randomUUID(),
+      }
+      let recovered: StoredCollection | null = null
+      if (preserved.projects.length) {
+        recovered = emptyCollection({
+          key: recoveryKey,
+          name: resolution.recoveryName,
+          kind: 'recovered',
+          accountId: null,
+          createdAt: new Date().toISOString(),
+          legacyAccess: false,
+        })
+        recovered.projects = preserved.projects
+        recovered.checkpoints = preserved.checkpoints
+        recovered.version = localRevision(
+          ...preserved.projects.map((p) => p.revision),
+          ...preserved.checkpoints.map((c) => c.revision),
+        )
+        recovered.provenance = {
+          kind: 'recovered',
+          sourceId: key.collectionId,
+          capturedAt: recovered.info.createdAt,
+        }
+        assertRecords(recovered.projects, recovered.checkpoints)
+      }
+      const intent = resolution.replacement
+      if (intent) {
+        const { createdAt: _createdAt, ...mutation } = intent
+        const command = await signCommand({
+          ...mutation,
+          protocolVersion: 2,
+          payloadVersion: 1,
+          collectionId: key.collectionId,
+          epoch: key.epoch,
+          deviceId: scope.device.id,
+          deviceGeneration: scope.device.generation,
+          sequence: nextRevision(state.sequences[deviceKey(scope.device)] ?? '0'),
+        })
+        applyIntent(state, intent, { upgraded: this.access(state.info) })
+        state.pending.push({ intent, command, state: 'queued' })
+        state.sequence = command.sequence
+        state.sequences[deviceKey(scope.device)] = command.sequence
+        state.operations[intent.operationId] = {
+          hash: await canonicalHash(intent),
+          savedAt: intent.createdAt,
+        }
+        await assertMediaPresent(
+          db,
+          key,
+          intent.kind === 'checkpoint.create'
+            ? mediaRefs([{ ...intent.payload.checkpoint, revision: '0' }])
+            : intent.kind === 'media.attach'
+              ? [intent.payload.media]
+              : [],
+        )
+      }
+      state.version = nextRevision(state.version)
+      const files = recovered
+        ? await this.copyFiles(db, key, recoveryKey, mediaRefs(recovered.checkpoints))
+        : []
+      const value = {
+        recovered: recovered ? recoveryKey : null,
+        commit: intent
+          ? { operationId: intent.operationId, savedAt: intent.createdAt, view: viewOf(state) }
+          : null,
+      }
+      await db.beginTransaction()
+      try {
+        if (recovered) await putState(db, recovered)
+        for (const { ref, fileKey } of files) {
+          await db.run(
+            'INSERT INTO media(scope,id,body,file_key,prepared_at) VALUES(?,?,?,?,?)',
+            [scopeKey(recoveryKey), ref.id, JSON.stringify(ref), fileKey, Date.now()],
+            false,
+          )
+          await db.run('DELETE FROM prepared_files WHERE file_key=?', [fileKey], false)
+        }
+        await putState(db, state)
+        await db.run(
+          'INSERT INTO metadata(key,body) VALUES(?,?)',
+          [receiptKey, JSON.stringify({ fingerprint, value })],
+          false,
+        )
+        await db.commitTransaction()
+      } catch (error) {
+        await db.rollbackTransaction().catch(() => undefined)
+        throw error
+      }
+      return value
+    })
+    this.publish()
+    return result
+  }
   async commitLocal(
     key: CollectionKey,
     intent: LocalIntent,
@@ -213,6 +367,11 @@ export class NativeRepository implements Repository {
       state.sequences[deviceKey(scope.device)] = command.sequence
       state.operations[intent.operationId] = { hash, savedAt: intent.createdAt }
       await putState(db, state)
+      await db.run(
+        'DELETE FROM pins WHERE owner=? AND scope=?',
+        [`operation-plan:${intent.operationId}`, scopeKey(key)],
+        false,
+      )
       return { operationId: intent.operationId, savedAt: intent.createdAt, view: viewOf(state) }
     })
     this.publish()
@@ -353,23 +512,7 @@ export class NativeRepository implements Repository {
         sourceId: key.collectionId,
         capturedAt: copied.info.createdAt,
       }
-      const files: { ref: MediaRef; fileKey: string }[] = []
-      for (const ref of refs) {
-        const row = (
-          await db.query('SELECT file_key FROM media WHERE scope=? AND id=?', [
-            scopeKey(key),
-            ref.id,
-          ])
-        ).values![0]
-        const bytes = await durableFiles.read({ key: row.file_key as string })
-        const fileKey = await canonicalHash({ scope: target, id: ref.id })
-        await db.run(
-          'INSERT INTO prepared_files(file_key,scope,media_id,created_at) VALUES(?,?,?,?)',
-          [fileKey, scopeKey(target), ref.id, Date.now()],
-        )
-        await durableFiles.put({ key: fileKey, base64: bytes.base64, sha256: ref.sha256 })
-        files.push({ ref, fileKey })
-      }
+      const files = await this.copyFiles(db, key, target, refs)
       await db.beginTransaction()
       try {
         await putState(db, copied)
@@ -419,15 +562,16 @@ export class NativeRepository implements Repository {
       const state = await getState(db, key)
       if (state.version !== revision) throw new DomainError('REVISION_CONFLICT')
       await db.run(
-        'DELETE FROM pins WHERE scope=? AND owner LIKE ?',
-        [scopeKey(key), 'draft:%'],
+        "DELETE FROM pins WHERE scope=? AND (owner LIKE 'draft:%' OR owner LIKE 'operation-plan:%')",
+        [scopeKey(key)],
         false,
       )
-      await db.run(
-        'DELETE FROM metadata WHERE substr(key,1,length(?))=?',
-        [`draft:${scopeKey(key)}:`, `draft:${scopeKey(key)}:`],
-        false,
-      )
+      for (const kind of ['draft', 'operation-plan', 'resolution'])
+        await db.run(
+          'DELETE FROM metadata WHERE substr(key,1,length(?))=?',
+          [`${kind}:${scopeKey(key)}:`, `${kind}:${scopeKey(key)}:`],
+          false,
+        )
       await db.run('DELETE FROM collections WHERE key=?', [scopeKey(key)], false)
     })
     this.publish()

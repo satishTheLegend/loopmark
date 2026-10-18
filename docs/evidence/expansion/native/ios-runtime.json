@@ -42,6 +42,18 @@
         {
           "name": "saved collection survives a full native app process restart",
           "passed": true
+        },
+        {
+          "name": "native portable draft retains caller revision, normalized media, atomic pins and opening scope",
+          "passed": true
+        },
+        {
+          "name": "native operation plans survive restart and failed save with immutable identity and media pins",
+          "passed": true
+        },
+        {
+          "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
         }
       ]
     },
@@ -85,6 +97,18 @@
         },
         {
           "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native portable draft retains caller revision, normalized media, atomic pins and opening scope",
+          "passed": true
+        },
+        {
+          "name": "native operation plans survive restart and failed save with immutable identity and media pins",
+          "passed": true
+        },
+        {
+          "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
           "passed": true
         }
       ]

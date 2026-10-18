@@ -1,4 +1,5 @@
 import { persistenceTests } from './persistence'
+import { adapterTests } from './adapters'
 import { Capacitor } from '@capacitor/core'
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import { verifyRepositoryContract } from '../../../src/repositories/contract-suite'
@@ -57,6 +58,7 @@ await test('actual device credential save, read, clear', async () => {
   assert((await store.read()) === null)
 })
 const restartPhase = await persistenceTests(test)
+await adapterTests(test)
 const report = {
   schemaVersion: 1,
   restartPhase,

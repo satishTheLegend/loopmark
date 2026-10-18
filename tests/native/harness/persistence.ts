@@ -6,7 +6,7 @@ type Test = (name: string, action: () => Promise<void>) => Promise<void>
 const assert = (value: unknown) => {
   if (!value) throw new Error('Assertion failed')
 }
-function fixture(connected = false): CollectionInfo {
+export function fixture(connected = false): CollectionInfo {
   return {
     key: {
       namespace: connected ? 'account_native' : 'guest_native',
@@ -20,7 +20,7 @@ function fixture(connected = false): CollectionInfo {
     createdAt: '2026-01-01T00:00:00.000Z',
   }
 }
-function create(info: CollectionInfo, name = 'Durable scarf'): LocalIntent {
+export function create(info: CollectionInfo, name = 'Durable scarf'): LocalIntent {
   return {
     operationId: crypto.randomUUID(),
     kind: 'project.create',
@@ -43,7 +43,7 @@ function create(info: CollectionInfo, name = 'Durable scarf'): LocalIntent {
     },
   }
 }
-function wave(): Blob {
+export function wave(): Blob {
   const bytes = new Uint8Array(46),
     view = new DataView(bytes.buffer)
   const text = (offset: number, value: string) => {
