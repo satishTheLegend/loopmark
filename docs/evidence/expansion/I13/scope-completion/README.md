@@ -8,6 +8,6 @@ Commit `3a71ace` checks the complete SessionScope, transition ownership, disposa
 
 The coordinator also rechecks scope/cancellation after initial/final metadata reads and after error-path attachment reads. A stopped cycle cannot publish its old counts or error into the new selection. Ordinary current-scope errors remain reportable.
 
-Controlled old-source results: **11 controller regressions failed**, with22passes; **all4new coordinator regressions failed**, with7passes. Fixed results: **48focused tests passed**, then **371tests passed across46files**, and TypeScript checking passed. Exact commands, source hashes, output hashes, and red-source limitations are in [metadata.json](metadata.json). Log files preserve actual redirected output with only the absolute repository path replaced.
+Controlled old-source results: **11 controller regressions failed**, with 22 passes; **all 4 new coordinator regressions failed**, with 7 passes. Fixed results: **48 focused tests passed**, then **371 tests passed across 46 files**, and TypeScript checking passed. Exact commands, source hashes, output hashes, and red-source limitations are in [metadata.json](metadata.json). Log files preserve actual redirected output with only the absolute repository path replaced.
 
 This package does not claim a new cloud matrix or native qualification. Those follow after independent review and integration.
