@@ -1,0 +1,43 @@
+
+> loopmark@1.0.0 test:ui
+> playwright test --config=playwright.ui.config.ts project-detail.ui.ts --workers=1
+
+[WebServer] (node:49654) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:49676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 20 tests using 1 worker
+
+(node:49691) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/ui/project-detail.ui.ts:3:1 › the next stitch and tool precede secondary file administration on desktop and narrow screens (582ms)
+  ✓   2 [chromium] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure auth retains its trusted remedy and readable checkpoint (393ms)
+  ✓   3 [chromium] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure storage retains its trusted remedy and readable checkpoint (367ms)
+  ✓   4 [chromium] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure raw retains its trusted remedy and readable checkpoint (367ms)
+(node:49727) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [firefox] › tests/ui/project-detail.ui.ts:3:1 › the next stitch and tool precede secondary file administration on desktop and narrow screens (1.2s)
+  ✓   6 [firefox] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure auth retains its trusted remedy and readable checkpoint (388ms)
+  ✓   7 [firefox] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure storage retains its trusted remedy and readable checkpoint (395ms)
+  ✓   8 [firefox] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure raw retains its trusted remedy and readable checkpoint (341ms)
+(node:49747) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [webkit] › tests/ui/project-detail.ui.ts:3:1 › the next stitch and tool precede secondary file administration on desktop and narrow screens (778ms)
+  ✓  10 [webkit] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure auth retains its trusted remedy and readable checkpoint (418ms)
+  ✓  11 [webkit] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure storage retains its trusted remedy and readable checkpoint (384ms)
+  ✓  12 [webkit] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure raw retains its trusted remedy and readable checkpoint (434ms)
+(node:49767) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [chromium-mobile] › tests/ui/project-detail.ui.ts:3:1 › the next stitch and tool precede secondary file administration on desktop and narrow screens (454ms)
+  ✓  14 [chromium-mobile] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure auth retains its trusted remedy and readable checkpoint (398ms)
+  ✓  15 [chromium-mobile] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure storage retains its trusted remedy and readable checkpoint (394ms)
+  ✓  16 [chromium-mobile] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure raw retains its trusted remedy and readable checkpoint (392ms)
+(node:49803) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [webkit-mobile] › tests/ui/project-detail.ui.ts:3:1 › the next stitch and tool precede secondary file administration on desktop and narrow screens (485ms)
+  ✓  18 [webkit-mobile] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure auth retains its trusted remedy and readable checkpoint (400ms)
+  ✓  19 [webkit-mobile] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure storage retains its trusted remedy and readable checkpoint (361ms)
+  ✓  20 [webkit-mobile] › tests/ui/project-detail.ui.ts:29:3 › individual attachment failure raw retains its trusted remedy and readable checkpoint (355ms)
+
+  20 passed (13.5s)

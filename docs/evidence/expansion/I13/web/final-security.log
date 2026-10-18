@@ -1,0 +1,26 @@
+
+> loopmark@1.0.0 test:security
+> node scripts/test-security.mjs
+
+{"scope":"Built web and present native web assets; credential patterns and harness markers only","filesScanned":68,"findings":[]}
+✔ built worker never intercepts private API, auth, upload or foreign-origin requests (1.91925ms)
+✔ offline payment return uses only the static shell and never caches the return URL (1.58725ms)
+✔ built precache contains no test harness, provider callback or private route (0.305375ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 82.782916
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  7 passed (7)
+      Tests  100 passed (100)
+   Start at  21:27:29
+   Duration  1.36s (tests 52%, import 36%, transform 10%, worker 2%)
+
+Local security checks passed. Live backend authority, provider sandbox, signing and physical-device checks remain separate evidence.

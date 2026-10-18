@@ -1,0 +1,13 @@
+
+> loopmark@1.0.0 test:examples
+> node scripts/test-examples.mjs
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  21:27:33
+   Duration  420ms (transform 51%, import 26%, tests 22%, worker 1%)
+

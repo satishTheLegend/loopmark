@@ -1,0 +1,171 @@
+
+> loopmark@1.0.0 test:security
+> node scripts/test-security.mjs
+
+{"scope":"Built web and present native web assets; credential patterns and harness markers only","filesScanned":68,"findings":[]}
+✔ built worker never intercepts private API, auth, upload or foreign-origin requests (5.254417ms)
+✔ offline payment return uses only the static shell and never caches the return URL (2.564459ms)
+✔ built precache contains no test harness, provider callback or private route (0.422125ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.169667
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  7 passed (7)
+      Tests  100 passed (100)
+   Start at  21:59:19
+   Duration  1.37s (tests 51%, import 35%, transform 12%, worker 1%)
+
+Local security checks passed. Live backend authority, provider sandbox, signing and physical-device checks remain separate evidence.
+
+> loopmark@1.0.0 test:compat
+> node scripts/test-compat.mjs
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  21:59:21
+   Duration  408ms (import 41%, transform 38%, tests 20%, worker 1%)
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  3 passed (3)
+      Tests  33 passed (33)
+   Start at  21:59:23
+   Duration  637ms (tests 55%, import 30%, transform 14%, worker 1%)
+
+Compatibility: portable v1, previous browser migration/old-writer fence, future-local-schema preservation and unsupported wire rejection. There was no pre-expansion cloud wire release; native migration remains separately qualified on its actual runtime.
+
+> loopmark@1.0.0 test:examples
+> node scripts/test-examples.mjs
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  21:59:24
+   Duration  439ms (import 37%, tests 33%, transform 29%, worker 1%)
+
+
+> loopmark@1.0.0 test:docs
+> node scripts/test-docs.mjs
+
+PASS: 12 developer documents; script, configuration and local-link references.
+
+> loopmark@1.0.0 test:dx
+> node scripts/test-dx.mjs
+
+✔ production browser assets exclude server/provider secret environment values (1129.928125ms)
+✔ documentation validator catches a missing script, broken local link and misspelled setting (40.388459ms)
+✔ missing Docker reports a prerequisite and leaves guest independent of provider secrets (325.046708ms)
+✔ occupied application port reports unhealthy and never closes the existing listener (72.795834ms)
+✔ wrong local project and remote Docker context fail read-only readiness without leaking values (435.279583ms)
+✔ wrong reset project is refused before preparation or mutation (540.670542ms)
+✔ remote operator endpoint is refused before invoking Docker (115.997959ms)
+✔ remote Docker override cannot bypass the local reset boundary (128.572375ms)
+✔ remote active Docker context is refused even without a host override (500.577291ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3631.052958
+
+> loopmark@1.0.0 test:ops
+> node scripts/test-ops.mjs
+
+✔ operating alerts cover observed queues, conflicts, media, verification, deletion and backup (1.865334ms)
+✔ help is dependency-free and default local grammar preserves exact exit classes (770.641375ms)
+✔ opaque cursors bind exact project command target and durable job without granting skip authority (1.826041ms)
+✔ operator grammar is explicit, bounded and defaults to a dry run (1.924166ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 908.475375
+
+> loopmark@1.0.0 test:release:contracts
+> node --test tests/release/*.test.mjs
+
+✔ complete matching synthetic evidence is explicitly not a deployment or authorization (14.004167ms)
+✔ missing, blocked, failed, duplicate and unknown gates cannot pass (27.8015ms)
+✔ dirty source, mismatched artifact and changed evidence bytes invalidate a record (15.930958ms)
+✔ symlink escape and malformed shape fail closed (6.514375ms)
+✔ platform-specific and production gates cannot disappear (0.39725ms)
+✔ evidence paths cannot traverse or symlink elsewhere inside the checkout (6.062625ms)
+✔ a symlink to evidence within an allowed directory still verifies its actual bytes (6.847125ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.01025
+
+> loopmark@1.0.0 test:sandbox:contracts
+> node --test tests/sandbox/*.test.mjs
+
+✔ missing configuration blocks every platform without any network or transaction (0.71325ms)
+✔ live mode, mismatched artifact and absent authorization cannot reach a provider (7.928666ms)
+✔ read-only web probes can report readiness but never sandbox qualification; secrets stay out of reports (22.364333ms)
+✔ native readiness requires exact store app and authenticated sandbox catalog, never Test Store (9.829584ms)
+✔ provider failures are redacted and an explicit probe flag is required (2.985209ms)
+✔ native exact configuration reports only operator readiness using read-only provider API (5.729667ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.369625
+
+> loopmark@1.0.0 test:native:evidence
+> node --test tests/native/product-evidence.test.mjs
+
+✔ manifest rejects traversal and hashes the exact file used as evidence (7.547792ms)
+✔ changed generated assets cannot be attributed to the original bundle (2.996833ms)
+✔ packaged APK assets must match and returned artifact digest covers APK bytes (24.500708ms)
+✔ installed app digest changes for native bytes and refuses untracked symlink targets (5.705291ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 123.267042
+
+> loopmark@1.0.0 test:native:benchmark:contracts
+> node --test tests/native/benchmark-memory.test.mjs
+
+✔ iOS RSS includes only the selected simulator parent and app, separating content and support (1.688291ms)
+✔ Android RSS keeps benchmark and isolated WebView renderer, ignoring unrelated app/browser (0.497833ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 78.621209

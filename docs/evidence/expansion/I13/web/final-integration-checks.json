@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "sourceCommitAtStart": "59b9064ff0b89fd498d7b97877507e5241b8e637",
+  "productSourceCommit": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+  "startedAt": "2026-10-18T17:15:18.360Z",
+  "commands": [
+    {
+      "command": "npm run build",
+      "startedAt": "2026-10-18T17:15:18.361Z",
+      "finishedAt": "2026-10-18T17:15:19.853Z",
+      "elapsedMs": 1491.936916,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm test -- --reporter=default --reporter=json --outputFile=.gstack/final-unit-report.json",
+      "startedAt": "2026-10-18T17:15:19.853Z",
+      "finishedAt": "2026-10-18T17:15:21.358Z",
+      "elapsedMs": 1504.2612920000001,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run format:check",
+      "startedAt": "2026-10-18T17:15:21.358Z",
+      "finishedAt": "2026-10-18T17:15:23.180Z",
+      "elapsedMs": 1822.209542,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:security",
+      "startedAt": "2026-10-18T17:15:23.180Z",
+      "finishedAt": "2026-10-18T17:15:24.450Z",
+      "elapsedMs": 1270.617792,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:compat",
+      "startedAt": "2026-10-18T17:15:24.450Z",
+      "finishedAt": "2026-10-18T17:15:25.425Z",
+      "elapsedMs": 975.0240409999997,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:examples",
+      "startedAt": "2026-10-18T17:15:25.425Z",
+      "finishedAt": "2026-10-18T17:15:25.806Z",
+      "elapsedMs": 380.7041250000002,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:docs",
+      "startedAt": "2026-10-18T17:15:25.806Z",
+      "finishedAt": "2026-10-18T17:15:25.921Z",
+      "elapsedMs": 115.34508300000016,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:dx",
+      "startedAt": "2026-10-18T17:15:25.921Z",
+      "finishedAt": "2026-10-18T17:15:29.371Z",
+      "elapsedMs": 3449.6220829999993,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:ops",
+      "startedAt": "2026-10-18T17:15:29.371Z",
+      "finishedAt": "2026-10-18T17:15:29.870Z",
+      "elapsedMs": 498.7364579999994,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:release:contracts",
+      "startedAt": "2026-10-18T17:15:29.870Z",
+      "finishedAt": "2026-10-18T17:15:30.035Z",
+      "elapsedMs": 164.89424999999937,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:sandbox:contracts",
+      "startedAt": "2026-10-18T17:15:30.035Z",
+      "finishedAt": "2026-10-18T17:15:30.192Z",
+      "elapsedMs": 157.41500000000087,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:native:evidence",
+      "startedAt": "2026-10-18T17:15:30.192Z",
+      "finishedAt": "2026-10-18T17:15:30.347Z",
+      "elapsedMs": 154.45029199999954,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "command": "npm run test:native:benchmark:contracts",
+      "startedAt": "2026-10-18T17:15:30.347Z",
+      "finishedAt": "2026-10-18T17:15:30.488Z",
+      "elapsedMs": 141.5379580000008,
+      "exitCode": 0,
+      "signal": null
+    }
+  ],
+  "finishedAt": "2026-10-18T17:15:30.488Z",
+  "exitCode": 0
+}

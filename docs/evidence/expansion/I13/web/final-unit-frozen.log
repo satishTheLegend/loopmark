@@ -1,0 +1,16 @@
+
+> loopmark@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  45 passed (45)
+      Tests  347 passed (347)
+   Start at  21:58:35
+   Duration  6.10s (tests 50%, import 43%, transform 5%, worker 2%)
+
+    Isolate  45 workers spawned · ~328ms startup each (spawn + environment, per file)
+             at least ~1.31s faster with isolate: false — reuses workers across files instead of one per file
+

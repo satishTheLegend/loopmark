@@ -1,0 +1,17 @@
+
+> loopmark@1.0.0 test:load:capture
+> node scripts/test-sync-smoke.mjs --load-capture
+
+[WebServer] (node:1086) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1113) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+LOOPMARK_CAPTURE_READY {"runId":"6d72d92b-c1a1-401e-aa9c-1ed63dfcb2d6","readyAt":"2026-10-18T16:53:11.555Z","stopPath":"/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/load-capture/6d72d92b-c1a1-401e-aa9c-1ed63dfcb2d6.stop","source":"66941c7edce849d9d9b3a314280ff78a208913e2","journalPath":"/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/load-capture/6d72d92b-c1a1-401e-aa9c-1ed63dfcb2d6.jsonl"}
+  ✓  1 [chromium] › tests/performance/capture.load.ts:9:1 › connected local capture remains durable during the independently timed service load (3.9m)
+
+  1 passed (3.9m)

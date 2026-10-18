@@ -1,0 +1,6 @@
+
+> loopmark@1.0.0 format:check
+> prettier --check src tests scripts *.ts *.json .github/workflows/*.yml
+
+Checking formatting...
+All matched files use Prettier code style!

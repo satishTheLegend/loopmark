@@ -1,0 +1,248 @@
+
+> loopmark@1.0.0 test:sync
+> node scripts/test-sync-smoke.mjs --workers=2
+
+[WebServer] (node:18419) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 80 tests using 2 workers
+
+(node:18443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (14.6s)
+  ✓   1 [chromium] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (16.1s)
+  ✓   4 [chromium] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (2.7s)
+  ✓   5 [chromium] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.4s)
+  ✓   3 [chromium] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (10.2s)
+  ✓   6 [chromium] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (17.1s)
+  ✓   7 [chromium] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (19.6s)
+  ✓   8 [chromium] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (11.0s)
+  ✓   9 [chromium] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (14.4s)
+  ✓  10 [chromium] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (12.9s)
+  ✓  11 [chromium] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (8.0s)
+  ✓  12 [chromium] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (11.2s)
+  ✓  14 [chromium] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (9.3s)
+  ✓  13 [chromium] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (18.3s)
+  ✓  15 [chromium] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (8.0s)
+(node:19829) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [chromium] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (9.2s)
+(node:19867) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [firefox] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (13.7s)
+  ✓  18 [firefox] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (16.8s)
+  ✓  20 [firefox] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (3.3s)
+  ✓  19 [firefox] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (12.0s)
+  ✓  21 [firefox] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.2s)
+  ✓  22 [firefox] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (22.2s)
+  ✓  23 [firefox] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (24.9s)
+  ✓  24 [firefox] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (17.7s)
+  ✓  25 [firefox] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (22.4s)
+  ✓  27 [firefox] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (9.0s)
+  ✓  26 [firefox] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (20.7s)
+  ✓  28 [firefox] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (20.9s)
+  ✓  29 [firefox] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (30.0s)
+  ✓  30 [firefox] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (13.4s)
+  ✓  31 [firefox] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (10.5s)
+  ✓  32 [firefox] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (9.7s)
+(node:21504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:21513) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 [webkit] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (16.4s)
+  ✓  34 [webkit] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (25.2s)
+  ✓  36 [webkit] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (8.0s)
+  ✓  35 [webkit] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (22.5s)
+  ✓  37 [webkit] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (5.6s)
+  ✓  39 [webkit] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (56.8s)
+  ✓  38 [webkit] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (1.0m)
+  ✓  40 [webkit] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (25.1s)
+  ✓  41 [webkit] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (29.6s)
+  ✓  42 [webkit] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (34.8s)
+  ✘  43 [webkit] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (27.9s)
+(node:23446) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  44 [webkit] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (32.0s)
+  ✓  45 [webkit] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (42.5s)
+  ✓  46 [webkit] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (20.9s)
+  ✓  48 [webkit] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (12.0s)
+  ✓  47 [webkit] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (15.3s)
+(node:24378) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:24380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  50 [chromium-mobile] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (14.3s)
+  ✓  49 [chromium-mobile] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (15.4s)
+(node:24475) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  51 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (5.1s)
+  ✓  53 [chromium-mobile] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.7s)
+  ✓  52 [chromium-mobile] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (14.1s)
+  ✓  54 [chromium-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (25.1s)
+  ✓  55 [chromium-mobile] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (25.4s)
+  ✓  56 [chromium-mobile] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (18.3s)
+  ✓  57 [chromium-mobile] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (14.8s)
+  ✓  59 [chromium-mobile] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (7.4s)
+  ✓  58 [chromium-mobile] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (16.1s)
+  ✓  60 [chromium-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (15.1s)
+  ✓  62 [chromium-mobile] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (12.1s)
+  ✓  61 [chromium-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (25.0s)
+  ✓  63 [chromium-mobile] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (8.3s)
+(node:25732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  64 [chromium-mobile] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (14.5s)
+(node:25860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  65 [webkit-mobile] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (14.6s)
+  ✓  66 [webkit-mobile] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (20.5s)
+  ✓  68 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (3.8s)
+  ✓  67 [webkit-mobile] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (15.4s)
+  ✓  69 [webkit-mobile] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (2.6s)
+  ✘  70 [webkit-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (24.5s)
+  ✓  71 [webkit-mobile] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (24.3s)
+(node:26392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  73 [webkit-mobile] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (16.9s)
+  ✓  72 [webkit-mobile] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (20.2s)
+  ✓  75 [webkit-mobile] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (7.7s)
+  ✓  74 [webkit-mobile] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (16.0s)
+  ✓  76 [webkit-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (14.9s)
+  ✓  78 [webkit-mobile] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (17.8s)
+  ✓  77 [webkit-mobile] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (32.1s)
+  ✓  79 [webkit-mobile] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (15.4s)
+  ✓  80 [webkit-mobile] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (14.1s)
+
+
+  1) [webkit] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: /^Open Fourth local shawl\./ })
+    Expected: visible
+    Timeout: 8000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: /^Open Fourth local shawl\./ }) with timeout 8000ms
+      - waiting for getByRole('button', { name: /^Open Fourth local shawl\./ })
+
+
+      59 |     .getByRole('button', { name: /Personal projects/ })
+      60 |     .click()
+    > 61 |   await expect(page.getByRole('button', { name: /^Open Fourth local shawl\./ })).toBeVisible()
+         |                                                                                  ^
+      62 | })
+      63 |
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/purchases.cloud.ts:61:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/purchases.cloud.ts-actual--ea7d4-efore-explicit-continuation-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/purchases.cloud.ts-actual--ea7d4-efore-explicit-continuation-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/purchases.cloud.ts-actual--ea7d4-efore-explicit-continuation-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/purchases.cloud.ts-actual--ea7d4-efore-explicit-continuation-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium-mobile] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: /Open Local cardigan/ })
+    Expected: visible
+    Timeout: 8000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: /Open Local cardigan/ }) with timeout 8000ms
+      - waiting for getByRole('button', { name: /Open Local cardigan/ })
+
+
+      68 |       .getByRole('button', { name: /Personal projects/ })
+      69 |       .click()
+    > 70 |     await expect(a.getByRole('button', { name: /Open Local cardigan/ })).toBeVisible()
+         |                                                                          ^
+      71 |     await a.goto(origin + '/#account')
+      72 |     const preparation: string[] = []
+      73 |     a.on('request', (request) => {
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/accounts.cloud.ts:70:74
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-chromium-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-chromium-mobile/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-chromium-mobile/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-chromium-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-chromium-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [webkit-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('dialog', { name: 'Review these versions' }).getByRole('region', { name: 'Cloud version' })
+    Expected substring: "Use the revised shoulder repeat from the other device."
+    Received string:    "CloudObserved update: Oct 18, 2026 at 10:55 PMProject nameChangedOriginal cardiganTool sizeChangedNot recordedNotesChangedNot recorded"
+    Timeout: 8000ms
+
+    Call log:
+      - Expect "toContainText" getByRole('dialog', { name: 'Review these versions' }).getByRole('region', { name: 'Cloud version' }) with timeout 8000ms
+      - waiting for getByRole('dialog', { name: 'Review these versions' }).getByRole('region', { name: 'Cloud version' })
+        20 × locator resolved to <section aria-label="Cloud version">…</section>
+           - unexpected value "CloudObserved update: Oct 18, 2026 at 10:55 PMProject nameChangedOriginal cardiganTool sizeChangedNot recordedNotesChangedNot recorded"
+
+
+      59 |     )
+      60 |     await expect(review.getByRole('region', { name: 'This device version' })).toContainText('4 mm')
+    > 61 |     await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText(
+         |                                                                         ^
+      62 |       'Use the revised shoulder repeat from the other device.',
+      63 |     )
+      64 |     await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText('5 mm')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/conflicts.cloud.ts:61:73
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/conflicts.cloud.ts-actual--de3e2-after-explicit-cloud-choice-webkit-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [webkit] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation 
+    [chromium-mobile] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out 
+    [webkit-mobile] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice 
+  77 passed (11.7m)

@@ -1,0 +1,23 @@
+
+> loopmark@1.0.0 test:compat
+> node scripts/test-compat.mjs
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  21:27:31
+   Duration  474ms (transform 52%, import 34%, tests 14%, worker 1%)
+
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration
+
+
+ Test Files  3 passed (3)
+      Tests  33 passed (33)
+   Start at  21:27:32
+   Duration  481ms (tests 51%, import 38%, transform 10%, worker 1%)
+
+Compatibility: portable v1, previous browser migration/old-writer fence, future-local-schema preservation and unsupported wire rejection. There was no pre-expansion cloud wire release; native migration remains separately qualified on its actual runtime.

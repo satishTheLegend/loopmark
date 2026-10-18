@@ -1,0 +1,41 @@
+
+> loopmark@1.0.0 test:e2e
+> playwright test draft-recovery.spec.ts --grep new project and checkpoint drafts --project=firefox --workers=1 --repeat-each=10
+
+[WebServer] (node:54015) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:54016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.2s)
+(node:54031) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.3s)
+(node:54054) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.5s)
+(node:54113) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.2s)
+(node:54132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.5s)
+(node:54147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.4s)
+(node:54186) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.3s)
+(node:54203) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.3s)
+(node:54233) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.5s)
+(node:54249) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.5s)
+
+  10 passed (31.7s)

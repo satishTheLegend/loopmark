@@ -1,0 +1,398 @@
+
+> loopmark@1.0.0 test:sync
+> node scripts/test-sync-smoke.mjs --workers=2
+
+[WebServer] (node:8248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8270) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 80 tests using 2 workers
+
+(node:8282) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8283) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (12.8s)
+  ✓   3 [chromium] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (10.1s)
+  ✓   4 [chromium] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (2.3s)
+  ✓   5 [chromium] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.2s)
+  ✘   2 [chromium] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (40.0s)
+(node:8523) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [chromium] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (15.0s)
+  ✘   7 [chromium] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (10.5s)
+(node:8599) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [chromium] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (10.5s)
+  ✓   9 [chromium] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (13.6s)
+  ✓  10 [chromium] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (13.5s)
+  ✓  11 [chromium] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (6.2s)
+  ✓  12 [chromium] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (9.9s)
+  ✓  14 [chromium] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (7.8s)
+  ✓  13 [chromium] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (16.4s)
+  ✓  15 [chromium] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (6.7s)
+(node:9468) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 [chromium] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (7.5s)
+(node:9486) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 [firefox] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (10.6s)
+  ✓  18 [firefox] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (12.3s)
+  ✓  20 [firefox] › tests/expansion/auth-errors.cloud.ts:36:1 › expired delivered code is rejected by actual Auth and a fresh code restores access without uploading guest work (2.5s)
+  ✓  19 [firefox] › tests/expansion/accounts.cloud.ts:119:1 › actual account deletion retains reviewed work and a private status receipt after sign-out and reload (9.1s)
+  ✓  21 [firefox] › tests/expansion/auth-errors.cloud.ts:75:1 › reload cannot bypass actual Auth resend throttling and the UI offers a timed remedy (1.4s)
+  ✓  22 [firefox] › tests/expansion/conflicts.cloud.ts:12:1 › actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice (14.7s)
+  ✓  24 [firefox] › tests/expansion/media-export.cloud.ts:11:1 › actual complete export names the missing checkpoint and retries only its absent bytes (11.2s)
+  ✓  25 [firefox] › tests/expansion/media-export.cloud.ts:104:1 › actual fresh-device export downloads missing photo bytes, permits cancellation, then restores a complete separate copy (12.3s)
+  ✓  26 [firefox] › tests/expansion/project-links.cloud.ts:4:1 › a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access (11.8s)
+  ✓  27 [firefox] › tests/expansion/purchases.cloud.ts:5:1 › actual app keeps the fourth guest draft through hosted checkout and verifies it before explicit continuation (4.9s)
+  ✓  28 [firefox] › tests/expansion/rebase.cloud.ts:94:3 › actual retired-device recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (9.0s)
+  ✓  29 [firefox] › tests/expansion/rebase.cloud.ts:94:3 › actual expired-feed-cursor recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command (15.5s)
+  ✓  30 [firefox] › tests/expansion/sync-smoke.spec.ts:101:1 › actual OTP plus two browser devices converge text and retain a real concurrent checkpoint conflict (7.5s)
+  ✓  31 [firefox] › tests/expansion/sync-smoke.spec.ts:172:1 › actual local photo candidate remains private until confirmed, restores bytes, and retains them through account deletion (6.1s)
+  ✓  32 [firefox] › tests/expansion/sync-smoke.spec.ts:224:1 › actual checkpoint text and attachment finalization survive restart and complete export on a second device (7.6s)
+(node:10431) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  33 [webkit] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work (39.7s)
+(node:10707) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  34 [webkit] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out (4.6s)
+  ✘  23 [firefox] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo (2.4m)
+
+
+  1) [chromium] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Account deletion receipt' })
+    Expected substring: "request is accepted"
+    Timeout: 30000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Account deletion receipt' }) with timeout 30000ms
+      - waiting for getByRole('region', { name: 'Account deletion receipt' })
+
+
+      32 |   await page.getByRole('button', { name: 'Delete account', exact: true }).click()
+      33 |   const receipt = page.getByRole('region', { name: 'Account deletion receipt' })
+    > 34 |   await expect(receipt).toContainText('request is accepted', { timeout: 30000 })
+         |                         ^
+      35 |   await expect(receipt).toContainText('device copies were removed')
+      36 |   await page.reload()
+      37 |   await expect(receipt).toContainText('device copies were removed')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/accounts.cloud.ts:34:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo 
+
+    Error: expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      56 |     await expect(panel).toContainText('Available offline on this device')
+      57 |     await expect(b.locator('.detail-photo > img')).toHaveAttribute('src', bytes!)
+    > 58 |     expect(attempts).toHaveLength(1)
+         |                      ^
+      59 |     await panel.getByRole('button', { name: 'Remove downloads', exact: true }).click()
+      60 |     let confirmation = b.getByRole('dialog', { name: 'Remove downloads from this device?' })
+      61 |     await expect(confirmation).toContainText('cloud attachments will stay unchanged')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/downloads.cloud.ts:58:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-chromium/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [webkit] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Account deletion receipt' })
+    Expected substring: "request is accepted"
+    Timeout: 30000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Account deletion receipt' }) with timeout 30000ms
+      - waiting for getByRole('region', { name: 'Account deletion receipt' })
+
+
+      32 |   await page.getByRole('button', { name: 'Delete account', exact: true }).click()
+      33 |   const receipt = page.getByRole('region', { name: 'Account deletion receipt' })
+    > 34 |   await expect(receipt).toContainText('request is accepted', { timeout: 30000 })
+         |                         ^
+      35 |   await expect(receipt).toContainText('device copies were removed')
+      36 |   await page.reload()
+      37 |   await expect(receipt).toContainText('device copies were removed')
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/accounts.cloud.ts:34:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-webkit/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/accounts.cloud.ts-actual-d-9a794-eserves-separate-guest-work-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [firefox] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo 
+
+    Test was interrupted.
+
+    Error: locator.click: Test ended.
+    Browser logs:
+
+    <launching> /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /var/folders/nd/lg_0z5qd2934z4vgnk5q1bsh0000gn/T/playwright_firefoxdev_profile-T0SKE3 -juggler-pipe -silent
+    <launched> pid=9488
+    [pid=9488][err] *** You are running in headless mode.
+    [pid=9488][err] JavaScript warning: resource://services-settings/Utils.sys.mjs, line 125: unreachable code after return statement
+    [pid=9488][out] 
+    [pid=9488][out] Juggler listening to the pipe
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] [WARN  rkv::backend::impl_safe::environment] `load_ratio()` is irrelevant for this storage backend.
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][out] console.warn: services.settings: #fetchAttachment: Forcing fallbackToDump to false due to Utils.LOAD_DUMPS being false
+    [pid=9488][out] console.error: (new NotFoundError("Could not find fa0fc42c-d91d-fca7-34eb-806ff46062dc in cache or dump", "resource://services-settings/Attachments.sys.mjs", 48))
+    [pid=9488][out] console.warn: "Unable to find the attachment for" "fa0fc42c-d91d-fca7-34eb-806ff46062dc"
+    [pid=9488][out] console.error: "Error fetching the wallpaper attachments URL" (new SyntaxError("JSON.parse: unexpected end of data at line 1 column 1 of the JSON data", ""))
+    [pid=9488][out] console.error: services.settings: 
+    [pid=9488][out]   Message: EmptyDatabaseError: "main/nimbus-desktop-experiments" has not been synced yet
+    [pid=9488][out]   Stack:
+    [pid=9488][out]     EmptyDatabaseError@resource://services-settings/Database.sys.mjs:19:5
+    [pid=9488][out] list@resource://services-settings/Database.sys.mjs:96:13
+    [pid=9488][out] 
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][out] console.warn: LoginRecipes: "Falling back to a synchronous message for: http://127.0.0.1:56620."
+    [pid=9488][err] JavaScript warning: http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a, line 5957: Script terminated by timeout at:
+    [pid=9488][err] Socket/<@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5957:4
+    [pid=9488][err] EventListener.handleEvent*Socket@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5952:14
+    [pid=9488][err] SocketAdapter@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7623:17
+    [pid=9488][err] RealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7899:24
+    [pid=9488][err] _initRealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21687:10
+    [pid=9488][err] SupabaseClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21494:24
+    [pid=9488][err] createClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21717:9
+    [pid=9488][err] createAccountAuth@http://127.0.0.1:56620/src/auth/auth-service.ts:68:35
+    [pid=9488][err] createRuntime@http://127.0.0.1:56620/src/runtime.ts:74:82
+    [pid=9488][err] async*@http://127.0.0.1:56620/src/main.tsx:152:6
+    [pid=9488][err] 
+    [pid=9488][err] JavaScript error: chrome://juggler/content/Helper.js, line 82: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIWebProgress.removeProgressListener]
+    [pid=9488][err] JavaScript warning: http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a, line 5957: Script terminated by timeout at:
+    [pid=9488][err] Socket/<@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5957:4
+    [pid=9488][err] EventListener.handleEvent*Socket@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5952:14
+    [pid=9488][err] SocketAdapter@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7623:17
+    [pid=9488][err] RealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7899:24
+    [pid=9488][err] _initRealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21687:10
+    [pid=9488][err] SupabaseClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21494:24
+    [pid=9488][err] createClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21717:9
+    [pid=9488][err] createAccountAuth@http://127.0.0.1:56620/src/auth/auth-service.ts:68:35
+    [pid=9488][err] createRuntime@http://127.0.0.1:56620/src/runtime.ts:74:82
+    [pid=9488][err] async*@http://127.0.0.1:56620/src/main.tsx:152:6
+    [pid=9488][err] 
+    [pid=9488][err] JavaScript error: chrome://juggler/content/Helper.js, line 82: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIWebProgress.removeProgressListener]
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] JavaScript warning: http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a, line 12491: Script terminated by timeout at:
+    [pid=9488][err] dispatchDiscreteEvent@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:12491:25
+    [pid=9488][err] EventListener.handleEvent*addTrappedEventListener@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9977:25
+    [pid=9488][err] listenToNativeEvent@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9949:27
+    [pid=9488][err] require_react_dom_client_development</listenToAllSupportedEvents/<@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9955:146
+    [pid=9488][err] listenToAllSupportedEvents@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9954:21
+    [pid=9488][err] require_react_dom_client_development</exports.createRoot@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:15814:30
+    [pid=9488][err] @http://127.0.0.1:56620/src/main.tsx:17:23
+    [pid=9488][err] 
+    [pid=9488][err] JavaScript error: chrome://juggler/content/Helper.js, line 82: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIWebProgress.removeProgressListener]
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][out] Crash Annotation GraphicsCriticalError: |[0][GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt (t=16.2768) [GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+    [pid=9488][err] JavaScript warning: http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a, line 5957: Script terminated by timeout at:
+    [pid=9488][err] Socket/<@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5957:4
+    [pid=9488][err] EventListener.handleEvent*Socket@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5952:14
+    [pid=9488][err] SocketAdapter@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7623:17
+    [pid=9488][err] RealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7899:24
+    [pid=9488][err] _initRealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21687:10
+    [pid=9488][err] SupabaseClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21494:24
+    [pid=9488][err] createClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21717:9
+    [pid=9488][err] createAccountAuth@http://127.0.0.1:56620/src/auth/auth-service.ts:68:35
+    [pid=9488][err] createRuntime@http://127.0.0.1:56620/src/runtime.ts:74:82
+    [pid=9488][err] async*@http://127.0.0.1:56620/src/main.tsx:152:6
+    [pid=9488][err] 
+    [pid=9488][err] JavaScript error: chrome://juggler/content/Helper.js, line 82: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIWebProgress.removeProgressListener]
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][err] sandbox_extension_issue_file_to_process failed for /Users/lalaji/Library/Caches/ms-playwright/firefox-1555/firefox/Nightly.app/Contents/MacOS/plugin-container.app: 1 (Operation not permitted)
+    [pid=9488][out] console.warn: LoginRecipes: "Falling back to a synchronous message for: http://127.0.0.1:56620."
+    [pid=9488][out] console.error: services.settings: 
+    [pid=9488][out]   Message: EmptyDatabaseError: "main/nimbus-desktop-experiments" has not been synced yet
+    [pid=9488][out]   Stack:
+    [pid=9488][out]     EmptyDatabaseError@resource://services-settings/Database.sys.mjs:19:5
+    [pid=9488][out] list@resource://services-settings/Database.sys.mjs:96:13
+    [pid=9488][out] 
+    [pid=9488][out] console.error: "Could not download new icon" (new ServerInfoError("Server response is invalid SyntaxError: JSON.parse: unexpected end of data at line 1 column 1 of the JSON data", "resource://services-settings/Attachments.sys.mjs", 40))
+    [pid=9488] <gracefully close start>
+    Call log:
+      - waiting for getByRole('region', { name: 'Project files' }).getByRole('button', { name: 'Download project files', exact: true })
+        - locator resolved to <button disabled class="button secondary">Download project files</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not enabled
+        - retrying click action
+          - waiting 100ms
+        263 × waiting for element to be visible, enabled and stable
+            - element is not enabled
+          - retrying click action
+            - waiting 500ms
+        - waiting for element to be visible, enabled and stable
+
+        at [pid=9488][out]     EmptyDatabaseError@resource://services-settings/Database.sys.mjs:19:5
+        at [pid=9488][out] list@resource://services-settings/Database.sys.mjs:96:13
+        at [pid=9488][err] Socket/<@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5957:4
+        at [pid=9488][err] EventListener.handleEvent*Socket@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5952:14
+        at [pid=9488][err] SocketAdapter@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7623:17
+        at [pid=9488][err] RealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7899:24
+        at [pid=9488][err] _initRealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21687:10
+        at [pid=9488][err] SupabaseClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21494:24
+        at [pid=9488][err] createClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21717:9
+        at [pid=9488][err] createAccountAuth@http://127.0.0.1:56620/src/auth/auth-service.ts:68:35
+        at [pid=9488][err] createRuntime@http://127.0.0.1:56620/src/runtime.ts:74:82
+        at [pid=9488][err] async*@http://127.0.0.1:56620/src/main.tsx:152:6
+        at [pid=9488][err] Socket/<@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5957:4
+        at [pid=9488][err] EventListener.handleEvent*Socket@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5952:14
+        at [pid=9488][err] SocketAdapter@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7623:17
+        at [pid=9488][err] RealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7899:24
+        at [pid=9488][err] _initRealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21687:10
+        at [pid=9488][err] SupabaseClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21494:24
+        at [pid=9488][err] createClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21717:9
+        at [pid=9488][err] createAccountAuth@http://127.0.0.1:56620/src/auth/auth-service.ts:68:35
+        at [pid=9488][err] createRuntime@http://127.0.0.1:56620/src/runtime.ts:74:82
+        at [pid=9488][err] async*@http://127.0.0.1:56620/src/main.tsx:152:6
+        at [pid=9488][err] dispatchDiscreteEvent@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:12491:25
+        at [pid=9488][err] EventListener.handleEvent*addTrappedEventListener@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9977:25
+        at [pid=9488][err] listenToNativeEvent@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9949:27
+        at [pid=9488][err] require_react_dom_client_development</listenToAllSupportedEvents/<@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9955:146
+        at [pid=9488][err] listenToAllSupportedEvents@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:9954:21
+        at [pid=9488][err] require_react_dom_client_development</exports.createRoot@http://127.0.0.1:56620/node_modules/.vite/deps/react-dom_client.js?v=67ba383a:15814:30
+        at [pid=9488][err] @http://127.0.0.1:56620/src/main.tsx:17:23
+        at [pid=9488][err] Socket/<@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5957:4
+        at [pid=9488][err] EventListener.handleEvent*Socket@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:5952:14
+        at [pid=9488][err] SocketAdapter@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7623:17
+        at [pid=9488][err] RealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:7899:24
+        at [pid=9488][err] _initRealtimeClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21687:10
+        at [pid=9488][err] SupabaseClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21494:24
+        at [pid=9488][err] createClient@http://127.0.0.1:56620/node_modules/.vite/deps/@supabase_supabase-js.js?v=67ba383a:21717:9
+        at [pid=9488][err] createAccountAuth@http://127.0.0.1:56620/src/auth/auth-service.ts:68:35
+        at [pid=9488][err] createRuntime@http://127.0.0.1:56620/src/runtime.ts:74:82
+        at [pid=9488][err] async*@http://127.0.0.1:56620/src/main.tsx:152:6
+        at [pid=9488][out]     EmptyDatabaseError@resource://services-settings/Database.sys.mjs:19:5
+        at [pid=9488][out] list@resource://services-settings/Database.sys.mjs:96:13
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/downloads.cloud.ts:55:86
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-firefox/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-firefox/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/downloads.cloud.ts-whole-p-ab111-ut-changing-the-cloud-photo-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [webkit] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out 
+
+    Test was interrupted.
+
+    Error: browserContext.close: Test ended.
+    Browser logs:
+
+    <launching> /Users/lalaji/Library/Caches/ms-playwright/webkit-2370/pw_run.sh --inspector-pipe --headless --no-startup-window
+    <launched> pid=10711
+    [pid=10711] <gracefully close start>
+
+      112 |     )
+      113 |   } finally {
+    > 114 |     await first.close()
+          |     ^
+      115 |     await second.close()
+      116 |   }
+      117 | })
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/accounts.cloud.ts:114:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-webkit/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results-sync/accounts.cloud.ts-actual-a-b3395-a-separate-copy-on-sign-out-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    [chromium] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work 
+    [chromium] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo 
+    [webkit] › tests/expansion/accounts.cloud.ts:5:1 › actual deletion removes the selected account copy only after explicit unique-work discard and preserves separate guest work 
+  2 interrupted
+    [firefox] › tests/expansion/downloads.cloud.ts:8:1 › whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo 
+    [webkit] › tests/expansion/accounts.cloud.ts:49:1 › actual app explicitly connects a local collection, syncs between two devices, and keeps a separate copy on sign-out 
+  46 did not run
+  29 passed (4.4m)

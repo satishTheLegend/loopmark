@@ -1,0 +1,5 @@
+
+> loopmark@1.0.0 test:docs
+> node scripts/test-docs.mjs
+
+PASS: 12 developer documents; script, configuration and local-link references.

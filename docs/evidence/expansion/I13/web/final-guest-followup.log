@@ -1,0 +1,46 @@
+
+> loopmark@1.0.0 test:e2e
+> playwright test draft-recovery.spec.ts diagnostics.spec.ts journeys.spec.ts --grep new project and checkpoint drafts|production cache|diagnostic --workers=2
+
+[WebServer] (node:53639) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 15 tests using 2 workers
+
+(node:53640) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53641) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.5s)
+  ✓   1 [chromium] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.9s)
+(node:53667) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [chromium] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.2s)
+(node:53706) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.7s)
+  ✓   5 [firefox] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.9s)
+(node:53755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [firefox] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.5s)
+(node:53773) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [webkit] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.1s)
+  ✓   8 [webkit] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.5s)
+(node:53804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [webkit] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.4s)
+(node:53810) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [chromium-mobile] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.7s)
+  ✓  11 [chromium-mobile] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.1s)
+(node:53819) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [chromium-mobile] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.2s)
+(node:53834) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [webkit-mobile] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (1.6s)
+  ✓  14 [webkit-mobile] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.4s)
+  ✓  15 [webkit-mobile] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.3s)
+
+  15 passed (15.7s)

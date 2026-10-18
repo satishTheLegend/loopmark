@@ -1,0 +1,718 @@
+
+> loopmark@1.0.0 test:e2e
+> playwright test journeys.spec.ts offline.spec.ts reliability.spec.ts draft-recovery.spec.ts diagnostics.spec.ts upgrade-guest.spec.ts app-startup.spec.ts local-migration.spec.ts privacy-routes.spec.ts --workers=2
+
+[WebServer] (node:34669) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 259 tests using 2 workers
+
+(node:35065) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    2 [chromium] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (1.5s)
+  ✓    3 [chromium] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (627ms)
+  ✓    1 [chromium] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.3s)
+  ✓    5 [chromium] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (1.1s)
+  ✓    4 [chromium] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (1.8s)
+  ✓    7 [chromium] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (211ms)
+  ✓    8 [chromium] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (343ms)
+  ✓    6 [chromium] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.2s)
+  ✓   10 [chromium] › tests/expansion/local-migration.spec.ts:95:1 › copies and hashes actual browser IndexedDB media and unsaved drafts before switching readers (266ms)
+  ✘    9 [chromium] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.3s)
+  ✓   11 [chromium] › tests/expansion/local-migration.spec.ts:128:1 › an old open connection blocks the switch; old-version writes fail after it closes (276ms)
+(node:35273) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   12 [chromium] › tests/expansion/privacy-routes.spec.ts:10:1 › public help is complete without JavaScript and has no private metadata (523ms)
+  ✓   14 [chromium] › tests/expansion/local-migration.spec.ts:172:1 › a poisoned source date fails migration while source bytes and old reader selection survive (451ms)
+  ✓   15 [chromium] › tests/expansion/local-migration.spec.ts:229:1 › an idle old tab cannot create an absent legacy database after the new reader is selected (527ms)
+  ✓   13 [chromium] › tests/expansion/privacy-routes.spec.ts:39:1 › public help reflows, remains keyboard accessible and passes axe (1.8s)
+  ✓   16 [chromium] › tests/expansion/privacy-routes.spec.ts:65:1 › offline help is cached while account API responses cannot be served from cache (442ms)
+  ✓   18 [chromium] › tests/expansion/upgrade-guest.spec.ts:41:1 › invalid payment return is scrubbed immediately and never grants access (302ms)
+  ✓   17 [chromium] › tests/expansion/upgrade-guest.spec.ts:3:1 › a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest (2.5s)
+  ✓   20 [chromium] › tests/journeys.spec.ts:144:1 › search, craft filter and no-results recovery operate on opt-in samples (520ms)
+  ✓   19 [chromium] › tests/journeys.spec.ts:78:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete (2.9s)
+  ✓   21 [chromium] › tests/journeys.spec.ts:160:1 › @chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore (2.9s)
+  ✓   22 [chromium] › tests/journeys.spec.ts:233:1 › invalid imports preserve current data; valid restore is confirmed into a separate collection (2.8s)
+  ✓   24 [chromium] › tests/journeys.spec.ts:305:1 › failed restore rolls back the entire transaction (1.5s)
+  ✓   23 [chromium] › tests/journeys.spec.ts:274:1 › browser storage write failures retain form values and leave existing checkpoints intact (1.7s)
+  ✓   26 [chromium] › tests/journeys.spec.ts:359:1 › bag label renders QR and print-only content, then opens the saved local project (1.6s)
+  ✓   25 [chromium] › tests/journeys.spec.ts:329:1 › two tabs retain concurrent checkpoints and reject stale detail edits (2.4s)
+  ✓   28 [chromium] › tests/journeys.spec.ts:451:1 › dialog traps keyboard focus and returns it to the opener (567ms)
+  ✓   27 [chromium] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.5s)
+  ✓   29 [chromium] › tests/journeys.spec.ts:470:1 › microphone permission denial and invalid photo have actionable recovery (1.5s)
+  ✓   30 [chromium] › tests/journeys.spec.ts:497:1 › a large photo is resized to the documented bound before saving (1.6s)
+  ✓   32 [chromium] › tests/journeys.spec.ts:574:1 › blocked storage shows recovery instead of claiming a saved collection (224ms)
+  ✓   33 [chromium] › tests/journeys.spec.ts:590:1 › imported markup remains literal text and cannot execute scripts (1.6s)
+  ✓   31 [chromium] › tests/journeys.spec.ts:527:1 › @chromium-media voice capture stops at the simulated time limit, removes audio, and releases tracks on close (2.3s)
+  ✓   34 [chromium] › tests/journeys.spec.ts:613:3 › mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation (8.5s)
+  ✓   35 [chromium] › tests/journeys.spec.ts:613:3 › mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation (8.6s)
+  ✓   37 [chromium] › tests/journeys.spec.ts:720:3 › missing MediaRecorder offers a written-note fallback without blocking a checkpoint (1.3s)
+  ✓   38 [chromium] › tests/journeys.spec.ts:720:3 › missing mediaDevices offers a written-note fallback without blocking a checkpoint (1.3s)
+  ✓   36 [chromium] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (5.0s)
+  ✓   39 [chromium] › tests/journeys.spec.ts:769:1 › native recorder accepts a synthesized audio stream and restores its playable output (3.0s)
+  ✓   40 [chromium] › tests/journeys.spec.ts:831:1 › maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions (1.2s)
+  ✓   42 [chromium] › tests/offline.spec.ts:62:1 › failed precache is reported and a deliberate retry prepares offline reopening (664ms)
+  ✓   43 [chromium] › tests/offline.spec.ts:87:1 › missing cached files are detected and repaired without deleting projects (1.5s)
+  ✓   41 [chromium] › tests/journeys.spec.ts:886:1 › navigation waits for delayed voice conversion and recovers the completed voice draft (3.6s)
+  ✓   44 [chromium] › tests/offline.spec.ts:116:1 › a waiting update keeps an open draft intact and activates after all old tabs close (2.2s)
+  ✓   45 [chromium] › tests/reliability.spec.ts:32:1 › a recovered edit draft cannot overwrite details saved later in another tab (2.0s)
+  ✓   46 [chromium] › tests/reliability.spec.ts:61:1 › competing tabs preserve the first stored draft and warn before losing the second input (1.5s)
+  ✓   47 [chromium] › tests/reliability.spec.ts:91:1 › draft write failure reports the loss of recovery while a normal project save still commits (844ms)
+  ✓   49 [chromium] › tests/reliability.spec.ts:154:1 › already-persistent storage is shown as protected without asking again (419ms)
+  ✓   48 [chromium] › tests/reliability.spec.ts:115:1 › a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again (2.1s)
+  ✓   50 [chromium] › tests/reliability.spec.ts:168:1 › a separate restore preserves work saved after its preview in the original collection (1.9s)
+  ✓   51 [chromium] › tests/reliability.spec.ts:206:1 › a storage-status check failure stays visible and permits a later protection request (487ms)
+  ✓   52 [chromium] › tests/reliability.spec.ts:234:1 › unsupported storage protection explains the backup fallback without claiming protection (358ms)
+  ✓   53 [chromium] › tests/reliability.spec.ts:252:1 › declined storage protection remains visible and a backup can still be downloaded (495ms)
+(node:39811) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   55 [firefox] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (3.1s)
+  ✓   56 [firefox] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (847ms)
+  ✓   57 [firefox] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (2.3s)
+  ✓   58 [firefox] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (1.1s)
+  ✓   59 [firefox] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.5s)
+  ✓   60 [firefox] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (303ms)
+  ✓   61 [firefox] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (433ms)
+  ✘   62 [firefox] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.4s)
+(node:40390) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   63 [firefox] › tests/expansion/local-migration.spec.ts:95:1 › copies and hashes actual browser IndexedDB media and unsaved drafts before switching readers (1.4s)
+  ✓   64 [firefox] › tests/expansion/local-migration.spec.ts:128:1 › an old open connection blocks the switch; old-version writes fail after it closes (644ms)
+  ✓   65 [firefox] › tests/expansion/local-migration.spec.ts:172:1 › a poisoned source date fails migration while source bytes and old reader selection survive (736ms)
+  ✓   66 [firefox] › tests/expansion/local-migration.spec.ts:229:1 › an idle old tab cannot create an absent legacy database after the new reader is selected (1.1s)
+  ✓   67 [firefox] › tests/expansion/privacy-routes.spec.ts:10:1 › public help is complete without JavaScript and has no private metadata (677ms)
+  ✓   68 [firefox] › tests/expansion/privacy-routes.spec.ts:39:1 › public help reflows, remains keyboard accessible and passes axe (3.3s)
+  ✓   69 [firefox] › tests/expansion/privacy-routes.spec.ts:65:1 › offline help is cached while account API responses cannot be served from cache (1.4s)
+  ✓   70 [firefox] › tests/expansion/upgrade-guest.spec.ts:3:1 › a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest (4.2s)
+  ✓   71 [firefox] › tests/expansion/upgrade-guest.spec.ts:41:1 › invalid payment return is scrubbed immediately and never grants access (617ms)
+  ✘   54 [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (30.7s)
+(node:42297) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   72 [firefox] › tests/journeys.spec.ts:78:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete (5.0s)
+  ✓   73 [firefox] › tests/journeys.spec.ts:144:1 › search, craft filter and no-results recovery operate on opt-in samples (2.0s)
+  ✓   75 [firefox] › tests/journeys.spec.ts:274:1 › browser storage write failures retain form values and leave existing checkpoints intact (1.9s)
+  ✓   74 [firefox] › tests/journeys.spec.ts:233:1 › invalid imports preserve current data; valid restore is confirmed into a separate collection (3.7s)
+  ✓   76 [firefox] › tests/journeys.spec.ts:305:1 › failed restore rolls back the entire transaction (1.7s)
+  ✓   77 [firefox] › tests/journeys.spec.ts:329:1 › two tabs retain concurrent checkpoints and reject stale detail edits (3.0s)
+  ✓   78 [firefox] › tests/journeys.spec.ts:359:1 › bag label renders QR and print-only content, then opens the saved local project (3.0s)
+  ✓   79 [firefox] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (2.2s)
+  ✓   80 [firefox] › tests/journeys.spec.ts:451:1 › dialog traps keyboard focus and returns it to the opener (1.2s)
+  ✓   81 [firefox] › tests/journeys.spec.ts:470:1 › microphone permission denial and invalid photo have actionable recovery (1.8s)
+  ✓   83 [firefox] › tests/journeys.spec.ts:574:1 › blocked storage shows recovery instead of claiming a saved collection (402ms)
+  ✓   82 [firefox] › tests/journeys.spec.ts:497:1 › a large photo is resized to the documented bound before saving (1.8s)
+  ✓   84 [firefox] › tests/journeys.spec.ts:590:1 › imported markup remains literal text and cannot execute scripts (1.9s)
+  ✓   85 [firefox] › tests/journeys.spec.ts:613:3 › mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation (8.8s)
+  ✓   86 [firefox] › tests/journeys.spec.ts:613:3 › mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation (9.0s)
+  ✓   88 [firefox] › tests/journeys.spec.ts:720:3 › missing MediaRecorder offers a written-note fallback without blocking a checkpoint (2.0s)
+  ✓   89 [firefox] › tests/journeys.spec.ts:720:3 › missing mediaDevices offers a written-note fallback without blocking a checkpoint (2.6s)
+  ✓   87 [firefox] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (10.8s)
+  ✓   90 [firefox] › tests/journeys.spec.ts:769:1 › native recorder accepts a synthesized audio stream and restores its playable output (6.9s)
+  ✓   91 [firefox] › tests/journeys.spec.ts:831:1 › maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions (3.5s)
+  ✓   93 [firefox] › tests/offline.spec.ts:62:1 › failed precache is reported and a deliberate retry prepares offline reopening (3.4s)
+  ✓   92 [firefox] › tests/journeys.spec.ts:886:1 › navigation waits for delayed voice conversion and recovers the completed voice draft (5.0s)
+  ✓   94 [firefox] › tests/offline.spec.ts:87:1 › missing cached files are detected and repaired without deleting projects (4.8s)
+  ✓   95 [firefox] › tests/offline.spec.ts:116:1 › a waiting update keeps an open draft intact and activates after all old tabs close (4.9s)
+  ✓   97 [firefox] › tests/reliability.spec.ts:61:1 › competing tabs preserve the first stored draft and warn before losing the second input (4.4s)
+  ✓   96 [firefox] › tests/reliability.spec.ts:32:1 › a recovered edit draft cannot overwrite details saved later in another tab (7.3s)
+  ✓   98 [firefox] › tests/reliability.spec.ts:91:1 › draft write failure reports the loss of recovery while a normal project save still commits (2.3s)
+  ✓  100 [firefox] › tests/reliability.spec.ts:154:1 › already-persistent storage is shown as protected without asking again (2.1s)
+  ✓   99 [firefox] › tests/reliability.spec.ts:115:1 › a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again (5.3s)
+  ✓  102 [firefox] › tests/reliability.spec.ts:206:1 › a storage-status check failure stays visible and permits a later protection request (1.4s)
+  ✓  101 [firefox] › tests/reliability.spec.ts:168:1 › a separate restore preserves work saved after its preview in the original collection (5.0s)
+  ✓  103 [firefox] › tests/reliability.spec.ts:234:1 › unsupported storage protection explains the backup fallback without claiming protection (1.2s)
+  ✓  104 [firefox] › tests/reliability.spec.ts:252:1 › declined storage protection remains visible and a backup can still be downloaded (1.9s)
+(node:45339) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45380) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  106 [webkit] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (2.4s)
+  ✓  107 [webkit] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (1.1s)
+  ✓  105 [webkit] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (4.0s)
+  ✓  109 [webkit] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (1.6s)
+  ✓  108 [webkit] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (2.3s)
+  ✓  111 [webkit] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (528ms)
+  ✓  112 [webkit] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (729ms)
+  ✓  110 [webkit] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (3.1s)
+  ✓  113 [webkit] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (2.2s)
+  ✓  114 [webkit] › tests/expansion/local-migration.spec.ts:95:1 › copies and hashes actual browser IndexedDB media and unsaved drafts before switching readers (909ms)
+  ✓  115 [webkit] › tests/expansion/local-migration.spec.ts:172:1 › a poisoned source date fails migration while source bytes and old reader selection survive (750ms)
+  ✓  116 [webkit] › tests/expansion/local-migration.spec.ts:128:1 › an old open connection blocks the switch; old-version writes fail after it closes (834ms)
+  ✓  118 [webkit] › tests/expansion/privacy-routes.spec.ts:10:1 › public help is complete without JavaScript and has no private metadata (937ms)
+  ✓  117 [webkit] › tests/expansion/local-migration.spec.ts:229:1 › an idle old tab cannot create an absent legacy database after the new reader is selected (1.4s)
+  ✓  120 [webkit] › tests/expansion/privacy-routes.spec.ts:65:1 › offline help is cached while account API responses cannot be served from cache (1.3s)
+  ✓  119 [webkit] › tests/expansion/privacy-routes.spec.ts:39:1 › public help reflows, remains keyboard accessible and passes axe (4.6s)
+  ✓  121 [webkit] › tests/expansion/upgrade-guest.spec.ts:3:1 › a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest (3.4s)
+  ✓  122 [webkit] › tests/expansion/upgrade-guest.spec.ts:41:1 › invalid payment return is scrubbed immediately and never grants access (1.0s)
+  ✓  124 [webkit] › tests/journeys.spec.ts:144:1 › search, craft filter and no-results recovery operate on opt-in samples (1.8s)
+  ✓  123 [webkit] › tests/journeys.spec.ts:78:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete (5.2s)
+  ✓  126 [webkit] › tests/journeys.spec.ts:274:1 › browser storage write failures retain form values and leave existing checkpoints intact (2.4s)
+  ✓  125 [webkit] › tests/journeys.spec.ts:233:1 › invalid imports preserve current data; valid restore is confirmed into a separate collection (5.5s)
+  ✓  127 [webkit] › tests/journeys.spec.ts:305:1 › failed restore rolls back the entire transaction (2.1s)
+  ✓  128 [webkit] › tests/journeys.spec.ts:329:1 › two tabs retain concurrent checkpoints and reject stale detail edits (3.6s)
+  ✓  129 [webkit] › tests/journeys.spec.ts:359:1 › bag label renders QR and print-only content, then opens the saved local project (2.7s)
+  ✓  131 [webkit] › tests/journeys.spec.ts:451:1 › dialog traps keyboard focus and returns it to the opener (1.4s)
+  ✓  132 [webkit] › tests/journeys.spec.ts:470:1 › microphone permission denial and invalid photo have actionable recovery (1.9s)
+  ✓  133 [webkit] › tests/journeys.spec.ts:497:1 › a large photo is resized to the documented bound before saving (1.8s)
+  ✓  134 [webkit] › tests/journeys.spec.ts:574:1 › blocked storage shows recovery instead of claiming a saved collection (669ms)
+  ✓  135 [webkit] › tests/journeys.spec.ts:590:1 › imported markup remains literal text and cannot execute scripts (3.3s)
+  ✓  136 [webkit] › tests/journeys.spec.ts:613:3 › mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation (9.2s)
+  ✓  137 [webkit] › tests/journeys.spec.ts:613:3 › mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation (8.6s)
+  ✘  130 [webkit] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (30.2s)
+(node:46604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  139 [webkit] › tests/journeys.spec.ts:720:3 › missing MediaRecorder offers a written-note fallback without blocking a checkpoint (2.9s)
+  ✓  138 [webkit] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (7.5s)
+  ✓  140 [webkit] › tests/journeys.spec.ts:720:3 › missing mediaDevices offers a written-note fallback without blocking a checkpoint (1.8s)
+  ✓  142 [webkit] › tests/journeys.spec.ts:831:1 › maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions (1.7s)
+  ✓  141 [webkit] › tests/journeys.spec.ts:769:1 › native recorder accepts a synthesized audio stream and restores its playable output (4.6s)
+  ✓  144 [webkit] › tests/offline.spec.ts:62:1 › failed precache is reported and a deliberate retry prepares offline reopening (1.3s)
+  ✓  143 [webkit] › tests/journeys.spec.ts:886:1 › navigation waits for delayed voice conversion and recovers the completed voice draft (3.9s)
+  ✓  145 [webkit] › tests/offline.spec.ts:87:1 › missing cached files are detected and repaired without deleting projects (2.0s)
+  ✓  146 [webkit] › tests/offline.spec.ts:116:1 › a waiting update keeps an open draft intact and activates after all old tabs close (1.9s)
+  ✓  148 [webkit] › tests/reliability.spec.ts:61:1 › competing tabs preserve the first stored draft and warn before losing the second input (1.9s)
+  ✓  147 [webkit] › tests/reliability.spec.ts:32:1 › a recovered edit draft cannot overwrite details saved later in another tab (3.1s)
+  ✓  149 [webkit] › tests/reliability.spec.ts:91:1 › draft write failure reports the loss of recovery while a normal project save still commits (1.3s)
+  ✓  151 [webkit] › tests/reliability.spec.ts:154:1 › already-persistent storage is shown as protected without asking again (893ms)
+  ✓  150 [webkit] › tests/reliability.spec.ts:115:1 › a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again (2.5s)
+  ✓  153 [webkit] › tests/reliability.spec.ts:206:1 › a storage-status check failure stays visible and permits a later protection request (772ms)
+  ✓  152 [webkit] › tests/reliability.spec.ts:168:1 › a separate restore preserves work saved after its preview in the original collection (2.7s)
+  ✓  154 [webkit] › tests/reliability.spec.ts:234:1 › unsupported storage protection explains the backup fallback without claiming protection (919ms)
+  ✓  155 [webkit] › tests/reliability.spec.ts:252:1 › declined storage protection remains visible and a backup can still be downloaded (955ms)
+(node:46913) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46920) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  157 [chromium-mobile] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (1.4s)
+  ✓  158 [chromium-mobile] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (636ms)
+  ✓  156 [chromium-mobile] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.4s)
+  ✓  160 [chromium-mobile] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (1.1s)
+  ✓  159 [chromium-mobile] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (2.3s)
+  ✓  162 [chromium-mobile] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (371ms)
+  ✓  163 [chromium-mobile] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (586ms)
+  ✓  161 [chromium-mobile] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.9s)
+  ✓  165 [chromium-mobile] › tests/expansion/local-migration.spec.ts:95:1 › copies and hashes actual browser IndexedDB media and unsaved drafts before switching readers (528ms)
+  ✓  164 [chromium-mobile] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.7s)
+  ✓  166 [chromium-mobile] › tests/expansion/local-migration.spec.ts:128:1 › an old open connection blocks the switch; old-version writes fail after it closes (462ms)
+  ✓  167 [chromium-mobile] › tests/expansion/local-migration.spec.ts:172:1 › a poisoned source date fails migration while source bytes and old reader selection survive (493ms)
+  ✓  168 [chromium-mobile] › tests/expansion/privacy-routes.spec.ts:10:1 › public help is complete without JavaScript and has no private metadata (505ms)
+  ✓  169 [chromium-mobile] › tests/expansion/local-migration.spec.ts:229:1 › an idle old tab cannot create an absent legacy database after the new reader is selected (860ms)
+  ✓  171 [chromium-mobile] › tests/expansion/privacy-routes.spec.ts:65:1 › offline help is cached while account API responses cannot be served from cache (578ms)
+  ✓  170 [chromium-mobile] › tests/expansion/privacy-routes.spec.ts:39:1 › public help reflows, remains keyboard accessible and passes axe (3.0s)
+  ✓  173 [chromium-mobile] › tests/expansion/upgrade-guest.spec.ts:41:1 › invalid payment return is scrubbed immediately and never grants access (421ms)
+  ✓  172 [chromium-mobile] › tests/expansion/upgrade-guest.spec.ts:3:1 › a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest (2.6s)
+  ✓  175 [chromium-mobile] › tests/journeys.spec.ts:144:1 › search, craft filter and no-results recovery operate on opt-in samples (843ms)
+  ✓  176 [chromium-mobile] › tests/journeys.spec.ts:160:1 › @chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore (3.3s)
+  ✓  177 [chromium-mobile] › tests/journeys.spec.ts:233:1 › invalid imports preserve current data; valid restore is confirmed into a separate collection (2.3s)
+  ✓  178 [chromium-mobile] › tests/journeys.spec.ts:274:1 › browser storage write failures retain form values and leave existing checkpoints intact (1.5s)
+  ✓  179 [chromium-mobile] › tests/journeys.spec.ts:305:1 › failed restore rolls back the entire transaction (1.3s)
+  ✓  180 [chromium-mobile] › tests/journeys.spec.ts:329:1 › two tabs retain concurrent checkpoints and reject stale detail edits (1.9s)
+  ✓  181 [chromium-mobile] › tests/journeys.spec.ts:359:1 › bag label renders QR and print-only content, then opens the saved local project (1.5s)
+  ✓  182 [chromium-mobile] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.3s)
+  ✓  183 [chromium-mobile] › tests/journeys.spec.ts:451:1 › dialog traps keyboard focus and returns it to the opener (620ms)
+  ✓  174 [chromium-mobile] › tests/journeys.spec.ts:78:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete (16.2s)
+  ✓  184 [chromium-mobile] › tests/journeys.spec.ts:470:1 › microphone permission denial and invalid photo have actionable recovery (1.2s)
+  ✓  185 [chromium-mobile] › tests/journeys.spec.ts:497:1 › a large photo is resized to the documented bound before saving (1.2s)
+  ✓  187 [chromium-mobile] › tests/journeys.spec.ts:574:1 › blocked storage shows recovery instead of claiming a saved collection (215ms)
+  ✓  186 [chromium-mobile] › tests/journeys.spec.ts:527:1 › @chromium-media voice capture stops at the simulated time limit, removes audio, and releases tracks on close (1.9s)
+  ✓  188 [chromium-mobile] › tests/journeys.spec.ts:590:1 › imported markup remains literal text and cannot execute scripts (1.5s)
+  ✓  189 [chromium-mobile] › tests/journeys.spec.ts:613:3 › mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation (8.4s)
+  ✓  190 [chromium-mobile] › tests/journeys.spec.ts:613:3 › mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation (8.7s)
+  ✓  192 [chromium-mobile] › tests/journeys.spec.ts:720:3 › missing MediaRecorder offers a written-note fallback without blocking a checkpoint (1.4s)
+  ✓  193 [chromium-mobile] › tests/journeys.spec.ts:720:3 › missing mediaDevices offers a written-note fallback without blocking a checkpoint (1.3s)
+  ✓  191 [chromium-mobile] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (5.2s)
+  ✓  195 [chromium-mobile] › tests/journeys.spec.ts:831:1 › maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions (1.6s)
+  ✓  194 [chromium-mobile] › tests/journeys.spec.ts:769:1 › native recorder accepts a synthesized audio stream and restores its playable output (3.4s)
+  ✓  197 [chromium-mobile] › tests/offline.spec.ts:62:1 › failed precache is reported and a deliberate retry prepares offline reopening (693ms)
+  ✓  198 [chromium-mobile] › tests/offline.spec.ts:87:1 › missing cached files are detected and repaired without deleting projects (1.1s)
+  ✓  196 [chromium-mobile] › tests/journeys.spec.ts:886:1 › navigation waits for delayed voice conversion and recovers the completed voice draft (3.3s)
+  ✓  199 [chromium-mobile] › tests/offline.spec.ts:116:1 › a waiting update keeps an open draft intact and activates after all old tabs close (2.0s)
+  ✓  200 [chromium-mobile] › tests/reliability.spec.ts:32:1 › a recovered edit draft cannot overwrite details saved later in another tab (2.0s)
+  ✓  201 [chromium-mobile] › tests/reliability.spec.ts:61:1 › competing tabs preserve the first stored draft and warn before losing the second input (1.7s)
+  ✓  202 [chromium-mobile] › tests/reliability.spec.ts:91:1 › draft write failure reports the loss of recovery while a normal project save still commits (933ms)
+  ✓  204 [chromium-mobile] › tests/reliability.spec.ts:154:1 › already-persistent storage is shown as protected without asking again (458ms)
+  ✓  203 [chromium-mobile] › tests/reliability.spec.ts:115:1 › a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again (2.2s)
+  ✓  205 [chromium-mobile] › tests/reliability.spec.ts:168:1 › a separate restore preserves work saved after its preview in the original collection (2.0s)
+  ✓  206 [chromium-mobile] › tests/reliability.spec.ts:206:1 › a storage-status check failure stays visible and permits a later protection request (548ms)
+  ✓  207 [chromium-mobile] › tests/reliability.spec.ts:234:1 › unsupported storage protection explains the backup fallback without claiming protection (382ms)
+  ✓  208 [chromium-mobile] › tests/reliability.spec.ts:252:1 › declined storage protection remains visible and a backup can still be downloaded (536ms)
+(node:47464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47465) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  210 [webkit-mobile] › tests/draft-recovery.spec.ts:33:1 › a recovered draft can be discarded without creating a project (1.7s)
+  ✓  211 [webkit-mobile] › tests/draft-recovery.spec.ts:47:1 › failed draft persistence guards hash navigation and keeps text when leaving is declined (953ms)
+  ✓  209 [webkit-mobile] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save (2.7s)
+  ✓  213 [webkit-mobile] › tests/expansion/app-startup.spec.ts:10:1 › production startup migrates legacy saved work and draft, then uses the normalized repository (1.2s)
+  ✓  212 [webkit-mobile] › tests/draft-recovery.spec.ts:78:1 › discard serializes against further typing and save until draft storage finishes (2.0s)
+  ✓  215 [webkit-mobile] › tests/expansion/app-startup.spec.ts:165:1 › unavailable storage shows recovery guidance without creating an empty workbasket (426ms)
+  ✓  216 [webkit-mobile] › tests/expansion/app-startup.spec.ts:179:1 › delayed route focus preserves a field the maker has already focused (553ms)
+  ✓  214 [webkit-mobile] › tests/expansion/app-startup.spec.ts:118:1 › complete backup restores separately and collection selection preserves source projects and drafts (2.6s)
+  ✓  218 [webkit-mobile] › tests/expansion/local-migration.spec.ts:95:1 › copies and hashes actual browser IndexedDB media and unsaved drafts before switching readers (513ms)
+  ✘  217 [webkit-mobile] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content (1.6s)
+  ✓  219 [webkit-mobile] › tests/expansion/local-migration.spec.ts:128:1 › an old open connection blocks the switch; old-version writes fail after it closes (520ms)
+(node:47536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  220 [webkit-mobile] › tests/expansion/privacy-routes.spec.ts:10:1 › public help is complete without JavaScript and has no private metadata (447ms)
+  ✓  221 [webkit-mobile] › tests/expansion/local-migration.spec.ts:172:1 › a poisoned source date fails migration while source bytes and old reader selection survive (673ms)
+  ✓  223 [webkit-mobile] › tests/expansion/local-migration.spec.ts:229:1 › an idle old tab cannot create an absent legacy database after the new reader is selected (840ms)
+  ✓  224 [webkit-mobile] › tests/expansion/privacy-routes.spec.ts:65:1 › offline help is cached while account API responses cannot be served from cache (734ms)
+  ✓  222 [webkit-mobile] › tests/expansion/privacy-routes.spec.ts:39:1 › public help reflows, remains keyboard accessible and passes axe (2.8s)
+  ✓  226 [webkit-mobile] › tests/expansion/upgrade-guest.spec.ts:41:1 › invalid payment return is scrubbed immediately and never grants access (480ms)
+  ✓  225 [webkit-mobile] › tests/expansion/upgrade-guest.spec.ts:3:1 › a fourth-project gate durably keeps the draft while an unconfigured upgrade stays honest (2.2s)
+  ✓  228 [webkit-mobile] › tests/journeys.spec.ts:144:1 › search, craft filter and no-results recovery operate on opt-in samples (729ms)
+  ✓  229 [webkit-mobile] › tests/journeys.spec.ts:233:1 › invalid imports preserve current data; valid restore is confirmed into a separate collection (3.1s)
+  ✓  230 [webkit-mobile] › tests/journeys.spec.ts:274:1 › browser storage write failures retain form values and leave existing checkpoints intact (1.8s)
+  ✓  231 [webkit-mobile] › tests/journeys.spec.ts:305:1 › failed restore rolls back the entire transaction (1.5s)
+  ✓  232 [webkit-mobile] › tests/journeys.spec.ts:329:1 › two tabs retain concurrent checkpoints and reject stale detail edits (2.4s)
+  ✓  233 [webkit-mobile] › tests/journeys.spec.ts:359:1 › bag label renders QR and print-only content, then opens the saved local project (1.9s)
+  ✓  234 [webkit-mobile] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests (1.8s)
+  ✓  235 [webkit-mobile] › tests/journeys.spec.ts:451:1 › dialog traps keyboard focus and returns it to the opener (1.1s)
+  ✓  227 [webkit-mobile] › tests/journeys.spec.ts:78:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete (16.6s)
+  ✓  236 [webkit-mobile] › tests/journeys.spec.ts:470:1 › microphone permission denial and invalid photo have actionable recovery (3.5s)
+  ✓  238 [webkit-mobile] › tests/journeys.spec.ts:574:1 › blocked storage shows recovery instead of claiming a saved collection (663ms)
+  ✓  237 [webkit-mobile] › tests/journeys.spec.ts:497:1 › a large photo is resized to the documented bound before saving (3.7s)
+  ✓  239 [webkit-mobile] › tests/journeys.spec.ts:590:1 › imported markup remains literal text and cannot execute scripts (2.9s)
+  ✓  240 [webkit-mobile] › tests/journeys.spec.ts:613:3 › mobile 320px has no horizontal overflow in shelf, detail, forms, backup and navigation (9.4s)
+  ✓  241 [webkit-mobile] › tests/journeys.spec.ts:613:3 › mobile 390px has no horizontal overflow in shelf, detail, forms, backup and navigation (10.1s)
+  ✓  243 [webkit-mobile] › tests/journeys.spec.ts:720:3 › missing MediaRecorder offers a written-note fallback without blocking a checkpoint (2.2s)
+  ✓  244 [webkit-mobile] › tests/journeys.spec.ts:720:3 › missing mediaDevices offers a written-note fallback without blocking a checkpoint (2.2s)
+  ✓  242 [webkit-mobile] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (9.8s)
+  ✓  246 [webkit-mobile] › tests/journeys.spec.ts:831:1 › maximum-length unbroken fields reflow at 320px and reduced motion suppresses transitions (2.5s)
+  ✓  245 [webkit-mobile] › tests/journeys.spec.ts:769:1 › native recorder accepts a synthesized audio stream and restores its playable output (5.4s)
+  ✓  248 [webkit-mobile] › tests/offline.spec.ts:62:1 › failed precache is reported and a deliberate retry prepares offline reopening (1.4s)
+  ✓  247 [webkit-mobile] › tests/journeys.spec.ts:886:1 › navigation waits for delayed voice conversion and recovers the completed voice draft (4.5s)
+  ✓  249 [webkit-mobile] › tests/offline.spec.ts:87:1 › missing cached files are detected and repaired without deleting projects (3.1s)
+  ✓  250 [webkit-mobile] › tests/offline.spec.ts:116:1 › a waiting update keeps an open draft intact and activates after all old tabs close (2.5s)
+  ✓  251 [webkit-mobile] › tests/reliability.spec.ts:32:1 › a recovered edit draft cannot overwrite details saved later in another tab (4.4s)
+  ✓  252 [webkit-mobile] › tests/reliability.spec.ts:61:1 › competing tabs preserve the first stored draft and warn before losing the second input (3.2s)
+  ✓  253 [webkit-mobile] › tests/reliability.spec.ts:91:1 › draft write failure reports the loss of recovery while a normal project save still commits (1.7s)
+  ✓  255 [webkit-mobile] › tests/reliability.spec.ts:154:1 › already-persistent storage is shown as protected without asking again (2.4s)
+  ✓  254 [webkit-mobile] › tests/reliability.spec.ts:115:1 › a committed checkpoint is not duplicated when its draft cannot be deleted and is saved again (3.9s)
+  ✓  257 [webkit-mobile] › tests/reliability.spec.ts:206:1 › a storage-status check failure stays visible and permits a later protection request (1.3s)
+  ✓  258 [webkit-mobile] › tests/reliability.spec.ts:234:1 › unsupported storage protection explains the backup fallback without claiming protection (883ms)
+  ✓  256 [webkit-mobile] › tests/reliability.spec.ts:168:1 › a separate restore preserves work saved after its preview in the original collection (3.2s)
+  ✓  259 [webkit-mobile] › tests/reliability.spec.ts:252:1 › declined storage protection remains visible and a backup can still be downloaded (971ms)
+
+
+  1) [chromium] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 58
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#bb7762",
+    +               "contrastRatio": 3.37,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#fdf9f0",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.37 (foreground color: #fdf9f0, background color: #bb7762, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<button class=\"button primary\">Download diagnostic file</button>",
+    +                 "target": Array [
+    +                   ".primary",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.37 (foreground color: #fdf9f0, background color: #bb7762, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<button class=\"button primary\">Download diagnostic file</button>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".primary",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      42 |         .analyze()
+      43 |     ).violations,
+    > 44 |   ).toEqual([])
+         |     ^
+      45 |   const downloading = page.waitForEvent('download')
+      46 |   await dialog.getByRole('button', { name: 'Download diagnostic file' }).click()
+      47 |   expect(await readFile((await (await downloading).path())!, 'utf8')).toBe(text)
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/diagnostics.spec.ts:44:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Project name')
+
+
+       8 |   await page.goto('/')
+       9 |   await page.getByRole('button', { name: 'New project', exact: true }).click()
+    > 10 |   await page.getByLabel('Project name').fill('Recovered cardigan')
+         |                                         ^
+      11 |   await expect(page.getByText('Draft kept on this device.', { exact: false })).toBeVisible()
+      12 |   await page.getByRole('button', { name: 'Close dialog' }).click()
+      13 |   await page.reload()
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/draft-recovery.spec.ts:10:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/draft-recovery-new-project-ca2ff-reload-and-clear-after-save-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/draft-recovery-new-project-ca2ff-reload-and-clear-after-save-firefox/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/draft-recovery-new-project-ca2ff-reload-and-clear-after-save-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/draft-recovery-new-project-ca2ff-reload-and-clear-after-save-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [firefox] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 134
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fdfaf5",
+    +               "contrastRatio": 4.44,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#79746e",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.44 (foreground color: #79746e, background color: #fdfaf5, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<dialog class=\"dialog wide\" aria-labelledby=\"dialog-title\" open=\"\">",
+    +                 "target": Array [
+    +                   "dialog",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<html lang=\"en\">",
+    +                 "target": Array [
+    +                   "html",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.44 (foreground color: #79746e, background color: #fdfaf5, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<label for=\"diagnostic-json\">Diagnostic JSON</label>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "label",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fdfaf4",
+    +               "contrastRatio": 4.44,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#79746e",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.44 (foreground color: #79746e, background color: #fdfaf4, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<textarea id=\"diagnostic-json\" readonly=\"\" rows=\"14\" spellcheck=\"false\">",
+    +                 "target": Array [
+    +                   "#diagnostic-json",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.44 (foreground color: #79746e, background color: #fdfaf4, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<textarea id=\"diagnostic-json\" readonly=\"\" rows=\"14\" spellcheck=\"false\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "#diagnostic-json",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#c38875",
+    +               "contrastRatio": 2.79,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#fdf8f0",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.79 (foreground color: #fdf8f0, background color: #c38875, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<button class=\"button primary\">Download diagnostic file</button>",
+    +                 "target": Array [
+    +                   ".primary",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.79 (foreground color: #fdf8f0, background color: #c38875, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<button class=\"button primary\">Download diagnostic file</button>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".primary",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      42 |         .analyze()
+      43 |     ).violations,
+    > 44 |   ).toEqual([])
+         |     ^
+      45 |   const downloading = page.waitForEvent('download')
+      46 |   await dialog.getByRole('button', { name: 'Download diagnostic file' }).click()
+      47 |   expect(await readFile((await (await downloading).path())!, 'utf8')).toBe(text)
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/diagnostics.spec.ts:44:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-firefox/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [webkit] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog').getByLabel('What will you do next?')
+
+
+      44 |   await page.getByRole('button', { name: 'Save a checkpoint', exact: true }).click()
+      45 |   const dialog = page.getByRole('dialog')
+    > 46 |   await dialog.getByLabel('What will you do next?').fill(nextStep)
+         |                                                     ^
+      47 |   await dialog.getByLabel('Current row or repeat').fill(position)
+      48 |   if (notes) await dialog.getByLabel('Anything else to remember?').fill(notes)
+      49 |   if (photo) {
+        at checkpoint (/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/journeys.spec.ts:46:53)
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/journeys.spec.ts:441:3
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/journeys-production-cache--e1fe4-oad-without-remote-requests-webkit/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/journeys-production-cache--e1fe4-oad-without-remote-requests-webkit/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/journeys-production-cache--e1fe4-oad-without-remote-requests-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/journeys-production-cache--e1fe4-oad-without-remote-requests-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [webkit-mobile] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 58
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#b66d57",
+    +               "contrastRatio": 3.77,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#fef9f1",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.77 (foreground color: #fef9f1, background color: #b66d57, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<button class=\"button primary\">Download diagnostic file</button>",
+    +                 "target": Array [
+    +                   ".primary",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.77 (foreground color: #fef9f1, background color: #b66d57, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<button class=\"button primary\">Download diagnostic file</button>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".primary",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      42 |         .analyze()
+      43 |     ).violations,
+    > 44 |   ).toEqual([])
+         |     ^
+      45 |   const downloading = page.waitForEvent('download')
+      46 |   await dialog.getByRole('button', { name: 'Download diagnostic file' }).click()
+      47 |   expect(await readFile((await (await downloading).path())!, 'utf8')).toBe(text)
+        at /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/tests/expansion/diagnostics.spec.ts:44:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-webkit-mobile/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-webkit-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-webkit-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/expansion-diagnostics-actu-f4806-out-including-craft-content-webkit-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5 failed
+    [chromium] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content 
+    [firefox] › tests/draft-recovery.spec.ts:5:1 › new project and checkpoint drafts survive dismissal and reload, and clear after save 
+    [firefox] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content 
+    [webkit] › tests/journeys.spec.ts:399:1 › production cache permits offline reload, capture, and later reload without remote requests 
+    [webkit-mobile] › tests/expansion/diagnostics.spec.ts:5:1 › actual app previews the exact diagnostic bytes before explicit local download without including craft content 
+  254 passed (5.9m)
