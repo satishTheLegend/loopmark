@@ -62,6 +62,20 @@ export async function referenced(
     snapshots.some((s) => keyOf(s.scope) === keyOf(scope) && s.value.media.some((r) => r.id === id))
   )
     return true
+  const plans = await requestResult<
+    Array<{ scope?: CollectionKey; media?: MediaRef[]; value?: { operationId?: string } }>
+  >(tx.objectStore('meta').getAll())
+  if (
+    plans.some(
+      (plan) =>
+        plan.scope &&
+        keyOf(plan.scope) === keyOf(scope) &&
+        plan.value?.operationId &&
+        !Object.hasOwn(row?.value.operations ?? {}, plan.value.operationId) &&
+        plan.media?.some((ref) => ref.id === id),
+    )
+  )
+    return true
   const drafts = await requestResult<Array<{ scope: CollectionKey; media?: MediaRef[] }>>(
     tx.objectStore('drafts').getAll(),
   )

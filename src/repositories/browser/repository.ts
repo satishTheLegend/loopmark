@@ -572,6 +572,11 @@ export class BrowserRepository implements Repository {
       )
       for (const draft of drafts)
         if (keyOf(draft.scope) === keyOf(key)) tx.objectStore('drafts').delete(draft.key)
+      const metadata = await requestResult<Array<{ key: string; scope?: CollectionKey }>>(
+        tx.objectStore('meta').getAll(),
+      )
+      for (const row of metadata)
+        if (row.scope && keyOf(row.scope) === keyOf(key)) tx.objectStore('meta').delete(row.key)
       tx.objectStore('collections').delete(keyOf(key))
       // Preserve the generation fence even when the selected device copy is gone.
     })

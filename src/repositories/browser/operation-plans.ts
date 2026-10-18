@@ -2,7 +2,7 @@ import type { OperationPlan, OperationPlanStore } from '../../services/operation
 import type { SessionScope } from '../../domain/contracts'
 import { DomainError } from '../../domain/errors'
 import { hashSchema, id } from '../../domain/schema'
-import { intentCommand, keyOf } from '../state'
+import { intentCommand, keyOf, mediaRefs } from '../state'
 import { transaction, requestResult, assertGeneration } from './schema'
 import type { BrowserRepository } from './repository'
 const address = (scope: SessionScope, operationId: string) =>
@@ -36,7 +36,13 @@ export function createBrowserOperationPlanStore(repository: BrowserRepository): 
           if (row.value.inputHash !== plan.inputHash) throw new DomainError('OPERATION_REUSED')
           return row.value
         }
-        tx.objectStore('meta').add({ key, value: plan })
+        const media =
+          plan.intent.kind === 'checkpoint.create'
+            ? mediaRefs([{ ...plan.intent.payload.checkpoint, revision: '0' }])
+            : plan.intent.kind === 'media.attach'
+              ? [plan.intent.payload.media]
+              : []
+        tx.objectStore('meta').add({ key, scope: scope.key, media, value: plan })
         return plan
       })
     },
