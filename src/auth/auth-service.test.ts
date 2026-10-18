@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { expect, it, vi } from 'vitest'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { createAccountAuth, credentialStorage } from './auth-service'
@@ -98,6 +99,13 @@ it('rejects foreign callbacks, token fragments and repeated code before invoking
     'https://evil.test/auth/callback?code=one',
     'http://localhost:4182/auth/callback#access_token=secret',
     'http://localhost:4182/auth/callback?code=one&code=two',
+    'http://user:password@localhost:4182/auth/callback?code=one',
+    'http://localhost:4182/auth/callback?code=one&sb_flow_id=bad',
+    'http://localhost:4182/auth/callback?code=one&sb_flow_id=' +
+      'a'.repeat(32) +
+      '&sb_flow_id=' +
+      'b'.repeat(32),
+    'http://localhost:4182/auth/callback?code=one&state=arbitrary',
   ])
     await expect(auth.completeCallback(url, signal)).rejects.toMatchObject({
       detail: { code: 'AUTH_CODE_EXPIRED' },
@@ -230,4 +238,93 @@ it('cached verified identity is rejected when durable SDK credentials belong to 
     credentials: { read: async () => other, write: async () => {}, clear: async () => {} },
   })
   expect(await auth.cachedSession()).toBeNull()
+})
+
+it('the installed SDK keeps two PKCE verifiers separate and a foreign flow cannot borrow the latest verifier', async () => {
+  let credentials: string | null = null
+  const flows: Array<{ id: string; challenge: string }> = [],
+    exchanges: string[] = []
+  const user = {
+    id: 'owner',
+    email: 'verified@example.test',
+    aud: 'authenticated',
+    created_at: '2026-01-01T00:00:00Z',
+  }
+  const fetcher = vi.fn<typeof fetch>(async (input, init) => {
+    const url = new URL(String(input)),
+      body = init?.body ? JSON.parse(String(init.body)) : {}
+    if (url.pathname.endsWith('/otp')) {
+      const redirect = new URL(url.searchParams.get('redirect_to')!)
+      flows.push({ id: redirect.searchParams.get('sb_flow_id')!, challenge: body.code_challenge })
+      return new Response(JSON.stringify({ message_id: 'synthetic' }), { status: 200 })
+    }
+    if (url.pathname.endsWith('/token')) {
+      const flow = flows[Number(String(body.auth_code).slice(-1)) - 1]
+      exchanges.push(body.auth_code)
+      expect(createHash('sha256').update(body.code_verifier).digest('base64url')).toBe(
+        flow.challenge,
+      )
+      const encoded = (value: unknown) => Buffer.from(JSON.stringify(value)).toString('base64url')
+      return new Response(
+        JSON.stringify({
+          access_token: `${encoded({ alg: 'HS256' })}.${encoded({ sub: 'owner', exp: Math.floor(Date.now() / 1000) + 3600 })}.signature`,
+          refresh_token: 'synthetic-refresh',
+          token_type: 'bearer',
+          expires_in: 3600,
+          user,
+        }),
+        { status: 200 },
+      )
+    }
+    if (url.pathname.endsWith('/user')) return new Response(JSON.stringify(user), { status: 200 })
+    if (url.pathname.endsWith('/account-session'))
+      return new Response(JSON.stringify(session), { status: 200 })
+    throw new Error('Unexpected synthetic endpoint')
+  })
+  const auth = createAccountAuth({
+    config,
+    credentials: {
+      read: async () => credentials,
+      write: async (value) => {
+        credentials = value
+      },
+      clear: async () => {
+        credentials = null
+      },
+    },
+    devices: {
+      read: async () => ({ id: 'device' }),
+      write: async () => {},
+      readVerified: async () => null,
+      writeVerified: async () => {},
+      clearVerified: async () => {},
+    },
+    fetch: fetcher,
+  })
+  const signal = new AbortController().signal,
+    callback = config.cloud.enabled ? config.cloud.authCallbackUrl : ''
+  try {
+    await auth.requestCode('verified@example.test', signal)
+    await auth.requestCode('verified@example.test', signal)
+    expect(flows).toHaveLength(2)
+    expect(flows[0].id).toMatch(/^[a-f0-9]{32}$/)
+    expect(flows[0].id).not.toBe(flows[1].id)
+    await expect(
+      auth.completeCallback(`${callback}?code=code1&sb_flow_id=${'0'.repeat(32)}`, signal),
+    ).rejects.toMatchObject({ detail: { code: 'AUTH_CODE_EXPIRED' } })
+    expect(exchanges).toEqual([])
+    expect(
+      await auth.completeCallback(`${callback}?code=code1&sb_flow_id=${flows[0].id}`, signal),
+    ).toEqual(session)
+    expect(
+      await auth.completeCallback(`${callback}?code=code2&sb_flow_id=${flows[1].id}`, signal),
+    ).toEqual(session)
+    expect(exchanges).toEqual(['code1', 'code2'])
+    await expect(
+      auth.completeCallback(`${callback}?code=code1&sb_flow_id=${flows[0].id}`, signal),
+    ).rejects.toMatchObject({ detail: { code: 'AUTH_CODE_EXPIRED' } })
+    expect(exchanges).toHaveLength(2)
+  } finally {
+    auth.dispose()
+  }
 })

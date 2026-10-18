@@ -109,6 +109,7 @@ export function createAccountAuth(options: {
     createClient(cloud.url, cloud.publicKey, {
       auth: {
         flowType: 'pkce',
+        experimental: { appendPkceFlowIdToRedirects: true },
         detectSessionInUrl: false,
         persistSession: true,
         autoRefreshToken: true,
@@ -304,15 +305,24 @@ export function createAccountAuth(options: {
         if (
           url.origin !== allowed.origin ||
           url.pathname !== allowed.pathname ||
+          url.username ||
+          url.password ||
           url.hash ||
-          [...url.searchParams.keys()].some((k) => k !== 'code') ||
-          url.searchParams.getAll('code').length !== 1
+          [...url.searchParams.keys()].some((k) => k !== 'code' && k !== 'sb_flow_id') ||
+          url.searchParams.getAll('code').length !== 1 ||
+          url.searchParams.getAll('sb_flow_id').length > 1
         )
           throw new DomainError('AUTH_CODE_EXPIRED')
-        const code = url.searchParams.get('code')
-        if (!code || code.length > 2048) throw new DomainError('AUTH_CODE_EXPIRED')
+        const code = url.searchParams.get('code'),
+          flowId = url.searchParams.get('sb_flow_id')
+        if (flowId !== null && !/^[a-f0-9]{32}$/.test(flowId))
+          throw new DomainError('AUTH_CODE_EXPIRED')
+        if (!code || code.length > 2048 || code.includes('\u0000'))
+          throw new DomainError('AUTH_CODE_EXPIRED')
         // SDK exchanges only with its locally stored PKCE verifier; callback query never contains a bearer token.
-        const { error } = await client.auth.exchangeCodeForSession(code)
+        const { error } = await (flowId
+          ? client.auth.exchangeCodeForSession(code, { flowId })
+          : client.auth.exchangeCodeForSession(code))
         assert(expected, signal)
         if (error) throw new DomainError('AUTH_CODE_EXPIRED')
         return account(signal, expected)
