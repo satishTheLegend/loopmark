@@ -94,35 +94,44 @@ describe('I07 real deletion barrier and independent ledger', () => {
     // Controlled time fixture moves only this synthetic job past its already asserted request-time barrier.
     await advanceSyntheticDeadline(a)
     // An old preparation must not make the eventual backup-retention receipt expire early.
-    await sql(
-      `update loopmark_private.deletion_requests set requested_at=now()-interval '2 days',backup_expires_at=now()+interval '5 days' where owner_id=${quote(a.id)}::uuid`,
+    const originalRequestedAt = await sql(
+      `select requested_at::text from loopmark_private.deletion_requests where owner_id=${quote(a.id)}::uuid`,
     )
-    const jobs = await request(env.serviceKey, 'jobs', {
-      action: 'resume-deletions',
-      limit: 1,
-      ownerId: a.id,
-    })
-    expect(jobs.status).toBe(200)
-    expect(jobs.body.counts, JSON.stringify(jobs.body)).toEqual({
-      examined: 1,
-      changed: 1,
-      failed: 0,
-    })
-    expect(await sql(`select count(*) from auth.users where id=${quote(a.id)}::uuid`)).toBe('0')
-    expect(
+    try {
       await sql(
-        `select count(*) from loopmark_private.projects where owner_id=${quote(a.id)}::uuid`,
-      ),
-    ).toBe('0')
-    const finished = await request('', 'deletion-status', {
-      requestId: auth.body.requestId,
-      receiptToken: auth.receiptToken,
-    })
-    expect(finished.body.status).toBe('live-data-removed')
-    expect(Object.keys(finished.body).sort()).toEqual(['backupExpiresAt', 'removedAt', 'status'])
-    expect(
-      Date.parse(finished.body.backupExpiresAt) - Date.parse(finished.body.removedAt),
-    ).toBeGreaterThanOrEqual(7 * 86400000)
+        `update loopmark_private.deletion_requests set requested_at=now()-interval '2 days',backup_expires_at=now()+interval '5 days' where owner_id=${quote(a.id)}::uuid`,
+      )
+      const jobs = await request(env.serviceKey, 'jobs', {
+        action: 'resume-deletions',
+        limit: 1,
+        ownerId: a.id,
+      })
+      expect(jobs.status).toBe(200)
+      expect(jobs.body.counts, JSON.stringify(jobs.body)).toEqual({
+        examined: 1,
+        changed: 1,
+        failed: 0,
+      })
+      expect(await sql(`select count(*) from auth.users where id=${quote(a.id)}::uuid`)).toBe('0')
+      expect(
+        await sql(
+          `select count(*) from loopmark_private.projects where owner_id=${quote(a.id)}::uuid`,
+        ),
+      ).toBe('0')
+      const finished = await request('', 'deletion-status', {
+        requestId: auth.body.requestId,
+        receiptToken: auth.receiptToken,
+      })
+      expect(finished.body.status).toBe('live-data-removed')
+      expect(Object.keys(finished.body).sort()).toEqual(['backupExpiresAt', 'removedAt', 'status'])
+      expect(
+        Date.parse(finished.body.backupExpiresAt) - Date.parse(finished.body.removedAt),
+      ).toBeGreaterThanOrEqual(7 * 86400000)
+    } finally {
+      await sql(
+        `update loopmark_private.deletion_requests set requested_at=${quote(originalRequestedAt)}::timestamptz where owner_id=${quote(a.id)}::uuid`,
+      )
+    }
   })
   it('preserves original receipt capability after ledger append before the primary barrier and retries idempotently', async () => {
     const a = await actor(),
@@ -215,5 +224,46 @@ describe('I07 real deletion barrier and independent ledger', () => {
         `select count(*) from storage.objects where bucket_id='loopmark-private' and starts_with(name,${quote(a.id + '/')})`,
       ),
     ).toBe('0')
+  })
+  it('expires the original receipt capability and rate-limits valid anonymous lookup', async () => {
+    const a = await actor(),
+      auth = await authorization(a)
+    expect((await request(a.token, 'account-delete', auth.body)).status).toBe(200)
+    const lookup = { requestId: auth.body.requestId, receiptToken: auth.receiptToken }
+    await sql(
+      "insert into loopmark_private.rate_buckets(owner_id,kind,tokens,refilled_at) values('00000000-0000-0000-0000-000000000000','deletion-status',0,now()+interval '10 seconds') on conflict(owner_id,kind) do update set tokens=0,refilled_at=excluded.refilled_at",
+    )
+    try {
+      const limited = await request('', 'deletion-status', lookup)
+      expect(limited.status).toBe(429)
+      expect(limited.body.error.code).toBe('RATE_LIMITED')
+      expect(limited.headers.get('retry-after')).toBe('1')
+    } finally {
+      await sql(
+        "update loopmark_private.rate_buckets set tokens=60,refilled_at=now() where owner_id='00000000-0000-0000-0000-000000000000' and kind='deletion-status'",
+      )
+    }
+    const expired = await actor(),
+      aged = await authorization(expired)
+    expect(
+      (await expired.client.rpc('loopmark_delete_prepare', { request: aged.body })).error,
+    ).toBeNull()
+    await sql(
+      `update loopmark_private.deletion_requests set requested_at=now()-interval '91 days',retain_until=now()-interval '1 day' where owner_id=${quote(expired.id)}::uuid`,
+    )
+    const intent = JSON.parse(
+      await sql(
+        `select loopmark_private.erasure_intent(d) from loopmark_private.deletion_requests d where owner_id=${quote(expired.id)}::uuid`,
+      ),
+    )
+    await ledgerAppend(intent)
+    expect(
+      (
+        await request('', 'deletion-status', {
+          requestId: aged.body.requestId,
+          receiptToken: aged.receiptToken,
+        })
+      ).status,
+    ).toBe(404)
   })
 })

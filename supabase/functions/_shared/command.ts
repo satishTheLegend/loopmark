@@ -9,6 +9,7 @@ import {
   projectRecordSchema,
 } from './generated/domain/schema.ts'
 import { errorHelp } from './generated/help/errors.ts'
+import { observe } from './observability.ts'
 
 const conflictSchema = z
   .object({
@@ -87,9 +88,22 @@ export function transportEndpoint(
         status: 405,
         headers,
       })
+    let identity: Awaited<ReturnType<typeof authenticated>> | null = null
+    const started = performance.now(),
+      path = new URL(request.url).pathname.split('/').at(-1),
+      route = path?.startsWith('media-')
+        ? 'media'
+        : path &&
+            ['checkout', 'purchase-restore', 'purchase-recovery', 'entitlement-status'].includes(
+              path,
+            )
+          ? 'billing'
+          : null
     try {
-      const identity = requiresAuthentication ? await authenticated(request) : null
+      identity = requiresAuthentication ? await authenticated(request) : null
       const result = await action(request, identity)
+      if (identity && route)
+        await observe(identity.user.id, route, 'success', null, performance.now() - started)
       if (result instanceof Response) {
         const responseHeaders = new Headers(headers)
         for (const [key, value] of result.headers) responseHeaders.set(key, value)
@@ -98,6 +112,8 @@ export function transportEndpoint(
       return new Response(JSON.stringify(result), { status: 200, headers })
     } catch (error) {
       const detail = safeError(error)
+      if (identity && route)
+        await observe(identity.user.id, route, 'error', null, performance.now() - started)
       const status =
         detail.code === 'AUTH_REQUIRED'
           ? 401

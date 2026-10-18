@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import { mkdir, readFile, writeFile, cp } from 'node:fs/promises'
+import { mkdir, readFile, writeFile, cp, stat } from 'node:fs/promises'
 import { resolve, dirname, relative } from 'node:path'
 import { createServer } from 'node:net'
 import { createHash, randomBytes } from 'node:crypto'
@@ -321,6 +321,18 @@ export async function main(args = process.argv.slice(2)) {
   console.log(`Loopmark local ${action}: ${context.config.projectId} (${context.config.worktree})`)
   if (!['up', 'down', 'reset', 'status', 'prepare'].includes(action))
     throw new Error('Use up, down, reset, status or prepare.')
+  if (
+    action !== 'status' &&
+    (await stat(resolve(root, '.gstack/rollback', context.config.profile, 'lock'))
+      .then(() => true)
+      .catch((error) => {
+        if (error.code === 'ENOENT') return false
+        throw error
+      }))
+  )
+    throw new Error(
+      'A rollback journal is active for this local profile. Finish the current rollback or run ops rollback-resume before changing its runtime.',
+    )
   await assertLocalDocker()
   const runtime = await execute('docker', ['info', '--format', '{{.ServerVersion}}'])
   if (runtime.code)

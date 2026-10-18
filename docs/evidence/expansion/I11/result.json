@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "item": "I11",
+  "recordedAt": "2026-10-18T14:55:55.541Z",
+  "status": "local-targeted-pass",
+  "target": {
+    "environment": "local",
+    "projectId": "loopmark-loopmark-expansi-eeac3023",
+    "apiOrigin": "http://127.0.0.1:56621"
+  },
+  "validation": {
+    "freshMigrations": "001–015 applied through pinned Supabase CLI2.121.0",
+    "targetedTests": {
+      "passed": 15,
+      "failed": 0,
+      "startedAt": "2026-10-18T14:53:55.925Z",
+      "durationMs": 57241.428466796875
+    },
+    "operatorUnitTests": 2,
+    "typecheck": "passed"
+  },
+  "restores": [
+    {
+      "ready": true,
+      "rpoMs": 4080,
+      "rtoMs": 8735,
+      "rpoTargetMet": true,
+      "rtoTargetMet": true,
+      "erasedAccounts": 63,
+      "objects": 1
+    },
+    {
+      "ready": true,
+      "rpoMs": 13938,
+      "rtoMs": 8326,
+      "rpoTargetMet": true,
+      "rtoTargetMet": true,
+      "erasedAccounts": 63,
+      "objects": 1
+    }
+  ],
+  "rollback": [
+    {
+      "schemaVersion": 1,
+      "id": "8d865589-cb2c-4924-8ade-6a0331de6ebd",
+      "compatibleRevision": "967cc65",
+      "edgeImage": "sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8",
+      "currentHash": "a9ed86b055b96a448a22cd5bc55f695d2422b2f000940aba0e8ee05d7fdf44d6",
+      "previousHash": "d19c0356f2c7e9df4ea2d4c9d263191561dd084584a293b7c69840af63ab3af0",
+      "ready": true,
+      "restoredCurrent": true,
+      "elapsedMs": 6698
+    }
+  ],
+  "images": [
+    {
+      "service": "postgres",
+      "image": "sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706"
+    },
+    {
+      "service": "edge",
+      "image": "sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8"
+    }
+  ],
+  "sourceHashes": {
+    "scripts/local.mjs": "8129631ceb9d87fb8c6f93058f2f7d20620066924724ad1046fcd7a0cfbe055a",
+    "scripts/ops.mjs": "dfb8856262e790225b0e60ad85d5b603365d5ada9ce2159b04e6f05f0d56943d",
+    "scripts/ops/common.d.mts": "95cd9db957f4bf14e010008943f9f6bda9bdf4ca34e3bd97f58b011b70b923de",
+    "scripts/ops/common.mjs": "c5a2eb517b58ba471632b66251bca84cc12524ab3f5b4b5e420ef41e6a1a6e33",
+    "scripts/ops/policy.mjs": "46ef0ac20dbfc97b5be05bd758127b5d2e347f080e9ee1c4f8b07704f8dbb106",
+    "scripts/ops/recovery.d.mts": "38cc2bdc91fa902efe6ff5b7f0aab9a0769191534d27af1d7efea1a43848cf5d",
+    "scripts/ops/recovery.mjs": "e70f8983366ab86f722a99ec64f5f7979ab98f254a3a8d643d0f1a8812cfbaf0",
+    "scripts/ops/rollback.d.mts": "d2ce538ad3841972b7ad4c2ef1fbc68aa8db7ba12218f4425d8c302e4018e77d",
+    "scripts/ops/rollback.mjs": "5194795dce0f5948f23d95a10a12e8d808e1d082200bf6f038ab2ccdcc80886f",
+    "scripts/test-ops.mjs": "7916264d89f4020f6fde0874c7d0fbe5fce19d85e899df860e8178fedd8d0c0a",
+    "scripts/test-server.mjs": "13d3d1c35a4a876f0062f7922e93e4864030533b6d9ff587050f3acf39c17270",
+    "supabase/functions/_shared/command.ts": "3a959f76ef008c77dd692547ae74a4fbde8dc468552a74858c358cea3bf96a9e",
+    "supabase/functions/_shared/observability.ts": "bb24a649014b4277974b76d2d9dcb1a1fe83d52b37ad8f5816a180d3944897b8",
+    "supabase/functions/sync-push/index.ts": "64424f70b86cf2a868b114c94f9f0459a10b6f5b39051221c477528b8b908ec8",
+    "supabase/migrations/202610180015_operations_recovery.sql": "15a73d0cded41c05f0648d930ea1bfe77deb91860b9e6100b580954946cc0cb8",
+    "tests/ops/alerts.test.mjs": "bd64164015c02b598e0411173f775ff9749c7e26c754a338f4e807b8cb7593be",
+    "tests/ops/grammar.test.mjs": "435362e47340f7e4816827e9d213ca92a8c6a1744e35f62956fbf788d96940ea",
+    "tests/server/deletion.test.ts": "97f256be339e50ad8f8126092fa6bcace641855b6918a2630497c51712dffd2a",
+    "tests/server/operations.test.ts": "9a2b1a910754976dd99c6f193b49bc467170aa89ddee0d9c3c7fd4ea62307c7b",
+    "tests/server/recovery.test.ts": "737e8336b5340de5508cda6ee587474deb072c9fd3e4439977838d6274ce5f60"
+  },
+  "limitations": [
+    "Local host and disk share the primary failure domain; no independent-host disaster proof.",
+    "Provider network fixtures are synthetic; no live provider qualification or charges.",
+    "Ready is completed isolated drill evidence, never traffic promotion; current ledger handshake and ongoing reconciliation required at activation.",
+    "No named operational owner, funded operating budget, outbound alert integration or recurring scheduler has been activated.",
+    "Host was shared with unrelated builds; load/native measurements are qualified separately."
+  ],
+  "remaining": [
+    "Full assembled server suite after root stable app window",
+    "I13 100/1000-account real load measurement"
+  ]
+}

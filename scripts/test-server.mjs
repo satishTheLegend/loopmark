@@ -14,7 +14,7 @@ const suites = {
   replacement: ['tests/server/replacement.test.ts', 'tests/server/capacity.test.ts'],
   deletion: ['tests/server/deletion.test.ts'],
   billing: ['tests/server/billing.test.ts'],
-  recovery: ['tests/server/recovery.test.ts'],
+  recovery: ['tests/server/recovery.test.ts', 'tests/server/operations.test.ts'],
   all: ['tests/server'],
 }
 if (!Object.hasOwn(suites, suite)) {
