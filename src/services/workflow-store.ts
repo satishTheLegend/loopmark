@@ -3,7 +3,7 @@ import { canonicalJson } from '../domain/canonical-json'
 import { DomainError } from '../domain/errors'
 import { collectionKeySchema, id } from '../domain/schema'
 
-export type WorkflowKind = 'upload' | 'candidate' | 'deletion' | 'purchase'
+export type WorkflowKind = 'upload' | 'candidate' | 'deletion' | 'purchase' | 'navigation'
 export interface WorkflowEntry<T> {
   kind: WorkflowKind
   accountId: string
@@ -35,14 +35,19 @@ export function validateWorkflow(
     !id.safeParse(idValue).success ||
     (previous !== null && !id.safeParse(previous).success) ||
     !id.safeParse(entry.accountId).success ||
-    !['upload', 'candidate', 'deletion', 'purchase'].includes(entry.kind) ||
+    !['upload', 'candidate', 'deletion', 'purchase', 'navigation'].includes(entry.kind) ||
     (entry.collection !== null && !collectionKeySchema.safeParse(entry.collection).success)
+  )
+    throw new DomainError('VALIDATION')
+  if (
+    entry.kind === 'navigation' &&
+    (entry.accountId !== 'local_navigation' || entry.collection !== null)
   )
     throw new DomainError('VALIDATION')
   // Two complete bounded candidate metadata sets plus mapping and receipts fit within this bound.
   if (
     new TextEncoder().encode(canonicalJson(entry)).byteLength >
-    (entry.kind === 'candidate' ? 20 * 1024 * 1024 : 64 * 1024)
+    (entry.kind === 'candidate' ? 20 * 1024 * 1024 : entry.kind === 'navigation' ? 2048 : 64 * 1024)
   )
     throw new DomainError('TECHNICAL_CAPACITY_REACHED')
 }

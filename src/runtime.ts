@@ -27,7 +27,8 @@ import { prepareBrowserStorage, prepareNativeStorage } from './services/startup'
 import { createSyncCoordinator } from './sync/coordinator'
 import { createSyncTransport } from './sync/transport'
 import { createTabLease } from './sync/tab-lease'
-import { parseProjectLink, resolveProjectLink } from './links/link-service'
+import { parseProjectLink, type ProjectLink } from './links/link-service'
+import { createProjectContinuation } from './links/project-continuation'
 import { mapBounded } from './services/concurrency'
 import { mediaRefs } from './repositories/state'
 
@@ -224,6 +225,46 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     const value = controller.getSnapshot().scope
     if (!value) throw new DomainError('ACCOUNT_CHANGED')
     return structuredClone(value)
+  }
+  const projectContinuation = createProjectContinuation({
+    repository,
+    workflows: storage.workflows,
+    current: () => ({
+      scope: scope(),
+      accountId: controller.getSnapshot().account?.accountId ?? null,
+    }),
+    hydrate: () => controller.runSync(),
+  })
+  await projectContinuation.initialize()
+  const projectOpenings = new Map<string, Promise<'account' | `project=${string}`>>()
+  const openProjectTarget = (target: ProjectLink) => {
+    const identity = canonicalJson({
+      target,
+      scope: scope(),
+      accountId: controller.getSnapshot().account?.accountId ?? null,
+    })
+    const existing = projectOpenings.get(identity)
+    if (existing) return existing
+    const work = (async (): Promise<'account' | `project=${string}`> => {
+      const pending = await projectContinuation.capture(target)
+      try {
+        const project = await projectContinuation.continue(pending.token)
+        return `project=${encodeURIComponent(project.id)}`
+      } catch (error) {
+        if (
+          error instanceof DomainError &&
+          ['NOT_AVAILABLE', 'AUTH_REQUIRED'].includes(error.detail.code)
+        )
+          return 'account'
+        throw error
+      }
+    })()
+    projectOpenings.set(identity, work)
+    const clear = () => {
+      if (projectOpenings.get(identity) === work) projectOpenings.delete(identity)
+    }
+    void work.then(clear, clear)
+    return work
   }
   access = createEntitlementCache({ workflows: storage.workflows, current })
   const billingContext = () => {
@@ -476,6 +517,15 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   updateHints()
   void refreshBilling()
   return {
+    links: {
+      getSnapshot: projectContinuation.getSnapshot,
+      subscribe: projectContinuation.subscribe,
+      dismiss: projectContinuation.dismiss,
+      async continue(token: string): Promise<`project=${string}`> {
+        const project = await projectContinuation.continue(token)
+        return `project=${encodeURIComponent(project.id)}`
+      },
+    },
     native,
     config,
     controller,
@@ -635,19 +685,11 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
         await billing.verifyReturn(parsePurchaseReturn(value, origin))
         return 'account'
       }
-      const selected = scope()
-      const project = await resolveProjectLink({
-        target: parseProjectLink(value, origin),
-        scope: selected,
-        repository,
-        accountId: controller.getSnapshot().account?.accountId ?? null,
-        signal: AbortSignal.timeout(60000),
-        hydrate: () => controller.runSync(),
-      })
-      return `project=${encodeURIComponent(project.id)}`
+      return openProjectTarget(parseProjectLink(value, origin))
     },
     async dispose() {
       disposed = true
+      projectContinuation.dispose()
       hints?.dispose()
       billing?.dispose()
       clearTimeout(timer)
