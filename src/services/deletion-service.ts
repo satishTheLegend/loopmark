@@ -26,8 +26,8 @@ export interface SavedDeletionReceipt {
 }
 export function createDeletionService(options: {
   repository: Repository
-  auth: AccountAuth
-  client: FunctionClient
+  auth?: AccountAuth
+  client?: FunctionClient
   workflows: WorkflowStore
   current: () => AccountSession | null
 }) {
@@ -39,6 +39,7 @@ export function createDeletionService(options: {
   })
   async function checked(scope: SessionScope, signal: AbortSignal) {
     signal.throwIfAborted()
+    if (!options.auth || !options.client) throw new DomainError('CAPABILITY_UNAVAILABLE')
     const session = options.current(),
       identity = await options.auth.verifiedIdentity()
     if (
@@ -57,6 +58,7 @@ export function createDeletionService(options: {
     return row
   }
   async function query(row: WorkflowRecord<DeletionState>, signal: AbortSignal) {
+    if (!options.client) throw new DomainError('CAPABILITY_UNAVAILABLE')
     const result = deletionReceiptSchema.safeParse(
       await options.client.post(
         'deletion-status',
@@ -76,7 +78,7 @@ export function createDeletionService(options: {
   return {
     async requestCode(scope: SessionScope, signal: AbortSignal) {
       const { identity } = await checked(scope, signal)
-      const result = await options.auth.requestCode(identity.email, signal)
+      const result = await options.auth!.requestCode(identity.email, signal)
       await checked(scope, signal)
       return result
     },
@@ -126,11 +128,11 @@ export function createDeletionService(options: {
         )
       }
       await checked(scope, signal)
-      const proof = await options.auth.reauthenticate(input.code, signal)
+      const proof = await options.auth!.reauthenticate(input.code, signal)
       await checked(scope, signal)
       let response: unknown
       try {
-        response = await options.client.post(
+        response = await options.client!.post(
           'account-delete',
           {
             requestId: row.value.requestId,

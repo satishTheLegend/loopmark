@@ -90,6 +90,19 @@ it('persists the receipt capability before deletion, and resumes a lost reply an
   const exported = JSON.parse(await (await signedOut.exportReceipt(result.id)).text())
   expect(exported.receiptToken).toMatch(/^[a-f0-9]{64}$/)
   expect(exported).not.toHaveProperty('accountId')
+  const offline = createDeletionService({
+    ...options,
+    auth: undefined,
+    client: undefined,
+    current: () => null,
+  })
+  expect(await offline.listReceipts()).toEqual(await signedOut.listReceipts())
+  expect(await (await offline.exportReceipt(result.id)).text()).toBe(
+    await (await signedOut.exportReceipt(result.id)).text(),
+  )
+  await expect(
+    offline.refreshReceipt(result.id, new AbortController().signal),
+  ).rejects.toMatchObject({ detail: { code: 'CAPABILITY_UNAVAILABLE' } })
   expect(calls).toHaveLength(4)
 })
 it('requests reauthentication only for the verified email and fences a late code response', async () => {

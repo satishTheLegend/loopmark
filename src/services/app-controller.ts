@@ -447,6 +447,10 @@ export function createAppController(options: AppControllerOptions): AppControlle
       })
     },
     getSnapshot: () => state,
+    getSession: () =>
+      !disposed && session && state.account?.accountId === session.accountId
+        ? structuredClone(session)
+        : null,
     subscribe(listener) {
       listeners.add(listener)
       return () => listeners.delete(listener)

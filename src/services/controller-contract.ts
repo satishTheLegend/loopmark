@@ -1,4 +1,5 @@
 import type {
+  AccountSession,
   CollectionInfo,
   CollectionKey,
   CollectionView,
@@ -44,6 +45,7 @@ export type ConflictChoice =
 export interface AppController {
   initialize(): Promise<void>
   getSnapshot(): ControllerState
+  getSession(): AccountSession | null
   subscribe(listener: () => void): () => void
   requestCode(email: string): Promise<{ retryAt: string }>
   verifyCode(email: string, code: string): Promise<void>

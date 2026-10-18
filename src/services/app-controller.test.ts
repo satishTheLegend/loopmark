@@ -98,6 +98,9 @@ it('login retains guest selection, exposes verified identity and switches only d
   await controller.verifyCode('typed@example.test', '123456')
   expect(controller.getSnapshot().scope?.key).toEqual(guest.key)
   expect(controller.getSnapshot().account?.email).toBe('verified@example.test')
+  const copy = controller.getSession()!
+  copy.billingPrincipalId = 'tampered'
+  expect(controller.getSession()?.billingPrincipalId).toBe('billing')
   await controller.chooseCollection(connected.key)
   expect(controller.getSnapshot().scope?.key).toEqual(connected.key)
 })
@@ -117,6 +120,7 @@ it('sign-out counts unsent project mutations and requires explicit discard with 
   await controller.signOut({ keepLocal: false, discardUniqueWork: true })
   expect((await repo.listCollections()).some((c) => c.kind === 'connected')).toBe(false)
   expect(controller.getSnapshot().account).toBeNull()
+  expect(controller.getSession()).toBeNull()
 })
 it('a draft created after review blocks signout and keep preserves its source-bound content', async () => {
   const { controller, repo, connected } = await setup()
