@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { createReadStream } from 'node:fs'
 import { realpath, stat } from 'node:fs/promises'
-import { resolve, relative, isAbsolute } from 'node:path'
+import { resolve, relative, isAbsolute, sep } from 'node:path'
 
 export function requiredGates(environment, platform) {
   if (
@@ -102,6 +102,15 @@ export async function evaluateRelease({ root, manifest, environment, platform, r
       const file = await realpath(resolve(realRoot, item.path)),
         rel = relative(realRoot, file)
       if (rel.startsWith('..') || isAbsolute(rel)) return false
+      // Validate the resolved target too: an evidence-looking path may traverse
+      // or symlink to an unrelated file elsewhere inside the checkout.
+      if (
+        evidence &&
+        !['docs/evidence/', '.gstack/release/'].some((prefix) =>
+          rel.split(sep).join('/').startsWith(prefix),
+        )
+      )
+        return false
       const info = await stat(file)
       if (!info.isFile() || !info.size || (evidence && info.size > 10 * 1024 * 1024)) return false
       const hash = createHash('sha256')

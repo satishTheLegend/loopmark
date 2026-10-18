@@ -75,3 +75,24 @@ test('platform-specific and production gates cannot disappear', () => {
   assert.ok(requiredGates('production', 'web').includes('pilot-decision'))
   assert.throws(() => requiredGates('local', 'web'))
 })
+
+test('evidence paths cannot traverse or symlink elsewhere inside the checkout', () =>
+  fixture(async (input) => {
+    await writeFile(join(input.root, 'unreviewed.txt'), 'synthetic evidence')
+    await symlink('../../unreviewed.txt', join(input.root, 'docs/evidence/alias'))
+    for (const path of ['docs/evidence/../../unreviewed.txt', 'docs/evidence/alias']) {
+      const gates = input.manifest.gates.map((gate) => ({
+        ...gate,
+        evidence: [{ path, sha256 }],
+      }))
+      const report = await evaluateRelease({ ...input, manifest: { ...input.manifest, gates } })
+      assert.equal(report.status, 'blocked')
+      assert.equal(report.checks.find((check) => check.id === 'regression').status, 'blocked')
+    }
+  }))
+test('a symlink to evidence within an allowed directory still verifies its actual bytes', () =>
+  fixture(async (input) => {
+    await symlink('check.txt', join(input.root, 'docs/evidence/alias'))
+    input.manifest.gates[0].evidence = [{ path: 'docs/evidence/alias', sha256 }]
+    assert.equal((await evaluateRelease(input)).status, 'evidence-complete')
+  }))
