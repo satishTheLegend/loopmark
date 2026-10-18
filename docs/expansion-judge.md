@@ -1,6 +1,6 @@
 # Independent expansion judgment — frozen-source review pending final execution
 
-Review date: 18 October 2026. Reviewer: `final_traceability_review`, independent of implementation authors. Reviewed frozen product source: `0b518fa8cdea04a61b443a09ab0eb2db8aa8d534`. **Final adjudication is pending.** The earlier `a07b014` freeze was withdrawn after actual cloud verification exposed a no-op empty-pull revision defect. The correction has passed independent source review, exact unit assertions and actual SQLite regressions on both native platforms. Existing evidence retains its recorded source/artifact scope; the refreshed full guest and actual-cloud runs remain pending.
+Review date: 18 October 2026. Reviewer: `final_traceability_review`, independent of implementation authors. Reviewed frozen product source: `0b518fa8cdea04a61b443a09ab0eb2db8aa8d534`. **The final freeze is reopened; approval is pending.** The earlier `a07b014` freeze was withdrawn after actual cloud verification exposed a no-op empty-pull revision defect. The correction has passed independent source review, exact unit assertions and actual SQLite regressions on both native platforms. Existing evidence retains its recorded source/artifact scope; the full guest run now passes264/264 and the full actual-cloud run retains77passes/3failures. The new IR23 async-ownership race requires a corrected source and fresh affected verification.
 
 [requirements.json](evidence/expansion/requirements.json) retains every accepted ID: R1–R9, X01–X10, C00–C23, D01–D12, DX01–DX08, E01–E14 and T01–T46: 123 requirements and 286 T branches. All implementation files and assertion sources are bound to immutable source hashes. The matrix selects 211 primary/supporting assertion anchors and records exact executed case names where available. Those counts are inventory checks, not proof of acceptance. Higher-level requirements retain their own scope; a broad test-group reference does not automatically import unrelated physical/provider/human gates.
 
@@ -32,13 +32,17 @@ A [separate functional run](evidence/expansion/native/benchmarks/share-file-inte
 
 ## Current unit and build qualification
 
-The [unit qualification](evidence/expansion/I13/web/unit-qualification.json) preserves the untouched Vitest JSON reporter. Its SHA-256 matches; every one of the 353 case objects matches the raw reporter and passes; all 46 test-file hashes match both frozen and current source. Seventy-three selected unit anchors map to exact executed titles, including each expanded parameter value. Counts establish inventory, while individual assertions provide the branch evidence. The [integration command record](evidence/expansion/I13/web/final-integration-checks.json) records all thirteen build/format/support commands with exit code zero and timestamps. The subsequent native fixture-only edits require their separate formatting check.
+The [unit qualification](evidence/expansion/I13/web/unit-qualification.json) preserves the untouched Vitest JSON reporter. Its SHA-256 matches; every one of the 353 case objects matches the raw reporter and passes; all 46 test-file hashes match both frozen and current source. Seventy-three selected unit anchors map to exact executed titles, including each expanded parameter value. Counts establish inventory, while individual assertions provide the branch evidence. The [integration command record](evidence/expansion/I13/web/final-integration-checks.json) records all thirteen build/format/support commands with exit code zero and timestamps. The subsequent five native fixture files pass their separate preserved formatting check.
 
 ## Frozen browser qualification
 
 The [web evidence](evidence/expansion/I13/web/qualification.json) matches all 156 frozen product files. This reviewer independently reparsed the complete list-reporter stdout and matched every recorded case: **255 rendered UI passes**, followed by a full guest run of **263 passes and one Firefox timeout out of 264**. Exact source hashes match the tests executed. These derived case records are not represented as native JSON-reporter output.
 
 The [timeout evidence](evidence/expansion/I13/accessibility-timeout/metadata.json) supports a narrow fixture diagnosis. All eight original axe attachments are exactly empty arrays and all eight assertions complete without error. Guide completes at 30.978 seconds, after the aggregate 30-second budget starts teardown at 30.012 seconds. The cause of that run's slower execution remains unproven. Only the aggregate test receives a 60-second budget; scans and assertions are unchanged. The [focused follow-up](evidence/expansion/I13/accessibility-timeout/green-results.json) passes on all five profiles without retries and preserves 40 exact empty attachments. This closes the affected accessibility obligation; it is **not** a single 264/264 run or a rerun of the full suite. Browser mobile profiles remain emulation, not physical-device accessibility qualification.
+
+The [immutable0b518fa web snapshot](evidence/expansion/I13/web/qualification-0b518fa.json) now records a separate complete **264/264 guest PASS** and **77/80 actual-cloud PASS with three retained failures**. This reviewer independently reparsed all case lines and checked their exact source hashes, all156 product inputs and every listed raw artifact hash. These later runs do not rewrite the earlier timeout history.
+
+Both account-deletion journeys and downloads pass on all five profiles, closing IR22's unchanged-pull review issue alongside the unit and SQLite proof. Two remaining cloud failures expose **IR23**: an obsolete sync/refresh can finish after a deliberate collection switch and either raise a false fatal scope error or invalidate the legitimate new refresh. Source inspection also finds awaited coordinator status publications that need the same ownership boundary. Required regressions cover complete-scope generation/ABA, late success and failure, obsolete refresh versions, pre-run reads, and genuine current durable-scope mismatches. Stored mutation fences remain intact. The third failure concerns the conflict fixture expecting a stale review to refresh automatically. The [controlled follow-up](evidence/expansion/I13/conflict-initial-pull/qualification.json) holds the real first pull, asserts stale values, requires the warning and removal of the acceptance action, then explicitly refreshes. All five profiles pass without retries; the later second-change guard/recovery/reload/third-device assertions remain. This reviewer matched the fixture/source/log and original trace hashes and confirmed the original trace contains the stale-review warning. The failed full cloud run is not relabeled.
 
 ## Load interpretation and remaining local gates
 
@@ -50,11 +54,11 @@ Timestamp comparison establishes 60 completed local saves wholly inside the burs
 
 Remaining local gates are finite:
 
-1. Finish IR22 actual-cloud qualification. Source review,353-case unit evidence, actual SQLite assertions and refreshed exact production artifacts pass. The controlled old-source failures remain preserved. Both transaction wrappers skip writes/revision/publication only on explicit false; all prior fences and controller CAS remain.
-2. Complete and bind the current full guest and actual-cloud browser runs. Prior rendered UI and guest coverage remain qualified above with their failed-run/focused-closure history preserved.
-3. Bind the post-fixture format check and adjudicate each requirement/branch against the final runtime reports. Pending execution is still explicit in the matrix.
+1. Correct and verify IR23 across controller and coordinator ownership boundaries, including the independently identified late status publications. Retain true current-scope failures; do not hide every ACCOUNT_CHANGED error.
+2. Complete affected browser/native current-source execution after the ownership correction. Rebind unit/build results and exact native artifacts to the new product freeze. The controlled conflict-fixture follow-up is qualified on0b518fa.
+3. Adjudicate every requirement/branch against the matching final reports. Prior source-scoped passes remain valid evidence without granting the still-open implementation a final approval.
 
-No additional correctness defect was found in the reviewed `0b518fa` fix or guarded load continuation. This statement does not predict pending runtime results.
+This pass found the consequential IR23 boundary defect above. It does not predict the pending corrected runtime outcomes.
 
 ## External qualification
 
