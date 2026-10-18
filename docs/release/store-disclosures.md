@@ -4,7 +4,7 @@ Status: **draft for the release owner; not submitted**. Complete this worksheet 
 
 ## Product listing and commercial terms
 
-Describe Loopmark as a pause-and-resume craft notebook: latest photo, hook/needle size, row/repeat and next step, with optional voice note and earlier checkpoints. Three active projects are the proposed free allowance; the paid offer is a one-time capacity/history upgrade. Do not claim unlimited storage, an active subscription, proven habit improvement, customer testimonials or achieved pilot results. The documented technical ceiling remains 200 projects, 1,000 checkpoints and 48 MiB of portable content per collection.
+Describe Loopmark as a pause-and-resume craft notebook: latest photo, hook/needle size, row/repeat and next step, with optional voice note and earlier checkpoints. Three active projects are the proposed free allowance; the paid offer is a one-time active-project capacity upgrade. Saved history remains readable on the free plan. Do not claim unlimited storage, an active subscription, proven habit improvement, customer testimonials or achieved pilot results. The documented technical ceiling remains 200 projects, 1,000 checkpoints and 48 MiB of portable content per collection.
 
 The release owner must enter actual localized approved store/merchant prices, product IDs, refund/support policy, supported countries, seller identity and tax treatment. ₹299–₹599 and US$4.99–US$7.99 are experiment ranges, not live offers. Store products, server allowlists and displayed prices must agree; screenshots must come from the same qualified artifact and accurately show unavailable features when not enrolled.
 

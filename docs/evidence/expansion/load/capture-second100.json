@@ -1,0 +1,178 @@
+{
+  "runId": "dfbb1900-59ff-4350-8c95-cb0f96cdca07",
+  "readyAt": "2026-10-18T15:27:09.953Z",
+  "stopPath": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/load-capture/dfbb1900-59ff-4350-8c95-cb0f96cdca07.stop",
+  "source": "d181c51e58c88d36a84bbfa891d715a9ec81f070",
+  "journalPath": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/load-capture/dfbb1900-59ff-4350-8c95-cb0f96cdca07.jsonl",
+  "finishedAt": "2026-10-18T15:27:59.970Z",
+  "samples": [
+    {
+      "startedAt": "2026-10-18T15:27:10.027Z",
+      "committedAt": "2026-10-18T15:27:10.394Z",
+      "saveMs": 27.900000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:27:11.462Z",
+      "committedAt": "2026-10-18T15:27:11.774Z",
+      "saveMs": 23.400000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:27:12.824Z",
+      "committedAt": "2026-10-18T15:27:13.146Z",
+      "saveMs": 24.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:27:14.193Z",
+      "committedAt": "2026-10-18T15:27:14.534Z",
+      "saveMs": 24.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:27:15.590Z",
+      "committedAt": "2026-10-18T15:27:15.950Z",
+      "saveMs": 26
+    },
+    {
+      "startedAt": "2026-10-18T15:27:16.999Z",
+      "committedAt": "2026-10-18T15:27:17.393Z",
+      "saveMs": 28.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:27:18.488Z",
+      "committedAt": "2026-10-18T15:27:18.907Z",
+      "saveMs": 83.1000000089407
+    },
+    {
+      "startedAt": "2026-10-18T15:27:19.992Z",
+      "committedAt": "2026-10-18T15:27:20.353Z",
+      "saveMs": 37.8999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:27:21.742Z",
+      "committedAt": "2026-10-18T15:27:22.256Z",
+      "saveMs": 35.20000000298023
+    },
+    {
+      "startedAt": "2026-10-18T15:27:23.618Z",
+      "committedAt": "2026-10-18T15:27:24.101Z",
+      "saveMs": 88
+    },
+    {
+      "startedAt": "2026-10-18T15:27:25.261Z",
+      "committedAt": "2026-10-18T15:27:25.694Z",
+      "saveMs": 57.19999998807907
+    },
+    {
+      "startedAt": "2026-10-18T15:27:27.129Z",
+      "committedAt": "2026-10-18T15:27:27.509Z",
+      "saveMs": 45.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:27:28.669Z",
+      "committedAt": "2026-10-18T15:27:29.194Z",
+      "saveMs": 121.59999999403954
+    },
+    {
+      "startedAt": "2026-10-18T15:27:30.405Z",
+      "committedAt": "2026-10-18T15:27:30.806Z",
+      "saveMs": 66.59999999403954
+    },
+    {
+      "startedAt": "2026-10-18T15:27:32.045Z",
+      "committedAt": "2026-10-18T15:27:32.488Z",
+      "saveMs": 38.6000000089407
+    },
+    {
+      "startedAt": "2026-10-18T15:27:33.581Z",
+      "committedAt": "2026-10-18T15:27:34.016Z",
+      "saveMs": 36.5
+    },
+    {
+      "startedAt": "2026-10-18T15:27:35.091Z",
+      "committedAt": "2026-10-18T15:27:35.355Z",
+      "saveMs": 23.400000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:27:36.414Z",
+      "committedAt": "2026-10-18T15:27:36.800Z",
+      "saveMs": 34.3999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:27:37.885Z",
+      "committedAt": "2026-10-18T15:27:38.219Z",
+      "saveMs": 33.8999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:27:39.269Z",
+      "committedAt": "2026-10-18T15:27:39.525Z",
+      "saveMs": 19.900000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:27:40.592Z",
+      "committedAt": "2026-10-18T15:27:41.078Z",
+      "saveMs": 40.6000000089407
+    },
+    {
+      "startedAt": "2026-10-18T15:27:42.268Z",
+      "committedAt": "2026-10-18T15:27:42.593Z",
+      "saveMs": 71.40000000596046
+    },
+    {
+      "startedAt": "2026-10-18T15:27:43.652Z",
+      "committedAt": "2026-10-18T15:27:43.963Z",
+      "saveMs": 24.30000001192093
+    },
+    {
+      "startedAt": "2026-10-18T15:27:45.024Z",
+      "committedAt": "2026-10-18T15:27:45.347Z",
+      "saveMs": 25.700000002980232
+    },
+    {
+      "startedAt": "2026-10-18T15:27:46.411Z",
+      "committedAt": "2026-10-18T15:27:46.760Z",
+      "saveMs": 32.79999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:27:48.018Z",
+      "committedAt": "2026-10-18T15:27:48.407Z",
+      "saveMs": 30.5
+    },
+    {
+      "startedAt": "2026-10-18T15:27:49.477Z",
+      "committedAt": "2026-10-18T15:27:49.774Z",
+      "saveMs": 28.799999997019768
+    },
+    {
+      "startedAt": "2026-10-18T15:27:50.843Z",
+      "committedAt": "2026-10-18T15:27:51.162Z",
+      "saveMs": 28.600000008940697
+    },
+    {
+      "startedAt": "2026-10-18T15:27:52.425Z",
+      "committedAt": "2026-10-18T15:27:52.763Z",
+      "saveMs": 86.30000001192093
+    },
+    {
+      "startedAt": "2026-10-18T15:27:53.831Z",
+      "committedAt": "2026-10-18T15:27:54.237Z",
+      "saveMs": 35.900000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:27:55.314Z",
+      "committedAt": "2026-10-18T15:27:55.678Z",
+      "saveMs": 35.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:27:56.779Z",
+      "committedAt": "2026-10-18T15:27:57.181Z",
+      "saveMs": 82.70000000298023
+    }
+  ],
+  "responses": {
+    "200": 114
+  },
+  "failures": [],
+  "preservedCheckpoints": 32,
+  "targetMs": 500,
+  "maxSaveMs": 121.59999999403954,
+  "conditions": "Actual Chromium app connected to the selected loopback backend. Match sample timestamps against the separate workload phases; this report alone does not prove overlap or load size."
+}

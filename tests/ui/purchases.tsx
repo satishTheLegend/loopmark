@@ -160,7 +160,8 @@ const client: FunctionClient = {
 const product = {
   id: 'loopmark.lifetime',
   title: 'More unfinished projects',
-  displayPrice: '₹437.50',
+  displayPrice:
+    params.get('price') === 'long' ? 'CHF 1’234’567’890.00 (inkl. Mehrwertsteuer)' : '₹437.50',
   currency: 'INR',
   amountMinor: 43750,
   provider: platform === 'web' ? ('razorpay' as const) : ('revenuecat' as const),

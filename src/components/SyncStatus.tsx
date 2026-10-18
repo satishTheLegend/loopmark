@@ -24,6 +24,7 @@ export function SyncStatus({
       (summary.kind === 'current' && old.items.length > 0 && !!summary.lastSyncedAt)
     )
       setAnnouncement(summary.label)
+    else if (old.kind !== summary.kind) setAnnouncement('')
     previous.current = summary
   }, [summary])
   const Icon =

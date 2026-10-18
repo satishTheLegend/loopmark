@@ -2822,9 +2822,10 @@ h1 {
   font-size: 16px;
   line-height: 1.5;
 }
-.readable-controls .dialog-actions .button {
+.readable-controls .button {
   white-space: normal;
   max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .diagnostic-preview textarea {
   width: 100%;
@@ -2930,7 +2931,7 @@ h1 {
 }
 .recovery-counts {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   gap: 12px;
 }
 .sync-recovery .confirm-choice input {
