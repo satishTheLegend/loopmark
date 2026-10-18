@@ -27,7 +27,11 @@ export async function assertMediaPresent(
       tx.objectStore('media').get(mediaKey(scope, ref.id)),
     )
     if (!row && allowMissing) continue
-    if (!row || canonicalJson(row.ref) !== canonicalJson(ref) || row.bytes.byteLength !== ref.bytes)
+    if (!row || canonicalJson(row.ref) !== canonicalJson(ref))
+      throw new DomainError('BACKUP_INCOMPLETE')
+    // A recovery snapshot pins the immutable saved descriptor while verified bytes are repaired.
+    // Strict callers still require the cached byte length; every read verifies the actual hash.
+    if (!allowMissing && row.bytes.byteLength !== ref.bytes)
       throw new DomainError('BACKUP_INCOMPLETE')
   }
 }
@@ -100,7 +104,11 @@ export class BrowserMediaStore implements PlatformMedia {
       const existing = await requestResult<MediaRow | undefined>(tx.objectStore('media').get(key))
       if (existing && canonicalJson(existing.ref) !== canonicalJson(ref))
         throw new DomainError('MEDIA_INVALID')
-      if (!existing)
+      if (existing)
+        // A verified replacement for the exact immutable descriptor repairs a damaged cache.
+        // References and snapshot pins address the same media ID throughout this atomic write.
+        tx.objectStore('media').put({ ...existing, bytes: storedBytes })
+      else
         tx.objectStore('media').add({
           key,
           scope,

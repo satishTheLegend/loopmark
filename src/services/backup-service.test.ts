@@ -8,6 +8,8 @@ import { info, create, now, png, wav, project } from '../repositories/browser/fi
 import { mediaKey, requestResult, transaction } from '../repositories/browser/schema'
 import type { Backup, SessionScope } from '../domain/contracts'
 import { DomainError } from '../domain/errors'
+import { createRemoteMediaService } from './media-service'
+import { createBrowserWorkflowStore } from '../repositories/browser/workflow-store'
 let repo: BrowserRepository, scope: SessionScope, service: ReturnType<typeof createBackupService>
 const { revision: _revision, ...fields } = project()
 const backup: Backup = {
@@ -539,3 +541,117 @@ it('authentication failure during missing-media lookup remains an authentication
   })
   await expect(exporter.exportComplete()).rejects.toBe(original)
 })
+
+it.each(['wrong-hash', 'truncated'] as const)(
+  'repairs %s cached bytes under the original snapshot and exports exact complete media',
+  async (damage) => {
+    const connected = info(true, 'repair')
+    await repo.createCollection(connected)
+    scope = await repo.transition(scope, { key: connected.key, device: scope.device })
+    const prepared = await prepareBackupRecords(backup, repo.media, scope)
+    const manifest = {
+      protocolVersion: 2 as const,
+      snapshotId: 'repair-lease',
+      collectionId: scope.key.collectionId,
+      epoch: scope.key.epoch,
+      cursor: '1',
+      revision: '1',
+      expiresAt: '2030-01-01T00:00:00.000Z',
+      after: null,
+      nextPage: null,
+      projects: prepared.projects.map((p) => ({ ...p, revision: '1' })),
+      checkpoints: prepared.checkpoints.map((c) => ({ ...c, revision: '1' })),
+      media: prepared.checkpoints.flatMap((c) => [c.photo!, c.voice!]),
+    }
+    await repo.hydrate(scope.key, [manifest], scope.generation)
+    const before = await repo.readView(scope.key)
+    const photo = manifest.media[0]
+    const original = await new Response(await repo.media.open(photo, scope.key)).arrayBuffer()
+    const corrupt = new Uint8Array(original.slice(0))
+    corrupt[corrupt.length - 1] ^= 1
+    await transaction(repo.database, 'readwrite', async (tx) => {
+      const key = mediaKey(scope.key, photo.id)
+      const row = await requestResult(tx.objectStore('media').get(key))
+      tx.objectStore('media').put({
+        ...row,
+        bytes: damage === 'truncated' ? corrupt.buffer.slice(0, -1) : corrupt.buffer,
+      })
+    })
+    await expect(repo.media.open(photo, scope.key)).rejects.toMatchObject({
+      detail: { code: 'MEDIA_INVALID' },
+    })
+    if (damage === 'truncated')
+      await expect(repo.snapshot(scope.key)).rejects.toMatchObject({
+        detail: { code: 'BACKUP_INCOMPLETE' },
+      })
+    const pinned = await repo.snapshot(scope.key, { allowMissingMedia: true })
+    expect(pinned.media).toContainEqual(photo)
+    const current = () => ({
+      accountId: 'account',
+      billingPrincipalId: 'principal',
+      collection: scope.key,
+      device: scope.device,
+      deletionGeneration: '0',
+      expiresAt: '2030-01-01T00:00:00.000Z',
+    })
+    const transport = {
+      snapshot: vi.fn(async () => manifest),
+      releaseSnapshot: vi.fn(async () => {}),
+      push: vi.fn(),
+      pull: vi.fn(),
+    }
+    const download = vi.fn(
+      async (_request: { mediaId: string }) => new Blob([original], { type: photo.mimeType }),
+    )
+    download.mockResolvedValueOnce(new Blob([corrupt], { type: photo.mimeType }))
+    const remoteMedia = createRemoteMediaService({
+      repository: repo,
+      media: repo.media,
+      workflows: createBrowserWorkflowStore(repo),
+      current,
+      transport: { download, reserve: vi.fn(), upload: vi.fn(), cancel: vi.fn() },
+    })
+    const exporter = createBackupService({
+      repository: repo,
+      media: repo.media,
+      data: {} as never,
+      scope: () => scope,
+      remote: { transport, media: remoteMedia, current },
+    })
+    const output = vi.fn()
+    const first = await exporter.exportComplete().then(output, (error) => error)
+    expect(first).toBeInstanceOf(IncompleteBackupError)
+    expect(first).toMatchObject({
+      scope,
+      total: 1,
+      missing: [{ checkpointId: 'cp', kind: 'photo' }],
+    })
+    expect(output).not.toHaveBeenCalled()
+    await expect(repo.media.open(photo, scope.key)).rejects.toMatchObject({
+      detail: { code: 'MEDIA_INVALID' },
+    })
+    expect((await exporter.exportComplete()).projects).toEqual(backup.projects)
+    expect(download).toHaveBeenCalledTimes(2)
+    expect(download.mock.calls.every(([request]) => request.mediaId === photo.id)).toBe(true)
+    expect(await repo.readView(scope.key)).toEqual(before)
+    const durablePin = await transaction(repo.database, 'readonly', (tx) =>
+      requestResult(tx.objectStore('snapshots').get(pinned.id)),
+    )
+    expect(durablePin.value.media).toContainEqual(photo)
+    const repaired = await new Response(await repo.media.open(photo, scope.key)).arrayBuffer()
+    expect(new Uint8Array(repaired)).toEqual(new Uint8Array(original))
+    download.mockClear()
+    transport.snapshot.mockClear()
+    expect((await exporter.exportComplete()).projects).toEqual(backup.projects)
+    expect(download).not.toHaveBeenCalled()
+    expect(transport.snapshot).not.toHaveBeenCalled()
+    await repo.releaseSnapshot(pinned.id)
+    await transaction(repo.database, 'readwrite', async (tx) => {
+      const row = await requestResult(tx.objectStore('media').get(mediaKey(scope.key, photo.id)))
+      tx.objectStore('media').put({ ...row, ref: { ...photo, sha256: '0'.repeat(64) } })
+    })
+    await expect(repo.snapshot(scope.key, { allowMissingMedia: true })).rejects.toMatchObject({
+      detail: { code: 'BACKUP_INCOMPLETE' },
+    })
+  },
+)

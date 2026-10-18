@@ -64,8 +64,7 @@ const unavailableMedia = (error: unknown) =>
 const preserveFailure = (error: unknown, signal: AbortSignal) =>
   signal.aborted ||
   (error instanceof Error && error.name === 'AbortError') ||
-  (error instanceof DomainError &&
-    ['ACCOUNT_CHANGED', 'AUTH_REQUIRED', 'ACCESS_REVOKED'].includes(error.detail.code))
+  (error instanceof DomainError && ['ACCOUNT_CHANGED', 'AUTH_REQUIRED'].includes(error.detail.code))
 export interface ExportProgress {
   stage: 'checking' | 'downloading' | 'encoding'
   done: number

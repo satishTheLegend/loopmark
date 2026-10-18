@@ -6,6 +6,7 @@ import { info, png } from '../repositories/browser/fixtures.test-support'
 import { describeInline } from './media-codec'
 import { createRemoteMediaService } from './media-service'
 import type { AccountSession, SessionScope } from '../domain/contracts'
+import { mediaKey, requestResult, transaction } from '../repositories/browser/schema'
 const opened: BrowserRepository[] = []
 afterEach(async () => {
   for (const repo of opened.splice(0)) await repo.close()
@@ -111,4 +112,40 @@ it('failed upload retains the same reservation/request for an immutable retry', 
   expect(transport.upload.mock.calls[0].slice(0, 2)).toEqual(
     transport.upload.mock.calls[1].slice(0, 2),
   )
+})
+
+it('rejects a late repair after a scope change and never overwrites a different media descriptor', async () => {
+  const { repo, scope, service, transport, media } = await setup()
+  await repo.media.storeVerified(media.ref, media.bytes, scope.key, scope.generation)
+  const corrupt = new Uint8Array(await media.bytes.arrayBuffer())
+  corrupt[corrupt.length - 1] ^= 1
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    const row = await requestResult(tx.objectStore('media').get(mediaKey(scope.key, media.ref.id)))
+    tx.objectStore('media').put({ ...row, bytes: corrupt.buffer })
+  })
+  transport.download.mockImplementationOnce(async () => {
+    await repo.activate({ ...scope, generation: scope.generation + 1 })
+    return media.bytes
+  })
+  await expect(
+    service.ensureAvailable(media.ref, scope, new AbortController().signal),
+  ).rejects.toMatchObject({
+    detail: { code: 'ACCOUNT_CHANGED' },
+  })
+  await expect(repo.media.open(media.ref, scope.key)).rejects.toMatchObject({
+    detail: { code: 'MEDIA_INVALID' },
+  })
+  const changedRef = { ...media.ref, sha256: '0'.repeat(64) }
+  await transaction(repo.database, 'readwrite', async (tx) => {
+    const row = await requestResult(tx.objectStore('media').get(mediaKey(scope.key, media.ref.id)))
+    tx.objectStore('media').put({ ...row, ref: changedRef })
+  })
+  await expect(
+    repo.media.storeVerified(media.ref, media.bytes, scope.key, scope.generation + 1),
+  ).rejects.toMatchObject({ detail: { code: 'MEDIA_INVALID' } })
+  const stored = await transaction(repo.database, 'readonly', (tx) =>
+    requestResult(tx.objectStore('media').get(mediaKey(scope.key, media.ref.id))),
+  )
+  expect(stored.ref).toEqual(changedRef)
+  expect(new Uint8Array(stored.bytes)).toEqual(corrupt)
 })

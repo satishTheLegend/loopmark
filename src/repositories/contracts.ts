@@ -72,6 +72,7 @@ export interface Repository {
   acknowledge(key: CollectionKey, receipt: Receipt, generation: Generation): Promise<void>
   hydrate(key: CollectionKey, pages: SnapshotManifest[], generation: Generation): Promise<void>
   recoverPending(key: CollectionKey, reason: RecoveryReason): Promise<CollectionKey>
+  /** Recovery mode pins saved refs even if matching cached bytes are absent/corrupt; descriptor collisions still reject. */
   snapshot(key: CollectionKey, options?: { allowMissingMedia?: boolean }): Promise<LocalSnapshot>
   releaseSnapshot(id: string): Promise<void>
   pending(key: CollectionKey): Promise<PendingIntent[]>

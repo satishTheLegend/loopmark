@@ -179,7 +179,10 @@ export function createRemoteMediaService(options: {
           await reader.cancel()
           return
         } catch (error) {
-          if (!(error instanceof DomainError) || error.detail.code !== 'BACKUP_INCOMPLETE')
+          if (
+            !(error instanceof DomainError) ||
+            !['BACKUP_INCOMPLETE', 'MEDIA_INVALID'].includes(error.detail.code)
+          )
             throw error
         }
         const bytes = await options.transport.download(
