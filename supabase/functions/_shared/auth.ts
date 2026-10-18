@@ -1,4 +1,8 @@
-import { createClient, isAuthApiError } from 'npm:@supabase/supabase-js@2.118.0'
+import {
+  createClient,
+  isAuthApiError,
+  isAuthSessionMissingError,
+} from 'npm:@supabase/supabase-js@2.118.0'
 import { DomainError } from './generated/domain/errors.ts'
 
 export async function authenticated(request: Request) {
@@ -28,7 +32,10 @@ export async function authenticated(request: Request) {
   if (error) {
     // Only an authoritative rejection invalidates identity. Network failures,
     // timeouts, 429 and provider 5xx keep the durable command retryable.
-    if (isAuthApiError(error) && [400, 401, 403, 404].includes(error.status))
+    if (
+      isAuthSessionMissingError(error) ||
+      (isAuthApiError(error) && [400, 401, 403, 404].includes(error.status))
+    )
       throw new DomainError('AUTH_REQUIRED')
     throw new DomainError('SERVICE_UNAVAILABLE')
   }
