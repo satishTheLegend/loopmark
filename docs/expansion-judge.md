@@ -10,7 +10,7 @@ The [initial report](evidence/expansion/independent-initial-review.md) and matri
 
 The latest source review verifies next-step/tool content before file administration and safe individual attachment remedies (`00ca274`), monotonic navigation intent (`feb71f4`), and exact Android runtime/SPM notice provenance (`c4650c3`). The dependency inventory records 115 resolved Maven runtime modules, 12 project components and eight pinned SPM revisions, with copied notice/POM hashes and missing upstream text explicit. It is provenance evidence, not legal approval.
 
-The recurrent Firefox first-click failure now has a concrete cause. During the first service-worker installation, `waiting` could appear before an active worker existed. The false update banner moved the project button between pointerdown and pointerup. Natural target/geometry traces and a deterministic real-worker failing test reproduce this. `a07b014` requires both an active worker and a waiting update. The [first-install evidence](evidence/expansion/I13/first-install-click/metadata.json) records the failed pre-fix case and 20 passing lifecycle cases across five browser profiles. The full frozen guest run remains a distinct gate.
+The recurrent Firefox first-click failure now has a concrete cause. During the first service-worker installation, `waiting` could appear before an active worker existed. The false update banner moved the project button between pointerdown and pointerup. Natural target/geometry traces and a deterministic real-worker failing test reproduce this. `a07b014` requires both an active worker and a waiting update. The [first-install evidence](evidence/expansion/I13/first-install-click/metadata.json) records the failed pre-fix case and 20 passing lifecycle cases across five browser profiles. All five first-install cases also pass in the full frozen guest run.
 
 ## Source-matched backend evidence
 
@@ -26,13 +26,19 @@ The [isolated measurement](evidence/expansion/native/benchmarks/optimized-eb63bd
 
 A [separate functional run](evidence/expansion/native/benchmarks/share-file-integrity-2ba523f/qualification.json) now rereads all 50,331,648 bytes of the actual private file prepared by the production native share helper on each platform. Every byte equals the serialized export and the result includes a SHA-256 digest. This closes the earlier staged-file size-only limitation without revising the isolated timings or claiming that an external receiving application was tested.
 
+## Frozen browser qualification
+
+The [web evidence](evidence/expansion/I13/web/qualification.json) matches all 156 frozen product files. This reviewer independently reparsed the complete list-reporter stdout and matched every recorded case: **255 rendered UI passes**, followed by a full guest run of **263 passes and one Firefox timeout out of 264**. Exact source hashes match the tests executed. These derived case records are not represented as native JSON-reporter output.
+
+The [timeout evidence](evidence/expansion/I13/accessibility-timeout/metadata.json) supports a narrow fixture diagnosis. All eight original axe attachments are exactly empty arrays and all eight assertions complete without error. Guide completes at 30.978 seconds, after the aggregate 30-second budget starts teardown at 30.012 seconds. The cause of that run's slower execution remains unproven. Only the aggregate test receives a 60-second budget; scans and assertions are unchanged. The [focused follow-up](evidence/expansion/I13/accessibility-timeout/green-results.json) passes on all five profiles without retries and preserves 40 exact empty attachments. This closes the affected accessibility obligation; it is **not** a single 264/264 run or a rerun of the full suite. Browser mobile profiles remain emulation, not physical-device accessibility qualification.
+
 ## Load interpretation and remaining local gates
 
 The accepted load obligation checks bounded work, integrity and uninterrupted local capture while stressing 100 then 1,000 accounts. It does not establish hosted capacity. The matrix now maps the actual phased assertions: immutable retries and exact stored/pulled intent, interrupted-media recovery, duplicate-webhook deduplication, dormant retention/compaction, fair batches and controlled typed 429 refusal. Raw Edge/gateway 500/503 and transport failures remain recorded independently. A successful bounded recovery must not relabel a failed simultaneous burst.
 
 Remaining local gates are finite:
 
-1. Complete and bind the full frozen guest, rendered UI and actual-cloud browser runs, retaining prior failures and their specific corrections.
+1. Complete and bind the actual-cloud browser run. Rendered UI and guest coverage are qualified above with their failed-run/focused-closure history preserved.
 2. Complete the 1,000-account bounded recovery/invariant audit and simultaneous actual-App capture/export check, preserving the original burst failure and observed limits.
 3. Bind final supporting-command results and adjudicate each requirement/branch. Pending execution is still explicit in the matrix.
 
