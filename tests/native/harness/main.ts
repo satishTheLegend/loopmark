@@ -11,6 +11,7 @@ import { nativeMediaRepair } from './media-repair'
 import { nativeRebase } from './rebase'
 import { nativeDownloads } from './downloads'
 import { nativePullNoop } from './pull-noop'
+import { nativeControllerSwitch } from './controller-switch'
 
 const results: { name: string; passed: boolean; error?: string }[] = []
 const assert = (value: unknown) => {
@@ -75,6 +76,9 @@ await test('native downloaded cache eviction preserves protected/source bytes an
 })
 await test('empty unchanged-cursor pull preserves real SQLite state, subscriptions and review CAS', async () => {
   await nativePullNoop()
+})
+await test('late sync cleanup preserves a deliberate guest switch in the actual controller and SQLite', async () => {
+  await nativeControllerSwitch()
 })
 await capabilityTests(test)
 const report = {

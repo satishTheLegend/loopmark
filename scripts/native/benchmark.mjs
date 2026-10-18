@@ -32,6 +32,7 @@ if (
     'downloads',
     'inbox',
     'pull',
+    'controller',
   ].includes(action) ||
   !['small', 'limit'].includes(dataset) ||
   !Number.isInteger(count) ||
@@ -39,7 +40,7 @@ if (
   count > 30
 )
   throw new Error(
-    'Usage: benchmark.mjs <ios|android> <startup|import|export|examples|repair|profile|rebase|downloads|inbox|pull> <small|limit> [1..30 samples]',
+    'Usage: benchmark.mjs <ios|android> <startup|import|export|examples|repair|profile|rebase|downloads|inbox|pull|controller> <small|limit> [1..30 samples]',
   )
 const appId = 'app.loopmark.craft.benchmark',
   evidence = resolve(root, 'docs/evidence/expansion/native/benchmarks')
