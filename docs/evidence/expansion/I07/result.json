@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "package": "I07",
+  "status": "local-implementation-verified-awaiting-independent-review",
+  "recordedAt": "2026-10-18T13:13:19.417062+00:00",
+  "resultCommit": "f87cb1902e05bfb1d3eff66a788f6a4011d1abfc",
+  "sharedDependencies": {
+    "snapshotRelease": "5562124 (exact contracts/schema patch copied locally; owned by A/root)",
+    "rawMediaValidation": "3e3edc9",
+    "remoteContracts": [
+      "3b20ebe",
+      "3319277",
+      "739e5d8",
+      "3fea75c"
+    ],
+    "serverConfig": "fd94ce7 (applied as ccd852e)",
+    "doctor": "6380fec exact root copy",
+    "repositoryState": "8096141 exact root copy",
+    "vitestConfig": "root supplied exact local copy"
+  },
+  "environment": {
+    "platform": "Darwin arm64",
+    "node": "v26.8.2",
+    "docker": "29.8.0",
+    "supabaseCLI": "2.121.0",
+    "supabaseJS": "2.118.0",
+    "zod": "4.6.7",
+    "projectId": "loopmark-loopmark-expansi-eeac3023",
+    "apiUrl": "http://127.0.0.1:56621",
+    "images": {
+      "public.ecr.aws/supabase/postgres:17.11.0.004": {
+        "id": "sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706",
+        "digests": [
+          "public.ecr.aws/supabase/postgres@sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706"
+        ]
+      },
+      "public.ecr.aws/supabase/edge-runtime:v1.77.4": {
+        "id": "sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8",
+        "digests": [
+          "public.ecr.aws/supabase/edge-runtime@sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8"
+        ]
+      },
+      "public.ecr.aws/supabase/storage-api:v1.82.1": {
+        "id": "sha256:ec2ad41411eac8fc2b769b4bb00d1af32ae37eca3745c15bdb329db27d218934",
+        "digests": [
+          "public.ecr.aws/supabase/storage-api@sha256:ec2ad41411eac8fc2b769b4bb00d1af32ae37eca3745c15bdb329db27d218934"
+        ]
+      },
+      "public.ecr.aws/supabase/postgrest:v16.4": {
+        "id": "sha256:d155c6718ed9a9f990d159a2ab7c0a3f16944dbb6d0a0344557421042acfe0df",
+        "digests": [
+          "public.ecr.aws/supabase/postgrest@sha256:d155c6718ed9a9f990d159a2ab7c0a3f16944dbb6d0a0344557421042acfe0df"
+        ]
+      },
+      "public.ecr.aws/supabase/realtime:v2.143.4": {
+        "id": "sha256:35e99d3f1cbba5aa5585e8ac3cf70ecc54909ee4aee0626effed93c60fb41439",
+        "digests": [
+          "public.ecr.aws/supabase/realtime@sha256:35e99d3f1cbba5aa5585e8ac3cf70ecc54909ee4aee0626effed93c60fb41439"
+        ]
+      },
+      "public.ecr.aws/supabase/mailpit:v1.31.3": {
+        "id": "sha256:ed9b00c609e77e99c79b93f1178255ebc271868920f2c69a8d166bd5634ed10d",
+        "digests": [
+          "public.ecr.aws/supabase/mailpit@sha256:ed9b00c609e77e99c79b93f1178255ebc271868920f2c69a8d166bd5634ed10d"
+        ]
+      },
+      "public.ecr.aws/supabase/gotrue:v2.197.0": {
+        "id": "sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b",
+        "digests": [
+          "public.ecr.aws/supabase/gotrue@sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b"
+        ]
+      },
+      "public.ecr.aws/supabase/kong:2.8.1": {
+        "id": "sha256:1b53405d8680a09d6f44494b7990bf7da2ea43f84a258c59717d4539abf09f6d",
+        "digests": [
+          "public.ecr.aws/supabase/kong@sha256:1b53405d8680a09d6f44494b7990bf7da2ea43f84a258c59717d4539abf09f6d"
+        ]
+      },
+      "node:26.8.2-alpine@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868": {
+        "id": "sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868",
+        "digests": [
+          "node@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868"
+        ]
+      }
+    },
+    "containers": [
+      {
+        "name": "supabase_db_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "5432/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "56622"
+            }
+          ]
+        },
+        "imageId": "sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706"
+      },
+      {
+        "name": "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+        "ports": {},
+        "imageId": "sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8"
+      },
+      {
+        "name": "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "5000/tcp": null
+        },
+        "imageId": "sha256:ec2ad41411eac8fc2b769b4bb00d1af32ae37eca3745c15bdb329db27d218934"
+      },
+      {
+        "name": "supabase_rest_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "3000/tcp": null
+        },
+        "imageId": "sha256:d155c6718ed9a9f990d159a2ab7c0a3f16944dbb6d0a0344557421042acfe0df"
+      },
+      {
+        "name": "supabase_realtime_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "4000/tcp": null
+        },
+        "imageId": "sha256:35e99d3f1cbba5aa5585e8ac3cf70ecc54909ee4aee0626effed93c60fb41439"
+      },
+      {
+        "name": "supabase_inbucket_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "8025/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "56624"
+            }
+          ]
+        },
+        "imageId": "sha256:ed9b00c609e77e99c79b93f1178255ebc271868920f2c69a8d166bd5634ed10d"
+      },
+      {
+        "name": "supabase_auth_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "9999/tcp": null
+        },
+        "imageId": "sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b"
+      },
+      {
+        "name": "supabase_kong_loopmark-loopmark-expansi-eeac3023",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "56621"
+            }
+          ]
+        },
+        "imageId": "sha256:1b53405d8680a09d6f44494b7990bf7da2ea43f84a258c59717d4539abf09f6d"
+      },
+      {
+        "name": "loopmark_erasure_ledger_loopmark-loopmark-expansi-eeac3023",
+        "ports": {},
+        "imageId": "sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868"
+      }
+    ]
+  },
+  "verification": {
+    "command": "node scripts/test-server.mjs --suite all",
+    "exitCode": 0,
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0,
+    "files": 11,
+    "startedAtLocal": "2026-10-18T18:39:52+05:30",
+    "durationMsReported": 106790,
+    "log": "server-run.txt",
+    "logSha256": "ff40b4c4965805c4a7dd2efc6de34e09cc212ee437574ff4f41647375fc2dba8",
+    "logProvenance": "Transcribed from completed tool stdout; progress blank lines normalized."
+  },
+  "otherChecks": [
+    {
+      "command": "node scripts/local.mjs reset --confirm-project loopmark-loopmark-expansi-eeac3023",
+      "result": "PASS; all ten migrations applied fresh from source, separate ledger volume retained."
+    },
+    {
+      "command": "npx tsc -b",
+      "result": "PASS; includes server test types."
+    },
+    {
+      "command": "npx vitest run src/media-validation.test.ts src/data.test.ts",
+      "result": "PASS 35 tests; raw-byte validator preserves portable validation."
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "PASS before source commit."
+    }
+  ],
+  "sourceHashes": {
+    "scripts/local.mjs": "8b9ebded77b0dbbef0fdf502806a268b8bc4b9e35d8f37867c5db224a30a9304",
+    "scripts/test-server.mjs": "2b7c32019951d85826241cfd6fd1f62bf14d8117c115299d339be69cf92a70ff",
+    "src/domain/canonical-json.ts": "9d9bc1279c6e99acbdebdff2dca75316edceb4dcfa75a56a9dddd0c76265d774",
+    "src/domain/contracts.test.ts": "1c31c06873a12843cf88a3c21d81ec668512b4fda7a23d1c16001452c128706e",
+    "src/domain/contracts.ts": "e5cbc787e31247c765b0b5140e9c802afef7e6de3b85e3bb479e9226e367a18e",
+    "src/domain/errors.ts": "6127d0d12eadca535189a1366b07a2192284cdc34a992be4bd665de63038a07d",
+    "src/domain/media-contract.ts": "c1f39949c63bb817d5ca6a681e34174ffb9911b875ee807095028620cae11da5",
+    "src/domain/policy.test.ts": "80c433b2b7010c18769a1ee84836d239bc18e4071d8e8bca2f4d21fed2ec590d",
+    "src/domain/policy.ts": "361fb357c8439e286f37126cf7390195d4c94231ca245d70bc8c300edd0fd8df",
+    "src/domain/portable-schema.ts": "391eb0802bddc4058d11d26c98e2701f5faa42b7b12793e56e4a850f990c4b99",
+    "src/domain/portable.ts": "ca351bf619a1ddac8a69fdaccf831e8a1dedc4d1d905d71932a123c6c9700817",
+    "src/domain/remote-contracts.ts": "be4d730c864e68b023d91415a1fc8779573451fa17345f8a57fd7b3eb892f452",
+    "src/domain/remote-schema.ts": "19a4d3613e503cf8579abf9e699d119b43a909452f8eab011e4806fd718ffc27",
+    "src/domain/revisions.ts": "a01ef320928feaa845f1d194b84d902ac3bcdf04fe1a00abfd2a7728b063aa41",
+    "src/domain/schema.ts": "b5725dda13d863b6e391c361ac325d507d600f00dd6fb6211eda80e10714f1bc",
+    "src/media-validation.test.ts": "66ad565617737605c9afd04f94e18eb1cf50fcffadbf1e1165b3e367b4933b29",
+    "src/media-validation.ts": "5c7008b11bbc95015c0037132bacd61e8c2bf529bb23d0ccb22a36ec2891d411",
+    "supabase/.gitignore": "507699eb91144818edf61d3a079212cacf31d8db520eae428e3b48fcf0d6919c",
+    "supabase/I07-wire.md": "ae5b6797d14da244d8461bc248c83548a2404184b4481b5aa75d5fa8ad967616",
+    "supabase/command.schema.json": "c147b02d54fc6a2b69d9932b87049a62cfec0356d5db90c48a25d7e33d22cca7",
+    "supabase/config.toml": "37c94a72775236fce9aeb6d2354d27c21e9e57350595f1eccd4c58c0defebde3",
+    "supabase/erasure-ledger/server.mjs": "10e7638c7e6ffe051b2cc69939d7e79a10c8108237ea6c48360511ce7c48b800",
+    "supabase/functions/_shared/auth.ts": "af5b2ed742919e9cbf1fc85a8f7834c596b51a76fe09a5e08d7edf75a0ef0888",
+    "supabase/functions/_shared/candidates.ts": "56906755160e65b1b6e6677fbd4c12105e979d75c5568080674f42fa9156e825",
+    "supabase/functions/_shared/command.ts": "4665cca7c53a4665efbfa48e1ab7fec6b69a29a6bdd1d67cf3dec44654ed3f1a",
+    "supabase/functions/_shared/config.ts": "9ae23ee710743b0db8f4a9e31e6d1e5b6a9c7ea6cf12b7e4000748b94b098500",
+    "supabase/functions/_shared/erasure-ledger.ts": "1b9735ad0f831502da9c61bf5ddf4be7f524615d4ec84018d3b0abcded89a00b",
+    "supabase/functions/_shared/limits.ts": "fa1c083ebb5755a5c02000fa44a01dc23ffaccdf4d7d2cdb8c9bf0bffb766aa5",
+    "supabase/functions/_shared/media.ts": "51c627b030b53ef1ef660a53ade6d0848e799107886848af7db651086f5d509b",
+    "supabase/functions/_shared/server.ts": "16f8c2839fc06dcdd2d5e10c14948cc3dd35d40388e9b422bbf47745100d259b",
+    "supabase/functions/account-delete/index.ts": "4d9772b751100ce522507bc23dca0d2eaaa32bf08a80d576e504c27245e10af5",
+    "supabase/functions/account-session/index.ts": "3b5d784575e066b9ea4775b722b7b159ca1a1782f1ebacf7b0fee8d40162e88e",
+    "supabase/functions/account-usage/index.ts": "f3b066e0a48e74f2bd35ee77d190f5c1d95a0212d521861bbe87f73934d032b8",
+    "supabase/functions/collection-attach/index.ts": "d2d0e5ac03b885cd368fdec9506348f3c738e3d0237787293eba9a7950df6799",
+    "supabase/functions/collection-replace/index.ts": "96aa32b134f4f90a9d065164a6ef69ae19bb6019405085fbd0086b4632781578",
+    "supabase/functions/deletion-status/index.ts": "4ba453297de4c207697a8ab1521888965d1a71558c0dc38d718a825612b69b19",
+    "supabase/functions/import_map.json": "a34c96cec54d7584f089b65d2c69a26ffd86fb8fd80c57493294e48cc8129a9d",
+    "supabase/functions/jobs/delete-account.ts": "05cee9586b167cb1b84599446c52772ba313b82b05888ea9ffedb4ee9f9c18c8",
+    "supabase/functions/jobs/index.ts": "6035a258821bd25aac889cd110a0c10127261c1ebfa82923ffeda7c6401bb266",
+    "supabase/functions/jobs/sweep-media.ts": "06cc12808d39bd9afeec22262fd2dd5eb6b9a34a46521028ce49d0adcf577b58",
+    "supabase/functions/media-download/index.ts": "aba063ff50a534113bbfeef17a2925be4159865428a9a89ed96a62d18af2e0ed",
+    "supabase/functions/media-finalize/index.ts": "87d854e302c8e485f632013f586dbf872c9b746b8395c81ef11dc8065206f76c",
+    "supabase/functions/media-upload/index.ts": "ec5b4fec7a8031ee29c6ad25f7ec7000c5c879893672d5e5e9a053a0434ddee0",
+    "supabase/functions/sync-pull/index.ts": "48c4c10371b39ebc7c8937e81f049e1e277543b278d9db859bb4f48107c71cd9",
+    "supabase/functions/sync-push/index.ts": "e6d03bd8efe24d5a2c0717c26d890287223affd68350bc762ff6d7ed9433631e",
+    "supabase/functions/sync-snapshot/index.ts": "c816f0f293d6dcc7bb00f3b258fd10d3e71e1067368e2b7711ff9a59871d5201",
+    "supabase/migrations/202610180001_foundation.sql": "3126aa87bf3da4e0a1b5a0946d7d802fcb88de81c98afe444b845683937110b8",
+    "supabase/migrations/202610180002_commands.sql": "82023e4f68360a523d97742ba08dcb056eba820591b61f89d9d15b13296678d8",
+    "supabase/migrations/202610180003_reads_retention.sql": "81f5d2196c948eb4b552fadd60ff08234f6b47947021742f952204dd42d2e31f",
+    "supabase/migrations/202610180004_reauthentication.sql": "b6cadcffa5d2390f0cd278bb556267c2f710cda00327b387e2e4f4c80b560a90",
+    "supabase/migrations/202610180005_media_candidates.sql": "e3818e157936163dbcbb38a854f600f445d7e87672739772c2676e133a7311aa",
+    "supabase/migrations/202610180006_media_admission.sql": "bee75735eb39f8c41fdabd499de35fa960c68b929b7a02ad67cb115c90b2018f",
+    "supabase/migrations/202610180007_commit_media_replacement.sql": "a66941d4c63d633109f656c04a24a55b3b2ff6ccf2f04b0917f7a7850d48ccbc",
+    "supabase/migrations/202610180008_deletion_barrier.sql": "bb96cc9f7d51e7d48f45d5a39438417a0134766c364d2a065b70209dba523597",
+    "supabase/migrations/202610180009_sync_hints.sql": "25fcbc7c62ae03c27df18edd61cbf3cfbf97418577437b5af1633a2fac9283f8",
+    "supabase/migrations/202610180010_usage_sweep.sql": "f5aaa2bcb2ad511d27d9b20bad0fbf087704fa882aeec5584a7c273b469efcbb",
+    "supabase/seed.sql": "b0f5fd71f53b1be3c36e8c784dcfadd4119931380fb17fb9668dca005ef32c20",
+    "supabase/templates/magic-link.html": "69f78b2537a47cd8219c27f3774f8e7b590875eaeee2b2ec70692e389a9f43f8",
+    "supabase/tests/commands.test.sql": "0fed24de838931364eb47928e6fe4c05728a9a98f6d81cc37ea75d1f9498db06",
+    "supabase/tests/deletion.test.sql": "beb4305ca3a3c255963ed5eee460a2f6c62c504d447df41c341919fa709c308f",
+    "supabase/tests/media.test.sql": "a7e9adfe6ae6a99091fbcfee504afd256ba6eea0d67f75e7e0c12a3eb1eef9f2",
+    "supabase/tests/ownership.test.sql": "cac1e4c0ed2c8b6472dea25fcb21f4019ada1dfe95b4a2efc1c02864b5f195f5",
+    "supabase/tests/replacement.test.sql": "97cf3f0dcc394aa32467624e8b00e2595ecda139c1187596ea382564b23a6363",
+    "tests/server/boundaries.test.ts": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+    "tests/server/capacity.test.ts": "7d114d18abc9e1defb5f4a34dce6f9568a4691f323232aef69bcff12efa62a2a",
+    "tests/server/deletion.test.ts": "d6dba84975a8ec6ce8666b5d393d5e78632aa561b3b4738cac879ea928cc402b",
+    "tests/server/helpers.ts": "41f2caeee6f3d147ce3fa4a3e841f74c242128950eaadb077f21b7b659895f7e",
+    "tests/server/media-fixtures.ts": "77306b687cc242bb6e24c7b3b8bdbda113c3342576a1e5a364a67bdc4a9dcd88",
+    "tests/server/media.test.ts": "25c5e7f1008e9be7631921186e89825201c56b5330bf5c921a3ea94e98e4c29b",
+    "tests/server/realtime.test.ts": "d2297ebf4098732f502d6a5b1018fa7dcedd5b1f70707932f7835cbc9d87f267",
+    "tests/server/remote-contract.test.ts": "2dfe959963ba7e2bc3315e3baa9913fe67e6b2adbf8b6bd73af5a345ae887ac2",
+    "tests/server/replacement.test.ts": "a3531e6860e6dc44dd6686a7d3802e09330dbab6b52fc63564dbcc512c838da0",
+    "tests/server/review-regressions.test.ts": "b71e326e69a06c70fdd934107ff877c54ee97f3bd154168fd75c8ca362ce76ab",
+    "tests/server/schema.test.ts": "8b842c6cccf5487fe510a72fdfc7750414c8746b6b4786506554f94ead61a397",
+    "tests/server/sync-ordering.test.ts": "dcd6e3beea5e4005839710c303e818bc3df5a948d15624e74a9f384c359e5dc8",
+    "tests/server/usage-sweep.test.ts": "a929ec60f60bc02212c4d06480b72bff64e7c2c8d3564ed66f50e422a05f7e05",
+    "src/repositories/state.ts": "deadfd82e5168a47d6ea0098e175142e2e9efb692974578802f0222c1ee4ce1c",
+    "vitest.server.config.ts": "fe3432c0ee626d4c75d2d0ae710de901227952ff7bc907f7a90be2a05005545b",
+    "scripts/doctor.mjs": "c0225b316b172983ee9b21e124325408deb573698b7d496036b8c69533b1c43b"
+  },
+  "runtimeHashes": {
+    "_shared/auth.ts": "af5b2ed742919e9cbf1fc85a8f7834c596b51a76fe09a5e08d7edf75a0ef0888",
+    "_shared/candidates.ts": "56906755160e65b1b6e6677fbd4c12105e979d75c5568080674f42fa9156e825",
+    "_shared/command.ts": "4665cca7c53a4665efbfa48e1ab7fec6b69a29a6bdd1d67cf3dec44654ed3f1a",
+    "_shared/config.ts": "08c81f8908d5176c865cf5a268e5cb21c480cef17d770325eed11ed5a4cd015c",
+    "_shared/erasure-ledger.ts": "1b9735ad0f831502da9c61bf5ddf4be7f524615d4ec84018d3b0abcded89a00b",
+    "_shared/generated/domain/canonical-json.ts": "bd265313d10775a9ebcb73a81a5767ae806c57e1c32ba8a334e81313d1effd81",
+    "_shared/generated/domain/contracts.ts": "c284d5369f25fc0ce4e79613fb429069c9692adf8cd8e3b7e094faece2954cb3",
+    "_shared/generated/domain/errors.ts": "90be8f17208d638939f1c5bb3b0fe344ac66c1d66767e2c8cde858df3fe3377b",
+    "_shared/generated/domain/media-contract.ts": "88a8e7b25be8537fa1a5b35c855630b41950e929159514444be180b4ff9b358e",
+    "_shared/generated/domain/policy.ts": "2de5a74dbd13b381418cdf7795446eb9f7fdf874cab6f334ec11b6bde5522b5e",
+    "_shared/generated/domain/portable-schema.ts": "44b43a35aa883abbd4371d55c36ce9aa1b6f6add0a992b46b7a40176c2dbb512",
+    "_shared/generated/domain/portable.ts": "ca351bf619a1ddac8a69fdaccf831e8a1dedc4d1d905d71932a123c6c9700817",
+    "_shared/generated/domain/remote-contracts.ts": "f93bf22790370371c95db519ecf76e2371ab5f415411afa361b0af0feddcb527",
+    "_shared/generated/domain/remote-schema.ts": "d3f192aaca3f94d21339069e1c2b33686de20d5e081ded508ab532f65d50bdf4",
+    "_shared/generated/domain/revisions.ts": "bf6a35656959affdfab4aca961a3f7e270e6ffa7d0ed5a8e08bf8825d2f4c118",
+    "_shared/generated/domain/schema.ts": "3a18d25394d817746af60b05ce770ce70f68d049ccb7a73b146006c5b46a054a",
+    "_shared/generated/help/errors.ts": "8e413356327dded5ae535171080665380e7b563c578c9bd5ff8bddddcedd52c0",
+    "_shared/generated/media-validation.ts": "e830cd86b7cea1584a6b85f035a3f0c9695e68aee05946621520f312c8041094",
+    "_shared/generated/types.ts": "31a7c34be36ca1711335feb4816372cd2cce66db0293d7eb2290ee278963f53a",
+    "_shared/limits.ts": "fa1c083ebb5755a5c02000fa44a01dc23ffaccdf4d7d2cdb8c9bf0bffb766aa5",
+    "_shared/media.ts": "51c627b030b53ef1ef660a53ade6d0848e799107886848af7db651086f5d509b",
+    "_shared/server.ts": "16f8c2839fc06dcdd2d5e10c14948cc3dd35d40388e9b422bbf47745100d259b",
+    "account-delete/index.ts": "4d9772b751100ce522507bc23dca0d2eaaa32bf08a80d576e504c27245e10af5",
+    "account-session/index.ts": "3b5d784575e066b9ea4775b722b7b159ca1a1782f1ebacf7b0fee8d40162e88e",
+    "account-usage/index.ts": "f3b066e0a48e74f2bd35ee77d190f5c1d95a0212d521861bbe87f73934d032b8",
+    "collection-attach/index.ts": "d2d0e5ac03b885cd368fdec9506348f3c738e3d0237787293eba9a7950df6799",
+    "collection-replace/index.ts": "96aa32b134f4f90a9d065164a6ef69ae19bb6019405085fbd0086b4632781578",
+    "deletion-status/index.ts": "4ba453297de4c207697a8ab1521888965d1a71558c0dc38d718a825612b69b19",
+    "import_map.json": "a34c96cec54d7584f089b65d2c69a26ffd86fb8fd80c57493294e48cc8129a9d",
+    "jobs/delete-account.ts": "05cee9586b167cb1b84599446c52772ba313b82b05888ea9ffedb4ee9f9c18c8",
+    "jobs/index.ts": "6035a258821bd25aac889cd110a0c10127261c1ebfa82923ffeda7c6401bb266",
+    "jobs/sweep-media.ts": "06cc12808d39bd9afeec22262fd2dd5eb6b9a34a46521028ce49d0adcf577b58",
+    "media-download/index.ts": "aba063ff50a534113bbfeef17a2925be4159865428a9a89ed96a62d18af2e0ed",
+    "media-finalize/index.ts": "87d854e302c8e485f632013f586dbf872c9b746b8395c81ef11dc8065206f76c",
+    "media-upload/index.ts": "ec5b4fec7a8031ee29c6ad25f7ec7000c5c879893672d5e5e9a053a0434ddee0",
+    "sync-pull/index.ts": "48c4c10371b39ebc7c8937e81f049e1e277543b278d9db859bb4f48107c71cd9",
+    "sync-push/index.ts": "e6d03bd8efe24d5a2c0717c26d890287223affd68350bc762ff6d7ed9433631e",
+    "sync-snapshot/index.ts": "c816f0f293d6dcc7bb00f3b258fd10d3e71e1067368e2b7711ff9a59871d5201"
+  },
+  "boundaryNotes": [
+    "Real local Auth/HTTP/PostgreSQL roles/RLS/Storage/Realtime, no mocked authority. Synthetic example.invalid accounts only; no hosted deploy or provider transaction.",
+    "Full-capacity test commits 200 projects and 1000 checkpoints with four actual 8MiB WAV uploads, downloads and SHA256-verifies all32MiB, compares fresh metadata hashes, and denies old32+reserved32+new32MiB physical allocation before mutation.",
+    "Initial 8MiB upload hit Edge CPU hard limit (546); raw-byte shared validation removed base64 encode/decode expansion. Initial 1000-record prepare timed out; one collection schema validation reuses exact frozen item schemas. Neither runtime budget was raised. Final full-capacity isolated pass21.46s; final whole-suite pass106.79s.",
+    "Deletion tests use a service-only recent-auth fixture; I03 regression in the same final suite separately proves real delivered-code reauthentication. Refresh token and old JWT denial are actual Auth responses. Controlled deadline fixtures advance only synthetic owners after asserting the real reserved-expiry barrier.",
+    "Actual external Storage object finishing after the deletion barrier is swept before official Auth deletion. Worker checks storage twice and verifies zero live objects. live-data-removed reports seven-day backup expiry separately; complete/retention reconciliation and disaster recovery remain I11.",
+    "Independent erasure ledger is append/fsync/hash-chain backed on a separate named Docker volume, with no published host port and private redacted credential. This proves separation from primary DB reset, not an independent physical failure domain. Production independence and restore proof remain release gates.",
+    "No source metadata uploads are required before user confirmation: local and server share deterministic mergeCandidate. Atomic candidate commit retains old immutable export manifests/media until lease release/expiry; deletion overrides maker leases.",
+    "Actual Realtime subscribes to owner-only opaque hints, waits for PostgreSQL subscription readiness, observes own revision, and verifies a forged owner filter gets no event. No craft content is broadcast; hints remain non-authoritative.",
+    "Usage reads actual Storage object size metadata separately from conservative allocated objects and logical portable project bytes. Bounded sweep preserves active/snapshot references and removes cancelled orphans. Scheduled/retained metadata compaction, dry-run operations and recovery retention are I11 work.",
+    "Snapshot release is active-owner-only/idempotent, frees the two-lease capacity, and does not expose whether another owner snapshot exists.",
+    "Managed Auth session-schema dependency is asserted in migration008 and requires requalification on managed Supabase upgrades; final Auth removal uses official admin.deleteUser.",
+    "I08 billing/provider reconciliation and I11 operations/recovery are not implemented by this result. No live-cloud, store-sandbox, production-throughput or complete all-project verification claim."
+  ]
+}

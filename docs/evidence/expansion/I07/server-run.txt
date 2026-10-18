@@ -1,0 +1,8 @@
+Server tests: real isolated local services for loopmark-loopmark-expansi-eeac3023; suite all.
+
+ RUN  v5.0.5 /Users/lalaji/Repos/CGProjects/loopmark-expansion-backend
+
+ Test Files  11 passed (11)
+      Tests  39 passed (39)
+   Start at  18:39:52
+   Duration  106.79s (tests 97%, import 2%)
