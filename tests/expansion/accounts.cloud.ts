@@ -43,7 +43,12 @@ async function holdProjectPush(page: Page, name: string) {
       )
       const pulled = page.waitForResponse(
         async (response) => {
-          if (!response.url().endsWith('/functions/v1/sync-pull') || !response.ok()) return false
+          if (
+            !response.url().endsWith('/functions/v1/sync-pull') ||
+            response.request().method() !== 'POST' ||
+            !response.ok()
+          )
+            return false
           const body = (await response.json()) as PullPage
           return (
             body.collectionId === command.collectionId &&
