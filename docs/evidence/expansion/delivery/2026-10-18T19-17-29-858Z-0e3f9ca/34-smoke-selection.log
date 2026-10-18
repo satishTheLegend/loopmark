@@ -1,0 +1,8 @@
+
+> loopmark@1.0.0 test:e2e
+> playwright test tests/journeys.spec.ts --project=chromium --workers=1 --retries=0 --reporter=list --grep (?:create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete|@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore)$ --list
+
+Listing tests:
+  [chromium] › journeys.spec.ts:78:1 › create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete
+  [chromium] › journeys.spec.ts:160:1 › @chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore
+Total: 2 tests in 1 file

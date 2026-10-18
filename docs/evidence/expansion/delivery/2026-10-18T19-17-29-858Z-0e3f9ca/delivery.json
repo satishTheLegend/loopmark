@@ -1,0 +1,1729 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "startedAt": "2026-10-18T19:17:29.514Z",
+  "canonical": "/Users/lalaji/Repos/CGProjects/loopmark",
+  "integration": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+  "targetSourceCommit": "0e3f9ca3ff10272e6d1a8511883f9634fb772563",
+  "productSourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "nodeVersion": "v26.8.2",
+  "commands": [
+    {
+      "label": "canonical-branch",
+      "executable": "git",
+      "args": [
+        "branch",
+        "--show-current"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.517Z",
+      "log": "01-canonical-branch.log",
+      "finishedAt": "2026-10-18T19:17:29.531Z",
+      "elapsedMs": 13,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01"
+    },
+    {
+      "label": "canonical-status",
+      "executable": "git",
+      "args": [
+        "status",
+        "--porcelain=v1",
+        "-z",
+        "--untracked-files=all"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.531Z",
+      "log": "02-canonical-status.log",
+      "finishedAt": "2026-10-18T19:17:29.552Z",
+      "elapsedMs": 21,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "f9b7e21994050ef648b5346eedbf5a181c543d250e260cfc3d16785dbd83d198"
+    },
+    {
+      "label": "canonical-head",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.553Z",
+      "log": "03-canonical-head.log",
+      "finishedAt": "2026-10-18T19:17:29.560Z",
+      "elapsedMs": 7,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "cf113a05f9b2fd35a2cd6f03d95d11f79eb26dff76c43b391cbc245f0b13268a"
+    },
+    {
+      "label": "integration-branch",
+      "executable": "git",
+      "args": [
+        "branch",
+        "--show-current"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.560Z",
+      "log": "04-integration-branch.log",
+      "finishedAt": "2026-10-18T19:17:29.568Z",
+      "elapsedMs": 7,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "6fa25a5bce10712a7e7b85bbd7f7fbe4400bf3a5b5b0f008f4b0c8defc693596"
+    },
+    {
+      "label": "integration-head",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.568Z",
+      "log": "05-integration-head.log",
+      "finishedAt": "2026-10-18T19:17:29.576Z",
+      "elapsedMs": 9,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "5c31901654a9d23ceac40ba74d7aaca1f5ba4d0350498c67dc06fd5a42b6974e"
+    },
+    {
+      "label": "integration-tracked-status",
+      "executable": "git",
+      "args": [
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=no"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.577Z",
+      "log": "06-integration-tracked-status.log",
+      "finishedAt": "2026-10-18T19:17:29.608Z",
+      "elapsedMs": 31,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "fast-forward-check",
+      "executable": "git",
+      "args": [
+        "merge-base",
+        "--is-ancestor",
+        "HEAD",
+        "0e3f9ca3ff10272e6d1a8511883f9634fb772563"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.608Z",
+      "log": "07-fast-forward-check.log",
+      "finishedAt": "2026-10-18T19:17:29.617Z",
+      "elapsedMs": 9,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "frozen-product",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "2b6e628"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.617Z",
+      "log": "08-frozen-product.log",
+      "finishedAt": "2026-10-18T19:17:29.625Z",
+      "elapsedMs": 8,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "d6430043de38bd75ec2361de4fb001d2cce8fc8f7e6bf401994227f6503f5511"
+    },
+    {
+      "label": "qualified-manifest",
+      "executable": "git",
+      "args": [
+        "show",
+        "0e3f9ca3ff10272e6d1a8511883f9634fb772563:docs/evidence/expansion/I13/web/qualification.json"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.626Z",
+      "log": "09-qualified-manifest.log",
+      "finishedAt": "2026-10-18T19:17:29.638Z",
+      "elapsedMs": 12,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "2d258ff3a1ee3fe905097d4f6f4cace49f24ae15ed74eb06b57801e41947fade"
+    },
+    {
+      "label": "product-paths",
+      "executable": "git",
+      "args": [
+        "ls-tree",
+        "-r",
+        "--name-only",
+        "0e3f9ca3ff10272e6d1a8511883f9634fb772563",
+        "--",
+        "src",
+        "public",
+        "index.html",
+        "package.json",
+        "package-lock.json",
+        "vite.config.ts",
+        "tsconfig.json",
+        "tsconfig.app.json",
+        "tsconfig.node.json",
+        "scripts/build-sw.mjs",
+        "scripts/build-public-pages.mjs"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.639Z",
+      "log": "10-product-paths.log",
+      "finishedAt": "2026-10-18T19:17:29.656Z",
+      "elapsedMs": 16,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "4e158664b2cf05039f79e3afd12f7bacd7ff4cf48053e6cf8d1642e8857e56c8"
+    },
+    {
+      "label": "frozen-product-diff",
+      "executable": "git",
+      "args": [
+        "diff",
+        "--name-only",
+        "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+        "0e3f9ca3ff10272e6d1a8511883f9634fb772563",
+        "--",
+        "index.html",
+        "package-lock.json",
+        "package.json",
+        "public/art/clay-scarf.svg",
+        "public/art/granny-square.svg",
+        "public/art/sage-knit.svg",
+        "public/art/workbasket.svg",
+        "public/icon-192.png",
+        "public/icon-512.png",
+        "public/icon.svg",
+        "public/licenses/DM-Sans-OFL.txt",
+        "public/licenses/Lora-OFL.txt",
+        "public/licenses/QRCode-MIT.txt",
+        "public/licenses/React-DOM-MIT.txt",
+        "public/licenses/React-MIT.txt",
+        "public/licenses/Tabler-MIT.txt",
+        "public/licenses/Zod-MIT.txt",
+        "public/manifest.webmanifest",
+        "public/public-pages.css",
+        "public/robots.txt",
+        "scripts/build-public-pages.mjs",
+        "scripts/build-sw.mjs",
+        "src/App.tsx",
+        "src/auth/auth-service.ts",
+        "src/auth/schema.ts",
+        "src/billing/continuation.ts",
+        "src/billing/coordinator.ts",
+        "src/billing/entitlement-cache.ts",
+        "src/billing/recovery-service.ts",
+        "src/billing/upgrade-prompts.ts",
+        "src/components/AccountCapacity.tsx",
+        "src/components/AccountDeletion.tsx",
+        "src/components/AccountReceipts.tsx",
+        "src/components/AccountView.tsx",
+        "src/components/BackupView.tsx",
+        "src/components/BagLabel.tsx",
+        "src/components/CollectionPicker.tsx",
+        "src/components/ConflictReview.tsx",
+        "src/components/ConnectionPreview.tsx",
+        "src/components/DeletionReceiptView.tsx",
+        "src/components/DiagnosticsView.tsx",
+        "src/components/Forms.tsx",
+        "src/components/Guide.tsx",
+        "src/components/NativeBackupNotice.tsx",
+        "src/components/NativeCaptureNotice.tsx",
+        "src/components/NativeVoiceNote.tsx",
+        "src/components/PendingConnections.tsx",
+        "src/components/PendingProjectLink.tsx",
+        "src/components/ProjectDownloads.tsx",
+        "src/components/ProjectView.tsx",
+        "src/components/PurchaseRecovery.css",
+        "src/components/PurchaseRecovery.tsx",
+        "src/components/Shelf.tsx",
+        "src/components/SignOutReview.tsx",
+        "src/components/SyncDetails.tsx",
+        "src/components/SyncRecoveryReview.tsx",
+        "src/components/SyncStatus.tsx",
+        "src/components/UpgradeView.tsx",
+        "src/components/VoiceNote.tsx",
+        "src/components/sync-summary.ts",
+        "src/components/ui.tsx",
+        "src/config.ts",
+        "src/data.ts",
+        "src/domain/canonical-json.ts",
+        "src/domain/contracts.ts",
+        "src/domain/errors.ts",
+        "src/domain/media-contract.ts",
+        "src/domain/policy.ts",
+        "src/domain/portable-schema.ts",
+        "src/domain/portable.ts",
+        "src/domain/remote-contracts.ts",
+        "src/domain/remote-schema.ts",
+        "src/domain/revisions.ts",
+        "src/domain/schema.ts",
+        "src/drafts.ts",
+        "src/fixtures/firefox-recording.txt",
+        "src/help/errors.ts",
+        "src/links/link-service.ts",
+        "src/links/project-continuation.ts",
+        "src/links/purchase-return.ts",
+        "src/main.tsx",
+        "src/media-validation.ts",
+        "src/media.ts",
+        "src/offline.ts",
+        "src/pages/public-pages.ts",
+        "src/platform/browser/purchases.ts",
+        "src/platform/contracts.ts",
+        "src/platform/native/audio.ts",
+        "src/platform/native/backup-inbox.ts",
+        "src/platform/native/boundary.ts",
+        "src/platform/native/camera.ts",
+        "src/platform/native/capture-recovery.ts",
+        "src/platform/native/capture.ts",
+        "src/platform/native/database.ts",
+        "src/platform/native/device-store.ts",
+        "src/platform/native/downloads.ts",
+        "src/platform/native/drafts.ts",
+        "src/platform/native/files-bridge.ts",
+        "src/platform/native/files.ts",
+        "src/platform/native/lifecycle.ts",
+        "src/platform/native/links.ts",
+        "src/platform/native/network.ts",
+        "src/platform/native/operation-plans.ts",
+        "src/platform/native/purchases.ts",
+        "src/platform/native/rebase.ts",
+        "src/platform/native/recovery-journal.ts",
+        "src/platform/native/repository.ts",
+        "src/platform/native/session-storage.ts",
+        "src/platform/native/share.ts",
+        "src/platform/native/workflow-store.ts",
+        "src/repositories/browser/device-store.ts",
+        "src/repositories/browser/downloads.ts",
+        "src/repositories/browser/draft-store.ts",
+        "src/repositories/browser/fixtures.test-support.ts",
+        "src/repositories/browser/media-store.ts",
+        "src/repositories/browser/migration.ts",
+        "src/repositories/browser/operation-plans.ts",
+        "src/repositories/browser/repository.ts",
+        "src/repositories/browser/schema.ts",
+        "src/repositories/browser/workflow-store.ts",
+        "src/repositories/contract-suite.ts",
+        "src/repositories/contracts.ts",
+        "src/repositories/downloads.ts",
+        "src/repositories/drafts.ts",
+        "src/repositories/rebase.ts",
+        "src/repositories/state.ts",
+        "src/runtime.ts",
+        "src/samples.ts",
+        "src/services/app-controller.ts",
+        "src/services/attachment-queue.ts",
+        "src/services/backup-service.ts",
+        "src/services/concurrency.ts",
+        "src/services/controller-contract.ts",
+        "src/services/deletion-service.ts",
+        "src/services/diagnostics.ts",
+        "src/services/downloads-service.ts",
+        "src/services/legacy-recovery.ts",
+        "src/services/local-data-service.ts",
+        "src/services/media-codec.ts",
+        "src/services/media-service.ts",
+        "src/services/operation-plans.ts",
+        "src/services/portable-draft-store.ts",
+        "src/services/replacement-service.ts",
+        "src/services/startup.ts",
+        "src/services/workflow-store.ts",
+        "src/styles.css",
+        "src/sync/coordinator.ts",
+        "src/sync/http-client.ts",
+        "src/sync/media-transport.ts",
+        "src/sync/realtime-hints.ts",
+        "src/sync/runtime-scheduler.ts",
+        "src/sync/snapshots.ts",
+        "src/sync/tab-lease.ts",
+        "src/sync/transport.ts",
+        "src/types.ts",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration",
+      "startedAt": "2026-10-18T19:17:29.656Z",
+      "log": "11-frozen-product-diff.log",
+      "finishedAt": "2026-10-18T19:17:29.668Z",
+      "elapsedMs": 11,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "old-preview-command",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "88700",
+        "-o",
+        "command="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.713Z",
+      "log": "12-old-preview-command.log",
+      "finishedAt": "2026-10-18T19:17:29.720Z",
+      "elapsedMs": 6,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "921f204e27cc60345550eb79c27458b6ab64a8159b3b6f798d46f99084f626a0"
+    },
+    {
+      "label": "old-preview-cwd",
+      "executable": "lsof",
+      "args": [
+        "-a",
+        "-p",
+        "88700",
+        "-d",
+        "cwd",
+        "-Fn"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.720Z",
+      "log": "13-old-preview-cwd.log",
+      "finishedAt": "2026-10-18T19:17:29.771Z",
+      "elapsedMs": 51,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "200c864346f22bc7152fa25a114360b83b4b03eafe6cdf9af7cd2f55c218cf1f"
+    },
+    {
+      "label": "old-preview-started",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "88700",
+        "-o",
+        "lstart="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.771Z",
+      "log": "14-old-preview-started.log",
+      "finishedAt": "2026-10-18T19:17:29.782Z",
+      "elapsedMs": 11,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "5ba12c49e99668c83f03b45483d58117fc8abcdb475fd224a0ceda82049eacb9"
+    },
+    {
+      "label": "initial-port-listeners",
+      "executable": "lsof",
+      "args": [
+        "-nP",
+        "-iTCP:4173",
+        "-sTCP:LISTEN",
+        "-Fp"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.782Z",
+      "log": "15-initial-port-listeners.log",
+      "finishedAt": "2026-10-18T19:17:29.858Z",
+      "elapsedMs": 76,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "bf6deeb049e95970e6b3cf035fb84d0f438b4d5ee594f5dd90288341a86d339f"
+    },
+    {
+      "label": "old-preview-before-stop-command",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "88700",
+        "-o",
+        "command="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.864Z",
+      "log": "16-old-preview-before-stop-command.log",
+      "finishedAt": "2026-10-18T19:17:29.867Z",
+      "elapsedMs": 3,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "921f204e27cc60345550eb79c27458b6ab64a8159b3b6f798d46f99084f626a0"
+    },
+    {
+      "label": "old-preview-before-stop-cwd",
+      "executable": "lsof",
+      "args": [
+        "-a",
+        "-p",
+        "88700",
+        "-d",
+        "cwd",
+        "-Fn"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.868Z",
+      "log": "17-old-preview-before-stop-cwd.log",
+      "finishedAt": "2026-10-18T19:17:29.889Z",
+      "elapsedMs": 21,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "200c864346f22bc7152fa25a114360b83b4b03eafe6cdf9af7cd2f55c218cf1f"
+    },
+    {
+      "label": "old-preview-before-stop-started",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "88700",
+        "-o",
+        "lstart="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:29.890Z",
+      "log": "18-old-preview-before-stop-started.log",
+      "finishedAt": "2026-10-18T19:17:29.894Z",
+      "elapsedMs": 4,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "5ba12c49e99668c83f03b45483d58117fc8abcdb475fd224a0ceda82049eacb9"
+    },
+    {
+      "label": "port-after-stop",
+      "executable": "lsof",
+      "args": [
+        "-nP",
+        "-iTCP:4173",
+        "-sTCP:LISTEN",
+        "-Fp"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.097Z",
+      "log": "19-port-after-stop.log",
+      "finishedAt": "2026-10-18T19:17:30.124Z",
+      "elapsedMs": 28,
+      "exitCode": 1,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "target-before-merge",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "refs/heads/expansion/integration"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.125Z",
+      "log": "20-target-before-merge.log",
+      "finishedAt": "2026-10-18T19:17:30.133Z",
+      "elapsedMs": 8,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "5c31901654a9d23ceac40ba74d7aaca1f5ba4d0350498c67dc06fd5a42b6974e"
+    },
+    {
+      "label": "canonical-before-merge",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.133Z",
+      "log": "21-canonical-before-merge.log",
+      "finishedAt": "2026-10-18T19:17:30.140Z",
+      "elapsedMs": 7,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "cf113a05f9b2fd35a2cd6f03d95d11f79eb26dff76c43b391cbc245f0b13268a"
+    },
+    {
+      "label": "canonical-branch",
+      "executable": "git",
+      "args": [
+        "branch",
+        "--show-current"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.140Z",
+      "log": "22-canonical-branch.log",
+      "finishedAt": "2026-10-18T19:17:30.146Z",
+      "elapsedMs": 6,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01"
+    },
+    {
+      "label": "canonical-status",
+      "executable": "git",
+      "args": [
+        "status",
+        "--porcelain=v1",
+        "-z",
+        "--untracked-files=all"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.147Z",
+      "log": "23-canonical-status.log",
+      "finishedAt": "2026-10-18T19:17:30.154Z",
+      "elapsedMs": 7,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "6c4879e9a1ba8fee5fc7daaa3964ea470650ff9ed0870dfc76bc5b50ab683bad"
+    },
+    {
+      "label": "merge-fast-forward",
+      "executable": "git",
+      "args": [
+        "merge",
+        "--ff-only",
+        "expansion/integration"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.155Z",
+      "log": "24-merge-fast-forward.log",
+      "finishedAt": "2026-10-18T19:17:30.365Z",
+      "elapsedMs": 210,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "148306f1878da81095ad60e2eda1ded974d6b210804f07083c5932ee71796a91"
+    },
+    {
+      "label": "delivered-head",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.365Z",
+      "log": "25-delivered-head.log",
+      "finishedAt": "2026-10-18T19:17:30.373Z",
+      "elapsedMs": 7,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "5c31901654a9d23ceac40ba74d7aaca1f5ba4d0350498c67dc06fd5a42b6974e"
+    },
+    {
+      "label": "npm-ci",
+      "executable": "npm",
+      "args": [
+        "ci",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:30.381Z",
+      "log": "26-npm-ci.log",
+      "finishedAt": "2026-10-18T19:17:35.375Z",
+      "elapsedMs": 4993,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "1943f1b4bffc2c26a9e2e819c3c6e5c0b79c70bdfed5d7116ac3454e05a545f3"
+    },
+    {
+      "label": "build",
+      "executable": "npm",
+      "args": [
+        "run",
+        "build"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:35.377Z",
+      "log": "27-build.log",
+      "finishedAt": "2026-10-18T19:17:37.653Z",
+      "elapsedMs": 2277,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "d3c0d1ba6df4962549463d16535d070bb9e88e02e221241a02d569b81e934df9"
+    },
+    {
+      "label": "guest-doctor",
+      "executable": "npm",
+      "args": [
+        "run",
+        "doctor",
+        "--",
+        "--capability",
+        "guest",
+        "--json"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:37.654Z",
+      "log": "28-guest-doctor.log",
+      "finishedAt": "2026-10-18T19:17:37.937Z",
+      "elapsedMs": 283,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e1f0e0aa57049779c2bfb16fa7ffa0309f0f3a1fe1da5e72b867ffc946215e1f"
+    },
+    {
+      "label": "port-before-preview",
+      "executable": "lsof",
+      "args": [
+        "-nP",
+        "-iTCP:4173",
+        "-sTCP:LISTEN",
+        "-Fp"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:37.944Z",
+      "log": "29-port-before-preview.log",
+      "finishedAt": "2026-10-18T19:17:37.976Z",
+      "elapsedMs": 32,
+      "exitCode": 1,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "new-preview-command",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "14594",
+        "-o",
+        "command="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:38.205Z",
+      "log": "30-new-preview-command.log",
+      "finishedAt": "2026-10-18T19:17:38.207Z",
+      "elapsedMs": 2,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "d9d10fef92302b4bee63c9ac4a9cdcdf5c746652e3830706020294b6e3588990"
+    },
+    {
+      "label": "new-preview-cwd",
+      "executable": "lsof",
+      "args": [
+        "-a",
+        "-p",
+        "14594",
+        "-d",
+        "cwd",
+        "-Fn"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:38.208Z",
+      "log": "31-new-preview-cwd.log",
+      "finishedAt": "2026-10-18T19:17:38.224Z",
+      "elapsedMs": 17,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "b375a88ffe8f0ad30f6bf830e645ee76d1dc67f8402e5ea8d7999419aab8ee15"
+    },
+    {
+      "label": "new-preview-started",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "14594",
+        "-o",
+        "lstart="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:38.228Z",
+      "log": "32-new-preview-started.log",
+      "finishedAt": "2026-10-18T19:17:38.230Z",
+      "elapsedMs": 2,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "9cdad944343d4f36be6d66626a7daa2ebd028d650e33f79caf58277a2b1bc0b0"
+    },
+    {
+      "label": "new-preview-listener",
+      "executable": "lsof",
+      "args": [
+        "-nP",
+        "-iTCP:4173",
+        "-sTCP:LISTEN",
+        "-Fp"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:38.231Z",
+      "log": "33-new-preview-listener.log",
+      "finishedAt": "2026-10-18T19:17:38.257Z",
+      "elapsedMs": 26,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "cfc1e88e0d6e3338c6e70166b1ca1fdad8a5bc000ddbccd356a86d846a2cbbac"
+    },
+    {
+      "label": "smoke-selection",
+      "executable": "npm",
+      "args": [
+        "run",
+        "test:e2e",
+        "--",
+        "tests/journeys.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=list",
+        "--grep",
+        "(?:create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete|@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore)$",
+        "--list"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:38.259Z",
+      "log": "34-smoke-selection.log",
+      "finishedAt": "2026-10-18T19:17:38.747Z",
+      "elapsedMs": 488,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "50aa9f7aa32927d5455173331c849f110c24882ebbf7e95160349efbfda437f3"
+    },
+    {
+      "label": "smoke",
+      "executable": "npm",
+      "args": [
+        "run",
+        "test:e2e",
+        "--",
+        "tests/journeys.spec.ts",
+        "--project=chromium",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=list",
+        "--grep",
+        "(?:create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete|@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore)$"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:38.748Z",
+      "log": "35-smoke.log",
+      "finishedAt": "2026-10-18T19:17:44.625Z",
+      "elapsedMs": 5877,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "6223c2720a15b1a9c8db9e40a4c69ff6b96b345f656e3b194fe0c0383813dc21"
+    },
+    {
+      "label": "final-head",
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:44.626Z",
+      "log": "36-final-head.log",
+      "finishedAt": "2026-10-18T19:17:44.639Z",
+      "elapsedMs": 13,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "5c31901654a9d23ceac40ba74d7aaca1f5ba4d0350498c67dc06fd5a42b6974e"
+    },
+    {
+      "label": "final-tracked-status",
+      "executable": "git",
+      "args": [
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=no"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:44.640Z",
+      "log": "37-final-tracked-status.log",
+      "finishedAt": "2026-10-18T19:17:44.805Z",
+      "elapsedMs": 165,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "final-preview-listener",
+      "executable": "lsof",
+      "args": [
+        "-nP",
+        "-iTCP:4173",
+        "-sTCP:LISTEN",
+        "-Fp"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:44.815Z",
+      "log": "38-final-preview-listener.log",
+      "finishedAt": "2026-10-18T19:17:44.847Z",
+      "elapsedMs": 32,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "cfc1e88e0d6e3338c6e70166b1ca1fdad8a5bc000ddbccd356a86d846a2cbbac"
+    },
+    {
+      "label": "final-preview-command",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "14594",
+        "-o",
+        "command="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:44.848Z",
+      "log": "39-final-preview-command.log",
+      "finishedAt": "2026-10-18T19:17:44.851Z",
+      "elapsedMs": 3,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "d9d10fef92302b4bee63c9ac4a9cdcdf5c746652e3830706020294b6e3588990"
+    },
+    {
+      "label": "final-preview-cwd",
+      "executable": "lsof",
+      "args": [
+        "-a",
+        "-p",
+        "14594",
+        "-d",
+        "cwd",
+        "-Fn"
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:44.851Z",
+      "log": "40-final-preview-cwd.log",
+      "finishedAt": "2026-10-18T19:17:44.868Z",
+      "elapsedMs": 17,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "b375a88ffe8f0ad30f6bf830e645ee76d1dc67f8402e5ea8d7999419aab8ee15"
+    },
+    {
+      "label": "final-preview-started",
+      "executable": "ps",
+      "args": [
+        "-p",
+        "14594",
+        "-o",
+        "lstart="
+      ],
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "startedAt": "2026-10-18T19:17:44.869Z",
+      "log": "41-final-preview-started.log",
+      "finishedAt": "2026-10-18T19:17:44.871Z",
+      "elapsedMs": 2,
+      "exitCode": 0,
+      "signal": null,
+      "timedOut": false,
+      "errorCode": null,
+      "logSha256": "9cdad944343d4f36be6d66626a7daa2ebd028d650e33f79caf58277a2b1bc0b0"
+    }
+  ],
+  "actions": [
+    {
+      "kind": "stop-owned-preview",
+      "pid": 88700,
+      "signal": "SIGTERM",
+      "startedAt": "2026-10-18T19:17:29.895Z",
+      "finishedAt": "2026-10-18T19:17:30.125Z",
+      "elapsedMs": 229
+    }
+  ],
+  "limits": [
+    "Fresh isolated Chromium contexts; existing browser data is not cleared.",
+    "Microphone evidence uses the existing simulated-device test, not physical hardware.",
+    "Delivery verification does not activate cloud services or payment providers."
+  ],
+  "initialUntrackedArtifacts": [
+    "artifacts/native/loopmark-android-debug-2b6e628.apk",
+    "artifacts/native/loopmark-android-debug-348a05d.apk",
+    "artifacts/native/loopmark-android-debug-8d3141c.apk",
+    "artifacts/native/loopmark-android-debug-c670df7.apk",
+    "artifacts/native/loopmark-android-debug-fb52c6e.apk",
+    "artifacts/native/loopmark-ios-simulator-2b6e628.tar.gz",
+    "artifacts/native/loopmark-ios-simulator-348a05d.tar.gz",
+    "artifacts/native/loopmark-ios-simulator-8d3141c.tar.gz",
+    "artifacts/native/loopmark-ios-simulator-c670df7.tar.gz",
+    "artifacts/native/loopmark-ios-simulator-fb52c6e.tar.gz",
+    "artifacts/native/manifest-348a05d.json",
+    "artifacts/native/manifest-8d3141c.json",
+    "artifacts/native/manifest-c670df7.json",
+    "artifacts/native/manifest-fb52c6e.json",
+    "artifacts/native/manifest.json",
+    "artifacts/native/qualification/android-harness-2b6e628-manifest.json",
+    "artifacts/native/qualification/controller-c670df7-manifest.json",
+    "artifacts/native/qualification/ios-harness-2b6e628-manifest.json",
+    "artifacts/native/qualification/loopmark-android-controller-c670df7.apk",
+    "artifacts/native/qualification/loopmark-android-harness-2b6e628.apk",
+    "artifacts/native/qualification/loopmark-ios-controller-c670df7.tar.gz",
+    "artifacts/native/qualification/loopmark-ios-harness-2b6e628.tar.gz"
+  ],
+  "initialSourceCommit": "8353f234178cb9681a122022667d9ff3725832b4",
+  "qualification": {
+    "path": "docs/evidence/expansion/I13/web/qualification.json",
+    "sha256": "2d258ff3a1ee3fe905097d4f6f4cace49f24ae15ed74eb06b57801e41947fade",
+    "status": "qualified-for-recorded-web-scope"
+  },
+  "productFileManifestSha256": "cfd484dc0f0783c581aa1a352888a9e7b1da9dd6a85a5d9e72b8a6a66d2cdbf0",
+  "productFiles": [
+    {
+      "path": "index.html",
+      "sha256": "ba20337718a67968b6e629d0f9c7bfa0bad3163159ad814a0daa82420a005407"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "ac1c4b72689145558aaf9b606d8f25df24cfabc90232be25d1a45bf912659a5d"
+    },
+    {
+      "path": "package.json",
+      "sha256": "73d37bb476025bb4feb69e52dab5ee5da903c15b5d707fb16cdbdd863ccd616c"
+    },
+    {
+      "path": "public/art/clay-scarf.svg",
+      "sha256": "7cf26b36f99039a5dd41373476cd95b4b78da9d7fa83712b07d059fce9934d65"
+    },
+    {
+      "path": "public/art/granny-square.svg",
+      "sha256": "0fc148dbde38bd3558b9ccf2e7e86e5c8464a095024ba7fac0194d61982d2ed2"
+    },
+    {
+      "path": "public/art/sage-knit.svg",
+      "sha256": "2857a29128e353e928f6366bd8daa53867395e88268be7cefb348cbcc5ff0072"
+    },
+    {
+      "path": "public/art/workbasket.svg",
+      "sha256": "e60980f8a0de75947eed0381a78f11b35609ef6b948174bf8c03b8f3f1d2f2cc"
+    },
+    {
+      "path": "public/icon-192.png",
+      "sha256": "f10c6197dfa601c714cda25a40bfa59b9fcdc144c76e7799fec86533711646f4"
+    },
+    {
+      "path": "public/icon-512.png",
+      "sha256": "c00cc17db4bbb8d6e35351fbd94a0b85151aded8b3701cb4c7cf41fd0c10c227"
+    },
+    {
+      "path": "public/icon.svg",
+      "sha256": "6df576c222a68cc85537b65ae6bc4a994e63618c200bef365841084c8105ec03"
+    },
+    {
+      "path": "public/licenses/DM-Sans-OFL.txt",
+      "sha256": "6fbd040a29c2037a765dfb9f2561e9965b5c95c6dcb5dce516089d63d5f17af7"
+    },
+    {
+      "path": "public/licenses/Lora-OFL.txt",
+      "sha256": "948aed765160f7b974105606c21994715a171f89fca48e57bf1e0a23aca0bef1"
+    },
+    {
+      "path": "public/licenses/QRCode-MIT.txt",
+      "sha256": "8df47c6ad9ac2c41eb9b2a72def9908959da0ede8dadd56c7b249c1bdb0c5ce6"
+    },
+    {
+      "path": "public/licenses/React-DOM-MIT.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "public/licenses/React-MIT.txt",
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "path": "public/licenses/Tabler-MIT.txt",
+      "sha256": "b740a1d46122672da62833e97f7e7c8a13fa85cbc7445b584b297cc00dde93db"
+    },
+    {
+      "path": "public/licenses/Zod-MIT.txt",
+      "sha256": "3f1189b28e3866e0d979968d466b78f813f76827cfdca1fbb124cc0a5c8841f8"
+    },
+    {
+      "path": "public/manifest.webmanifest",
+      "sha256": "946aa7feb83a37e54b20ab7ad23ba92c581c879c6316ce25f7c3491da014c0f7"
+    },
+    {
+      "path": "public/public-pages.css",
+      "sha256": "ef5b7f059c57a641c45f12cbae6c4aab68621cf6fa9654f77fe3cf9831614d92"
+    },
+    {
+      "path": "public/robots.txt",
+      "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1"
+    },
+    {
+      "path": "scripts/build-public-pages.mjs",
+      "sha256": "315e480b7d9f3285b66f9dc9039b15f27ae57c70d701b20697082e2e71a9947d"
+    },
+    {
+      "path": "scripts/build-sw.mjs",
+      "sha256": "549287ce50cb873d99f7a12134cf28c797a9a4774f791fd07f63f7dec8bfdfe2"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "be6365421c6542b923a1c10e8443d407bf3212dfa0068d2cbb735dd7cdac31a9"
+    },
+    {
+      "path": "src/auth/auth-service.ts",
+      "sha256": "1c540f1248fbb10344dec973f16456f6aecdb2627b67a2543b71aecfb1d15916"
+    },
+    {
+      "path": "src/auth/schema.ts",
+      "sha256": "3aafe575a3e4dae0e315b9628f7e3f184e16a89bd4b8c73cbb3240b40d27173b"
+    },
+    {
+      "path": "src/billing/continuation.ts",
+      "sha256": "a9b37d523c2056fddb79987a2f0b3c80bbd5ec1184815e81bb65b728b1f0ee10"
+    },
+    {
+      "path": "src/billing/coordinator.ts",
+      "sha256": "e6c4834fb9a5419ae8afc62d8289b0c3ede36de655b2d5839d365e25f62a3bb5"
+    },
+    {
+      "path": "src/billing/entitlement-cache.ts",
+      "sha256": "c6289af9b2c643730d57885b954b4a4396a76b2ca2b052ea34353f1d174a3d8b"
+    },
+    {
+      "path": "src/billing/recovery-service.ts",
+      "sha256": "e9a6db79c02f0de7291fedf4d12873c72767bd67f516540350d99b3e528ada26"
+    },
+    {
+      "path": "src/billing/upgrade-prompts.ts",
+      "sha256": "f1efbfbe860d53e5cc9810c8d0c543ea38f921baf4ebcf4ed35dc8be88456f71"
+    },
+    {
+      "path": "src/components/AccountCapacity.tsx",
+      "sha256": "f258e5fa08a1d2a4e645a55622947d54eaa18639f05c4809159f2c44b8d6ac57"
+    },
+    {
+      "path": "src/components/AccountDeletion.tsx",
+      "sha256": "d6c4e67d9133f20f7eabd6aa0f96e51818498166dac95f43c339e22b3fb631ec"
+    },
+    {
+      "path": "src/components/AccountReceipts.tsx",
+      "sha256": "04da28922e44f17be2289a65a855c542c228595f3ca98b04f61a16cc61ab569c"
+    },
+    {
+      "path": "src/components/AccountView.tsx",
+      "sha256": "08300b07d877d8b9d44c44f1c2ba73d9a2793b0641401a437918e95b32e49213"
+    },
+    {
+      "path": "src/components/BackupView.tsx",
+      "sha256": "a91215aa02e7bafb9c64f2878ea3b042ff4a7294ce2421b25f8fb449c92c0bf2"
+    },
+    {
+      "path": "src/components/BagLabel.tsx",
+      "sha256": "73da692830d7dc7dab4af0cdc7d3a735da6582286b39fb3f278f789f6e47a880"
+    },
+    {
+      "path": "src/components/CollectionPicker.tsx",
+      "sha256": "1179acf5f1c332f1f12b19230a604af0603164b4700cdcc875b7096f0fc2c575"
+    },
+    {
+      "path": "src/components/ConflictReview.tsx",
+      "sha256": "2dd77cb29f07396cc3d680b529faa8e5689aa763cbb7be61297c93e6ea7ec651"
+    },
+    {
+      "path": "src/components/ConnectionPreview.tsx",
+      "sha256": "22ecd0f91cda25c1299e3cd595f1f10d0ea52175548719725d4e8951104ea225"
+    },
+    {
+      "path": "src/components/DeletionReceiptView.tsx",
+      "sha256": "7f62158b5cf5d591aa16246f014ca32f8a2ba2774648197fe99e133512dcce38"
+    },
+    {
+      "path": "src/components/DiagnosticsView.tsx",
+      "sha256": "67ba35d855aa1591951e106094a5ad7174fdd33d73e259320209cd7e346d96df"
+    },
+    {
+      "path": "src/components/Forms.tsx",
+      "sha256": "2b4ef5ee2a45f2d15fcf696b9132bc3203fa88994d1fda9b0743d1869171b349"
+    },
+    {
+      "path": "src/components/Guide.tsx",
+      "sha256": "751f38f2b4a90483c71aa5b40109dca16651f54aa9ff308113697ca4b11de595"
+    },
+    {
+      "path": "src/components/NativeBackupNotice.tsx",
+      "sha256": "418992e20fdbc5711b336edb2b4ddfef2c50edf1e5617bef70ec919dccc0c0a5"
+    },
+    {
+      "path": "src/components/NativeCaptureNotice.tsx",
+      "sha256": "3f0fd446fb22a0d245276285ba3af1e3ed2364e4f186ed9e3b1d1f343f41e1ee"
+    },
+    {
+      "path": "src/components/NativeVoiceNote.tsx",
+      "sha256": "7ce6e4e58abdddccc15cf13bb2a5978a476a6c54a551f9c42da699d5d89d9523"
+    },
+    {
+      "path": "src/components/PendingConnections.tsx",
+      "sha256": "374e706e4a22225dcadbbdc95f4f16594ddc97e74bf299f13c6b26e968af54f1"
+    },
+    {
+      "path": "src/components/PendingProjectLink.tsx",
+      "sha256": "51ac46197c0281b8d6279d02b718dd159f853489c1e9cf4dd69fc712b84b5b42"
+    },
+    {
+      "path": "src/components/ProjectDownloads.tsx",
+      "sha256": "dcd83a374ee26afe766529eb00baa9e02f5d8ffefbb884d2c1bb42cf4c45e902"
+    },
+    {
+      "path": "src/components/ProjectView.tsx",
+      "sha256": "78fb40c9640c08f93b66ad21af9197c9db96e9fa0b5caed89aee6c546e7538d4"
+    },
+    {
+      "path": "src/components/PurchaseRecovery.css",
+      "sha256": "83f830aad57451a7c53dca26dafcaa9762034d65cdc9466f2468f5a52666de6c"
+    },
+    {
+      "path": "src/components/PurchaseRecovery.tsx",
+      "sha256": "811d0a566d3891e52962046df0aab691b760c243962b5af1009367c0defa710f"
+    },
+    {
+      "path": "src/components/Shelf.tsx",
+      "sha256": "0ca3cc3eb0a079f8e93afa7ddbcdc08417c1cd6fe4efb1b62ff4f80e2006c1ee"
+    },
+    {
+      "path": "src/components/SignOutReview.tsx",
+      "sha256": "aab31b920c80d4ee7e22a07621ed638fe085d6773f6d49cc1b5d1c610aebfa36"
+    },
+    {
+      "path": "src/components/SyncDetails.tsx",
+      "sha256": "ce395ac00ebc52c7dabd4af11e8c903ff4afadae56d22958d968601f8f5bca5e"
+    },
+    {
+      "path": "src/components/SyncRecoveryReview.tsx",
+      "sha256": "5f63aba2cff6b4f0b9127ae0c3411f1f00cfd0024f5b6d73309ed35f4eb198bd"
+    },
+    {
+      "path": "src/components/SyncStatus.tsx",
+      "sha256": "97fe77d08c16315c55f7963ae59614a34d4c24998b3b658bbd4934fb28be7c76"
+    },
+    {
+      "path": "src/components/UpgradeView.tsx",
+      "sha256": "6058f2b491448dedf3a50a6237ae0dc5d1714f3c461fe364401bbb29c6a31048"
+    },
+    {
+      "path": "src/components/VoiceNote.tsx",
+      "sha256": "1f5f2b8eeae3d2e214db69dca60c2f0446f521e15b3cd4ae249599d775598235"
+    },
+    {
+      "path": "src/components/sync-summary.ts",
+      "sha256": "6d3688016bea2a2464967b961e71327dcc2c09926d3f97a5b52cb989cf6179ba"
+    },
+    {
+      "path": "src/components/ui.tsx",
+      "sha256": "d5b489ec8d0be1b795cb37edb6b0716c7f61b9e55c023e3beb055e369d8e4c07"
+    },
+    {
+      "path": "src/config.ts",
+      "sha256": "cd9316c9823d6a498f03210b0c95dbb409513e63f62a05aa97d5a449b91b5a1a"
+    },
+    {
+      "path": "src/data.ts",
+      "sha256": "7d4f18aeda9b9f8d2f59d9a88ab914c28e62937bbe32f2d5dc7659dd07f92968"
+    },
+    {
+      "path": "src/domain/canonical-json.ts",
+      "sha256": "9d9bc1279c6e99acbdebdff2dca75316edceb4dcfa75a56a9dddd0c76265d774"
+    },
+    {
+      "path": "src/domain/contracts.ts",
+      "sha256": "e5cbc787e31247c765b0b5140e9c802afef7e6de3b85e3bb479e9226e367a18e"
+    },
+    {
+      "path": "src/domain/errors.ts",
+      "sha256": "e9b3d6b8338b75563bf956bf90768a93e098c61fd896dff0657265fe588b3063"
+    },
+    {
+      "path": "src/domain/media-contract.ts",
+      "sha256": "c1f39949c63bb817d5ca6a681e34174ffb9911b875ee807095028620cae11da5"
+    },
+    {
+      "path": "src/domain/policy.ts",
+      "sha256": "361fb357c8439e286f37126cf7390195d4c94231ca245d70bc8c300edd0fd8df"
+    },
+    {
+      "path": "src/domain/portable-schema.ts",
+      "sha256": "68d54da34dd5533d018d78e3024b94217af2068b4ecd5ae9d9ef02be8fae25d0"
+    },
+    {
+      "path": "src/domain/portable.ts",
+      "sha256": "ca351bf619a1ddac8a69fdaccf831e8a1dedc4d1d905d71932a123c6c9700817"
+    },
+    {
+      "path": "src/domain/remote-contracts.ts",
+      "sha256": "f644481c6f2de8e27347dea830b6faa6b3e5ea8f034b175c3e5732e724193f8d"
+    },
+    {
+      "path": "src/domain/remote-schema.ts",
+      "sha256": "e920979c97b73645fab56f8c0d228961c53328d0e10a6fd0c6544c601a4248cc"
+    },
+    {
+      "path": "src/domain/revisions.ts",
+      "sha256": "a01ef320928feaa845f1d194b84d902ac3bcdf04fe1a00abfd2a7728b063aa41"
+    },
+    {
+      "path": "src/domain/schema.ts",
+      "sha256": "b5725dda13d863b6e391c361ac325d507d600f00dd6fb6211eda80e10714f1bc"
+    },
+    {
+      "path": "src/drafts.ts",
+      "sha256": "1b7819aba5432e572de38b3bb119c0c6a877c139678602974a2e0aed3ce08926"
+    },
+    {
+      "path": "src/fixtures/firefox-recording.txt",
+      "sha256": "05c206d32c9520bcd2629e1ea5ae4257ad2a9fe4904c10e12a640330ee3d96a8"
+    },
+    {
+      "path": "src/help/errors.ts",
+      "sha256": "d395d143f6ec418eb80c723dc54a633fc2e2c6235a32be345b7089b56127c4b9"
+    },
+    {
+      "path": "src/links/link-service.ts",
+      "sha256": "701d1c9bd54fab02e678a8aa05e5c7ccaa7bd9e1e8941a4868f8170286c6b8fd"
+    },
+    {
+      "path": "src/links/project-continuation.ts",
+      "sha256": "e34d52759c0b10eba32c914221ca45e870333a2ba70b802b0a78273a23c82570"
+    },
+    {
+      "path": "src/links/purchase-return.ts",
+      "sha256": "451b76264219932094f5f765691159b72305cef4d9d27bd523c19c1604594eb3"
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "0a30f94442e5a0b8b9143fce33a98d39d65880a14c9b79ec1ba2caea547a026b"
+    },
+    {
+      "path": "src/media-validation.ts",
+      "sha256": "366d2ba9e487f0624b55ca392dd9c7292afa3a69aa9e2b4e22157040d7cbbac6"
+    },
+    {
+      "path": "src/media.ts",
+      "sha256": "31f956c2b0aad016cb2055429d4fc8935ce64afa3c4378772a53ffbd00f07665"
+    },
+    {
+      "path": "src/offline.ts",
+      "sha256": "16167cd8962556cbbb5dba44aa44dd7a48c5780b210cc8f4aafad2ec81cbe81e"
+    },
+    {
+      "path": "src/pages/public-pages.ts",
+      "sha256": "99358d41107a02c5ed49506efefa42f8c9accf256dc0a182a3168e728d8abea3"
+    },
+    {
+      "path": "src/platform/browser/purchases.ts",
+      "sha256": "af2bb4ee57144dc76f683f89f91d5fcde9447532ecad3cddb4479dc3f2b73d09"
+    },
+    {
+      "path": "src/platform/contracts.ts",
+      "sha256": "d9496c7087bbf06eefed7bc4d403efd81e3379c86d32a6ab98d525531301bf47"
+    },
+    {
+      "path": "src/platform/native/audio.ts",
+      "sha256": "54de4ae73798a1a87128efff7ba1c418b44804e6b84291b863cbfa3d50f35cb1"
+    },
+    {
+      "path": "src/platform/native/backup-inbox.ts",
+      "sha256": "689685c35365b72fbe85e84fbda62b022fcb91b351161d88e76d00016a020e82"
+    },
+    {
+      "path": "src/platform/native/boundary.ts",
+      "sha256": "6bf81b8db7b8913424588333fa38fc227b3a04ea5efc3f0cf3e1ecdd703bf962"
+    },
+    {
+      "path": "src/platform/native/camera.ts",
+      "sha256": "98416562b5c89ea0076b41dfacec539137ac6c6f76e057d5948d60be3851cd2c"
+    },
+    {
+      "path": "src/platform/native/capture-recovery.ts",
+      "sha256": "aef301588027f932c8a747957a3892dcd82a4a5e9d95f14187237f6986f1d86f"
+    },
+    {
+      "path": "src/platform/native/capture.ts",
+      "sha256": "32936d1ad38b4853333040adb167d323a944160c342698e46c4ee6d960750e53"
+    },
+    {
+      "path": "src/platform/native/database.ts",
+      "sha256": "afb9ccafd2d90f428d02ad6c9cec582dee11862d46f4a2cbac813c7ac572ac02"
+    },
+    {
+      "path": "src/platform/native/device-store.ts",
+      "sha256": "cd372db8b4a186155a0de3a5739d5893940abd7d87c7890aca5fee2b94e8cbe1"
+    },
+    {
+      "path": "src/platform/native/downloads.ts",
+      "sha256": "9174a3acb42991b3d3dcbf6d6fc16bb5a1966209f6d9fda4db00630bef15db20"
+    },
+    {
+      "path": "src/platform/native/drafts.ts",
+      "sha256": "0dbea5230f37ff66a08deb8a9645f8a1c59ecb9103700578c642015087f8653b"
+    },
+    {
+      "path": "src/platform/native/files-bridge.ts",
+      "sha256": "8443a5b41ae8a13f6ef0f2473a1d42b9ce258b045f681717839e290be32973af"
+    },
+    {
+      "path": "src/platform/native/files.ts",
+      "sha256": "b776338384e0d85cb627ed84509ff980c62a06fb153791e5488bf478e6bd5b3b"
+    },
+    {
+      "path": "src/platform/native/lifecycle.ts",
+      "sha256": "6b381aa842e2a9a248d728ace580c8a8b29532df5016f734b4306ca64710e3fc"
+    },
+    {
+      "path": "src/platform/native/links.ts",
+      "sha256": "6dff60826e6405e018f30d3886febedfa3b50f66643fd5512c09f617e389569e"
+    },
+    {
+      "path": "src/platform/native/network.ts",
+      "sha256": "30f6a2e5071c6daac00dee7386fccc678ab7f1f37c9f356fb03d4d8014369b02"
+    },
+    {
+      "path": "src/platform/native/operation-plans.ts",
+      "sha256": "15cf7c99cfb1116101563c9fd1672dedfe08a80c4fea9434c47fb22ea373c8b8"
+    },
+    {
+      "path": "src/platform/native/purchases.ts",
+      "sha256": "b92667c51976d5d66521f7e1233399add1951b3e955a79dda221f541f1107ece"
+    },
+    {
+      "path": "src/platform/native/rebase.ts",
+      "sha256": "f4f027170a7240020485388b70faa5a43b0d758570d43599aa98171466ca2c5d"
+    },
+    {
+      "path": "src/platform/native/recovery-journal.ts",
+      "sha256": "10d4f010b66a4e8e41efc1bf82ab6de91074ce8dc198e4144053beea28ec926d"
+    },
+    {
+      "path": "src/platform/native/repository.ts",
+      "sha256": "628aa644efb3fba7d0eff5fee9d98c3de58c1ba1f7a8f445833f0465dddf71e8"
+    },
+    {
+      "path": "src/platform/native/session-storage.ts",
+      "sha256": "14299a419dd98095d2898812467c7c7ae780bbde7fe49f94ba272bf21cdf137c"
+    },
+    {
+      "path": "src/platform/native/share.ts",
+      "sha256": "1d8e514ed7799794ee248f0505742fefef39e7e17e4e3e73589038ba8c870bff"
+    },
+    {
+      "path": "src/platform/native/workflow-store.ts",
+      "sha256": "fc42f17e2040b7161a2e240131729f48958528753509efa5832b0edc816a4f90"
+    },
+    {
+      "path": "src/repositories/browser/device-store.ts",
+      "sha256": "198c968c5a0b05102db1b1a0c9f9c16d2e2c5bed20015d2e8985f75a8d0991d6"
+    },
+    {
+      "path": "src/repositories/browser/downloads.ts",
+      "sha256": "bb235bbe9854afcc75fe8c23f5f037875fa35d4a3268a4a48e28b524938bf421"
+    },
+    {
+      "path": "src/repositories/browser/draft-store.ts",
+      "sha256": "8e9d74e030b8c30ee6ae1f1fa79f5716a8c57198d6a4b72c950569684d645bb5"
+    },
+    {
+      "path": "src/repositories/browser/fixtures.test-support.ts",
+      "sha256": "ac0ae44d87eaebb4bcc94fb8c65405c42b0e5753c003cf7633a48dd5da080fb8"
+    },
+    {
+      "path": "src/repositories/browser/media-store.ts",
+      "sha256": "bb80164c7f968d7c6158a2abb7f53dde8fb57dbac89898c7c71d8ca815020424"
+    },
+    {
+      "path": "src/repositories/browser/migration.ts",
+      "sha256": "bd2b856ccf886d00bd9942dc5b239b4ed9bc6ef35bbaf31312c3c2c93f195c05"
+    },
+    {
+      "path": "src/repositories/browser/operation-plans.ts",
+      "sha256": "13b6c125695cdda8e98fdacac5292296ddd346ce2ad2a3c334827f64890c2d86"
+    },
+    {
+      "path": "src/repositories/browser/repository.ts",
+      "sha256": "d79fb97931e3aa2ab6bef58d33cf5675f0f2de48f1f3c644c9c883c4dccab77c"
+    },
+    {
+      "path": "src/repositories/browser/schema.ts",
+      "sha256": "8b2da7e9f2a92fba5124268b107aecea5072674b7ae51982bfbf8a1a9b28d053"
+    },
+    {
+      "path": "src/repositories/browser/workflow-store.ts",
+      "sha256": "450cb41cf7bb35c1ba889990f59f389853a37c2898cc4113b73d92ecfe27b10c"
+    },
+    {
+      "path": "src/repositories/contract-suite.ts",
+      "sha256": "ab19a0bab29056d5d77d629ce58f1a517fcf0bbb1a3aa69beaac73ec3c9a1d18"
+    },
+    {
+      "path": "src/repositories/contracts.ts",
+      "sha256": "4424eec003c41d7fadaa77fabde9182fab903e47fc0e03ecf5d1a502828205c1"
+    },
+    {
+      "path": "src/repositories/downloads.ts",
+      "sha256": "1124c7c1885fa5b4e4ee0436b1996b5dbccfb270853e5636e215d5713a39d969"
+    },
+    {
+      "path": "src/repositories/drafts.ts",
+      "sha256": "bae9bf9ed83ea94734b1b34ae28cc98e29d28f3edc05e62cb622d9b79cdf4db7"
+    },
+    {
+      "path": "src/repositories/rebase.ts",
+      "sha256": "16bf06569f5f60cc500533fe1daf61cdf906684b1cb9b56339535c06e32fb8a5"
+    },
+    {
+      "path": "src/repositories/state.ts",
+      "sha256": "ca4bb49bd7aa17cbd36fd0c15c9067c189a12dd1a23e74b7fa211760ab497ce4"
+    },
+    {
+      "path": "src/runtime.ts",
+      "sha256": "25a8f41f0a006ef49489e55e80bd2cfe14cc2f8a72c3654baa9d78392cb47325"
+    },
+    {
+      "path": "src/samples.ts",
+      "sha256": "1fd1db3cf57ae35146b0735ff203994650535e96649fb74561fa48b6ddfd8ba7"
+    },
+    {
+      "path": "src/services/app-controller.ts",
+      "sha256": "c479b07e0ec45966d42f71a168b141d713a22d069c696390933cbbc5ca95f5fc"
+    },
+    {
+      "path": "src/services/attachment-queue.ts",
+      "sha256": "53d683810fef3f1fec07a4de97703736f4accdfd92d75caa8438891464fc66b5"
+    },
+    {
+      "path": "src/services/backup-service.ts",
+      "sha256": "55e76387c943b33ea37c2e7bd57a91fcb87ff7cd2c5b0739539d98ef0b731bef"
+    },
+    {
+      "path": "src/services/concurrency.ts",
+      "sha256": "48d507c1f2785363c455c3cbaa9ce803c0c39f71b4d54dc176f0847f1952fd70"
+    },
+    {
+      "path": "src/services/controller-contract.ts",
+      "sha256": "7cf2891437ae9db1f642f079bdb595800cc44045d52ac6100e7efeecef0815ea"
+    },
+    {
+      "path": "src/services/deletion-service.ts",
+      "sha256": "300e0e0e938c7afb196faf2a4775c1f2cbb178cf7b95ffb6e77e44092cdb7522"
+    },
+    {
+      "path": "src/services/diagnostics.ts",
+      "sha256": "82873664a5e069bfbb0b56121cd6f4438424554dd969d207afb7e879f77d62ea"
+    },
+    {
+      "path": "src/services/downloads-service.ts",
+      "sha256": "80d680f4cf1377abdf6d689ac1dd48a45fa9cf2fb52790518844420a3dc7cc80"
+    },
+    {
+      "path": "src/services/legacy-recovery.ts",
+      "sha256": "0d2febe1dc52862a0a8ddb1fd59d18fd3a41cf4f5d6e44f6c607373950916ffc"
+    },
+    {
+      "path": "src/services/local-data-service.ts",
+      "sha256": "3d23cb3ef81965b5331e5bb97e58aaf1043f13eecaa1b1d97bb8e2994426206d"
+    },
+    {
+      "path": "src/services/media-codec.ts",
+      "sha256": "d9bb5e2d6219ca95494f9735b87b16b5dec6cbe6c7f746e50868735d3e12730f"
+    },
+    {
+      "path": "src/services/media-service.ts",
+      "sha256": "fce8c0ffd0f44303acc220d704ca50fdee4f10f8edb3d156a14458352cd244d3"
+    },
+    {
+      "path": "src/services/operation-plans.ts",
+      "sha256": "f5f5b6fe712c29dccad38c76a268dca18b1d8da365343b68d3362de3350ce47e"
+    },
+    {
+      "path": "src/services/portable-draft-store.ts",
+      "sha256": "b7b62520b2848e8f3784166f6acf8a9736d77f2bd4a9e069f886c59d8f10db01"
+    },
+    {
+      "path": "src/services/replacement-service.ts",
+      "sha256": "92c26591b197b0607cbe002f613e5a74dbe81567977b04307c20db88234de998"
+    },
+    {
+      "path": "src/services/startup.ts",
+      "sha256": "f1d76f51afe70df9642cbe8e95b56b3aa1a6271f288746e43074c3c9d54794d1"
+    },
+    {
+      "path": "src/services/workflow-store.ts",
+      "sha256": "f6c2b5ad829af84b164fa9393c11becdf8b4053ec65a2a58066f1579e44f109f"
+    },
+    {
+      "path": "src/styles.css",
+      "sha256": "6cb007770c30eec00341f4ed419b658a509dd2ddbd928bad4b96b16bbec4c58b"
+    },
+    {
+      "path": "src/sync/coordinator.ts",
+      "sha256": "74a4cd664768caea7c3dcafb8f421b93403f6dfee04ee7dc92b53aaaa5c64a84"
+    },
+    {
+      "path": "src/sync/http-client.ts",
+      "sha256": "39367cdf9a89e60c7c72eb27dce4f24ad84918dbc700c6b63918ffbcb58188e6"
+    },
+    {
+      "path": "src/sync/media-transport.ts",
+      "sha256": "f5092c4860eed9b5f6b4b4c8886b02a9c056b6ad990082b36a2851cd89093925"
+    },
+    {
+      "path": "src/sync/realtime-hints.ts",
+      "sha256": "a95bee6e0b233b6844a910a3a8915eb1b0fd14e36d61a3c854a8bd6e81f7914f"
+    },
+    {
+      "path": "src/sync/runtime-scheduler.ts",
+      "sha256": "cd36245333c7eca3443ae4d3c8cc17a8ff3afcbbf1fd03b804ff58d392a4dfd0"
+    },
+    {
+      "path": "src/sync/snapshots.ts",
+      "sha256": "893e71ffc9dc9229257934e006b7cca1ee3d82dcd9f5a430cc456853cbcd3972"
+    },
+    {
+      "path": "src/sync/tab-lease.ts",
+      "sha256": "a34c75a960396c37a8ba38e8d25d5ff70ca7108ad6e5b5614770fd77da87710c"
+    },
+    {
+      "path": "src/sync/transport.ts",
+      "sha256": "7796bf297066e815c17f772d43b80cf1c9c398ffea74debc5b15a3e3301b6c1f"
+    },
+    {
+      "path": "src/types.ts",
+      "sha256": "f68323366b0bc956ea6f366637a65cef2740a8221807bedf6c27e8dac83a91fb"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "f9448559b8bcb26ee694b313162db7c551f14093b31359ea9af6826d36778f8e"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "2232d55a460dbb2fe7afb2e2e548cf13b13f2a9d5a96298c781c34d9beff0a93"
+    }
+  ],
+  "previousPreview": {
+    "pid": 88700,
+    "command": "node /Users/lalaji/Repos/CGProjects/loopmark/node_modules/.bin/vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+    "started": "Sun Oct 18 16:27:04 2026"
+  },
+  "preview": {
+    "pid": 14594,
+    "executable": "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+    "args": [
+      "/Users/lalaji/Repos/CGProjects/loopmark/node_modules/vite/bin/vite.js",
+      "preview",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "4173",
+      "--strictPort"
+    ],
+    "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+    "origin": "http://127.0.0.1:4173",
+    "log": "preview.log",
+    "startedAt": "2026-10-18T19:17:37.977Z",
+    "distIndexSha256": "a546931c1981e49dee6394c46d1e76b017aeacfda8342aba07c0c7aec4fc2b80",
+    "intentionallyLeftRunning": true,
+    "servedIndexSha256": "a546931c1981e49dee6394c46d1e76b017aeacfda8342aba07c0c7aec4fc2b80",
+    "readyAt": "2026-10-18T19:17:38.205Z",
+    "readinessMs": 227,
+    "exitCode": null,
+    "identity": {
+      "pid": 14594,
+      "command": "/opt/homebrew/Cellar/node/26.8.2/bin/node /Users/lalaji/Repos/CGProjects/loopmark/node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4173 --strictPort",
+      "cwd": "/Users/lalaji/Repos/CGProjects/loopmark",
+      "started": "Mon Oct 19 00:47:37 2026"
+    },
+    "logSha256AtCompletion": "ecbd7eb35ac4acd913ff89a5390ee30069b6e910709e5626dc3f8fc34eadb53f"
+  },
+  "smoke": {
+    "testSourceCommit": "0e3f9ca3ff10272e6d1a8511883f9634fb772563",
+    "file": "tests/journeys.spec.ts",
+    "fileSha256": "56acd38585265f51d931bc9187aa06af09f4ab66037591ac71cdeb9c5ddd74db",
+    "titles": [
+      "create, edit, capture photo, resume latest, browse immutable history, finish, reopen and delete",
+      "@chromium-media simulated microphone recording and photo survive a full export and isolated-browser restore"
+    ],
+    "project": "chromium",
+    "workers": 1,
+    "retries": 0,
+    "existingPreviewReused": true,
+    "environment": {
+      "CI": "unset",
+      "LOOPMARK_TEST_PORT": "unset",
+      "LOOPMARK_DEV_APP_PORT": "4173"
+    },
+    "passed": 2
+  },
+  "finishedAt": "2026-10-18T19:17:44.871Z"
+}

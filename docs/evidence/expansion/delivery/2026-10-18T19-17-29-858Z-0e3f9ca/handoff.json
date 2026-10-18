@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "canonicalProject": "/Users/lalaji/Repos/CGProjects/loopmark",
+  "deliveredRevision": "0e3f9ca3ff10272e6d1a8511883f9634fb772563",
+  "productSourceRevision": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
+  "deliveryReport": {
+    "path": "delivery.json",
+    "sha256": "a141e5c53c2f2fb1d769542f91408114fc7ddbb233a76bf4a23a3b38dbec83ed"
+  },
+  "executedProcedure": {
+    "path": "delivery-procedure.mjs",
+    "sha256": "bf8283907ec55d6c1426b2d407947d3f00d18dce1f228fc8b5e5b800647e3d57"
+  },
+  "verification": "All 41 recorded command logs match their retained SHA-256; build, guest doctor and both fresh isolated Chromium smoke journeys pass. Served index hash equals the canonical production build.",
+  "previewOrigin": "http://127.0.0.1:4173",
+  "previewPid": 14594,
+  "unchangedProductInputs": 157,
+  "limits": [
+    "Fresh isolated Chromium contexts; existing browser data is not cleared.",
+    "Microphone evidence uses the existing simulated-device test, not physical hardware.",
+    "Delivery verification does not activate cloud services or payment providers."
+  ]
+}
