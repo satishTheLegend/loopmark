@@ -40,6 +40,30 @@ export function execute(command, args, options = {}) {
     child.on('close', (code) => resolveResult({ code: code ?? 1, stdout, stderr }))
   })
 }
+/** Never let a local lifecycle command target a remote Docker daemon. */
+export async function assertLocalDocker() {
+  const host = process.env.DOCKER_HOST
+  const localEndpoint = (value) =>
+    typeof value === 'string' &&
+    ((value.startsWith('unix:///') && !value.slice(8).includes('..')) ||
+      (process.platform === 'win32' && value.startsWith('npipe:////./pipe/')))
+  if (host && !localEndpoint(host))
+    throw new Error('Local Docker socket required; remote DOCKER_HOST is rejected.')
+  const inspected = await execute('docker', ['context', 'inspect'])
+  let contexts
+  try {
+    contexts = JSON.parse(inspected.stdout)
+  } catch {
+    throw new Error('Cannot verify local Docker context.')
+  }
+  if (
+    inspected.code ||
+    !Array.isArray(contexts) ||
+    contexts.length !== 1 ||
+    !localEndpoint(contexts[0]?.Endpoints?.docker?.Host)
+  )
+    throw new Error('Local Docker socket required; remote contexts are rejected.')
+}
 async function cli(args, context) {
   return execute(
     resolve(root, 'node_modules/.bin/supabase'),
@@ -297,6 +321,7 @@ export async function main(args = process.argv.slice(2)) {
   console.log(`Loopmark local ${action}: ${context.config.projectId} (${context.config.worktree})`)
   if (!['up', 'down', 'reset', 'status', 'prepare'].includes(action))
     throw new Error('Use up, down, reset, status or prepare.')
+  await assertLocalDocker()
   const runtime = await execute('docker', ['info', '--format', '{{.ServerVersion}}'])
   if (runtime.code)
     throw new Error(

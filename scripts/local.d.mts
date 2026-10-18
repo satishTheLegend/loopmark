@@ -16,3 +16,5 @@ export function prepare(context: LocalContext): Promise<void>
 /** CLI values can include credentials; keep the result private and never log it. */
 export function status(context: LocalContext): Promise<Record<string, string>>
 export function main(args?: string[]): Promise<void>
+
+export function assertLocalDocker(): Promise<void>
