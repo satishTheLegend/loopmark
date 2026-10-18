@@ -15,6 +15,26 @@ import { nativeDownloads } from '../harness/downloads'
 import { nativeInbox } from '../harness/inbox'
 import { stageNativeExport } from '../../../src/platform/native/share'
 import { decodeBase64Bytes } from '../../../src/media-validation'
+import { backupInboxBridge } from '../../../src/platform/native/backup-inbox'
+
+// Read-only OS intake observer for XCTest. It does not fabricate or stage a file.
+const incomingLabel = document.createElement('p')
+document.body.append(incomingLabel)
+const showIncoming = async () => {
+  const { item } = await backupInboxBridge.pending()
+  incomingLabel.textContent =
+    item?.state === 'ready'
+      ? 'Incoming OS file ready'
+      : item
+        ? `Incoming OS file ${item.state}`
+        : 'No incoming OS file'
+}
+if (Capacitor.isNativePlatform()) {
+  void backupInboxBridge.addListener('changed', () => {
+    void showIncoming()
+  })
+  void showIncoming()
+}
 
 const openedAt = performance.now()
 const directory = Directory.Data

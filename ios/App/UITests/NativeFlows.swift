@@ -117,7 +117,7 @@ final class InboxProductFlows: XCTestCase {
         let file = try document(); defer { try? FileManager.default.removeItem(at: file) }
         let app = XCUIApplication(bundleIdentifier: "app.loopmark.craft.benchmark")
         app.terminate(); app.open(file)
-        XCTAssertTrue(app.webViews.firstMatch.waitForExistence(timeout: 30), app.debugDescription)
+        XCTAssertTrue(app.staticTexts["Incoming OS file ready"].waitForExistence(timeout: 30), app.debugDescription)
         // The subsequent native bridge fixture verifies durable bytes, source fences and restore.
     }
     @MainActor

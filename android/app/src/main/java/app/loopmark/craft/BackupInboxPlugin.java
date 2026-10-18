@@ -21,7 +21,7 @@ public class BackupInboxPlugin extends Plugin {
         catch (Exception error) { item = BackupInbox.storageFailure(); }
         call.resolve(new JSObject().put("item", item == null ? JSONObject.NULL : item));
     }); }
-    @PluginMethod public void read(PluginCall call) { perform(call, store -> new JSObject().put("base64", Base64.encodeToString(store.read(call.getString("id"), call.getLong("offset", -1L), call.getInt("length", 0)), Base64.NO_WRAP))); }
+    @PluginMethod public void read(PluginCall call) { perform(call, store -> new JSObject().put("base64", Base64.encodeToString(store.read(call.getString("id"), call.getInt("offset", -1), call.getInt("length", 0)), Base64.NO_WRAP))); }
     @PluginMethod public void finish(PluginCall call) { BackupInbox.QUEUE.execute(() -> {
         try {
             String id = call.getString("id");
