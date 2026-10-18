@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL: all 286 accepted T branches narrowed to specific assertion/evidence locations or explicit local/external gaps; final source freeze pending",
+  "reviewState": "PROVISIONAL: 123 accepted IDs / 286 T branches; source fixes reviewed, native adapter evidence bound, final browser/backend/load/product freeze still pending",
   "reviewer": "final_traceability_review (independent of implementation authors)",
-  "reviewedSourceRevision": "d181c51e58c88d36a84bbfa891d715a9ec81f070",
+  "reviewedSourceRevision": "c76320e88f7c6a1d6a539c47158b172c58d641bf",
   "requiredIds": [
     "R1",
     "R2",
@@ -141,14 +141,17 @@
     "external-not-qualified": "Human/provider/physical-device evidence not performed; nearby fixture tests do not close it.",
     "partial-assertion-gap": "Some accepted subcase is asserted; named additional local assertion remains required.",
     "local-implementation-gap": "Accepted local source behavior is missing and assigned for implementation.",
-    "source-copy-gap": "Existing document copy contradicts an accepted product invariant."
+    "source-copy-gap": "Existing document copy contradicts an accepted product invariant.",
+    "local-runtime-evidence-awaiting-final-freeze": "Specific executed local assertions and source equivalence reviewed; final integrated qualification is not implied.",
+    "local-measurement-recorded": "Actual measured native adapter result, with no invented latency/memory budget or physical-device qualification."
   },
   "evidenceRules": [
     "Every requirement is retained; no proposed filename is treated as proof when absent.",
     "Test registry records exact present test names, line and file hash. Each branch references specifically selected asserting tests; absent or insufficient assertions remain gaps.",
     "Final adjudication must compare branch assertions and source dependencies with executed frozen evidence; old candidate proof remains explicitly limited.",
     "Historical proof is explicitly non-final; no passing counts substitute for missing assertions.",
-    "Synthetic provider callbacks are separate from live/sandbox purchases; simulator/emulator results are separate from physical-device results."
+    "Synthetic provider callbacks are separate from live/sandbox purchases; simulator/emulator results are separate from physical-device results.",
+    "Registry keys are stable identifiers; the line field is the current source location. Native adapter evidence does not imply product UI, signed release, physical hardware, or a latency/memory budget pass."
   ],
   "proofs": {
     "foundation": {
@@ -269,6 +272,46 @@
       "scope": "Actual local operations, 76-test server suite on 001–016; synthetic provider; independent ledger service shares physical host",
       "currentFreezeQualified": false,
       "sourceBinding": "sourceHashes map in artifact; compare each asserting file and dependencies before final qualification"
+    },
+    "nativeInboxFinal": {
+      "path": "docs/evidence/expansion/native/incoming-backup/runtime/qualification.json",
+      "sha256": "5de552a0cf0a9bc025dfe399b0b5fac2e4f1e64dabc8a61671c9ca26c98bdc89",
+      "scope": "Actual native store tests plus OS-delivered bytes through production bridge/service; final product UI separately pending. Individual raw files retain exact source revisions.",
+      "currentFreezeQualified": false,
+      "sourceRevision": "eb63bdf65d0cfafe78902afcab1f0692977cda63",
+      "reviewedAgainstRevision": "c76320e88f7c6a1d6a539c47158b172c58d641bf"
+    },
+    "nativeFunctionalFinal": {
+      "path": "docs/evidence/expansion/native/benchmarks/functional-final/index.json",
+      "sha256": "2a44af9ebed9e18d49deb8dc7fcb9079e7091df8a19e82fcb62bae6a55635137",
+      "scope": "Actual SQLite/files: download protection and physical cleanup retry, rebase, media repair, developer examples and inbox. No remote/provider or performance claim.",
+      "currentFreezeQualified": false,
+      "sourceRevision": "per-raw-report",
+      "reviewedAgainstRevision": "c76320e88f7c6a1d6a539c47158b172c58d641bf"
+    },
+    "nativeMeasuredFinal": {
+      "path": "docs/evidence/expansion/native/benchmarks/optimized-eb63bdf/summary.json",
+      "sha256": "91ab176defdce8e7ab5a3744082bdca7b73caf70a7cc270b9858d4678443f108",
+      "scope": "Isolated native adapter startup/import/export with exact 48 MiB serialized library; sampled RSS; no pre-established native budget; no physical/UI startup claim.",
+      "currentFreezeQualified": false,
+      "sourceRevision": "eb63bdf65d0cfafe78902afcab1f0692977cda63",
+      "reviewedAgainstRevision": "c76320e88f7c6a1d6a539c47158b172c58d641bf"
+    },
+    "webScaleFinal": {
+      "path": "docs/evidence/expansion/I13/web-scale-final.json",
+      "sha256": "3f22ac2f2f1c4a02fed67785b3ae5ed35fd7f5626e9fc7e2d9e9546309634a00",
+      "scope": "Isolated browser scale journeys with per-browser metrics; match source and tests before final qualification.",
+      "currentFreezeQualified": false,
+      "sourceRevision": null,
+      "reviewedAgainstRevision": "c76320e88f7c6a1d6a539c47158b172c58d641bf"
+    },
+    "nativeDependencyInventory": {
+      "path": "docs/evidence/expansion/native/licenses/android-spm-inventory.md",
+      "sha256": "229f4f76466b180c00936a4f80fb4d5c105b2bab4f765303576803bd28d32aa2",
+      "scope": "Resolved release/debug runtime graph, exact POM/artifact hashes and pinned Swift notice provenance. Missing embedded notice texts explicit; not legal approval.",
+      "currentFreezeQualified": false,
+      "sourceRevision": "c4650c38cef708fcbd9381efe1629497a19866cc",
+      "reviewedAgainstRevision": "c76320e88f7c6a1d6a539c47158b172c58d641bf"
     }
   },
   "tests": {
@@ -308,7 +351,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 49,
       "testName": "commutes stale local appends without regressing timestamps, but rejects a finished or deleted parent lineage",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -316,7 +359,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 119,
       "testName": "runs the reusable persistence/idempotence/generation/snapshot contract",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -324,7 +367,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 122,
       "testName": "commits one effect for concurrent equal operation IDs across connections",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -332,7 +375,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 134,
       "testName": "rejects changed content reused under an operation ID and permits Object prototype names",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -340,7 +383,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 143,
       "testName": "rolls back records, outbox, operation receipt and sequence if final storage write aborts",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -348,7 +391,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 164,
       "testName": "fences asynchronous prepared writes and late commits after account switch",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -356,7 +399,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 182,
       "testName": "uses local CAS while keeping guest mutations out of the network outbox",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -364,7 +407,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 192,
       "testName": "preserves an immutable command across retries, attempts and error markers",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -372,7 +415,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 201,
       "testName": "enforces three active projects without blocking edit, finish, history or legacy local access",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -380,7 +423,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 230,
       "testName": "does not treat a connected legacy flag as a paid entitlement",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -388,7 +431,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 242,
       "testName": "pull-before-ack removes only its matching intent and never duplicates the effect",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -396,7 +439,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 265,
       "testName": "acknowledgement does not advance the contiguous pull cursor",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -404,7 +447,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 272,
       "testName": "rejects mismatched hash or a gapped page atomically",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -412,7 +455,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 296,
       "testName": "preserves local overlay over a remote edit and does not regress higher shadow revisions",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -420,7 +463,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 319,
       "testName": "keeps a pending edit discoverable when a remote delete removes its target",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -428,7 +471,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 334,
       "testName": "assigns ordered immutable predecessor operations for an offline create/edit chain",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -436,7 +479,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 355,
       "testName": "pins real attachment bytes through deletion and releases only unreferenced bytes",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -444,7 +487,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 408,
       "testName": "verifies media hashes and isolates identical IDs in unrelated collection scopes",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -452,7 +495,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 433,
       "testName": "rejects corrupted stored bytes at read boundary",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -460,7 +503,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 450,
       "testName": "imports over-cap local backups without granting future commercial capacity and fences replacement",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -468,7 +511,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 478,
       "testName": "retains a consistent named copy before scoped removal",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -476,7 +519,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 492,
       "testName": "validates all hydration pages before reader switch and permits missing remote bytes for text capture",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -484,7 +527,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 525,
       "testName": "requires a new session generation for device changes and starts that device sequence at one",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -492,7 +535,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 547,
       "testName": "local predecessor receipts resolve in the actual collection epoch",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -500,7 +543,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 557,
       "testName": "never restores an acknowledged target merely because unrelated pending work remains",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -508,7 +551,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 579,
       "testName": "a retained/imported local revision clock remains greater than copied server revisions",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -516,7 +559,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 594,
       "testName": "reconciles a delayed checkpoint acknowledgement after its parent was deleted by a newer pull",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -524,7 +567,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 637,
       "testName": "rejects omitted or cyclic snapshot pages before changing the durable collection",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -532,7 +575,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 670,
       "testName": "atomically preserves conflicted work and dependent checkpoint history before using the cloud shadow",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -540,7 +583,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 716,
       "testName": "uses a new immutable replacement command and deduplicates lost resolution responses",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -548,7 +591,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 749,
       "testName": "does not retire attempted operations, stale reviews or resurrect a remotely deleted project",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -556,7 +599,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 795,
       "testName": "rolls back retirement, recovery collection and fresh replacement together if storage aborts",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -564,7 +607,7 @@
       "file": "src/repositories/browser/repository.test.ts",
       "line": 827,
       "testName": "verified reauthentication requeues only auth-blocked immutable commands for the same device",
-      "sourceSha256": "12be210dde4a598d602f0a000f785e1db84581929779e1d68aac051918434d20",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -1026,57 +1069,57 @@
     },
     "tests/server/boundaries.test.ts:30": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 30,
+      "line": 82,
       "testName": "executes the SQL ownership and command suites against real roles",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/boundaries.test.ts:34": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 34,
+      "line": 86,
       "testName": "matches frozen cross-language hashes and the shared strict command schema",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/boundaries.test.ts:53": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 53,
+      "line": 105,
       "testName": "counts portable bytes exactly, including emoji and quoted MIME parameters",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/boundaries.test.ts:95": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 95,
+      "line": 147,
       "testName": "enforces ten active devices including expired-device re-registration",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/boundaries.test.ts:114": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 114,
+      "line": 166,
       "testName": "denies another owner snapshots and rejects oversized raw streamed bodies",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/boundaries.test.ts:161": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 161,
+      "line": 213,
       "testName": "verifies a delivered local OTP before issuing a short-lived one-use reauthentication proof",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/boundaries.test.ts:203": {
       "file": "tests/server/boundaries.test.ts",
-      "line": 203,
+      "line": 255,
       "testName": "signs up a new synthetic user with a delivered OTP and refuses code replay",
-      "sourceSha256": "a8071480a1fc3b9b9c22c06f4ad7609c158374dd9ee8c776e1084c874f20c0ed",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
@@ -1172,7 +1215,7 @@
       "file": "tests/expansion/project-links.cloud.ts",
       "line": 4,
       "testName": "a fresh bag link survives reload and OTP, opens only the explicitly selected owned project, and supports cached legacy access",
-      "sourceSha256": "0f6438287c4ef018e2e111e6e92bc6cd9909a60e47afa2783bfbf2dfe911ab27",
+      "sourceSha256": "71d84cef7de694b9935732f45761c76933527c40bf1a230d4f5997f78bad3b41",
       "level": "actual-product-browser",
       "executedProofRefs": []
     },
@@ -1242,33 +1285,33 @@
     },
     "tests/server/replacement.test.ts:22": {
       "file": "tests/server/replacement.test.ts",
-      "line": 22,
+      "line": 113,
       "testName": "prepares a complete mapped attach, commits once across epoch, and recovers lost receipt",
-      "sourceSha256": "a3531e6860e6dc44dd6686a7d3802e09330dbab6b52fc63564dbcc512c838da0",
+      "sourceSha256": "da7579d56ce4b9bdcccc679f100648e96a48c4869881050f4ff4c5f9629f4f70",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/replacement.test.ts:97": {
       "file": "tests/server/replacement.test.ts",
-      "line": 97,
+      "line": 188,
       "testName": "matches identical content, copies divergent record identity, and rejects stale destination commit without partial mutation",
-      "sourceSha256": "a3531e6860e6dc44dd6686a7d3802e09330dbab6b52fc63564dbcc512c838da0",
+      "sourceSha256": "da7579d56ce4b9bdcccc679f100648e96a48c4869881050f4ff4c5f9629f4f70",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/replacement.test.ts:163": {
       "file": "tests/server/replacement.test.ts",
-      "line": 163,
+      "line": 254,
       "testName": "holds incomplete candidate media outside active data and preserves old snapshot bytes after replacement",
-      "sourceSha256": "a3531e6860e6dc44dd6686a7d3802e09330dbab6b52fc63564dbcc512c838da0",
+      "sourceSha256": "da7579d56ce4b9bdcccc679f100648e96a48c4869881050f4ff4c5f9629f4f70",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/replacement.test.ts:253": {
       "file": "tests/server/replacement.test.ts",
-      "line": 253,
+      "line": 344,
       "testName": "enforces one candidate, bounded admission, ownership, expiry, and service-only staging",
-      "sourceSha256": "a3531e6860e6dc44dd6686a7d3802e09330dbab6b52fc63564dbcc512c838da0",
+      "sourceSha256": "da7579d56ce4b9bdcccc679f100648e96a48c4869881050f4ff4c5f9629f4f70",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
@@ -1316,135 +1359,135 @@
       "file": "src/services/app-controller.test.ts",
       "line": 132,
       "testName": "login retains guest selection, exposes verified identity and switches only deliberately",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:143": {
       "file": "src/services/app-controller.test.ts",
-      "line": 143,
+      "line": 194,
       "testName": "does not create an empty next epoch over a pending replacement when verified auth advances after response loss",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:188": {
       "file": "src/services/app-controller.test.ts",
-      "line": 188,
+      "line": 239,
       "testName": "sign-out counts unsent project mutations and requires explicit discard with no checkpoint",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:206": {
       "file": "src/services/app-controller.test.ts",
-      "line": 206,
+      "line": 257,
       "testName": "a draft created after review blocks signout and keep preserves its source-bound content",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:232": {
       "file": "src/services/app-controller.test.ts",
-      "line": 232,
+      "line": 283,
       "testName": "retains saved work and drafts before the deletion barrier, and failure preserves both copies",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:259": {
       "file": "src/services/app-controller.test.ts",
-      "line": 259,
+      "line": 310,
       "testName": "clears credentials and removes connected copies only after successful deletion",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:275": {
       "file": "src/services/app-controller.test.ts",
-      "line": 275,
+      "line": 326,
       "testName": "requires explicit acknowledgement of missing bytes and rejects unknown cache state before deletion",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:328": {
       "file": "src/services/app-controller.test.ts",
-      "line": 328,
+      "line": 379,
       "testName": "external auth identity changes hide account data immediately and fence old callbacks",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:342": {
       "file": "src/services/app-controller.test.ts",
-      "line": 342,
+      "line": 393,
       "testName": "offline startup keeps only the previously verified connected cache editable locally",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:362": {
       "file": "src/services/app-controller.test.ts",
-      "line": 362,
+      "line": 413,
       "testName": "local initialization does not wait for a hung authentication request",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:372": {
       "file": "src/services/app-controller.test.ts",
-      "line": 372,
+      "line": 423,
       "testName": "a validated native/web callback follows the same verified guest-preserving account path",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:382": {
       "file": "src/services/app-controller.test.ts",
-      "line": 382,
+      "line": 433,
       "testName": "secure credential read failure leaves existing local projects usable without a plaintext fallback",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:400": {
       "file": "src/services/app-controller.test.ts",
-      "line": 400,
+      "line": 451,
       "testName": "fresh authentication accepts a recovered billing principal only for the already selected account",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:417": {
       "file": "src/services/app-controller.test.ts",
-      "line": 417,
+      "line": 468,
       "testName": "explicit recovery re-registers then atomically switches to the account snapshot while leaving local edits and draft in a recovered copy",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:461": {
       "file": "src/services/app-controller.test.ts",
-      "line": 461,
+      "line": 512,
       "testName": "new work after the recovery review prevents registration and source publication",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:477": {
       "file": "src/services/app-controller.test.ts",
-      "line": 477,
+      "line": 528,
       "testName": "snapshot failure after registration preserves source and restart cannot silently adopt the new device generation",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/app-controller.test.ts:507": {
       "file": "src/services/app-controller.test.ts",
-      "line": 507,
+      "line": 558,
       "testName": "a new draft arriving while the fresh snapshot downloads aborts publication and releases its remote lease",
-      "sourceSha256": "21454bc1d3afcf08824dceb17424fa9eb362a9d8dbab64b9c5fb5c178c775d41",
+      "sourceSha256": "328ba4c604fd4e2926d8d05032eff02eebe83806f8072a5ff565111bd85c42ce",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -1570,65 +1613,65 @@
     },
     "tests/native/harness/adapters.ts:36": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 36,
+      "line": 45,
       "testName": "native reviewed retention keeps missing saved refs but refuses missing draft media",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:109": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 109,
+      "line": 118,
       "testName": "native verified authentication resumes only matching-device auth failures",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:133": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 133,
+      "line": 142,
       "testName": "native epoch replacement preserves old drafts and bytes through transaction failure and retry",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:246": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 246,
+      "line": 255,
       "testName": "native recovered import publishes files and collection atomically after source staging",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:297": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 297,
+      "line": 306,
       "testName": "native transition rejects newly added drafts and stale identities; retained copy preserves draft media",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:350": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 350,
+      "line": 359,
       "testName": "native portable draft retains caller revision, normalized media, atomic pins and opening scope",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:417": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 417,
+      "line": 426,
       "testName": "native operation plans survive restart and failed save with immutable identity and media pins",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
     "tests/native/harness/adapters.ts:480": {
       "file": "tests/native/harness/adapters.ts",
-      "line": 480,
+      "line": 489,
       "testName": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
-      "sourceSha256": "c1a40938e00a1c9652cf908fc246650073c8b4f98f6dde37722fb83d462ea287",
+      "sourceSha256": "6e5290960e1f815ec884fee3bca4b4e92b7a688811219e3c5af6c2e61af1e6e6",
       "level": "native-runtime-harness",
       "executedProofRefs": []
     },
@@ -1690,73 +1733,73 @@
     },
     "src/services/local-data-service.test.ts:35": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 35,
+      "line": 36,
       "testName": "the installed facade path captures newest checkpoint, all media and full history after restart",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:70": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 70,
+      "line": 71,
       "testName": "two independent local facades preserve concurrent immutable checkpoint appends and identical retries",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:95": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 95,
+      "line": 96,
       "testName": "durable operation plans keep create/checkpoint retries byte-identical after reopen",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:120": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 120,
+      "line": 121,
       "testName": "concurrent same-token submissions share one immutable plan and one saved project",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:128": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 128,
+      "line": 129,
       "testName": "numeric local CAS protects a stale timestamp form and reviewed restore preview",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:142": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 142,
+      "line": 143,
       "testName": "restores over-cap content without granting a fourth active create and retains full media",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:165": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 165,
+      "line": 166,
       "testName": "rejects malformed backups before mutation and does not seed over existing saved work",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:172": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 172,
+      "line": 173,
       "testName": "server receipt references missing media permit readable text but cannot produce a full backup",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
     "src/services/local-data-service.test.ts:245": {
       "file": "src/services/local-data-service.test.ts",
-      "line": 245,
+      "line": 246,
       "testName": "shelf reads no media and selected detail/availability bound media work to two",
-      "sourceSha256": "28ad189f8af1d4baa46eb0ef77d02dbdafe6b2a9f63b22baa1ce44ac584411a6",
+      "sourceSha256": "9270db567be109803b62c96e62ddf12ee3818df8dd383a47e4390b05cc09bb72",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -1964,7 +2007,7 @@
       "file": "tests/server/review-regressions.test.ts",
       "line": 16,
       "testName": "hydrates byte-bounded pages with shared media declared once across the whole chain",
-      "sourceSha256": "b71e326e69a06c70fdd934107ff877c54ee97f3bd154168fd75c8ca362ce76ab",
+      "sourceSha256": "0937653b577f291a6953d1d68f8c5010137b9fc0245341d1045cb5f28ab32ac0",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
@@ -1972,15 +2015,15 @@
       "file": "tests/server/review-regressions.test.ts",
       "line": 110,
       "testName": "visits accounts beyond the batch limit on sequential compaction runs",
-      "sourceSha256": "b71e326e69a06c70fdd934107ff877c54ee97f3bd154168fd75c8ca362ce76ab",
+      "sourceSha256": "0937653b577f291a6953d1d68f8c5010137b9fc0245341d1045cb5f28ab32ac0",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/review-regressions.test.ts:130": {
       "file": "tests/server/review-regressions.test.ts",
-      "line": 130,
+      "line": 133,
       "testName": "allows only the configured web origin and the two verified native WebView origins",
-      "sourceSha256": "b71e326e69a06c70fdd934107ff877c54ee97f3bd154168fd75c8ca362ce76ab",
+      "sourceSha256": "0937653b577f291a6953d1d68f8c5010137b9fc0245341d1045cb5f28ab32ac0",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
@@ -2036,55 +2079,55 @@
       "file": "tests/ui/sync-recovery.ui.ts",
       "line": 5,
       "testName": "account refresh requires a separate missing-file acknowledgment and restores focus",
-      "sourceSha256": "2127a0e138d5d108d6ec4e247530e7254e28ceaeb161835b7d8460127797ff98",
+      "sourceSha256": "c2c97eebfc68263a71c984990d977f5c568aa417871baadf932d65fd2b78cfbe",
       "level": "rendered-component-with-synthetic-callbacks",
       "executedProofRefs": []
     },
     "tests/ui/sync-recovery.ui.ts:36": {
       "file": "tests/ui/sync-recovery.ui.ts",
-      "line": 36,
+      "line": 40,
       "testName": "stale and unknown recovery reviews require refresh before an account action",
-      "sourceSha256": "2127a0e138d5d108d6ec4e247530e7254e28ceaeb161835b7d8460127797ff98",
+      "sourceSha256": "c2c97eebfc68263a71c984990d977f5c568aa417871baadf932d65fd2b78cfbe",
       "level": "rendered-component-with-synthetic-callbacks",
       "executedProofRefs": []
     },
     "tests/ui/sync-recovery.ui.ts:53": {
       "file": "tests/ui/sync-recovery.ui.ts",
-      "line": 53,
+      "line": 57,
       "testName": "unfinished replacement routes to its existing review and cancellation performs no recovery",
-      "sourceSha256": "2127a0e138d5d108d6ec4e247530e7254e28ceaeb161835b7d8460127797ff98",
+      "sourceSha256": "c2c97eebfc68263a71c984990d977f5c568aa417871baadf932d65fd2b78cfbe",
       "level": "rendered-component-with-synthetic-callbacks",
       "executedProofRefs": []
     },
     "tests/server/media.test.ts:6": {
       "file": "tests/server/media.test.ts",
-      "line": 6,
+      "line": 75,
       "testName": "streams verified bytes, atomically consumes an ordinary reservation with checkpoint.create, and denies other owners",
-      "sourceSha256": "25c5e7f1008e9be7631921186e89825201c56b5330bf5c921a3ea94e98e4c29b",
+      "sourceSha256": "be5f11c83d6c370e6a9cb19ac78db953aa5dd61c4efe180f0378d3fc4ecebb1c",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/media.test.ts:61": {
       "file": "tests/server/media.test.ts",
-      "line": 61,
+      "line": 130,
       "testName": "finalizes pending metadata with checkpoint CAS and advances both parent and checkpoint exactly once",
-      "sourceSha256": "25c5e7f1008e9be7631921186e89825201c56b5330bf5c921a3ea94e98e4c29b",
+      "sourceSha256": "be5f11c83d6c370e6a9cb19ac78db953aa5dd61c4efe180f0378d3fc4ecebb1c",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/media.test.ts:112": {
       "file": "tests/server/media.test.ts",
-      "line": 112,
+      "line": 181,
       "testName": "rejects truncation, hash mismatch, malformed media, altered reservation retries and same-owner ready forgery",
-      "sourceSha256": "25c5e7f1008e9be7631921186e89825201c56b5330bf5c921a3ea94e98e4c29b",
+      "sourceSha256": "be5f11c83d6c370e6a9cb19ac78db953aa5dd61c4efe180f0378d3fc4ecebb1c",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/media.test.ts:142": {
       "file": "tests/server/media.test.ts",
-      "line": 142,
+      "line": 211,
       "testName": "serializes concurrent four-upload admission and releases cancelled reservations without mutating active data",
-      "sourceSha256": "25c5e7f1008e9be7631921186e89825201c56b5330bf5c921a3ea94e98e4c29b",
+      "sourceSha256": "be5f11c83d6c370e6a9cb19ac78db953aa5dd61c4efe180f0378d3fc4ecebb1c",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
@@ -2172,7 +2215,7 @@
       "file": "src/services/media-service.test.ts",
       "line": 67,
       "testName": "reuses a persisted verified upload after service restart without sending bytes twice",
-      "sourceSha256": "cf12b44fdcccd434f65b30c36a1e1d2da0b025dc839d8458a81abff5e13136b3",
+      "sourceSha256": "169e7694f423d5e09c563ff50250715f668803867a4a015bf191e96b617a8ecb",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2180,7 +2223,7 @@
       "file": "src/services/media-service.test.ts",
       "line": 85,
       "testName": "downloads missing media once and fences an account switch before persisting late bytes",
-      "sourceSha256": "cf12b44fdcccd434f65b30c36a1e1d2da0b025dc839d8458a81abff5e13136b3",
+      "sourceSha256": "169e7694f423d5e09c563ff50250715f668803867a4a015bf191e96b617a8ecb",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2188,7 +2231,7 @@
       "file": "src/services/media-service.test.ts",
       "line": 98,
       "testName": "failed upload retains the same reservation/request for an immutable retry",
-      "sourceSha256": "cf12b44fdcccd434f65b30c36a1e1d2da0b025dc839d8458a81abff5e13136b3",
+      "sourceSha256": "169e7694f423d5e09c563ff50250715f668803867a4a015bf191e96b617a8ecb",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2196,7 +2239,7 @@
       "file": "src/services/media-service.test.ts",
       "line": 117,
       "testName": "rejects a late repair after a scope change and never overwrites a different media descriptor",
-      "sourceSha256": "cf12b44fdcccd434f65b30c36a1e1d2da0b025dc839d8458a81abff5e13136b3",
+      "sourceSha256": "169e7694f423d5e09c563ff50250715f668803867a4a015bf191e96b617a8ecb",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2508,7 +2551,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 56,
       "testName": "restores full verified history as a separate recovered collection and same-token retry reuses it",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2516,7 +2559,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 68,
       "testName": "aborted candidate installation exposes no empty or partially restored collection",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2524,7 +2567,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 85,
       "testName": "missing bytes and scoped media-ID collisions fail atomically without overwriting or showing the candidate",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2532,7 +2575,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 103,
       "testName": "a generation change while media is being prepared cannot install the old-session candidate",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2540,7 +2583,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 119,
       "testName": "complete export pins one local view, fetches missing bytes from one server lease, and keeps unsent history",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2548,7 +2591,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 198,
       "testName": "missing server bytes reject a complete export and release both leases without emitting a partial backup",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2556,7 +2599,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 254,
       "testName": "cancel during remote export drains active downloads, preserves the collection and releases both leases",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2564,7 +2607,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 349,
       "testName": "lists only unavailable snapshot attachments, keeps successful bytes, and retry downloads only the remainder",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2572,7 +2615,7 @@
       "file": "src/services/backup-service.test.ts",
       "line": 488,
       "testName": "authentication failure during missing-media lookup remains an authentication error",
-      "sourceSha256": "75c10ecb38afc3fb4a5fb6d782c9c2724e0faf5fce48784ecf11a003b9758977",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -2602,9 +2645,9 @@
     },
     "tests/server/recovery.test.ts:60": {
       "file": "tests/server/recovery.test.ts",
-      "line": 60,
+      "line": 99,
       "testName": "makes dry-run status parseable without modifying catalogs or schedules",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2615,9 +2658,9 @@
     },
     "tests/server/recovery.test.ts:89": {
       "file": "tests/server/recovery.test.ts",
-      "line": 89,
+      "line": 128,
       "testName": "copies verified bytes, restores an isolated database, and applies an intent appended after the snapshot before traffic readiness",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2628,9 +2671,9 @@
     },
     "tests/server/recovery.test.ts:172": {
       "file": "tests/server/recovery.test.ts",
-      "line": 172,
+      "line": 211,
       "testName": "rejects unavailable or changing current ledgers and corrupted persisted objects without a ready gate",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2641,9 +2684,9 @@
     },
     "tests/server/recovery.test.ts:217": {
       "file": "tests/server/recovery.test.ts",
-      "line": 217,
+      "line": 256,
       "testName": "cancels before new erasure work and leaves persisted cursor retryable",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2654,9 +2697,9 @@
     },
     "tests/server/recovery.test.ts:229": {
       "file": "tests/server/recovery.test.ts",
-      "line": 229,
+      "line": 268,
       "testName": "fences scheduled work so simultaneous claims and stale completions cannot repeat effects",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2667,9 +2710,9 @@
     },
     "tests/server/recovery.test.ts:255": {
       "file": "tests/server/recovery.test.ts",
-      "line": 255,
+      "line": 294,
       "testName": "keeps partial copies incomplete and resumes the same operation after source repair",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2680,9 +2723,9 @@
     },
     "tests/server/recovery.test.ts:304": {
       "file": "tests/server/recovery.test.ts",
-      "line": 304,
+      "line": 343,
       "testName": "cleans registered interrupted drill databases and copies before allowing retention completion",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2693,9 +2736,9 @@
     },
     "tests/server/recovery.test.ts:328": {
       "file": "tests/server/recovery.test.ts",
-      "line": 328,
+      "line": 367,
       "testName": "does not expire a live paused restore owner then allow untracked artifacts to reappear",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -2706,9 +2749,9 @@
     },
     "tests/server/recovery.test.ts:367": {
       "file": "tests/server/recovery.test.ts",
-      "line": 367,
+      "line": 406,
       "testName": "completes a text-only deletion only after containing recovery bytes are physically expired",
-      "sourceSha256": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+      "sourceSha256": "5b28e39dff76dfde08afcf1d4c6c3fd089ee8480c930531c518cbe5b4f522ace",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -3127,177 +3170,177 @@
     },
     "tests/server/billing.test.ts:24": {
       "file": "tests/server/billing.test.ts",
-      "line": 24,
+      "line": 61,
       "testName": "keeps product/identity/entitlement authority server-side and native config public-only",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:60": {
       "file": "tests/server/billing.test.ts",
-      "line": 60,
+      "line": 97,
       "testName": "deduplicates concurrent preparation and recovers a lost provider creation response by stable reference",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:93": {
       "file": "tests/server/billing.test.ts",
-      "line": 93,
+      "line": 130,
       "testName": "verifies bound hosted callbacks and captured payment; rejects mismatched account and amount",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:125": {
       "file": "tests/server/billing.test.ts",
-      "line": 125,
+      "line": 162,
       "testName": "authenticates raw webhooks before durable acknowledgement and deduplicates replay",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:151": {
       "file": "tests/server/billing.test.ts",
-      "line": 151,
+      "line": 188,
       "testName": "does not acknowledge an inbox transaction that failed before durable insert",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:173": {
       "file": "tests/server/billing.test.ts",
-      "line": 173,
+      "line": 210,
       "testName": "derives ANY-valid cross-provider access and handles sequential and simultaneous refunds",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:201": {
       "file": "tests/server/billing.test.ts",
-      "line": 201,
+      "line": 238,
       "testName": "rejects stale purchase fences and production grants in a sandbox ledger",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:230": {
       "file": "tests/server/billing.test.ts",
-      "line": 230,
+      "line": 267,
       "testName": "keeps wrong native ownership and sandbox claims from granting access",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:245": {
       "file": "tests/server/billing.test.ts",
-      "line": 245,
+      "line": 282,
       "testName": "fetches disputes authoritatively and preserves revocation across delayed paid events",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:275": {
       "file": "tests/server/billing.test.ts",
-      "line": 275,
+      "line": 312,
       "testName": "requires fresh authentication and independent ownership, rotates recovery keys and never recreates craft",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:343": {
       "file": "tests/server/billing.test.ts",
-      "line": 343,
+      "line": 380,
       "testName": "fences an actual delayed stale provider response after a newer refund observation",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:366": {
       "file": "tests/server/billing.test.ts",
-      "line": 366,
+      "line": 403,
       "testName": "requires an explicit audited promotion allowlist and rejects repeated promotion",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:391": {
       "file": "tests/server/billing.test.ts",
-      "line": 391,
+      "line": 428,
       "testName": "applies webhook backlog backpressure before 2xx while still acknowledging durable duplicates",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:408": {
       "file": "tests/server/billing.test.ts",
-      "line": 408,
+      "line": 445,
       "testName": "keeps the confirmed amount immutable when the audited catalog changes later",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:432": {
       "file": "tests/server/billing.test.ts",
-      "line": 432,
+      "line": 469,
       "testName": "serializes competing recovery claims and refuses to take an actively bound principal",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:460": {
       "file": "tests/server/billing.test.ts",
-      "line": 460,
+      "line": 497,
       "testName": "requires privileged independently verified support evidence for a lost key and rejects the rotated old key",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:511": {
       "file": "tests/server/billing.test.ts",
-      "line": 511,
+      "line": 548,
       "testName": "authenticates native webhook hints and re-fetches original identified ownership before granting",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:534": {
       "file": "tests/server/billing.test.ts",
-      "line": 534,
+      "line": 571,
       "testName": "releases cancelled or expired native admission without losing late purchase reconciliation",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:599": {
       "file": "tests/server/billing.test.ts",
-      "line": 599,
+      "line": 636,
       "testName": "cannot repopulate erased checkout navigation data from a late provider creation response",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:629": {
       "file": "tests/server/billing.test.ts",
-      "line": 629,
+      "line": 666,
       "testName": "bounds actual simultaneous purchase leases at four without discarding deferred identities",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:653": {
       "file": "tests/server/billing.test.ts",
-      "line": 653,
+      "line": 690,
       "testName": "resolves original native store receipts uniquely and resumes a saved pending claim",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
     "tests/server/billing.test.ts:712": {
       "file": "tests/server/billing.test.ts",
-      "line": 712,
+      "line": 749,
       "testName": "reports only the current owned recovery hash while preserving historical key receipts",
-      "sourceSha256": "9dc121cf6b0ff64ba5dbd5028566f5a6d964f0b522c7d07d28ddae0e857b4ca7",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
       "level": "real-local-backend",
       "executedProofRefs": []
     },
@@ -3463,7 +3506,7 @@
     },
     "tests/dx/bundle.test.mjs:10": {
       "file": "tests/dx/bundle.test.mjs",
-      "line": 10,
+      "line": 11,
       "testName": "production browser assets exclude server/provider secret environment values",
       "sourceSha256": "4cfbcf9f46da71a71903dcbabb279542cd5f7ba1085219e5bdd873e4a7c2d9a1",
       "level": "unit-or-contract",
@@ -3535,9 +3578,9 @@
     },
     "tests/server/deletion.test.ts:54": {
       "file": "tests/server/deletion.test.ts",
-      "line": 54,
+      "line": 158,
       "testName": "requires recent auth, durably revokes refresh, denies old JWTs, and completes live erasure with a narrow receipt",
-      "sourceSha256": "97f256be339e50ad8f8126092fa6bcace641855b6918a2630497c51712dffd2a",
+      "sourceSha256": "97cfe276ac6c7d78f4f0adb9f75efe4fcba95b84c56d7a9c4a3770f058999f98",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -3548,9 +3591,9 @@
     },
     "tests/server/deletion.test.ts:136": {
       "file": "tests/server/deletion.test.ts",
-      "line": 136,
+      "line": 240,
       "testName": "preserves original receipt capability after ledger append before the primary barrier and retries idempotently",
-      "sourceSha256": "97f256be339e50ad8f8126092fa6bcace641855b6918a2630497c51712dffd2a",
+      "sourceSha256": "97cfe276ac6c7d78f4f0adb9f75efe4fcba95b84c56d7a9c4a3770f058999f98",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -3561,9 +3604,9 @@
     },
     "tests/server/deletion.test.ts:176": {
       "file": "tests/server/deletion.test.ts",
-      "line": 176,
+      "line": 280,
       "testName": "blocks late uploads and finalizers and waits past reserved expiry before storage erasure",
-      "sourceSha256": "97f256be339e50ad8f8126092fa6bcace641855b6918a2630497c51712dffd2a",
+      "sourceSha256": "97cfe276ac6c7d78f4f0adb9f75efe4fcba95b84c56d7a9c4a3770f058999f98",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -3574,9 +3617,9 @@
     },
     "tests/server/deletion.test.ts:228": {
       "file": "tests/server/deletion.test.ts",
-      "line": 228,
+      "line": 332,
       "testName": "expires the original receipt capability and rate-limits valid anonymous lookup",
-      "sourceSha256": "97f256be339e50ad8f8126092fa6bcace641855b6918a2630497c51712dffd2a",
+      "sourceSha256": "97cfe276ac6c7d78f4f0adb9f75efe4fcba95b84c56d7a9c4a3770f058999f98",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -4042,7 +4085,7 @@
       "file": "tests/performance/capture.load.ts",
       "line": 9,
       "testName": "connected local capture remains durable during the independently timed service load",
-      "sourceSha256": "e6b5fd5cd7e21664b4ac16d75b825414811e1cec824ccdd4851c4d6e795c36af",
+      "sourceSha256": "c9667817569182c02297c828bcf3c7437b4519b9adec6a9b87eb1b8f70347c5d",
       "level": "unit-or-contract",
       "executedProofRefs": []
     },
@@ -4077,9 +4120,9 @@
     },
     "tests/server/operations.test.ts:14": {
       "file": "tests/server/operations.test.ts",
-      "line": 14,
+      "line": 138,
       "testName": "records bounded redacted phase/queue projections and protects them from direct client writes",
-      "sourceSha256": "9a2b1a910754976dd99c6f193b49bc467170aa89ddee0d9c3c7fd4ea62307c7b",
+      "sourceSha256": "304f0590d8d9cc4cfe6482c7b340f1c27ff408664e275001609545d2ffcdb8ca",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -4090,9 +4133,9 @@
     },
     "tests/server/operations.test.ts:75": {
       "file": "tests/server/operations.test.ts",
-      "line": 75,
+      "line": 199,
       "testName": "pauses new enrollment/payment within fifteen minutes while existing sessions, writes, reads and export snapshots remain available",
-      "sourceSha256": "9a2b1a910754976dd99c6f193b49bc467170aa89ddee0d9c3c7fd4ea62307c7b",
+      "sourceSha256": "304f0590d8d9cc4cfe6482c7b340f1c27ff408664e275001609545d2ffcdb8ca",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -4103,9 +4146,9 @@
     },
     "tests/server/operations.test.ts:167": {
       "file": "tests/server/operations.test.ts",
-      "line": 167,
+      "line": 291,
       "testName": "runs the preceding protocol-2 function artifact on the additive current schema and restores current runtime",
-      "sourceSha256": "9a2b1a910754976dd99c6f193b49bc467170aa89ddee0d9c3c7fd4ea62307c7b",
+      "sourceSha256": "304f0590d8d9cc4cfe6482c7b340f1c27ff408664e275001609545d2ffcdb8ca",
       "level": "real-local-backend",
       "executedProofRefs": [
         {
@@ -4166,7 +4209,7 @@
       "file": "tests/expansion/diagnostics.spec.ts",
       "line": 5,
       "testName": "actual app previews the exact diagnostic bytes before explicit local download without including craft content",
-      "sourceSha256": "00a87d96d6ff00101b477887128d5c9eaf354d35431366494d69f9ff22d9148d",
+      "sourceSha256": "e88ceabb3a010d8b489559bb1337755f365ab2b4e68fa2c441644441d24ed1e8",
       "level": "actual-product-browser",
       "executedProofRefs": []
     },
@@ -4328,6 +4371,285 @@
       "testName": "actual ${trigger === 'retired' ? 'retired-device' : 'expired-feed-cursor'} recovery keeps attempted checkpoint, photo and draft without replay, then accepts a fresh command",
       "sourceSha256": "c2d71c8dd3f08551a80b41a409b3d3b68cb4787e1aae9d53f7ec4cc17fc2738d",
       "level": "actual-product-browser",
+      "executedProofRefs": []
+    },
+    "src/sync/offline-chain.test.ts:review:db8e4b8b9f7a": {
+      "file": "src/sync/offline-chain.test.ts",
+      "line": 17,
+      "testName": "T08 offline create → edit → edit → append survives process restart and a committed-but-lost acknowledgement without rewriting dependencies",
+      "sourceSha256": "531a89cc87a77ba0d00100b91957a81f41e5fece2d47d449556dc432abe27f28",
+      "level": "unit-or-contract",
+      "executedProofRefs": []
+    },
+    "src/repositories/browser/repository.test.ts:review:f46da37a76eb": {
+      "file": "src/repositories/browser/repository.test.ts",
+      "line": 852,
+      "testName": "T12 %s preserves recovered intent and converges to the newest cloud version without retiring a stale review",
+      "sourceSha256": "605296dc0cec0fded81993abbbfaa90c635c95e424f7876514374f76f6fc2d84",
+      "level": "unit-or-contract",
+      "executedProofRefs": []
+    },
+    "tests/server/media.test.ts:review:62c73fd20aac": {
+      "file": "tests/server/media.test.ts",
+      "line": 6,
+      "testName": "refuses an expired ordinary upload reservation and completes the same retained bytes with a fresh reservation",
+      "sourceSha256": "be5f11c83d6c370e6a9cb19ac78db953aa5dd61c4efe180f0378d3fc4ecebb1c",
+      "level": "actual-local-backend",
+      "executedProofRefs": []
+    },
+    "src/services/backup-service.test.ts:review:3d4a228b5ae1": {
+      "file": "src/services/backup-service.test.ts",
+      "line": 659,
+      "testName": "T17 rejects a file larger than 50 MiB before parsing or restoring any records",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
+      "level": "unit-or-contract",
+      "executedProofRefs": []
+    },
+    "src/services/backup-service.test.ts:review:859defeab3ce": {
+      "file": "src/services/backup-service.test.ts",
+      "line": 667,
+      "testName": "T18 expired export lease yields no partial file, releases both pins, and retries only uncached bytes under a fresh lease",
+      "sourceSha256": "719d1a66dc9f14514f4bcdd9dfe8a07bd7d53b3a82a35c88e4c7b58c5593a498",
+      "level": "unit-or-contract",
+      "executedProofRefs": []
+    },
+    "tests/server/replacement.test.ts:review:c04bba446b56": {
+      "file": "tests/server/replacement.test.ts",
+      "line": 23,
+      "testName": "serializes actual checkpoint append and replacement when ${first} commits first",
+      "sourceSha256": "da7579d56ce4b9bdcccc679f100648e96a48c4869881050f4ff4c5f9629f4f70",
+      "level": "actual-local-backend",
+      "executedProofRefs": []
+    },
+    "tests/expansion/downloads.cloud.ts:review:c0cc24209e05": {
+      "file": "tests/expansion/downloads.cloud.ts",
+      "line": 8,
+      "testName": "whole-project offline files can be downloaded, explicitly removed, and fetched again without changing the cloud photo",
+      "sourceSha256": "84918ff23ad3b6fc8b3ea15c8aff098d0e9491b7aafa0a5cf16e6b516985d4da",
+      "level": "actual-app-local-backend",
+      "executedProofRefs": []
+    },
+    "tests/ui/project-downloads.ui.ts:review:91629dc6178e": {
+      "file": "tests/ui/project-downloads.ui.ts",
+      "line": 4,
+      "testName": "offline state, explicit confirmation, retained files and protected errors stay independent of capture",
+      "sourceSha256": "194be82e3ca7da699aa40af6b353a3133b84248639892159812af15b684f1e68",
+      "level": "production-component",
+      "executedProofRefs": []
+    },
+    "src/services/downloads-service.test.ts:review:d481b1caaa77": {
+      "file": "src/services/downloads-service.test.ts",
+      "line": 95,
+      "testName": "truthfully checks whole-project offline readiness, removes only downloaded bytes and downloads them again without cloud mutation",
+      "sourceSha256": "37da7b46ee3970a4893e158161925a90de459d57eab2ba4652b020d9b35b9f62",
+      "level": "unit-or-contract",
+      "executedProofRefs": []
+    },
+    "src/services/downloads-service.test.ts:review:dcec5b7396e2": {
+      "file": "src/services/downloads-service.test.ts",
+      "line": 130,
+      "testName": "retains bytes owned by %s while safely evicting unrelated downloads",
+      "sourceSha256": "37da7b46ee3970a4893e158161925a90de459d57eab2ba4652b020d9b35b9f62",
+      "level": "unit-or-contract",
+      "executedProofRefs": []
+    },
+    "tests/native/harness/downloads.ts:review:cc12c6df2938": {
+      "file": "tests/native/harness/downloads.ts",
+      "line": 23,
+      "testName": "nativeDownloads: protected pins, SQL rollback, durable cleanup rejection/retry, redownload and full scope fence",
+      "sourceSha256": "8c3bece443ba2113eba4eb18829669eb46d7bce54e1fd128a3c7066513c83401",
+      "level": "actual-native-adapters",
+      "executedProofRefs": [
+        "nativeFunctionalFinal"
+      ]
+    },
+    "tests/ui/expanded-accessibility.ui.ts:review:e49795d1173e": {
+      "file": "tests/ui/expanded-accessibility.ui.ts",
+      "line": 3,
+      "testName": "sync announces each actionable transition once without repeating polling updates",
+      "sourceSha256": "98335deea3e3842fb6c4698e9b247bb98fb17ad969adf48a76807881e5ca15f1",
+      "level": "production-component",
+      "executedProofRefs": []
+    },
+    "tests/ui/expanded-accessibility.ui.ts:review:ac5886cd72f2": {
+      "file": "tests/ui/expanded-accessibility.ui.ts",
+      "line": 54,
+      "testName": "account, conflict, recovery and long localized prices remain usable at 200 percent text and zoom reflow",
+      "sourceSha256": "98335deea3e3842fb6c4698e9b247bb98fb17ad969adf48a76807881e5ca15f1",
+      "level": "production-component",
+      "executedProofRefs": []
+    },
+    "docs/release/store-disclosures.md:review:76ceb7187f27": {
+      "file": "docs/release/store-disclosures.md",
+      "line": 7,
+      "testName": "Capacity-only upgrade and always-readable history disclosure",
+      "sourceSha256": "b83fabf47dbede833b98548c5f0ab29313dc192b564a007a5c2c1917632aaed9",
+      "level": "manual-source-review",
+      "executedProofRefs": []
+    },
+    "tests/ops/commands.test.mjs:review:f44c094e2fe2": {
+      "file": "tests/ops/commands.test.mjs",
+      "line": 7,
+      "testName": "help is dependency-free and default local grammar preserves exact exit classes",
+      "sourceSha256": "758fbd1e8549e2d11329c9e062b207a104558d907989e8913bd421886b4c3a4b",
+      "level": "cli-process",
+      "executedProofRefs": []
+    },
+    "tests/ops/commands.test.mjs:review:3e8e80e28b01": {
+      "file": "tests/ops/commands.test.mjs",
+      "line": 43,
+      "testName": "opaque cursors bind exact project command target and durable job without granting skip authority",
+      "sourceSha256": "758fbd1e8549e2d11329c9e062b207a104558d907989e8913bd421886b4c3a4b",
+      "level": "cli-contract",
+      "executedProofRefs": []
+    },
+    "tests/server/operations.test.ts:review:de5e86d8d485": {
+      "file": "tests/server/operations.test.ts",
+      "line": 16,
+      "testName": "runs default-local dry-run and returns resumable partial and denied CLI exit contracts on actual services",
+      "sourceSha256": "304f0590d8d9cc4cfe6482c7b340f1c27ff408664e275001609545d2ffcdb8ca",
+      "level": "actual-local-backend",
+      "executedProofRefs": []
+    },
+    "tests/server/billing.test.ts:review:778543f84e5b": {
+      "file": "tests/server/billing.test.ts",
+      "line": 24,
+      "testName": "refuses sandbox webhook and grant admission inside a production ledger transaction",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
+      "level": "actual-local-backend",
+      "executedProofRefs": []
+    },
+    "tests/server/billing.test.ts:review:25fd7fdd5b4d": {
+      "file": "tests/server/billing.test.ts",
+      "line": 61,
+      "testName": "keeps product/identity/entitlement authority server-side and native config public-only",
+      "sourceSha256": "650b51a9b0ec6bead351aff07d71e935bcc36e2dc2f0a780f287efa6784e9110",
+      "level": "actual-local-backend",
+      "executedProofRefs": []
+    },
+    "tests/server/deletion.test.ts:review:8201fe874ed2": {
+      "file": "tests/server/deletion.test.ts",
+      "line": 63,
+      "testName": "serializes a live media finalizer before deletion and erases its bytes without resurrection",
+      "sourceSha256": "97cfe276ac6c7d78f4f0adb9f75efe4fcba95b84c56d7a9c4a3770f058999f98",
+      "level": "actual-local-backend",
+      "executedProofRefs": []
+    },
+    "tests/native/harness/inbox.ts:review:82b4fe5df904": {
+      "file": "tests/native/harness/inbox.ts",
+      "line": 24,
+      "testName": "nativeInbox: actual prior OS delivery, reopen, full-scope re-review, validated isolated restore and repeated completion",
+      "sourceSha256": "b781c825b9ef1b809e7a792289e3ca3622a8d2b0465f3c07f46e560b8310639a",
+      "level": "actual-native-adapters",
+      "executedProofRefs": [
+        "nativeInboxFinal",
+        "nativeFunctionalFinal"
+      ]
+    },
+    "ios/App/UITests/NativeFlows.swift:review:7c2a55d3482a": {
+      "file": "ios/App/UITests/NativeFlows.swift",
+      "line": 115,
+      "testName": "testOSDocumentDeliveryToBenchmarkApp",
+      "sourceSha256": "f7192efa386ab88f183aaf3720e716d959ce15a8ffe6445d359126950be3c296",
+      "level": "actual-ios-xctest",
+      "executedProofRefs": [
+        "nativeInboxFinal"
+      ]
+    },
+    "ios/App/UITests/BackupInboxStoreTests.swift:review:3e1d86e145d8": {
+      "file": "ios/App/UITests/BackupInboxStoreTests.swift",
+      "line": 13,
+      "testName": "testDurableReopenRepeatedFileAndHandledReceipt",
+      "sourceSha256": "945453514c148be6a44cd78c238e2b4acafb104d31ebb4b088d18f922412048a",
+      "level": "actual-ios-xctest",
+      "executedProofRefs": [
+        "nativeInboxFinal"
+      ]
+    },
+    "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:06faec824ab6": {
+      "file": "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java",
+      "line": 32,
+      "testName": "reopenRepeatedFileAndHandledReceipt",
+      "sourceSha256": "061ff3fd10d84c31b7ff3891fab8106f4ea77a11dd6cf70bd9a83e885bc0bb43",
+      "level": "actual-android-instrumentation",
+      "executedProofRefs": [
+        "nativeInboxFinal"
+      ]
+    },
+    "ios/App/UITests/BackupInboxStoreTests.swift:review:a0888de08af9": {
+      "file": "ios/App/UITests/BackupInboxStoreTests.swift",
+      "line": 46,
+      "testName": "testFailedPrivateAndNoticeWritesExposeStorageFailure",
+      "sourceSha256": "945453514c148be6a44cd78c238e2b4acafb104d31ebb4b088d18f922412048a",
+      "level": "actual-ios-xctest",
+      "executedProofRefs": [
+        "nativeInboxFinal"
+      ]
+    },
+    "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:b6e8266f0b9c": {
+      "file": "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java",
+      "line": 55,
+      "testName": "failedPrivateAndNoticeWritesExposeFailure",
+      "sourceSha256": "061ff3fd10d84c31b7ff3891fab8106f4ea77a11dd6cf70bd9a83e885bc0bb43",
+      "level": "actual-android-instrumentation",
+      "executedProofRefs": [
+        "nativeInboxFinal"
+      ]
+    },
+    "tests/native/benchmark/main.ts:review:dc64c5ea89fb": {
+      "file": "tests/native/benchmark/main.ts",
+      "line": 167,
+      "testName": "Native benchmark exact restored count/hash and complete compact JSON/native-file-size assertions",
+      "sourceSha256": "4722fe0c2c0451f30a170ec020b6b64e51077e41959db98ee8c07c7893e52dc4",
+      "level": "actual-native-benchmark",
+      "executedProofRefs": [
+        "nativeMeasuredFinal"
+      ]
+    },
+    "tests/scale.spec.ts:review:9a8c570dcbee": {
+      "file": "tests/scale.spec.ts",
+      "line": 165,
+      "testName": "50 projects and 500 checkpoints remain searchable and reload intact",
+      "sourceSha256": "cd1b04aa434ee9ed4659ec41a348a2c902cd7620f2298a3f0149d2a5d4436d09",
+      "level": "actual-browser-scale",
+      "executedProofRefs": [
+        "webScaleFinal"
+      ]
+    },
+    "tests/scale.spec.ts:review:3de160f7b6e8": {
+      "file": "tests/scale.spec.ts",
+      "line": 212,
+      "testName": "20-project 200-checkpoint text saves render committed feedback and persist",
+      "sourceSha256": "cd1b04aa434ee9ed4659ec41a348a2c902cd7620f2298a3f0149d2a5d4436d09",
+      "level": "actual-browser-scale",
+      "executedProofRefs": [
+        "webScaleFinal"
+      ]
+    },
+    "tests/scale.spec.ts:review:ba3a738de933": {
+      "file": "tests/scale.spec.ts",
+      "line": 250,
+      "testName": "10-project 100-checkpoint media backup validates, restores and roundtrips",
+      "sourceSha256": "cd1b04aa434ee9ed4659ec41a348a2c902cd7620f2298a3f0149d2a5d4436d09",
+      "level": "actual-browser-scale",
+      "executedProofRefs": [
+        "webScaleFinal"
+      ]
+    },
+    "tests/ui/project-detail.ui.ts:review:489eef94ded4": {
+      "file": "tests/ui/project-detail.ui.ts",
+      "line": 3,
+      "testName": "the next stitch and tool precede secondary file administration on desktop and narrow screens",
+      "sourceSha256": "797434d985b2400970077d466fffbac0b3d48cc46f4113b7bf8141c69618739c",
+      "level": "production-component",
+      "executedProofRefs": []
+    },
+    "tests/ui/project-detail.ui.ts:review:09054233460b": {
+      "file": "tests/ui/project-detail.ui.ts",
+      "line": 29,
+      "testName": "individual attachment failure ${failure} retains its trusted remedy and readable checkpoint",
+      "sourceSha256": "797434d985b2400970077d466fffbac0b3d48cc46f4113b7bf8141c69618739c",
+      "level": "production-component",
       "executedProofRefs": []
     }
   },
@@ -4947,9 +5269,12 @@
         "T33",
         "T43"
       ],
-      "status": "pending-derived-adjudication",
+      "status": "pending-integrated-verification",
       "limitations": [
         "Acceptance is the union of the referenced branch records; a passing test count alone does not close this requirement."
+      ],
+      "directOracleRefs": [
+        "tests/ui/project-detail.ui.ts:review:09054233460b"
       ]
     },
     {
@@ -5112,9 +5437,12 @@
         "T34",
         "T36"
       ],
-      "status": "pending-derived-adjudication",
+      "status": "pending-integrated-verification",
       "limitations": [
         "Acceptance is the union of the referenced branch records; a passing test count alone does not close this requirement."
+      ],
+      "directOracleRefs": [
+        "tests/ui/project-detail.ui.ts:review:489eef94ded4"
       ]
     },
     {
@@ -5145,7 +5473,7 @@
         "T16",
         "T33"
       ],
-      "status": "pending-derived-adjudication",
+      "status": "pending-integrated-verification",
       "limitations": [
         "Acceptance is the union of the referenced branch records; a passing test count alone does not close this requirement."
       ]
@@ -5232,7 +5560,7 @@
         "T41",
         "T43"
       ],
-      "status": "pending-derived-adjudication",
+      "status": "pending-integrated-verification",
       "limitations": [
         "Acceptance is the union of the referenced branch records; a passing test count alone does not close this requirement."
       ]
@@ -5365,7 +5693,7 @@
         "T33",
         "T43"
       ],
-      "status": "pending-derived-adjudication",
+      "status": "pending-integrated-verification",
       "limitations": [
         "Acceptance is the union of the referenced branch records; a passing test count alone does not close this requirement."
       ]
@@ -5396,9 +5724,12 @@
         "T37",
         "T40"
       ],
-      "status": "pending-derived-adjudication",
+      "status": "pending-integrated-verification",
       "limitations": [
         "Acceptance is the union of the referenced branch records; a passing test count alone does not close this requirement."
+      ],
+      "directEvidenceRefs": [
+        "nativeDependencyInventory"
       ]
     },
     {
@@ -6425,6 +6756,7 @@
         }
       ],
       "oracleRefs": [
+        "src/sync/offline-chain.test.ts:review:db8e4b8b9f7a",
         "src/repositories/browser/repository.test.ts:334",
         "src/sync/coordinator.test.ts:93",
         "src/services/local-data-service.test.ts:95",
@@ -6433,8 +6765,10 @@
       "acceptanceBranches": [
         {
           "branch": "Offline create → edit → edit → append",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "src/sync/offline-chain.test.ts:review:db8e4b8b9f7a"
+          ]
         },
         {
           "branch": "dependency receipt",
@@ -6480,6 +6814,10 @@
         },
         {
           "path": "tests/expansion/sync-smoke.spec.ts",
+          "present": true
+        },
+        {
+          "path": "src/sync/offline-chain.test.ts",
           "present": true
         }
       ],
@@ -6822,6 +7160,7 @@
       ],
       "oracleRefs": [
         "src/repositories/browser/repository.test.ts:296",
+        "src/repositories/browser/repository.test.ts:review:f46da37a76eb",
         "tests/expansion/conflicts.cloud.ts:12",
         "src/repositories/browser/repository.test.ts:749"
       ],
@@ -6842,8 +7181,11 @@
         },
         {
           "branch": "both conflict completion orders",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "src/repositories/browser/repository.test.ts:review:f46da37a76eb"
+          ],
+          "reviewNote": "Parameterized shadow-first and resolution-first orders preserve recovered intent and reject stale reviewed state."
         },
         {
           "branch": "decide later",
@@ -7135,7 +7477,8 @@
         "tests/server/media.test.ts:6",
         "tests/server/media.test.ts:142",
         "tests/server/media.test.ts:112",
-        "src/services/media-service.test.ts:98"
+        "src/services/media-service.test.ts:98",
+        "tests/server/media.test.ts:review:62c73fd20aac"
       ],
       "acceptanceBranches": [
         {
@@ -7168,9 +7511,10 @@
         },
         {
           "branch": "expiry",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": [],
-          "reviewNote": "Ordinary upload lease expiry is distinct from candidate expiry; direct expiry/retry assertion assigned to backend owner."
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/server/media.test.ts:review:62c73fd20aac"
+          ]
         },
         {
           "branch": "overwrite",
@@ -7230,12 +7574,37 @@
         {
           "path": "src/components/ProjectView.tsx",
           "present": true
+        },
+        {
+          "path": "src/services/downloads-service.ts",
+          "present": true
+        },
+        {
+          "path": "src/repositories/downloads.ts",
+          "present": true
+        },
+        {
+          "path": "src/repositories/browser/downloads.ts",
+          "present": true
+        },
+        {
+          "path": "src/platform/native/downloads.ts",
+          "present": true
+        },
+        {
+          "path": "src/components/ProjectDownloads.tsx",
+          "present": true
         }
       ],
       "oracleRefs": [
         "src/services/local-data-service.test.ts:172",
         "src/services/media-service.test.ts:85",
         "src/services/media-service.test.ts:117",
+        "tests/expansion/downloads.cloud.ts:review:c0cc24209e05",
+        "tests/ui/project-downloads.ui.ts:review:91629dc6178e",
+        "src/services/downloads-service.test.ts:review:d481b1caaa77",
+        "src/services/downloads-service.test.ts:review:dcec5b7396e2",
+        "tests/native/harness/downloads.ts:review:cc12c6df2938",
         "tests/expansion/media-export.cloud.ts:11"
       ],
       "acceptanceBranches": [
@@ -7263,14 +7632,26 @@
         },
         {
           "branch": "offline missing media",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": [],
-          "reviewNote": "Existing missing-byte service assertion is insufficient for offline placeholder/disabled-download UI; assigned with D07 eviction."
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/expansion/downloads.cloud.ts:review:c0cc24209e05",
+            "tests/ui/project-downloads.ui.ts:review:91629dc6178e"
+          ],
+          "reviewNote": "Actual App oracle asserts missing photo remains readable as text, offline explanatory placeholder, disabled download and no offline request."
         },
         {
           "branch": "cache removal",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "src/services/downloads-service.test.ts:review:d481b1caaa77",
+            "src/services/downloads-service.test.ts:review:dcec5b7396e2",
+            "tests/native/harness/downloads.ts:review:cc12c6df2938",
+            "tests/expansion/downloads.cloud.ts:review:c0cc24209e05"
+          ],
+          "reviewNote": "Native d26ee16 download-related implementation and fixture files are byte-equivalent at reviewed source (git diff empty); both platforms executed. Actual final App/cloud matrix pending.",
+          "proofRefs": [
+            "nativeFunctionalFinal"
+          ]
         },
         {
           "branch": "retry",
@@ -7304,14 +7685,31 @@
         {
           "path": "tests/native/harness/media-repair.ts",
           "present": true
+        },
+        {
+          "path": "tests/expansion/downloads.cloud.ts",
+          "present": true
+        },
+        {
+          "path": "tests/ui/project-downloads.ui.ts",
+          "present": true
+        },
+        {
+          "path": "src/services/downloads-service.test.ts",
+          "present": true
+        },
+        {
+          "path": "tests/native/harness/downloads.ts",
+          "present": true
         }
       ],
       "proofRefs": [
         "unitCurrent",
         "native",
-        "nativeProduct"
+        "nativeProduct",
+        "nativeFunctionalFinal"
       ],
-      "status": "local-implementation-gap",
+      "status": "pending-integrated-verification",
       "limitations": []
     },
     {
@@ -7339,6 +7737,7 @@
         "src/domain/policy.test.ts:12",
         "src/domain/policy.test.ts:73",
         "tests/server/boundaries.test.ts:53",
+        "src/services/backup-service.test.ts:review:3d4a228b5ae1",
         "tests/server/media.test.ts:142",
         "tests/server/capacity.test.ts:9"
       ],
@@ -7366,9 +7765,10 @@
         },
         {
           "branch": "50 MiB file",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": [],
-          "reviewNote": "50 MiB input guard exists; explicit over-limit rejection assertion assigned to client owner."
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "src/services/backup-service.test.ts:review:3d4a228b5ae1"
+          ]
         },
         {
           "branch": "concurrent reservations",
@@ -7409,6 +7809,10 @@
         {
           "path": "tests/server/media.test.ts",
           "present": true
+        },
+        {
+          "path": "src/services/backup-service.test.ts",
+          "present": true
         }
       ],
       "proofRefs": [
@@ -7444,6 +7848,7 @@
       "oracleRefs": [
         "src/services/backup-service.test.ts:119",
         "tests/server/usage-sweep.test.ts:80",
+        "src/services/backup-service.test.ts:review:859defeab3ce",
         "tests/expansion/media-export.cloud.ts:11"
       ],
       "acceptanceBranches": [
@@ -7477,8 +7882,10 @@
         },
         {
           "branch": "lease expiry",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "src/services/backup-service.test.ts:review:859defeab3ce"
+          ]
         },
         {
           "branch": "failed byte download",
@@ -7550,6 +7957,7 @@
       "oracleRefs": [
         "src/services/backup-service.test.ts:85",
         "tests/server/replacement.test.ts:97",
+        "tests/server/replacement.test.ts:review:c04bba446b56",
         "src/services/replacement-service.test.ts:206",
         "tests/server/capacity.test.ts:9",
         "src/services/replacement-service.test.ts:278"
@@ -7571,8 +7979,11 @@
         },
         {
           "branch": "concurrent append in both orders",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/server/replacement.test.ts:review:c04bba446b56"
+          ],
+          "reviewNote": "Real held SQL transaction and waiting HTTP operation in append-first and replacement-first orders; rejected loser leaves no receipt/effect."
         },
         {
           "branch": "epoch swap",
@@ -8202,18 +8613,19 @@
         }
       ],
       "oracleRefs": [
-        "tests/server/billing.test.ts:201",
+        "tests/server/billing.test.ts:review:778543f84e5b",
         "tests/server/billing.test.ts:93",
         "src/config.test.ts:153",
-        "tests/dx/bundle.test.mjs:10"
+        "tests/server/billing.test.ts:review:25fd7fdd5b4d"
       ],
       "acceptanceBranches": [
         {
           "branch": "Sandbox event to production",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "tests/server/billing.test.ts:201"
-          ]
+            "tests/server/billing.test.ts:review:778543f84e5b"
+          ],
+          "reviewNote": "Reverse direction uses service-role production catalog inside rollback-only transaction; exact CAPABILITY_UNAVAILABLE required for webhook, lease and grant. Runtime rerun pending."
         },
         {
           "branch": "wrong product or currency",
@@ -8233,8 +8645,9 @@
           "branch": "fake grant injection",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "tests/dx/bundle.test.mjs:10"
-          ]
+            "tests/server/billing.test.ts:review:25fd7fdd5b4d"
+          ],
+          "reviewNote": "Rejects forged amount/upgraded request and authenticated direct grant RPC; secret-bundle exclusion is a separate assertion."
         }
       ],
       "testFiles": [
@@ -8421,7 +8834,8 @@
         "src/services/deletion-service.test.ts:53",
         "tests/server/deletion.test.ts:176",
         "tests/server/billing.test.ts:275",
-        "tests/server/billing.test.ts:599"
+        "tests/server/billing.test.ts:599",
+        "tests/server/deletion.test.ts:review:8201fe874ed2"
       ],
       "acceptanceBranches": [
         {
@@ -8451,9 +8865,10 @@
           "oracleRefs": [
             "tests/server/deletion.test.ts:176",
             "tests/server/billing.test.ts:275",
-            "tests/server/billing.test.ts:599"
+            "tests/server/billing.test.ts:599",
+            "tests/server/deletion.test.ts:review:8201fe874ed2"
           ],
-          "reviewNote": "Covers upload admission before barrier with late verified finalizer denied/final sweep; verified purchase before deletion and delayed payment after deletion; erased checkout-navigation late response cannot repopulate fields. Final two-order adequacy remains explicit review item."
+          "reviewNote": "Controlled finalizer-first held transaction added to existing deletion-first admitted upload and payment/late-provider assertions. New fixture runtime pending."
         },
         {
           "branch": "final sweep",
@@ -8959,12 +9374,48 @@
         {
           "path": "src/runtime.ts",
           "present": true
+        },
+        {
+          "path": "src/platform/native/backup-inbox.ts",
+          "present": true
+        },
+        {
+          "path": "src/components/NativeBackupNotice.tsx",
+          "present": true
+        },
+        {
+          "path": "ios/App/App/BackupInbox.swift",
+          "present": true
+        },
+        {
+          "path": "ios/App/App/BackupInboxPlugin.swift",
+          "present": true
+        },
+        {
+          "path": "ios/App/App/SceneDelegate.swift",
+          "present": true
+        },
+        {
+          "path": "android/app/src/main/java/app/loopmark/craft/BackupInbox.java",
+          "present": true
+        },
+        {
+          "path": "android/app/src/main/java/app/loopmark/craft/BackupInboxPlugin.java",
+          "present": true
+        },
+        {
+          "path": "android/app/src/main/java/app/loopmark/craft/MainActivity.java",
+          "present": true
         }
       ],
       "oracleRefs": [
         "tests/expansion/media-export.cloud.ts:104",
         "docs/evidence/expansion/native/native-ui-flows.json:1:Actual simulator/emulator sheet, picker and audio outcomes",
-        "src/data.test.ts:153"
+        "src/data.test.ts:153",
+        "ios/App/UITests/NativeFlows.swift:review:7c2a55d3482a",
+        "tests/native/harness/inbox.ts:review:82b4fe5df904",
+        "ios/App/UITests/BackupInboxStoreTests.swift:review:3e1d86e145d8",
+        "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:06faec824ab6"
       ],
       "acceptanceBranches": [
         {
@@ -9005,21 +9456,41 @@
           "branch": "disk full",
           "status": "external-not-qualified",
           "oracleRefs": [],
-          "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately"
+          "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
+          "supportingLocalOracleRefs": [
+            "ios/App/UITests/BackupInboxStoreTests.swift:review:a0888de08af9",
+            "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:b6e8266f0b9c"
+          ],
+          "reviewNote": "Actual unusable private filesystem path and failed notice persistence are asserted; these do not simulate physical full-volume exhaustion."
         },
         {
           "branch": "launch file",
-          "status": "local-implementation-gap",
-          "oracleRefs": [],
+          "status": "local-runtime-evidence-awaiting-final-freeze",
+          "oracleRefs": [
+            "ios/App/UITests/NativeFlows.swift:review:7c2a55d3482a",
+            "tests/native/harness/inbox.ts:review:82b4fe5df904"
+          ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "No OS backup-file launch handler/document filter at reviewed source; native owner implementing explicit staged continuation."
+          "reviewNote": "Actual OS intake through selected simulator/emulator and production bridge/service succeeds after numeric-offset/Foundation conversion fixes. Final product review UI execution remains pending.",
+          "proofRefs": [
+            "nativeInboxFinal",
+            "nativeFunctionalFinal"
+          ]
         },
         {
           "branch": "repeated intent",
-          "status": "local-implementation-gap",
-          "oracleRefs": [],
+          "status": "local-runtime-evidence-awaiting-final-freeze",
+          "oracleRefs": [
+            "ios/App/UITests/BackupInboxStoreTests.swift:review:3e1d86e145d8",
+            "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:06faec824ab6",
+            "tests/native/harness/inbox.ts:review:82b4fe5df904"
+          ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "Repeated backup-file OS intent deduplication absent with launch-file path; assigned to native owner."
+          "reviewNote": "Actual store reopen/handled receipt and repeated Android SEND plus stable-token restore/finish retry; final product repeated-intent UI execution remains pending.",
+          "proofRefs": [
+            "nativeInboxFinal",
+            "nativeFunctionalFinal"
+          ]
         }
       ],
       "testFiles": [
@@ -9042,16 +9513,34 @@
         {
           "path": "src/services/backup-service.test.ts",
           "present": true
+        },
+        {
+          "path": "ios/App/UITests/NativeFlows.swift",
+          "present": true
+        },
+        {
+          "path": "tests/native/harness/inbox.ts",
+          "present": true
+        },
+        {
+          "path": "ios/App/UITests/BackupInboxStoreTests.swift",
+          "present": true
+        },
+        {
+          "path": "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java",
+          "present": true
         }
       ],
       "proofRefs": [
         "unitCurrent",
         "native",
-        "nativeProduct"
+        "nativeProduct",
+        "nativeInboxFinal",
+        "nativeFunctionalFinal"
       ],
-      "status": "local-implementation-gap",
+      "status": "pending-integrated-verification",
       "limitations": [
-        "System-sheet cancellation and synthetic-file import have actual native evidence; fresh launch-file delivery, repeat intent and actual OS disk-full need specifically recorded native qualification, not inference from UI mocks."
+        "Actual native OS intake/service assertions are qualified only on the selected simulator/emulator. Final product review/cancel/restore/repeat UI remains pending. Physical file providers and real full-volume/power-loss behavior remain external."
       ]
     },
     {
@@ -9078,6 +9567,7 @@
       "oracleRefs": [
         "src/components/sync-summary.test.ts:69",
         "src/components/sync-summary.test.ts:124",
+        "tests/ui/expanded-accessibility.ui.ts:review:e49795d1173e",
         "tests/journeys.spec.ts:451"
       ],
       "acceptanceBranches": [
@@ -9111,8 +9601,10 @@
         },
         {
           "branch": "polite announcements",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/ui/expanded-accessibility.ui.ts:review:e49795d1173e"
+          ]
         },
         {
           "branch": "focus",
@@ -9133,6 +9625,10 @@
         },
         {
           "path": "tests/expansion/conflicts.cloud.ts",
+          "present": true
+        },
+        {
+          "path": "tests/ui/expanded-accessibility.ui.ts",
           "present": true
         }
       ],
@@ -9169,7 +9665,7 @@
       ],
       "oracleRefs": [
         "tests/ui/account-states.ui.ts:34",
-        "tests/scale.spec.ts:311",
+        "tests/ui/expanded-accessibility.ui.ts:review:ac5886cd72f2",
         "tests/ui/purchases.ui.ts:200",
         "tests/journeys.spec.ts:831",
         "tests/expansion/diagnostics.spec.ts:5"
@@ -9184,17 +9680,19 @@
         },
         {
           "branch": "200% text",
-          "status": "partial-assertion-gap",
+          "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "tests/scale.spec.ts:311"
+            "tests/ui/expanded-accessibility.ui.ts:review:ac5886cd72f2"
           ],
-          "reviewNote": "Core shelf/capture/backup scale test exists; new account/conflict/purchase/recovery 200% text assertion assigned to root."
+          "reviewNote": "Expanded account/conflict/recovery/purchase paths supplement the existing core text scaling tests."
         },
         {
           "branch": "long prices",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": [],
-          "reviewNote": "Current ₹437.50 fixture is not the planned long localized price stress. Assigned to root with 200% new-flow check."
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/ui/expanded-accessibility.ui.ts:review:ac5886cd72f2"
+          ],
+          "reviewNote": "Long CHF catalog string is activated and exercised, including explicit purchase action."
         },
         {
           "branch": "keyboard",
@@ -9244,6 +9742,10 @@
         },
         {
           "path": "tests/journeys.spec.ts",
+          "present": true
+        },
+        {
+          "path": "tests/ui/expanded-accessibility.ui.ts",
           "present": true
         }
       ],
@@ -9375,7 +9877,7 @@
         "tests/expansion/privacy-routes.spec.ts:39",
         "tests/expansion/media-export.cloud.ts:104",
         "tests/journeys.spec.ts:359",
-        "docs/release/store-disclosures.md:1:Independent disclosure wording review",
+        "docs/release/store-disclosures.md:review:76ceb7187f27",
         "src/pages/public-pages.test.ts:6"
       ],
       "acceptanceBranches": [
@@ -9417,11 +9919,11 @@
         },
         {
           "branch": "store disclosure",
-          "status": "source-copy-gap",
+          "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "docs/release/store-disclosures.md:1:Independent disclosure wording review"
+            "docs/release/store-disclosures.md:review:76ceb7187f27"
           ],
-          "reviewNote": "Source worksheet is present and explicitly unsubmitted. Current capacity/history upgrade wording conflicts with C11 and must be corrected; submitted configured-build questionnaire remains external."
+          "reviewNote": "Worksheet copy corrected. Actual configured store questionnaire/submission remains external."
         },
         {
           "branch": "public vs private routes",
@@ -9446,6 +9948,10 @@
         },
         {
           "path": "tests/expansion/accounts.cloud.ts",
+          "present": true
+        },
+        {
+          "path": "docs/release/store-disclosures.md",
           "present": true
         }
       ],
@@ -9654,16 +10160,21 @@
         }
       ],
       "oracleRefs": [
+        "tests/ops/commands.test.mjs:review:f44c094e2fe2",
         "tests/server/recovery.test.ts:60",
         "tests/ops/grammar.test.mjs:5",
+        "tests/ops/commands.test.mjs:review:3e8e80e28b01",
+        "tests/server/operations.test.ts:review:de5e86d8d485",
         "tests/server/recovery.test.ts:255",
         "tests/server/recovery.test.ts:217"
       ],
       "acceptanceBranches": [
         {
           "branch": "Ops help",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/ops/commands.test.mjs:review:f44c094e2fe2"
+          ]
         },
         {
           "branch": "dry run",
@@ -9688,8 +10199,11 @@
         },
         {
           "branch": "cursor",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/ops/commands.test.mjs:review:3e8e80e28b01",
+            "tests/server/operations.test.ts:review:de5e86d8d485"
+          ]
         },
         {
           "branch": "duplicate",
@@ -9700,8 +10214,11 @@
         },
         {
           "branch": "partial exit",
-          "status": "assertion-gap-under-review",
-          "oracleRefs": []
+          "status": "assertions-located-awaiting-final-proof",
+          "oracleRefs": [
+            "tests/ops/commands.test.mjs:review:f44c094e2fe2",
+            "tests/server/operations.test.ts:review:de5e86d8d485"
+          ]
         },
         {
           "branch": "cancellation",
@@ -9726,6 +10243,14 @@
         {
           "path": "tests/server/recovery.test.ts",
           "present": true
+        },
+        {
+          "path": "tests/ops/commands.test.mjs",
+          "present": true
+        },
+        {
+          "path": "tests/server/operations.test.ts",
+          "present": true
         }
       ],
       "proofRefs": [
@@ -9735,7 +10260,7 @@
         "I08",
         "I11"
       ],
-      "status": "pending-worker-integration",
+      "status": "pending-integrated-verification",
       "limitations": [
         "DX04 contract drift: no --help/default-local/explicit cursor and mismatched partial/denied exit codes at reviewed source. Backend owner implementing contract-aligned CLI tests."
       ]
@@ -9946,16 +10471,23 @@
         }
       ],
       "oracleRefs": [
-        "tests/scale.spec.ts:165",
+        "tests/scale.spec.ts:review:9a8c570dcbee",
+        "tests/scale.spec.ts:review:3de160f7b6e8",
+        "tests/scale.spec.ts:review:ba3a738de933",
         "src/services/local-data-service.test.ts:245",
-        "tests/native/benchmark/main.ts:1"
+        "tests/native/benchmark/main.ts:review:dc64c5ea89fb"
       ],
       "acceptanceBranches": [
         {
           "branch": "Local save/search/import",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "tests/scale.spec.ts:165"
+            "tests/scale.spec.ts:review:9a8c570dcbee",
+            "tests/scale.spec.ts:review:3de160f7b6e8",
+            "tests/scale.spec.ts:review:ba3a738de933"
+          ],
+          "proofRefs": [
+            "webScaleFinal"
           ]
         },
         {
@@ -9967,16 +10499,24 @@
         },
         {
           "branch": "peak export memory",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-measurement-recorded",
           "oracleRefs": [
-            "tests/native/benchmark/main.ts:1"
+            "tests/native/benchmark/main.ts:review:dc64c5ea89fb"
+          ],
+          "reviewNote": "100ms sampled RSS sum can double-count shared pages and miss peaks. iOS maximum1,664,976 KiB, Android1,105,328 KiB; no established native budget. Both exact48MiB exports match restored project hashes; staged file integrity is size-checked, not reread-hashed.",
+          "proofRefs": [
+            "nativeMeasuredFinal"
           ]
         },
         {
           "branch": "native startup",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-measurement-recorded",
           "oracleRefs": [
-            "tests/native/benchmark/main.ts:1"
+            "tests/native/benchmark/main.ts:review:dc64c5ea89fb"
+          ],
+          "reviewNote": "Process-to-repository-ready measurement in synthetic benchmark app, not actual product UI or physical cold-start qualification.",
+          "proofRefs": [
+            "nativeMeasuredFinal"
           ]
         },
         {
@@ -10008,11 +10548,13 @@
       "proofRefs": [
         "unitCurrent",
         "native",
-        "nativeProduct"
+        "nativeProduct",
+        "nativeMeasuredFinal",
+        "webScaleFinal"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
-        "Baseline/followup native performance artifacts expose measured misses under shared host contention; current optimization/final measurements are pending. Existing local browser performance must be rerun at final candidate under stated conditions."
+        "Exact48MiB native adapter import/export measured under stated isolated window; memory remains substantial. No native budget was pre-established, physical memory pressure is unqualified, and timing comparisons to contended baseline are not controlled speedup claims. Final product assets/UI have separate qualification."
       ]
     },
     {
@@ -10328,11 +10870,13 @@
         },
         {
           "branch": "merchant eligibility",
-          "status": "assertions-located-awaiting-final-proof",
-          "oracleRefs": [
+          "status": "external-not-qualified",
+          "oracleRefs": [],
+          "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
+          "supportingLocalOracleRefs": [
             "tests/sandbox/preflight.test.mjs:52"
           ],
-          "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately"
+          "reviewNote": "Preflight safely identifies unavailable prerequisites; no actual merchant or real-device provider result exists."
         },
         {
           "branch": "signing",
@@ -10354,11 +10898,13 @@
         },
         {
           "branch": "real device sandbox",
-          "status": "assertions-located-awaiting-final-proof",
-          "oracleRefs": [
+          "status": "external-not-qualified",
+          "oracleRefs": [],
+          "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
+          "supportingLocalOracleRefs": [
             "tests/sandbox/preflight.test.mjs:105"
           ],
-          "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately"
+          "reviewNote": "Preflight safely identifies unavailable prerequisites; no actual merchant or real-device provider result exists."
         },
         {
           "branch": "store review",
@@ -10396,7 +10942,7 @@
       ],
       "finding": "Operator CLI contract drift: help/default/local cursor/exit code boundaries",
       "owner": "backend",
-      "status": "assigned"
+      "status": "implementation-and-specific-assertions-reviewed; final integrated proof pending"
     },
     {
       "id": "IR11",
@@ -10405,18 +10951,18 @@
         "D07",
         "T16"
       ],
-      "finding": "Safe remove-download action and explicit offline-ready status missing",
+      "finding": "Safe remove-download action and explicit offline-ready status previously missing",
       "owner": "client/native/root UI",
-      "status": "assigned"
+      "status": "implementation-and-specific-assertions-reviewed; final integrated proof pending"
     },
     {
       "id": "IR12",
       "requirements": [
         "T32"
       ],
-      "finding": "Native externally opened backup file and repeated-intent continuation missing",
+      "finding": "Native externally opened backup file and repeated-intent continuation previously missing",
       "owner": "native",
-      "status": "assigned"
+      "status": "implementation-and-specific-assertions-reviewed; final integrated proof pending"
     },
     {
       "id": "IR13",
@@ -10432,7 +10978,7 @@
       ],
       "finding": "Specific full offline chain, controlled conflict orders, ordinary reservation expiry, file limit, export lease expiry, replacement orders, polite announcements, new-flow text scaling/long-price assertions",
       "owner": "client/backend/root per branch",
-      "status": "assigned; T19 backend owner reports two new real cases passed, integration proof pending"
+      "status": "implementation-and-specific-assertions-reviewed; final integrated proof pending"
     },
     {
       "id": "IR14",
@@ -10443,7 +10989,75 @@
       ],
       "finding": "Store worksheet says capacity/history upgrade; history must always remain free/readable",
       "owner": "root",
-      "status": "assigned"
+      "status": "implementation-and-specific-assertions-reviewed; final integrated proof pending"
+    },
+    {
+      "id": "IR15",
+      "requirements": [
+        "DX05",
+        "X09"
+      ],
+      "finding": "Resolved Android runtime/SPM notice provenance was incomplete",
+      "owner": "backend/docs",
+      "status": "local inventory reviewed; exact copied hashes and pinned inputs match",
+      "proofRefs": [
+        "nativeDependencyInventory"
+      ]
+    },
+    {
+      "id": "IR16",
+      "requirements": [
+        "C23",
+        "D02"
+      ],
+      "finding": "Project files panel displaced next-step-first hierarchy",
+      "owner": "root",
+      "status": "fixed00ca274; DOM/vertical-order assertion reviewed; final browser proof pending"
+    },
+    {
+      "id": "IR17",
+      "requirements": [
+        "C14",
+        "DX03"
+      ],
+      "finding": "Individual attachment download discarded typed remedy/support metadata",
+      "owner": "root",
+      "status": "fixed00ca274; auth/storage/unexpected-redaction assertions reviewed; final browser proof pending"
+    },
+    {
+      "id": "IR18",
+      "requirements": [
+        "T25",
+        "T27"
+      ],
+      "finding": "Reverse environment and finalizer-first erasure assertions were absent",
+      "owner": "backend",
+      "status": "exact real SQL/HTTP assertion candidates d8556e2 reviewed; execution pending"
+    },
+    {
+      "id": "IR19",
+      "requirements": [
+        "R2",
+        "C12",
+        "D01",
+        "T29"
+      ],
+      "finding": "Delayed link/hash navigation could close a newer form",
+      "owner": "root",
+      "status": "fixedfeb71f4; monotonic intent guard and actual App controlled-order assertions reviewed; full guest/cloud reruns pending"
+    },
+    {
+      "id": "IR20",
+      "requirements": [
+        "T32"
+      ],
+      "finding": "OS delivery exposed Android numeric offset and iOS Foundation-to-JS conversion failures",
+      "owner": "native",
+      "status": "fixed125a546/c23870a; actual OS→bridge/service evidence reviewed; product UI pending",
+      "proofRefs": [
+        "nativeInboxFinal",
+        "nativeFunctionalFinal"
+      ]
     }
   ]
 }
