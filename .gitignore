@@ -9,3 +9,4 @@ test-results-*/
 .gstack/
 .env*
 !.env.example
+supabase/.temp/

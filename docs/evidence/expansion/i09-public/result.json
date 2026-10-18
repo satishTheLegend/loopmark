@@ -1,0 +1,53 @@
+{
+  "package": "I09-public-pages",
+  "status": "verified-local-subset",
+  "date": "2026-10-18",
+  "sourceBase": "82446c3",
+  "requirements": [
+    "D09",
+    "D11",
+    "D12",
+    "X09"
+  ],
+  "checks": [
+    {
+      "command": "npm test -- src/pages",
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "command": "LOOPMARK_TEST_PORT=4181 npm run test:e2e -- tests/expansion/privacy-routes.spec.ts tests/draft-recovery.spec.ts --workers=2 --reporter=line",
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 27.9,
+      "profiles": [
+        "chromium",
+        "firefox",
+        "webkit",
+        "chromium-mobile",
+        "webkit-mobile"
+      ]
+    }
+  ],
+  "buildCache": "loopmark-b72d4f899f90",
+  "reviewer": "root rendered inspection; automated axe and reflow",
+  "scope": "Three static public pages and retained legacy draft behavior. Account UI services and native accessibility are not qualified by these results.",
+  "corrections": [
+    "Vite preview needed explicit clean-URL mapping before SPA fallback.",
+    "WebKit keyboard traversal uses Option+Tab for links; six affected-profile checks passed before full35case rerun."
+  ],
+  "sourceHashes": {
+    "src/pages/public-pages.ts": "99358d41107a02c5ed49506efefa42f8c9accf256dc0a182a3168e728d8abea3",
+    "public/public-pages.css": "ef5b7f059c57a641c45f12cbae6c4aab68621cf6fa9654f77fe3cf9831614d92",
+    "scripts/build-public-pages.mjs": "315e480b7d9f3285b66f9dc9039b15f27ae57c70d701b20697082e2e71a9947d",
+    "scripts/build-sw.mjs": "549287ce50cb873d99f7a12134cf28c797a9a4774f791fd07f63f7dec8bfdfe2",
+    "tests/expansion/privacy-routes.spec.ts": "878868669a7579aaa4e4360d9178610dc90ce0a1cb76e3845a7d59fe8a91d642",
+    "vite.config.ts": "2232d55a460dbb2fe7afb2e2e548cf13b13f2a9d5a96298c781c34d9beff0a93"
+  },
+  "externalPending": [
+    "actual support contact and retention disclosures",
+    "production host route/header verification",
+    "physical accessibility"
+  ]
+}
