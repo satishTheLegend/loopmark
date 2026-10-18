@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL FINAL SOURCEa1a3b72: IR23 source,20 exact regressions,373unit/13supporting commands and actual native controller proof independently bound. Four production native journeys and full80cloud/255UI/target100guest still pending; no final approval.",
+  "reviewState": "PROVISIONAL FINAL SOURCEa1a3b72: source/373units/13supporting commands and native controller plus all4 exact current production journeys independently bound. Full80cloud/255UI/target100guest and final branch adjudication pending; no final approval.",
   "reviewer": "final_traceability_review (independent of implementation authors)",
   "reviewedSourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
   "requiredIds": [
@@ -733,6 +733,54 @@
         "productSourceDiffAgainstFreeze": "empty",
         "fixtureSourceMatchesExecutedRevision": true
       }
+    },
+    "nativeProductionA1": {
+      "path": "docs/evidence/expansion/native/product-final-c670df7/index.json",
+      "sha256": "92f38480a7541846c6009726e7f5f3269ebceef0b8525225c773fd3d30a7e5e1",
+      "scope": "All four actual production journeys pass on selected simulator/emulator and exact current retained artifacts: checkpoint, native camera/mic refusal/cancellation, diagnostics/share cancellation, OS backup review/cancel/relaunch/separate restore/repeat. Prior observed OS ANR/share-dismissal failures and missing-Java preflight retained; unchanged complete reruns pass, precise OS causes unestablished. No physical/store/provider/performance claim.",
+      "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+      "reviewedAgainstRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
+      "currentFreezeQualified": true,
+      "independentBinding": {
+        "rawEvidenceFilesVerified": 15,
+        "canonicalManifestMatchesIndex": true,
+        "bothRetainedArtifactHashesMatch": true,
+        "iosArchiveRegularFilesVerified": 143,
+        "bundledWebAssetsVerifiedPerArtifact": 90,
+        "allFourReportArtifactAndBundleRefsMatch": true,
+        "productSourceDiffAgainstFreeze": "empty",
+        "sourcePathsCompared": [
+          "src",
+          "public",
+          "index.html",
+          "vite.config.ts",
+          "package.json",
+          "package-lock.json",
+          "capacitor.config.ts",
+          "ios/App/App",
+          "android/app/src/main",
+          "android/app/build.gradle",
+          "ios/App/App.xcodeproj/project.pbxproj",
+          "ios/App/CapApp-SPM"
+        ]
+      },
+      "failedAttempts": [
+        {
+          "file": "failed-android-system-ui.log",
+          "observation": "Original and repeated UIAutomator captures showed the Android System UI is not responding dialog. Clicking the explicit Wait action revealed the expected native camera source sheet. The unchanged complete production journey then passed on the same APK.",
+          "cause": "Underlying OS ANR cause is unestablished. Dialog was observed during cold boot/build overlap; timing does not establish causation.",
+          "recovery": "Clicked Wait, cancelled the pending camera sheet via OS Back, reran exact full journey without data reset or fixture/product changes."
+        },
+        {
+          "file": "failed-ios-share-dismissal.log",
+          "observation": "The first simulated dismissal tap left the diagnostic OS share popover visibly open. Cancellation-status assertion timed out. The unchanged full journey subsequently passed without product or fixture changes.",
+          "cause": "Underlying failed tap/dismissal cause is unestablished. No product or assertion changes were made."
+        },
+        {
+          "file": "rejected-android-missing-java-env.log",
+          "observation": "An attempted rerun exited before device/UI execution because the explicit task-local Java environment variable was absent. The required existing Java21 path was supplied for the successful run."
+        }
+      ]
     }
   },
   "tests": {
@@ -17300,11 +17348,12 @@
       "level": "actual-native-production-ui",
       "executedProofRefs": [
         "nativeProductFrozen",
-        "nativeProductCurrent"
+        "nativeProductCurrent",
+        "nativeProductionA1"
       ],
       "frozenSource": {
         "path": "ios/App/UITests/NativeFlows.swift",
-        "sourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
+        "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
         "sha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
         "workingCopyMatchesFreeze": true
       },
@@ -17326,6 +17375,15 @@
           "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
           "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
           "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+        },
+        {
+          "proofRef": "nativeProductionA1",
+          "report": "docs/evidence/expansion/native/product-final-c670df7/ios-inbox-product.json",
+          "status": "passed",
+          "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+          "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
         }
       ]
     },
@@ -17337,11 +17395,12 @@
       "level": "actual-native-production-ui",
       "executedProofRefs": [
         "nativeProductFrozen",
-        "nativeProductCurrent"
+        "nativeProductCurrent",
+        "nativeProductionA1"
       ],
       "frozenSource": {
         "path": "scripts/native/test-android-inbox-product.mjs",
-        "sourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
+        "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
         "sha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
         "workingCopyMatchesFreeze": true
       },
@@ -17363,6 +17422,15 @@
           "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
           "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
           "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+        },
+        {
+          "proofRef": "nativeProductionA1",
+          "report": "docs/evidence/expansion/native/product-final-c670df7/android-inbox-product.json",
+          "status": "passed",
+          "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+          "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
         }
       ]
     },
@@ -17406,11 +17474,12 @@
       "level": "actual-native-production-ui",
       "executedProofRefs": [
         "nativeProductFrozen",
-        "nativeProductCurrent"
+        "nativeProductCurrent",
+        "nativeProductionA1"
       ],
       "frozenSource": {
         "path": "ios/App/UITests/NativeFlows.swift",
-        "sourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
+        "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
         "sha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
         "workingCopyMatchesFreeze": true
       },
@@ -17432,6 +17501,15 @@
           "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
           "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
           "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+        },
+        {
+          "proofRef": "nativeProductionA1",
+          "report": "docs/evidence/expansion/native/product-final-c670df7/ios-product.json",
+          "status": "passed",
+          "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+          "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
         }
       ]
     },
@@ -17443,11 +17521,12 @@
       "level": "actual-native-production-ui",
       "executedProofRefs": [
         "nativeProductFrozen",
-        "nativeProductCurrent"
+        "nativeProductCurrent",
+        "nativeProductionA1"
       ],
       "frozenSource": {
         "path": "scripts/native/test-android-product.mjs",
-        "sourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
+        "sourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
         "sha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
         "workingCopyMatchesFreeze": true
       },
@@ -17469,6 +17548,15 @@
           "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
           "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
           "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+        },
+        {
+          "proofRef": "nativeProductionA1",
+          "report": "docs/evidence/expansion/native/product-final-c670df7/android-product.json",
+          "status": "passed",
+          "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+          "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+          "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
         }
       ]
     },
@@ -36187,6 +36275,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ],
           "supportingLocalOracleRefs": [
@@ -36195,7 +36301,8 @@
           ],
           "proofRefs": [
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ]
         },
         {
@@ -36235,7 +36342,8 @@
         "nativeProductFrozen",
         "unitFinal353",
         "nativeProductCurrent",
-        "unitFinal373"
+        "unitFinal373",
+        "nativeProductionA1"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -36328,6 +36436,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ],
           "supportingLocalOracleRefs": [
@@ -36336,7 +36462,8 @@
           ],
           "proofRefs": [
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ]
         },
         {
@@ -36581,7 +36708,8 @@
         "nativeProductFrozen",
         "webGuestFrozen",
         "nativeProductCurrent",
-        "webGuest0b"
+        "webGuest0b",
+        "nativeProductionA1"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -36809,6 +36937,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ],
           "supportingLocalOracleRefs": [
@@ -36817,7 +36963,8 @@
           ],
           "proofRefs": [
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ]
         },
         {
@@ -36833,7 +36980,8 @@
           "proofRefs": [
             "nativeProductReviewed",
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ],
           "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "implementationRefs": [
@@ -36885,6 +37033,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ]
         },
@@ -36901,7 +37067,8 @@
             "nativeProductFrozen",
             "unitFinal353",
             "nativeProductCurrent",
-            "unitFinal373"
+            "unitFinal373",
+            "nativeProductionA1"
           ],
           "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "implementationRefs": [
@@ -36949,6 +37116,15 @@
               "status": "passed",
               "durationMs": 1.8420830000000024,
               "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448"
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ],
           "reviewNote": "Actual production UI on exact refreshed source-equivalent artifacts; OS intake, explicit review/cancel/relaunch/separate restore/repeat, with malformed/oversized rejection on Android. Raw logs, per-platform reports, bundle, canonical archive/APK and extracted iOS bytes are independently bound. Physical document providers remain external."
@@ -36995,7 +37171,8 @@
             "nativeFunctionalFinal",
             "nativeProductReviewed",
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ],
           "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "implementationRefs": [
@@ -37047,6 +37224,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ]
         },
@@ -37067,7 +37262,8 @@
             "nativeFunctionalFinal",
             "nativeProductReviewed",
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ],
           "sourceRevision": "a1a3b7292bb1e4274003bf1c9ae8c90ae164a448",
           "implementationRefs": [
@@ -37119,6 +37315,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "6e75e629a9d06c8f94f8982c04b2657ec1cb2fb788489aad12f815155a024d23",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ]
         }
@@ -37173,7 +37387,8 @@
         "nativeProductCurrent",
         "unitFinal353",
         "webCloud0b",
-        "unitFinal373"
+        "unitFinal373",
+        "nativeProductionA1"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -38346,6 +38561,15 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ],
           "supportingLocalOracleRefs": [
@@ -38353,7 +38577,8 @@
           ],
           "proofRefs": [
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ],
           "reviewNote": "Android emulator hardware Back cancels native sheet and returns from account screen to workbasket. Physical-device qualification remains separate."
         },
@@ -38428,6 +38653,24 @@
               "fixtureSourceRevision": "ca5ac5c844f5a4517f2e0e3844a3f9ec49fd469a",
               "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
               "fixtureChangeReview": "Only awaited durable notice dismissal in Android fixture; original failed log retained. Product source equals0b518fa."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/ios-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
+            },
+            {
+              "proofRef": "nativeProductionA1",
+              "report": "docs/evidence/expansion/native/product-final-c670df7/android-product.json",
+              "status": "passed",
+              "testedArtifactSource": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceRevision": "c670df7e7c24c491b397e53264835811abc702ea",
+              "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+              "failedAttemptNote": "Original OS/automation and preflight failures preserved. Complete unchanged rerun passed; no product/fixture assertion relaxation."
             }
           ],
           "supportingLocalOracleRefs": [
@@ -38436,7 +38679,8 @@
           ],
           "proofRefs": [
             "nativeProductFrozen",
-            "nativeProductCurrent"
+            "nativeProductCurrent",
+            "nativeProductionA1"
           ]
         }
       ],
@@ -38451,7 +38695,8 @@
         "native",
         "nativeProduct",
         "nativeProductFrozen",
-        "nativeProductCurrent"
+        "nativeProductCurrent",
+        "nativeProductionA1"
       ],
       "status": "external-blocked",
       "limitations": [
@@ -41561,12 +41806,13 @@
       ],
       "finding": "An older asynchronous sync/refresh can finish after deliberate collection selection, increment refreshVersion or stop/cancel/publish against the obsolete scope. Observed actual-cloud failures include a false fatal ACCOUNT_CHANGED and an invalidated new-collection refresh leaving the old UI. Repository mutation generation fences preserve stored data. Adjacent coordinator publications after awaited initial/final/error-path reads also require cancellation ownership checks.",
       "owner": "client controller and sync coordinator",
-      "status": "a1a3b72 source and20 exact ownership regressions reviewed; actual native controller/coordinator/Web Locks/SQLite held-cleanup/save/reopen proof passes both platforms, with retained qualification artifacts independently rehashed. Current production journeys and full current browser closure pending.",
+      "status": "a1a3b72 source,20 exact unit regressions, actual native controller/SQLite proof and all4 current production journeys independently bound to retained artifacts. Current full80cloud/255UI/target100guest closure pending.",
       "proofRefs": [
         "webCloud0b",
         "scopeOwnershipControlled",
         "unitFinal373",
-        "nativeControllerA1"
+        "nativeControllerA1",
+        "nativeProductionA1"
       ],
       "requiredInvariants": [
         "Obsolete/busy selected refresh returns before incrementing refreshVersion or causing stop/cancel/error effects.",
