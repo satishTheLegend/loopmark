@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "6bb9c741-daf2-445d-88b4-ffdaeec5a05a",
+  "accounts": 100,
+  "concurrency": 100,
+  "startedAt": "2026-10-18T15:42:44.931Z",
+  "synthetic": true,
+  "hardware": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M5",
+    "cores": 10,
+    "hostMemoryBytes": 17179869184
+  },
+  "responseCodes": {
+    "200": 320,
+    "503": 2
+  },
+  "responseKinds": {
+    "sync-push:200:OK": 220,
+    "sync-pull:200:OK": 100,
+    "sync-push:503:UNTYPED": 2
+  },
+  "retryCount": 2,
+  "auxiliaryResponses": {
+    "account-session:200": 101,
+    "cross-owner-pull:404": 100,
+    "media-reserve:200": 20,
+    "media-upload:400": 10,
+    "media-upload:200": 10,
+    "media-download:200": 10,
+    "checkout:200": 1,
+    "webhook:200": 20,
+    "jobs:200": 1,
+    "controlled-overload:429": 25,
+    "compacted-replay:409": 1
+  },
+  "auxiliaryRetries": 0,
+  "phase": "complete",
+  "queueAgeSeconds": 14,
+  "maximumWaitingLocks": 0,
+  "peakContainerBytes": {
+    "supabase_db": 343723212.8,
+    "supabase_edge_runtime": 3137473609.728,
+    "supabase_auth": 33428602.88
+  },
+  "peakHarnessRss": 191414272,
+  "success": true,
+  "measurementScope": "Shared local host; engineering fixture, not clean or hosted capacity qualification",
+  "hostAtStart": {
+    "loadAverage": [
+      79.5947265625,
+      216.55322265625,
+      134.60986328125
+    ],
+    "freeMemoryBytes": 245235712,
+    "swapUsage": "total = 14336.00M  used = 13603.38M  free = 732.62M  (encrypted)",
+    "dockerMemoryBytes": 8319504384
+  },
+  "retainedActiveAccountsAtBurst": 809,
+  "burstStartedAt": "2026-10-18T15:42:48.649Z",
+  "burstElapsedMs": 11835.676707999999,
+  "concurrentBackupComplete": true,
+  "concurrentRecoveryBytes": 38718178,
+  "failedAccounts": 0,
+  "failureKinds": {},
+  "burstAndBackupElapsedMs": 13769.561791,
+  "remainingStagedObjects": 10,
+  "controlledTypedOverloadResponses": 25,
+  "dormantRetainedAccounts": 50,
+  "interruptedMediaRecovered": 10,
+  "duplicateWebhookDeliveries": 20,
+  "compactionRounds": 11,
+  "requests": 322,
+  "p50Ms": 2322.635333,
+  "p95Ms": 5206.448791999999,
+  "errorRate": 0.006211180124223602,
+  "elapsedMs": 21728.212916,
+  "finishedAt": "2026-10-18T15:43:10.377Z",
+  "sourceCommit": "a828658",
+  "harnessSha256": "224f2ceca0087b557aca87293398db54f086459f7067e0ff648f44040d31d947",
+  "conclusion": "All phases PASS locally: reconnects, exact retries, owner denial, interrupted media, duplicate webhook, controlled typed overload, aged compaction and concurrent complete backup. Shared-host evidence is not hosted capacity qualification."
+}

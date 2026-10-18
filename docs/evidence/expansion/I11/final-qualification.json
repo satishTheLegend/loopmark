@@ -1,0 +1,600 @@
+{
+  "schemaVersion": 1,
+  "status": "local-pass",
+  "verifiedAt": "2026-10-18T16:08:57.042285+00:00",
+  "serverSourceCommit": "0a97dfe",
+  "headAtEvidence": "b3a7600a0a666ee9317b2d752ca4ace59b90f837",
+  "ownedServerSourceSha256": "23742784b9bba78873a12ff42aebb5673ba2e98cdaa30ea49f9cb7be8889041a",
+  "sourceHashRule": "Sorted git-tracked supabase, scripts/ops.mjs, scripts/ops, scripts/local.mjs, scripts/test-server.mjs, tests/server, tests/ops; UTF-8 path + NUL + raw bytes + NUL.",
+  "command": "node_modules/.bin/vitest run --config vitest.server.config.ts tests/server --reporter=default --reporter=json --outputFile=.gstack/backend-final-server.json",
+  "tests": 82,
+  "passed": 82,
+  "failed": 0,
+  "skipped": 0,
+  "files": 15,
+  "elapsedSeconds": 233.8,
+  "operatorTests": {
+    "command": "node scripts/test-ops.mjs",
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0
+  },
+  "typecheck": {
+    "command": "node_modules/.bin/tsc --noEmit",
+    "exitCode": 0
+  },
+  "toolchain": {
+    "node": "26.8.2",
+    "npm": "11.19.1",
+    "supabaseCli": "2.121.0",
+    "supabaseSdk": "2.118.0"
+  },
+  "images": [
+    {
+      "name": "supabase_db_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/postgres:17.11.0.004",
+      "imageId": "sha256:b15d862126dd2dac02da524696ccfde2dcce2ceaee0a58973b2727befe492706"
+    },
+    {
+      "name": "supabase_edge_runtime_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/edge-runtime:v1.77.4",
+      "imageId": "sha256:ad45164b7548bf5820ed7be714789c17ac2865edce79a09cfb4c3756c3d365a8"
+    },
+    {
+      "name": "supabase_storage_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/storage-api:v1.82.1",
+      "imageId": "sha256:ec2ad41411eac8fc2b769b4bb00d1af32ae37eca3745c15bdb329db27d218934"
+    },
+    {
+      "name": "supabase_rest_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/postgrest:v16.4",
+      "imageId": "sha256:d155c6718ed9a9f990d159a2ab7c0a3f16944dbb6d0a0344557421042acfe0df"
+    },
+    {
+      "name": "supabase_realtime_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/realtime:v2.143.4",
+      "imageId": "sha256:35e99d3f1cbba5aa5585e8ac3cf70ecc54909ee4aee0626effed93c60fb41439"
+    },
+    {
+      "name": "supabase_auth_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/gotrue:v2.197.0",
+      "imageId": "sha256:1736a63078f5922b198c4cbe50f80ab9a2d3b54fe8b7b6cfb2e9dc5dbbc12c6b"
+    },
+    {
+      "name": "supabase_kong_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/kong:2.8.1",
+      "imageId": "sha256:1b53405d8680a09d6f44494b7990bf7da2ea43f84a258c59717d4539abf09f6d"
+    },
+    {
+      "name": "supabase_inbucket_loopmark-loopmark-expansi-eeac3023",
+      "image": "public.ecr.aws/supabase/mailpit:v1.31.3",
+      "imageId": "sha256:ed9b00c609e77e99c79b93f1178255ebc271868920f2c69a8d166bd5634ed10d"
+    },
+    {
+      "name": "loopmark_erasure_ledger_loopmark-loopmark-expansi-eeac3023",
+      "image": "node:26.8.2-alpine@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868",
+      "imageId": "sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868"
+    },
+    {
+      "name": "loopmark_billing_fixture_loopmark-loopmark-expansi-eeac3023",
+      "image": "node:26.8.2-alpine@sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868",
+      "imageId": "sha256:ef24c5053d50fdc3e4e56eb4e7ddb7861874ab0fdc797046ba897581deb8e868"
+    }
+  ],
+  "suites": [
+    {
+      "file": "tests/server/billing-contract.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "binds checkout identity without accepting client price or entitlement authority",
+          "status": "passed",
+          "durationMs": 9.941332999999986
+        },
+        {
+          "name": "sends only the saved next recovery key hash and permits bounded pending recovery",
+          "status": "passed",
+          "durationMs": 1.7595420000000104
+        }
+      ]
+    },
+    {
+      "file": "tests/server/billing.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture keeps product/identity/entitlement authority server-side and native config public-only",
+          "status": "passed",
+          "durationMs": 514.0559159999999
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture deduplicates concurrent preparation and recovers a lost provider creation response by stable reference",
+          "status": "passed",
+          "durationMs": 701.0732089999999
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture verifies bound hosted callbacks and captured payment; rejects mismatched account and amount",
+          "status": "passed",
+          "durationMs": 1412.616541
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture authenticates raw webhooks before durable acknowledgement and deduplicates replay",
+          "status": "passed",
+          "durationMs": 1104.6169169999998
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture does not acknowledge an inbox transaction that failed before durable insert",
+          "status": "passed",
+          "durationMs": 212.5428750000001
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture derives ANY-valid cross-provider access and handles sequential and simultaneous refunds",
+          "status": "passed",
+          "durationMs": 3852.2981659999996
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture rejects stale purchase fences and production grants in a sandbox ledger",
+          "status": "passed",
+          "durationMs": 401.18691600000056
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture keeps wrong native ownership and sandbox claims from granting access",
+          "status": "passed",
+          "durationMs": 2061.7837499999987
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture fetches disputes authoritatively and preserves revocation across delayed paid events",
+          "status": "passed",
+          "durationMs": 1809.1042500000003
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture requires fresh authentication and independent ownership, rotates recovery keys and never recreates craft",
+          "status": "passed",
+          "durationMs": 1855.6348750000016
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture fences an actual delayed stale provider response after a newer refund observation",
+          "status": "passed",
+          "durationMs": 3570.307999999999
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture requires an explicit audited promotion allowlist and rejects repeated promotion",
+          "status": "passed",
+          "durationMs": 576.3045420000017
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture applies webhook backlog backpressure before 2xx while still acknowledging durable duplicates",
+          "status": "passed",
+          "durationMs": 414.34058399999776
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture keeps the confirmed amount immutable when the audited catalog changes later",
+          "status": "passed",
+          "durationMs": 805.5020000000004
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture serializes competing recovery claims and refuses to take an actively bound principal",
+          "status": "passed",
+          "durationMs": 2121.387832999997
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture requires privileged independently verified support evidence for a lost key and rejects the rotated old key",
+          "status": "passed",
+          "durationMs": 2275.0052920000016
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture authenticates native webhook hints and re-fetches original identified ownership before granting",
+          "status": "passed",
+          "durationMs": 814.432208000002
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture releases cancelled or expired native admission without losing late purchase reconciliation",
+          "status": "passed",
+          "durationMs": 1311.5037910000028
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture cannot repopulate erased checkout navigation data from a late provider creation response",
+          "status": "passed",
+          "durationMs": 6890.857625000001
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture bounds actual simultaneous purchase leases at four without discarding deferred identities",
+          "status": "passed",
+          "durationMs": 144.70208300000377
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture resolves original native store receipts uniquely and resumes a saved pending claim",
+          "status": "passed",
+          "durationMs": 1763.908958
+        },
+        {
+          "name": "I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture reports only the current owned recovery hash while preserving historical key receipts",
+          "status": "passed",
+          "durationMs": 510.99541599999793
+        }
+      ]
+    },
+    {
+      "file": "tests/server/boundaries.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries keeps an Auth outage retryable and accepts the unchanged command after recovery",
+          "status": "passed",
+          "durationMs": 11930.247041999999
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries executes the SQL ownership and command suites against real roles",
+          "status": "passed",
+          "durationMs": 468.820416999999
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries matches frozen cross-language hashes and the shared strict command schema",
+          "status": "passed",
+          "durationMs": 560.2612090000002
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries counts portable bytes exactly, including emoji and quoted MIME parameters",
+          "status": "passed",
+          "durationMs": 473.2258330000004
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries enforces ten active devices including expired-device re-registration",
+          "status": "passed",
+          "durationMs": 516.4859159999996
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries denies another owner snapshots and rejects oversized raw streamed bodies",
+          "status": "passed",
+          "durationMs": 592.232958999999
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries verifies a delivered local OTP before issuing a short-lived one-use reauthentication proof",
+          "status": "passed",
+          "durationMs": 541.9756660000003
+        },
+        {
+          "name": "raw SQL authority, exact serialization and real authentication boundaries signs up a new synthetic user with a delivered OTP and refuses code replay",
+          "status": "passed",
+          "durationMs": 162.2530000000006
+        }
+      ]
+    },
+    {
+      "file": "tests/server/capacity.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I07 full-capacity collection replacement commits 200 projects, 1000 checkpoints and 32 MiB of actual bytes; rejects insufficient physical budget before mutation",
+          "status": "passed",
+          "durationMs": 14743.290041
+        }
+      ]
+    },
+    {
+      "file": "tests/server/deletion.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I07 real deletion barrier and independent ledger requires recent auth, durably revokes refresh, denies old JWTs, and completes live erasure with a narrow receipt",
+          "status": "passed",
+          "durationMs": 888.098917
+        },
+        {
+          "name": "I07 real deletion barrier and independent ledger preserves original receipt capability after ledger append before the primary barrier and retries idempotently",
+          "status": "passed",
+          "durationMs": 597.2072919999999
+        },
+        {
+          "name": "I07 real deletion barrier and independent ledger blocks late uploads and finalizers and waits past reserved expiry before storage erasure",
+          "status": "passed",
+          "durationMs": 439.7721670000001
+        },
+        {
+          "name": "I07 real deletion barrier and independent ledger expires the original receipt capability and rate-limits valid anonymous lookup",
+          "status": "passed",
+          "durationMs": 721.2126660000004
+        }
+      ]
+    },
+    {
+      "file": "tests/server/media.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I07 real private media admission refuses an expired ordinary upload reservation and completes the same retained bytes with a fresh reservation",
+          "status": "passed",
+          "durationMs": 3688.029333
+        },
+        {
+          "name": "I07 real private media admission streams verified bytes, atomically consumes an ordinary reservation with checkpoint.create, and denies other owners",
+          "status": "passed",
+          "durationMs": 1383.3279169999996
+        },
+        {
+          "name": "I07 real private media admission finalizes pending metadata with checkpoint CAS and advances both parent and checkpoint exactly once",
+          "status": "passed",
+          "durationMs": 960.4217920000001
+        },
+        {
+          "name": "I07 real private media admission rejects truncation, hash mismatch, malformed media, altered reservation retries and same-owner ready forgery",
+          "status": "passed",
+          "durationMs": 1339.8970000000008
+        },
+        {
+          "name": "I07 real private media admission serializes concurrent four-upload admission and releases cancelled reservations without mutating active data",
+          "status": "passed",
+          "durationMs": 908.818792
+        }
+      ]
+    },
+    {
+      "file": "tests/server/operations.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I11 actual operational control and compatible runtime rollback runs default-local dry-run and returns resumable partial and denied CLI exit contracts on actual services",
+          "status": "passed",
+          "durationMs": 6065.065790999999
+        },
+        {
+          "name": "I11 actual operational control and compatible runtime rollback records bounded redacted phase/queue projections and protects them from direct client writes",
+          "status": "passed",
+          "durationMs": 567.0618330000007
+        },
+        {
+          "name": "I11 actual operational control and compatible runtime rollback pauses new enrollment/payment within fifteen minutes while existing sessions, writes, reads and export snapshots remain available",
+          "status": "passed",
+          "durationMs": 366.5210419999994
+        },
+        {
+          "name": "I11 actual operational control and compatible runtime rollback runs the preceding protocol-2 function artifact on the additive current schema and restores current runtime",
+          "status": "passed",
+          "durationMs": 4536.580083000001
+        }
+      ]
+    },
+    {
+      "file": "tests/server/realtime.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "real authorized Realtime invalidation delivers only the active owner opaque hint and denies forged owner subscriptions",
+          "status": "passed",
+          "durationMs": 3655.289875
+        }
+      ]
+    },
+    {
+      "file": "tests/server/recovery.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger backs up the live object inventory after legitimate collection while refusing missing ready bytes",
+          "status": "passed",
+          "durationMs": 4314.006792
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger makes dry-run status parseable without modifying catalogs or schedules",
+          "status": "passed",
+          "durationMs": 517.1795829999992
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger copies verified bytes, restores an isolated database, and applies an intent appended after the snapshot before traffic readiness",
+          "status": "passed",
+          "durationMs": 20924.382833
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger rejects unavailable or changing current ledgers and corrupted persisted objects without a ready gate",
+          "status": "passed",
+          "durationMs": 10689.318625000004
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger cancels before new erasure work and leaves persisted cursor retryable",
+          "status": "passed",
+          "durationMs": 0.4739579999950365
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger fences scheduled work so simultaneous claims and stale completions cannot repeat effects",
+          "status": "passed",
+          "durationMs": 68.54091699999844
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger keeps partial copies incomplete and resumes the same operation after source repair",
+          "status": "passed",
+          "durationMs": 5182.5063329999975
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger cleans registered interrupted drill databases and copies before allowing retention completion",
+          "status": "passed",
+          "durationMs": 3085.122457999998
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger does not expire a live paused restore owner then allow untracked artifacts to reappear",
+          "status": "passed",
+          "durationMs": 25442.030457999994
+        },
+        {
+          "name": "I11 real encrypted database/object recovery with current independent erasure ledger completes a text-only deletion only after containing recovery bytes are physically expired",
+          "status": "passed",
+          "durationMs": 4223.845417000004
+        }
+      ]
+    },
+    {
+      "file": "tests/server/remote-contract.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "remote candidate contracts accounts for serialized project objects and escaped MIME bytes",
+          "status": "passed",
+          "durationMs": 7.4577919999999835
+        },
+        {
+          "name": "remote candidate contracts rejects cross-record collisions, broken relationships and conflicting repeated media",
+          "status": "passed",
+          "durationMs": 0.9903329999999926
+        },
+        {
+          "name": "remote candidate contracts binds complete mapped metadata to its hash and exact preview",
+          "status": "passed",
+          "durationMs": 14.479624999999999
+        },
+        {
+          "name": "remote candidate contracts reproduces collision mappings without clocks or randomness for local and server preview",
+          "status": "passed",
+          "durationMs": 6.173334000000011
+        },
+        {
+          "name": "remote candidate contracts never accepts a native secret or key for the other platform",
+          "status": "passed",
+          "durationMs": 0.8140829999999823
+        }
+      ]
+    },
+    {
+      "file": "tests/server/replacement.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I07 atomic replacement and attachment serializes actual checkpoint append and replacement when append commits first",
+          "status": "passed",
+          "durationMs": 4274.357375
+        },
+        {
+          "name": "I07 atomic replacement and attachment serializes actual checkpoint append and replacement when replace commits first",
+          "status": "passed",
+          "durationMs": 3189.4034999999994
+        },
+        {
+          "name": "I07 atomic replacement and attachment prepares a complete mapped attach, commits once across epoch, and recovers lost receipt",
+          "status": "passed",
+          "durationMs": 1328.297584
+        },
+        {
+          "name": "I07 atomic replacement and attachment matches identical content, copies divergent record identity, and rejects stale destination commit without partial mutation",
+          "status": "passed",
+          "durationMs": 822.7892080000001
+        },
+        {
+          "name": "I07 atomic replacement and attachment holds incomplete candidate media outside active data and preserves old snapshot bytes after replacement",
+          "status": "passed",
+          "durationMs": 1948.5629580000004
+        },
+        {
+          "name": "I07 atomic replacement and attachment enforces one candidate, bounded admission, ownership, expiry, and service-only staging",
+          "status": "passed",
+          "durationMs": 913.2301669999997
+        }
+      ]
+    },
+    {
+      "file": "tests/server/review-regressions.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I03 independent review regressions on real services hydrates byte-bounded pages with shared media declared once across the whole chain",
+          "status": "passed",
+          "durationMs": 10075.151084000001
+        },
+        {
+          "name": "I03 independent review regressions on real services visits accounts beyond the batch limit on sequential compaction runs",
+          "status": "passed",
+          "durationMs": 4145.606708000001
+        },
+        {
+          "name": "I03 independent review regressions on real services allows only the configured web origin and the two verified native WebView origins",
+          "status": "passed",
+          "durationMs": 447.93116700000064
+        }
+      ]
+    },
+    {
+      "file": "tests/server/schema.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands requires verified user authentication and rejects cross-owner access and same-owner direct writes",
+          "status": "passed",
+          "durationMs": 2375.500708
+        },
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands keeps idempotent effects, refuses altered hashes and applies dependent CAS without lost updates",
+          "status": "passed",
+          "durationMs": 1652.1992910000004
+        },
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands validates direct RPC payloads and canonical hashes, and never grants from imported flags",
+          "status": "passed",
+          "durationMs": 1273.4759169999998
+        },
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands persists checkpoint and parent in one receipt and rolls back a failed multi-row mutation",
+          "status": "passed",
+          "durationMs": 1709.703375
+        },
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands keeps immutable snapshots through later writes and enforces bounded leases",
+          "status": "passed",
+          "durationMs": 756.0442919999996
+        },
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands denies old valid JWTs immediately after disable, and forces old device/epoch rebase",
+          "status": "passed",
+          "durationMs": 1275.6257079999996
+        },
+        {
+          "name": "actual local Auth, SQL ownership and Edge commands returns private noncacheable responses and rate-limits failed command attempts",
+          "status": "passed",
+          "durationMs": 592.8963750000003
+        }
+      ]
+    },
+    {
+      "file": "tests/server/sync-ordering.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "transaction order, paging and retention on actual PostgreSQL does not expose a later cursor before an earlier committing mutation",
+          "status": "passed",
+          "durationMs": 4607.0446249999995
+        },
+        {
+          "name": "transaction order, paging and retention on actual PostgreSQL pages at 50 receipts, hydrates immutable pages, and advances retention floors before replay",
+          "status": "passed",
+          "durationMs": 13232.467541
+        }
+      ]
+    },
+    {
+      "file": "tests/server/usage-sweep.test.ts",
+      "status": "passed",
+      "tests": [
+        {
+          "name": "I07 actual usage, reference-safe sweeping and explicit lease release reports actual physical bytes separately from allocated and portable bytes, then collects cancelled orphans",
+          "status": "passed",
+          "durationMs": 3454.286167
+        },
+        {
+          "name": "I07 actual usage, reference-safe sweeping and explicit lease release preserves live and pinned bytes, releases only owned snapshots idempotently, and frees the two-lease capacity",
+          "status": "passed",
+          "durationMs": 3626.0707909999996
+        }
+      ]
+    }
+  ],
+  "priorRegression": {
+    "tests": 82,
+    "passed": 80,
+    "failed": 2,
+    "cause": "Authoritative session_not_found is AuthSessionMissingError in the pinned SDK, not AuthApiError; corrected in0a97dfe without relaxing deleted-session401 assertions.",
+    "focusedRerunPassed": 3
+  },
+  "boundaries": [
+    "Real local PostgreSQL roles/RLS, Auth email and session revocation, Storage bytes, Edge HTTP, Realtime and encrypted recovery exercised.",
+    "Payment providers are explicit local synthetic network fixtures; no provider sandbox or merchant qualification claimed.",
+    "Erasure ledger and recovery volumes are logically separate on this host; independent physical failure and hosted traffic activation remain external gates.",
+    "Ops execute commands only target this guarded local profile. No hosted operations, provider enrollment, spending or external publication occurred.",
+    "Initial1000 simultaneous stress failed; committed consistency audit and separate local capture PASS are retained. New bounded post-pressure recovery qualification remains separate."
+  ]
+}

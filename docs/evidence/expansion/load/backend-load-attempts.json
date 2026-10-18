@@ -1,0 +1,102 @@
+{
+  "scope": "Preserved earlier engineering failures and diagnostics; final100 and initial1000 have separate full reports.",
+  "attempts": [
+    {
+      "id": "34fe7f34-2f87-4ece-bd36-6f51a3ff0866",
+      "startedAt": "2026-10-18T15:11:48.229Z",
+      "finishedAt": "2026-10-18T15:17:00.115Z",
+      "phase": null,
+      "success": false,
+      "failedAccounts": 28,
+      "responseCodes": {
+        "200": 297,
+        "503": 13
+      },
+      "retryCount": 0,
+      "p95Ms": 3129.100625000021,
+      "concurrentBackupComplete": false,
+      "concurrentBackupError": null
+    },
+    {
+      "id": "216fa00e-f966-417f-aaa6-e44b649f9bfd",
+      "startedAt": "2026-10-18T15:20:33.650Z",
+      "finishedAt": "2026-10-18T15:20:50.799Z",
+      "phase": null,
+      "success": true,
+      "failedAccounts": 0,
+      "responseCodes": {
+        "200": 320
+      },
+      "retryCount": 0,
+      "p95Ms": 3434.8192090000002,
+      "concurrentBackupComplete": true,
+      "concurrentBackupError": null
+    },
+    {
+      "id": "610c0f56-edbf-4f9e-934e-cdeccda1da91",
+      "startedAt": "2026-10-18T15:26:04.651Z",
+      "finishedAt": "2026-10-18T15:27:33.856Z",
+      "phase": null,
+      "success": false,
+      "failedAccounts": 52,
+      "responseCodes": {
+        "200": 149,
+        "500": 52,
+        "503": 17
+      },
+      "retryCount": 17,
+      "p95Ms": 4215.312290999995,
+      "concurrentBackupComplete": true,
+      "concurrentBackupError": null
+    },
+    {
+      "id": "2e305559-e89e-4aba-9181-467a080b670b",
+      "startedAt": "2026-10-18T15:29:29.598Z",
+      "finishedAt": "2026-10-18T15:35:55.249Z",
+      "phase": null,
+      "success": false,
+      "failedAccounts": 0,
+      "responseCodes": {
+        "200": 320,
+        "500": 37,
+        "503": 21
+      },
+      "retryCount": 58,
+      "p95Ms": 11185.77462500002,
+      "concurrentBackupComplete": true,
+      "concurrentBackupError": null
+    },
+    {
+      "id": "b584c35b-5081-486d-95ff-8da8e2bde111",
+      "startedAt": "2026-10-18T15:38:50.309Z",
+      "finishedAt": "2026-10-18T15:40:49.973Z",
+      "phase": "typed-overload",
+      "success": false,
+      "failedAccounts": 0,
+      "responseCodes": {
+        "200": 320,
+        "500": 8,
+        "503": 16
+      },
+      "retryCount": 24,
+      "p95Ms": 15448.005292000002,
+      "concurrentBackupComplete": true,
+      "concurrentBackupError": null
+    },
+    {
+      "id": "ef82d6f7-2d28-4453-b36b-68288daa849e",
+      "startedAt": "2026-10-18T15:42:09.628Z",
+      "finishedAt": "2026-10-18T15:42:29.613Z",
+      "phase": "duplicate-webhook",
+      "success": false,
+      "failedAccounts": 0,
+      "responseCodes": {
+        "200": 320
+      },
+      "retryCount": 0,
+      "p95Ms": 5934.402375,
+      "concurrentBackupComplete": true,
+      "concurrentBackupError": null
+    }
+  ]
+}

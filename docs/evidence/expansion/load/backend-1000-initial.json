@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "id": "5194df8d-dbeb-42eb-891b-c4154f2e2570",
+  "accounts": 1000,
+  "concurrency": 1000,
+  "startedAt": "2026-10-18T15:43:43.577Z",
+  "synthetic": true,
+  "hardware": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M5",
+    "cores": 10,
+    "hostMemoryBytes": 17179869184
+  },
+  "responseCodes": {
+    "0": 3712,
+    "200": 535,
+    "401": 778,
+    "500": 88,
+    "503": 444
+  },
+  "responseKinds": {
+    "sync-push:0:TRANSPORT": 3661,
+    "sync-push:401:AUTH_REQUIRED": 739,
+    "sync-push:503:SERVICE_UNAVAILABLE": 176,
+    "sync-push:200:OK": 417,
+    "sync-push:500:UNTYPED": 87,
+    "sync-push:503:UNTYPED": 245,
+    "sync-pull:0:TRANSPORT": 51,
+    "sync-pull:401:AUTH_REQUIRED": 39,
+    "sync-pull:503:SERVICE_UNAVAILABLE": 21,
+    "sync-pull:200:OK": 118,
+    "sync-pull:503:UNTYPED": 2,
+    "sync-pull:500:UNTYPED": 1
+  },
+  "retryCount": 4244,
+  "auxiliaryResponses": {
+    "account-session:200": 1000
+  },
+  "auxiliaryRetries": 0,
+  "phase": "concurrent-reconnect",
+  "queueAgeSeconds": 76,
+  "maximumWaitingLocks": 0,
+  "peakContainerBytes": {
+    "supabase_db": 337012326.4,
+    "supabase_edge_runtime": 3266322628.608,
+    "supabase_auth": 34959523.84
+  },
+  "peakHarnessRss": 220692480,
+  "success": false,
+  "measurementScope": "Shared local host; engineering fixture, not clean or hosted capacity qualification",
+  "hostAtStart": {
+    "loadAverage": [
+      39.51708984375,
+      180.138671875,
+      126.56787109375
+    ],
+    "freeMemoryBytes": 855506944,
+    "swapUsage": "total = 15360.00M  used = 14372.31M  free = 987.69M  (encrypted)",
+    "dockerMemoryBytes": 8319504384
+  },
+  "retainedActiveAccountsAtBurst": 1811,
+  "burstStartedAt": "2026-10-18T15:49:35.543Z",
+  "burstElapsedMs": 75856.45708300004,
+  "concurrentBackupComplete": false,
+  "concurrentBackupError": "MEDIA_UNAVAILABLE",
+  "failedAccounts": 882,
+  "failureKinds": {
+    "LOAD_SYNC_PUSH_401_AUTH_REQUIRED": 739,
+    "LOAD_RETRY_EXHAUSTED": 104,
+    "LOAD_SYNC_PULL_401_AUTH_REQUIRED": 39
+  },
+  "requests": 5557,
+  "p50Ms": 142.88158399995882,
+  "p95Ms": 7127.59054200002,
+  "errorRate": 0.9037250314918122,
+  "elapsedMs": 77818.32704100001,
+  "finishedAt": "2026-10-18T15:50:53.363Z",
+  "sourceCommit": "a828658",
+  "harnessSha256": "224f2ceca0087b557aca87293398db54f086459f7067e0ff648f44040d31d947",
+  "post-stress-invariants": {
+    "run": "5194df8d-dbeb-42eb-891b-c4154f2e2570",
+    "observedAt": "2026-10-18T15:57:29.863Z",
+    "selection": "Exact synthetic Auth prefix and setup timestamp interval; no owner identifiers exported",
+    "feed": 422,
+    "pending": 103,
+    "accounts": 1000,
+    "projects": 249,
+    "receipts": 422,
+    "checkpoints": 173,
+    "stagedObjects": 0,
+    "unmatchedFeed": 0,
+    "inflightUploads": 0,
+    "overTwoReceipts": 0,
+    "duplicateSequences": 0,
+    "duplicateOperations": 0,
+    "effectsWithoutReceipts": 0,
+    "ownerCollectionMismatch": 0
+  },
+  "runtime-diagnostics": {
+    "run": "5194df8d-dbeb-42eb-891b-c4154f2e2570",
+    "scannedRetainedLines": 2474,
+    "first": "2026-10-18T15:49:35.124052086Z",
+    "last": "2026-10-18T15:50:54.371946595Z",
+    "errorKinds": {
+      "CPU time soft limit": 12,
+      "WorkerAlreadyRetired": 60,
+      "InvalidWorkerCreation": 132
+    },
+    "limitation": "Bounded retained exact-profile Edge logs; transport exception causes were not captured by the original load harness."
+  },
+  "conclusion": "Simultaneous burst FAIL on shared local runtime; committed effects retain atomicity and ownership. Auth infrastructure errors were incorrectly permanent; corrected in 3fd59c9 and 0a97dfe with actual outage and revoked-session regressions. Bounded post-pressure recovery qualification is separate."
+}
