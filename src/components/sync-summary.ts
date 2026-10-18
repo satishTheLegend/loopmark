@@ -152,9 +152,19 @@ export function summarizeSync({
     items.some((item) => item.category === 'account')
   )
     return result('account', 'Sign in to continue syncing', true)
-  if (items.some((item) => item.category === 'conflict'))
+  if (
+    syncState === 'conflict' ||
+    (syncState === 'error' && syncError?.code === 'REVISION_CONFLICT') ||
+    items.some((item) => item.category === 'conflict')
+  )
     return result('conflict', 'Changes need your review', true)
-  if (items.some((item) => item.category === 'quota'))
+  if (
+    (syncState === 'error' &&
+      ['UPGRADE_REQUIRED', 'TECHNICAL_CAPACITY_REACHED', 'MEDIA_CAPACITY_REACHED'].includes(
+        syncError?.code ?? '',
+      )) ||
+    items.some((item) => item.category === 'quota')
+  )
     return result('quota', 'Capacity needs your attention', true)
   if (items.some((item) => item.category === 'failed'))
     return result('failed', 'Some items could not sync', true)

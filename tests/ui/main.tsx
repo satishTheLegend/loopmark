@@ -11,7 +11,8 @@ import { ConnectionPreview } from '../../src/components/ConnectionPreview'
 import { ConflictReview } from '../../src/components/ConflictReview'
 import { SignOutReview } from '../../src/components/SignOutReview'
 import { SyncStatus } from '../../src/components/SyncStatus'
-import type { SyncSummary } from '../../src/components/sync-summary'
+import { summarizeSync, type SyncSummary } from '../../src/components/sync-summary'
+import { DomainError } from '../../src/domain/errors'
 import { info, project, now } from '../../src/repositories/browser/fixtures.test-support'
 import type { DeletionReceipt, CollectionView, PendingIntent } from '../../src/domain/contracts'
 import type { AttachPreview } from '../../src/services/controller-contract'
@@ -97,6 +98,9 @@ const preview: AttachPreview = {
 function Harness() {
   const scenario = new URLSearchParams(location.search).get('scenario') || 'account'
   const [open, setOpen] = useState(true)
+  const [freshness, setFreshness] = useState<
+    'idle' | 'checking' | 'pending' | 'conflict' | 'error'
+  >('idle')
   const [stale, setStale] = useState(scenario === 'conflict-stale')
   const [result, setResult] = useState('')
   const [syncSummary, setSyncSummary] = useState<SyncSummary>({
@@ -114,6 +118,34 @@ function Harness() {
     <main style={{ maxWidth: 1000, margin: '0 auto', padding: '24px' }}>
       <h1 className="sr-only">Component verification fixture</h1>
       <output aria-label="Action result">{result}</output>
+      {scenario === 'sync-checking' && (
+        <>
+          <SyncStatus
+            summary={summarizeSync({
+              view:
+                freshness === 'pending'
+                  ? { ...acknowledged, pending: [{ ...pending, state: 'queued' }] }
+                  : acknowledged,
+              online: true,
+              working: false,
+              syncState: freshness,
+              lastSyncedAt: now,
+              syncError:
+                freshness === 'conflict'
+                  ? new DomainError('REVISION_CONFLICT').detail
+                  : freshness === 'error'
+                    ? new DomainError('MEDIA_CAPACITY_REACHED').detail
+                    : undefined,
+            })}
+            onDetails={() => {}}
+          />
+          <button onClick={() => setFreshness('checking')}>Check saved change</button>
+          <button onClick={() => setFreshness('pending')}>Publish pending change</button>
+          <button onClick={() => setFreshness('idle')}>Publish confirmed sync</button>
+          <button onClick={() => setFreshness('conflict')}>Receive conflict before view</button>
+          <button onClick={() => setFreshness('error')}>Receive capacity before view</button>
+        </>
+      )}
       {scenario === 'sync-announcement' && (
         <>
           <SyncStatus summary={syncSummary} onDetails={() => {}} />

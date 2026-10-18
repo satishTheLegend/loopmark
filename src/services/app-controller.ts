@@ -72,7 +72,7 @@ export function createAppController(options: AppControllerOptions): AppControlle
     invalidatedScope &&
     state.view?.info.kind === 'connected' &&
     canonicalJson(invalidatedScope) === canonicalJson(state.scope) &&
-    !['error', 'syncing', 'pending'].includes(value.state)
+    !['error', 'conflict', 'syncing', 'pending'].includes(value.state)
       ? { ...value, state: 'checking' }
       : value
   let cancel = new AbortController(),

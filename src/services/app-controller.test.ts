@@ -14,7 +14,7 @@ import { describeInline } from './media-codec'
 import type { AccountSession, SessionScope } from '../domain/contracts'
 import type { AccountAuth } from '../auth/auth-service'
 import { createAppController } from './app-controller'
-import { DomainError } from '../domain/errors'
+import { DomainError, type ErrorCode } from '../domain/errors'
 import { createSyncCoordinator } from '../sync/coordinator'
 import { createLocalDataAdapter } from './local-data-service'
 import { createBrowserOperationPlanStore } from '../repositories/browser/operation-plans'
@@ -236,6 +236,47 @@ it('a completed local save cannot retain a prior Synced claim while its controll
   expect(whileHeld!.kind).not.toBe('current')
   expect(whileHeld!.label).not.toBe('Synced to your account')
 })
+for (const [code, expected] of [
+  ['REVISION_CONFLICT', 'Changes need your review'],
+  ['UPGRADE_REQUIRED', 'Capacity needs your attention'],
+  ['TECHNICAL_CAPACITY_REACHED', 'Capacity needs your attention'],
+  ['MEDIA_CAPACITY_REACHED', 'Capacity needs your attention'],
+  ['AUTH_REQUIRED', 'Sign in to continue syncing'],
+  ['SERVICE_UNAVAILABLE', 'Sync needs your attention'],
+] as const satisfies ReadonlyArray<readonly [ErrorCode, string]>) {
+  it(`a newly known ${code} remains actionable while the old view is held`, async () => {
+    const { controller, repo, sync, notifySync } = await currentConnected()
+    const scope = controller.getSnapshot().scope!
+    const entered = deferred(),
+      finish = deferred()
+    const read = repo.readActive.bind(repo)
+    vi.spyOn(repo, 'readActive').mockImplementationOnce(async () => {
+      entered.resolve()
+      await finish.promise
+      return read()
+    })
+    try {
+      await repo.commitLocal(scope.key, create('new'), scope.generation)
+      await entered.promise
+      expect(currentSummary(controller).label).toBe('Checking saved changes')
+      const previous = sync!.getSnapshot()
+      vi.spyOn(sync!, 'getSnapshot').mockReturnValue({
+        ...previous,
+        state: code === 'REVISION_CONFLICT' ? 'conflict' : 'error',
+        error: new DomainError(code).detail,
+      })
+      notifySync()
+      const summary = currentSummary(controller)
+      expect(summary.label).toBe(expected)
+      expect(summary.actionable).toBe(true)
+      expect(summary.items).toEqual([])
+      expect(controller.getSnapshot().view?.pending).toEqual([])
+    } finally {
+      finish.resolve()
+    }
+    await vi.waitFor(() => expect(controller.getSnapshot().view?.pending).toHaveLength(1))
+  })
+}
 for (const rejects of [false, true]) {
   it(`an older refresh cannot clear a newer checking state (rejects: ${rejects})`, async () => {
     const { controller, repo } = await currentConnected()
