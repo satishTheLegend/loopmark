@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client'
 import '@fontsource/dm-sans/latin-400.css'
 import '@fontsource/lora/latin-400.css'
 import '../../src/styles.css'
+import { AccountDeletion } from '../../src/components/AccountDeletion'
+import { DeletionReceiptView } from '../../src/components/DeletionReceiptView'
 import { AccountView } from '../../src/components/AccountView'
 import { ConnectionPreview } from '../../src/components/ConnectionPreview'
 import { ConflictReview } from '../../src/components/ConflictReview'
@@ -89,6 +91,44 @@ function Harness() {
     <main style={{ maxWidth: 1000, margin: '0 auto', padding: '24px' }}>
       <h1 className="sr-only">Component verification fixture</h1>
       <output aria-label="Action result">{result}</output>
+      {open && scenario === 'deletion' && (
+        <AccountDeletion
+          accountEmail={email}
+          counts={{
+            drafts: 2,
+            unsentProjectChanges: 1,
+            unsentCheckpoints: 3,
+            pendingAttachments: 1,
+            failedAttachments: 0,
+            recoveredCollections: 1,
+            missingAttachments: 2,
+          }}
+          missingAttachments={
+            new URLSearchParams(location.search).get('missing') === 'unknown' ? null : 2
+          }
+          onRequestCode={async () => ({ retryAt: new Date(Date.now() + 60_000).toISOString() })}
+          onDelete={done}
+          onBackup={() => void done('backup')}
+          onClose={() => setOpen(false)}
+        />
+      )}
+      {scenario === 'receipt' && (
+        <DeletionReceiptView
+          receipt={
+            new URLSearchParams(location.search).get('receipt') === 'unknown'
+              ? null
+              : { status: 'pending', requestedAt: now }
+          }
+          requestedAt={now}
+          localOutcome="not-completed"
+          onRefresh={async () => {
+            setResult('status-refreshed')
+          }}
+          onDownload={async () => {
+            setResult('receipt-export-requested')
+          }}
+        />
+      )}
       {open && scenario === 'account' && (
         <AccountView
           cloudAvailable

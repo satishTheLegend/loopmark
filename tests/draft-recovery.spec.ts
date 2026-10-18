@@ -54,7 +54,7 @@ test('failed draft persistence guards hash navigation and keeps text when leavin
   await page.evaluate(() => {
     const original = IDBObjectStore.prototype.put
     IDBObjectStore.prototype.put = function (...args) {
-      if (this.transaction.db.name === 'loopmark-drafts')
+      if (this.transaction.db.name === 'loopmark-v2' && this.name === 'drafts')
         throw new DOMException('Fixture quota', 'QuotaExceededError')
       return original.apply(this, args as Parameters<typeof original>)
     }
@@ -83,23 +83,21 @@ test('discard serializes against further typing and save until draft storage fin
   await page.getByLabel('Project name').fill('Old draft')
   await expect(page.getByText('Draft kept on this device.', { exact: false })).toBeVisible()
   await page.evaluate(() => {
-    const original = IDBFactory.prototype.open
-    IDBFactory.prototype.open = function (...args) {
-      const request = original.apply(this, args as Parameters<typeof original>)
-      if (args[0] === 'loopmark-drafts') {
-        const descriptor = Object.getOwnPropertyDescriptor(IDBRequest.prototype, 'onsuccess')!
-        Object.defineProperty(request, 'onsuccess', {
-          set(callback) {
-            descriptor.set!.call(request, (event: Event) =>
-              setTimeout(() => callback.call(request, event), 500),
-            )
-          },
-        })
+    const remove = IDBObjectStore.prototype.delete
+    IDBObjectStore.prototype.delete = function (...args) {
+      if (this.transaction.db.name === 'loopmark-v2' && this.name === 'drafts') {
+        const tx = this.transaction
+        const done = tx.oncomplete
+        tx.oncomplete = (event) => {
+          setTimeout(() => done?.call(tx, event), 500)
+        }
+        document.documentElement.dataset.delayedDiscard = 'true'
       }
-      return request
+      return remove.apply(this, args)
     }
   })
   await page.getByRole('button', { name: 'Discard draft' }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-delayed-discard', 'true')
   await expect(page.getByLabel('Project name')).toBeDisabled()
   await expect(page.getByRole('button', { name: 'Create project', exact: true })).toBeDisabled()
   await expect(page.getByLabel('Project name')).toHaveValue('')

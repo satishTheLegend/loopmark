@@ -208,7 +208,7 @@ test('@chromium-media simulated microphone recording and photo survive a full ex
   await other.goto(`${new URL(page.url()).origin}/#backup`)
   await uploadBackup(other, exported)
   await expect(other.getByRole('dialog')).toContainText('1 projects · 1 checkpoints')
-  await other.getByRole('button', { name: 'Replace and restore' }).click()
+  await other.getByRole('button', { name: 'Restore as separate collection' }).click()
   await expect(other.getByRole('dialog')).toHaveCount(0)
   await other.goto(`${new URL(page.url()).origin}/#project=${exported.projects[0].id}`)
   await expect(other.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
@@ -226,11 +226,11 @@ test('@chromium-media simulated microphone recording and photo survive a full ex
   const withoutRevision = (projects: Array<Record<string, unknown>>) =>
     projects.map(({ updatedAt: _updatedAt, ...project }) => project)
   expect(withoutRevision(restored.projects)).toEqual(withoutRevision(exported.projects))
-  expect(restored.projects[0].updatedAt > exported.projects[0].updatedAt).toBe(true)
+  expect(restored.projects[0].updatedAt).toBe(exported.projects[0].updatedAt)
   await context.close()
 })
 
-test('invalid or hostile imports preserve current data; valid replacement needs confirmation', async ({
+test('invalid imports preserve current data; valid restore is confirmed into a separate collection', async ({
   page,
 }) => {
   await page.goto('/')
@@ -255,14 +255,20 @@ test('invalid or hostile imports preserve current data; valid replacement needs 
   const replacement = { ...original, projects: [] }
   await uploadBackup(page, replacement)
   await expect(page.getByRole('dialog')).toContainText(
-    'replace every project currently in this browser',
+    'separate recovered collection on this device',
   )
   await page.getByRole('button', { name: 'Cancel', exact: true }).click()
   expect((await backup(page)).projects).toEqual(original.projects)
   await uploadBackup(page, replacement)
-  await page.getByRole('button', { name: 'Replace and restore' }).click()
+  await page.getByRole('button', { name: 'Restore as separate collection' }).click()
   await expect(page.getByRole('dialog')).toHaveCount(0)
   expect((await backup(page)).projects).toEqual([])
+  await page.getByRole('button', { name: 'Change collection' }).click()
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: /Personal projects/ })
+    .click()
+  expect((await backup(page)).projects).toEqual(original.projects)
 })
 
 test('browser storage write failures retain form values and leave existing checkpoints intact', async ({
@@ -276,14 +282,14 @@ test('browser storage write failures retain form values and leave existing check
   await page.evaluate(() => {
     const original = IDBObjectStore.prototype.put
     IDBObjectStore.prototype.put = function (...args) {
-      if (this.name === 'projects')
+      if (this.transaction.db.name === 'loopmark-v2' && this.name === 'collections')
         throw new DOMException('Injected quota failure', 'QuotaExceededError')
       return original.apply(this, args)
     }
   })
   await page.getByRole('button', { name: 'Save checkpoint', exact: true }).click()
   await expect(page.getByRole('dialog').getByRole('alert')).toContainText(
-    'Your browser storage is full',
+    'Your device storage is full',
   )
   await expect(page.getByLabel('What will you do next?')).toHaveValue(
     'Unsaved work must stay in the form.',
@@ -304,16 +310,16 @@ test('failed restore rolls back the entire transaction', async ({ page }) => {
   replacement.projects[0].name = 'Replacement collection'
   await uploadBackup(page, replacement)
   await page.evaluate(() => {
-    const original = IDBObjectStore.prototype.add
-    IDBObjectStore.prototype.add = function (...args) {
-      if (this.name === 'projects')
+    const original = IDBObjectStore.prototype.put
+    IDBObjectStore.prototype.put = function (...args) {
+      if (this.transaction.db.name === 'loopmark-v2' && this.name === 'collections')
         throw new DOMException('Injected restore quota failure', 'QuotaExceededError')
       return original.apply(this, args)
     }
   })
-  await page.getByRole('button', { name: 'Replace and restore' }).click()
+  await page.getByRole('button', { name: 'Restore as separate collection' }).click()
   await expect(page.getByRole('dialog').getByRole('alert')).toContainText(
-    'Your browser storage is full',
+    'Your device storage is full',
   )
   await page.getByRole('button', { name: 'Cancel', exact: true }).click()
   await page.reload()
@@ -335,7 +341,7 @@ test('two tabs retain concurrent checkpoints and reject stale detail edits', asy
   await other.getByRole('button', { name: 'Save details', exact: true }).click()
   await expect(other.getByRole('heading', { name: 'The fresh edit' })).toBeVisible()
   await page.getByRole('button', { name: 'Save details', exact: true }).click()
-  await expect(page.getByRole('alert')).toContainText('changed in another tab')
+  await expect(page.getByRole('alert')).toContainText('changed elsewhere')
   await page.getByRole('button', { name: 'Close dialog' }).click()
   await Promise.all([
     checkpoint(page, 'Saved from the first tab.'),
@@ -365,7 +371,7 @@ test('bag label renders QR and print-only content, then opens the saved local pr
   const qrData = await page.getByAltText('QR code to this project on this site').getAttribute('src')
   const png = PNG.sync.read(Buffer.from(qrData!.split(',')[1], 'base64'))
   const decoded = jsQR(new Uint8ClampedArray(png.data), png.width, png.height)
-  expect(decoded?.data).toBe(url)
+  expect(decoded?.data).toBe(new URL(`/p/${new URL(url).hash.slice('#project='.length)}`, url).href)
   await expect(page.locator('.bag-label')).toContainText('Labelled shawl')
   await expect(page.locator('.bag-label')).toContainText('Row 23 complete')
   await expect(page.locator('.bag-label')).toContainText('Work the border in moss stitch.')
@@ -572,11 +578,10 @@ test('blocked storage shows recovery instead of claiming a saved collection', as
     }
   })
   await page.goto('/')
-  await expect(
-    page.getByRole('heading', { name: 'We couldn’t open your workbasket' }),
-  ).toBeVisible()
-  await expect(page.getByText('Your browser may be blocking local storage.')).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Try again' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Your workbasket needs attention' })).toBeVisible()
+  await expect(page.getByRole('alert')).toBeVisible()
+  await expect(page.getByText('Keep the app’s stored data', { exact: false })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Reopen Loopmark' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'New project', exact: true })).toHaveCount(0)
 })
 
@@ -589,7 +594,7 @@ test('imported markup remains literal text and cannot execute scripts', async ({
   value.projects[0].name = hostile
   value.projects[0].checkpoints[0].nextStep = '<script>window.loopmarkXss=true</script>'
   await uploadBackup(page, value)
-  await page.getByRole('button', { name: 'Replace and restore' }).click()
+  await page.getByRole('button', { name: 'Restore as separate collection' }).click()
   await expect(page.getByRole('dialog')).toHaveCount(0)
   await page.goto(`/#project=${value.projects[0].id}`)
   await expect(page.getByRole('heading', { name: hostile, exact: true })).toBeVisible()
@@ -629,6 +634,8 @@ for (const width of [320, 390]) {
     await page.locator('.project-card-main').first().click()
     await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toBeVisible()
     await checkWidth()
+    await page.getByRole('button', { name: 'Mark as finished' }).click()
+    await expect(page.getByRole('button', { name: 'Bring back to my projects' })).toBeVisible()
     await page.getByRole('button', { name: 'Back to your projects' }).click()
     await createProject(page, 'A long project name for a small phone screen')
     await checkWidth()
@@ -798,7 +805,7 @@ test('native recorder accepts a synthesized audio stream and restores its playab
     const other = await otherContext.newPage()
     await other.goto(`${new URL(page.url()).origin}/#backup`)
     await uploadBackup(other, exported)
-    await other.getByRole('button', { name: 'Replace and restore' }).click()
+    await other.getByRole('button', { name: 'Restore as separate collection' }).click()
     await expect(other.getByRole('dialog')).toHaveCount(0)
     await other.goto(`${new URL(page.url()).origin}/#project=${exported.projects[0].id}`)
     const restoredAudio = other.locator('audio')

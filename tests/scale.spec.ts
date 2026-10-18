@@ -76,7 +76,7 @@ async function importLibrary(page: Page, value: Backup) {
     buffer: Buffer.from(JSON.stringify(value)),
   })
   await expect(page.getByRole('dialog')).toBeVisible()
-  await page.getByRole('button', { name: 'Replace and restore', exact: true }).click()
+  await page.getByRole('button', { name: 'Restore as separate collection', exact: true }).click()
   await expect(page.getByRole('dialog')).toHaveCount(0)
 }
 
@@ -268,7 +268,7 @@ test.describe('Measured library budgets', () => {
     await expect(page.getByRole('dialog')).toBeVisible()
     const validationMs = await measurement(page)
     await startMeasurement(page, 'click', 'dialog button.primary', 'dialog', '', 0)
-    await page.getByRole('button', { name: 'Replace and restore', exact: true }).click()
+    await page.getByRole('button', { name: 'Restore as separate collection', exact: true }).click()
     await expect(page.getByRole('dialog')).toHaveCount(0)
     const commitMs = await measurement(page)
     await page.goto('/#project=scale-project-0')

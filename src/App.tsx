@@ -46,6 +46,9 @@ import { ConflictReview } from './components/ConflictReview'
 import { SyncStatus } from './components/SyncStatus'
 import { SyncDetails } from './components/SyncDetails'
 import { summarizeSync } from './components/sync-summary'
+import { AccountDeletion } from './components/AccountDeletion'
+import { AccountCapacity } from './components/AccountCapacity'
+import { AccountReceipts } from './components/AccountReceipts'
 import { NativeCaptureNotice } from './components/NativeCaptureNotice'
 import { appLinkOrigin, type AppRuntime } from './runtime'
 type Route = 'projects' | 'finished' | 'backup' | 'guide' | 'account' | `project=${string}`
@@ -88,6 +91,10 @@ export default function App({
   const [syncDetails, setSyncDetails] = useState(false)
   const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
   const [signOutReview, setSignOutReview] = useState<LocalWorkCounts | null>(null)
+  const [deletionReview, setDeletionReview] = useState<{
+    counts: LocalWorkCounts
+    token: string
+  } | null>(null)
   const [conflict, setConflict] = useState<{
     operationId: string
     view: CollectionView
@@ -358,10 +365,10 @@ export default function App({
   async function chooseCollection(key: CollectionKey) {
     if (!controller) return
     if (exitGuard.current && !(await exitGuard.current())) return
-    await controller.chooseCollection(key)
+    // Publish the destination route before the scope changes and remounts this App.
     setModal(null)
     navigate('projects')
-    await refresh()
+    await controller.chooseCollection(key)
   }
   async function previewConnection(key: CollectionKey) {
     if (!controller || busy) return
@@ -379,6 +386,18 @@ export default function App({
     setBusy(true)
     try {
       setSignOutReview(await controller.prepareSignOut())
+    } catch (error) {
+      notify(errorText(error), true)
+    } finally {
+      setBusy(false)
+    }
+  }
+  async function reviewDeletion() {
+    if (!controller || busy) return
+    setBusy(true)
+    try {
+      const counts = await controller.prepareSignOut()
+      setDeletionReview({ counts, token: crypto.randomUUID() })
     } catch (error) {
       notify(errorText(error), true)
     } finally {
@@ -671,6 +690,31 @@ export default function App({
                     </button>
                   </section>
                 )}
+              {runtime && state?.view && (
+                <AccountCapacity
+                  key={`${state.account?.accountId ?? 'guest'}:${state.view.info.key.collectionId}:${state.view.info.key.epoch}`}
+                  view={state.view}
+                  signedIn={state.auth === 'authenticated'}
+                  onLoadUsage={() => runtime.accountUsage()}
+                />
+              )}
+              {runtime && <AccountReceipts runtime={runtime} />}
+              {runtime && state?.auth === 'authenticated' && (
+                <section className="account-section readable-controls">
+                  <h2>Delete your account</h2>
+                  <p>
+                    Review this device’s copies and request a fresh code before deleting your cloud
+                    account. Local collections and downloaded backups are separate.
+                  </p>
+                  <button
+                    className="button secondary"
+                    disabled={busy}
+                    onClick={() => void reviewDeletion()}
+                  >
+                    Review account deletion
+                  </button>
+                </section>
+              )}
             </AccountView>
           ) : (
             <Shelf
@@ -731,9 +775,27 @@ export default function App({
             navigate('backup')
           }}
           onConfirm={async (options) => {
+            navigate('account')
             await controller.signOut(options)
-            setSignOutReview(null)
-            navigate('projects')
+          }}
+        />
+      )}
+      {deletionReview && runtime && (
+        <AccountDeletion
+          counts={deletionReview.counts}
+          missingAttachments={deletionReview.counts.missingAttachments}
+          accountEmail={state?.account?.email || 'your account'}
+          onRequestCode={() =>
+            runtime.deletion.requestCode(runtime.scope(), AbortSignal.timeout(30_000))
+          }
+          onClose={() => setDeletionReview(null)}
+          onBackup={() => {
+            setDeletionReview(null)
+            navigate('backup')
+          }}
+          onDelete={async (choice) => {
+            navigate('account')
+            await runtime.deleteAccount(choice, deletionReview.token)
           }}
         />
       )}

@@ -51,7 +51,7 @@ test('a recovered edit draft cannot overwrite details saved later in another tab
   await other.getByRole('button', { name: 'Save details', exact: true }).click()
   await expect(other.getByRole('heading', { name: 'Newer committed details' })).toBeVisible()
   await page.getByRole('button', { name: 'Save details', exact: true }).click()
-  await expect(page.getByRole('dialog').getByRole('alert')).toContainText('changed in another tab')
+  await expect(page.getByRole('dialog').getByRole('alert')).toContainText('changed elsewhere')
   await expect(page.getByLabel('Project name')).toHaveValue('Recovered older edit')
   await page.getByRole('button', { name: 'Close dialog' }).click()
   await page.reload()
@@ -72,7 +72,7 @@ test('competing tabs preserve the first stored draft and warn before losing the 
   await page.getByLabel('Project name').fill('First tab draft')
   await expect(page.getByText('Draft kept on this device.', { exact: false })).toBeVisible()
   await other.getByLabel('Project name').fill('Second tab input')
-  await expect(other.getByRole('alert')).toContainText('draft changed in another tab')
+  await expect(other.getByRole('alert')).toContainText('information changed elsewhere')
   await expect(other.getByLabel('Project name')).toHaveValue('Second tab input')
   const warning = other.waitForEvent('dialog')
   const closing = other.getByRole('button', { name: 'Close dialog' }).click()
@@ -97,13 +97,13 @@ test('draft write failure reports the loss of recovery while a normal project sa
   await page.evaluate(() => {
     const put = IDBObjectStore.prototype.put
     IDBObjectStore.prototype.put = function (...args) {
-      if (this.transaction.db.name === 'loopmark-drafts')
+      if (this.transaction.db.name === 'loopmark-v2' && this.name === 'drafts')
         throw new DOMException('Injected draft quota failure', 'QuotaExceededError')
       return put.apply(this, args)
     }
   })
   await page.getByLabel('Project name').fill('Save despite draft failure')
-  await expect(page.getByRole('alert')).toContainText('draft could not be kept')
+  await expect(page.getByRole('alert')).toContainText('device storage is full')
   await expect(page.getByText('Draft kept on this device.', { exact: false })).toHaveCount(0)
   await expect(page.getByLabel('Project name')).toHaveValue('Save despite draft failure')
   await page.getByRole('button', { name: 'Create project', exact: true }).click()
@@ -124,7 +124,7 @@ test('a committed checkpoint is not duplicated when its draft cannot be deleted 
   await page.evaluate(() => {
     const remove = IDBObjectStore.prototype.delete
     IDBObjectStore.prototype.delete = function (...args) {
-      if (this.transaction.db.name === 'loopmark-drafts')
+      if (this.transaction.db.name === 'loopmark-v2' && this.name === 'drafts')
         throw new DOMException('Injected draft cleanup failure', 'UnknownError')
       return remove.apply(this, args)
     }
@@ -165,7 +165,7 @@ test('already-persistent storage is shown as protected without asking again', as
   await expect(page.getByRole('button', { name: 'Ask to keep this device’s data' })).toHaveCount(0)
 })
 
-test('a stale backup preview preserves newer work until its updated collection is reviewed and reconfirmed', async ({
+test('a separate restore preserves work saved after its preview in the original collection', async ({
   page,
   context,
 }) => {
@@ -173,35 +173,36 @@ test('a stale backup preview preserves newer work until its updated collection i
   await createProject(page, 'Current collection')
   const projectUrl = page.url()
   const replacement = await downloadBackup(page)
-  replacement.projects[0].name = 'Confirmed replacement'
-  await page.getByLabel('Restore backup file').setInputFiles({
-    name: 'replacement.json',
-    mimeType: 'application/json',
-    buffer: Buffer.from(JSON.stringify(replacement)),
-  })
+  replacement.projects[0].name = 'Confirmed recovered copy'
+  await page
+    .getByLabel('Restore backup file')
+    .setInputFiles({
+      name: 'replacement.json',
+      mimeType: 'application/json',
+      buffer: Buffer.from(JSON.stringify(replacement)),
+    })
   await expect(page.getByRole('dialog')).toContainText(
     'Current collection: 1 projects · 0 checkpoints.',
   )
   const other = await context.newPage()
   await other.goto(projectUrl)
-  await saveCheckpoint(other, 'Newer work remains until replacement is reconfirmed.')
-  await page.getByRole('button', { name: 'Replace and restore' }).click()
-  await expect(page.getByRole('dialog').getByRole('alert')).toContainText('collection changed')
-  await other.reload()
-  await expect(other.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
-    'Newer work remains',
-  )
-  await page.getByRole('button', { name: 'Review latest collection' }).click()
-  await expect(page.getByRole('dialog')).toContainText(
-    'Current collection: 1 projects · 1 checkpoints.',
-  )
-  await other.reload()
-  await expect(other.locator('.history-row')).toHaveCount(1)
-  await page.getByRole('button', { name: 'Replace and restore' }).click()
+  await saveCheckpoint(other, 'Newer work remains in the source collection.')
+  await page.getByRole('button', { name: 'Restore as separate collection' }).click()
   await expect(page.getByRole('dialog')).toHaveCount(0)
   await page.goto(projectUrl)
-  await expect(page.getByRole('heading', { name: 'Confirmed replacement' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Confirmed recovered copy' })).toBeVisible()
   await expect(page.locator('.history-row')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Change collection' }).click()
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: /Personal projects/ })
+    .click()
+  await page.goto(projectUrl)
+  await expect(page.getByRole('heading', { name: 'Current collection', exact: true })).toBeVisible()
+  await expect(page.getByRole('region', { name: 'Latest checkpoint' })).toContainText(
+    'Newer work remains in the source collection.',
+  )
+  await expect(page.locator('.history-row')).toHaveCount(1)
 })
 
 test('a storage-status check failure stays visible and permits a later protection request', async ({

@@ -5,6 +5,7 @@ import { errorHelp } from '../help/errors'
 import { baseSchema, id, projectRecordSchema, checkpointRecordSchema } from '../domain/schema'
 export type FunctionName =
   | 'account-session'
+  | 'account-usage'
   | 'sync-push'
   | 'sync-pull'
   | 'sync-snapshot'

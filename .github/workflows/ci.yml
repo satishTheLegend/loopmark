@@ -46,3 +46,34 @@ jobs:
           path: |
             test-results/
             playwright-report/
+  local-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      LOOPMARK_DEV_PROFILE: ci
+      LOOPMARK_DEV_APP_PORT: 56620
+      LOOPMARK_DEV_API_PORT: 56621
+      LOOPMARK_DEV_DB_PORT: 56622
+      LOOPMARK_DEV_STUDIO_PORT: 56623
+      LOOPMARK_DEV_MAIL_PORT: 56624
+      LOOPMARK_SYNC_PUBLIC_ENV: .env.local
+      SUPABASE_TELEMETRY_DISABLED: 1
+      DO_NOT_TRACK: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run local:up
+      - run: npm run test:server
+      - run: npm run test:sync -- --project=chromium
+      - run: npm run local:down
+        if: always()
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: local-sync-browser-results
+          path: test-results-sync/

@@ -2,6 +2,8 @@ import { Capacitor } from '@capacitor/core'
 import { loadPublicConfig, type PublicConfig } from './config'
 import { installDataAdapter } from './data'
 import { installDraftStoreFactory } from './drafts'
+import { accountUsageSchema } from './domain/remote-schema'
+import { canonicalJson } from './domain/canonical-json'
 import { DomainError, safeError } from './domain/errors'
 import type { SessionScope } from './domain/contracts'
 import type { Repository } from './repositories/contracts'
@@ -15,6 +17,7 @@ import type { NativeCaptureRecovery, NativeCaptureSource } from './platform/nati
 import type { WorkflowStore } from './services/workflow-store'
 import { createAppController } from './services/app-controller'
 import { createLocalDataAdapter } from './services/local-data-service'
+import { createDeletionService } from './services/deletion-service'
 import { createBackupService } from './services/backup-service'
 import { prepareBrowserStorage, prepareNativeStorage } from './services/startup'
 import { createSyncCoordinator } from './sync/coordinator'
@@ -117,6 +120,14 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
   installDataAdapter(data)
   installDraftStoreFactory(() => storage.drafts(scope()))
   const backups = createBackupService({ ...storage, data, scope })
+  const deletion = createDeletionService({
+    repository,
+    auth,
+    client: auth?.functions,
+    workflows: storage.workflows,
+    current: controller.getSession,
+  })
+  const deletionListeners = new Set<() => void>()
   const captureModule = native ? await import('./platform/native/capture') : undefined
   const captureListeners = new Set<() => void>()
   const captureChanged = () => {
@@ -215,9 +226,62 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     config,
     controller,
     backups,
+    deletion,
+    subscribeDeletion(listener: () => void) {
+      deletionListeners.add(listener)
+      return () => {
+        deletionListeners.delete(listener)
+      }
+    },
+    async deleteAccount(
+      choice: {
+        code: string
+        keepLocal: boolean
+        discardUniqueWork?: boolean
+        allowMissingAttachments?: boolean
+      },
+      operationToken: string,
+    ) {
+      let receiptId: string | undefined
+      try {
+        await controller.deleteAccount(choice, async (fencedScope) => {
+          const result = await deletion.delete(
+            { operationToken, code: choice.code },
+            fencedScope,
+            AbortSignal.timeout(60_000),
+          )
+          receiptId = result.id
+        })
+        if (receiptId)
+          await deletion.recordLocalOutcome(receiptId, choice.keepLocal ? 'kept' : 'removed')
+      } finally {
+        for (const listener of deletionListeners) listener()
+      }
+    },
     repository,
     share: storage.share,
     configurationErrors: errors,
+    async accountUsage() {
+      const session = controller.getSession()
+      if (!auth || !session) throw new DomainError('AUTH_REQUIRED')
+      const captured = canonicalJson(session)
+      const result = accountUsageSchema.safeParse(
+        await auth.functions.post(
+          'account-usage',
+          { collectionId: session.collection.collectionId, epoch: session.collection.epoch },
+          AbortSignal.timeout(30_000),
+        ),
+      )
+      if (canonicalJson(controller.getSession()) !== captured)
+        throw new DomainError('ACCOUNT_CHANGED')
+      if (
+        !result.success ||
+        result.data.collectionId !== session.collection.collectionId ||
+        result.data.epoch !== session.collection.epoch
+      )
+        throw new DomainError('SYNC_PAGE_INVALID')
+      return result.data
+    },
     scope,
     draftStore: () => storage.drafts(scope()),
     captureRecovery: storage.captureRecovery,
@@ -305,6 +369,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       await removeNative?.()
       await removeCapture?.()
       captureListeners.clear()
+      deletionListeners.clear()
       await controller.dispose()
       events.clear()
     },
