@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { createRoot } from 'react-dom/client'
+import { flushSync } from 'react-dom'
 import { ProjectDownloads } from '../../src/components/ProjectDownloads'
 import type {
   DownloadsService,
@@ -12,6 +13,7 @@ const scope = {
   generation: 1,
   device: { id: 'device', generation: 'gen' },
 }
+const refreshChangesRevision = new URLSearchParams(location.search).has('revision-refresh')
 const counts = new Map([
   ['one', 1],
   ['two', 0],
@@ -22,6 +24,7 @@ let holdDownload = false,
   protectedFiles = false,
   releaseInspect = () => {}
 const log: string[] = []
+let renderLog = () => {}
 function result(id: string): ProjectOfflineAvailability {
   const total = id === 'text' ? 0 : 2,
     available = counts.get(id) ?? 0
@@ -55,6 +58,7 @@ const service: DownloadsService = {
           'abort',
           () => {
             log.push('aborted')
+            renderLog()
             reject(new DOMException('cancelled', 'AbortError'))
           },
           { once: true },
@@ -76,7 +80,9 @@ function Fixture() {
     [online, setOnline] = useState(true),
     [connected, setConnected] = useState(true),
     [shown, setShown] = useState(true),
-    [changes, setChanges] = useState(0)
+    [changes, setChanges] = useState(0),
+    [, setVersion] = useState(0)
+  renderLog = () => setVersion((value) => value + 1)
   return (
     <main className="main-content">
       <h1>Project files component fixture</h1>
@@ -105,6 +111,7 @@ function Fixture() {
         >
           Release inspection
         </button>
+        <button onClick={() => setRevision((value) => value + 1)}>Refresh project revision</button>
         <button onClick={() => setId('two')}>Select other project</button>
         <button onClick={() => setId('text')}>Select text project</button>
         <button onClick={() => setShown(false)}>Unmount panel</button>
@@ -129,7 +136,12 @@ function Fixture() {
             online={online}
             onChange={async () => {
               log.push('refresh')
-              setChanges((v) => v + 1)
+              if (refreshChangesRevision)
+                flushSync(() => {
+                  setChanges((value) => value + 1)
+                  setRevision((value) => value + 1)
+                })
+              else setChanges((v) => v + 1)
             }}
           />
         )}

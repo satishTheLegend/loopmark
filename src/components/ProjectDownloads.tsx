@@ -24,26 +24,43 @@ export function ProjectDownloads({
   const [notice, setNotice] = useState('')
   const [checkRevision, setCheckRevision] = useState(0)
   const lifecycle = useRef(0)
+  const inspection = useRef(0)
   const action = useRef<AbortController | null>(null)
   useEffect(() => {
-    const token = ++lifecycle.current
+    lifecycle.current++
     setAvailability(null)
     setError('')
     setNotice('')
     setConfirm(false)
     setBusy(null)
+    return () => {
+      lifecycle.current++
+      inspection.current++
+      action.current?.abort()
+      action.current = null
+    }
+  }, [service, projectId])
+
+  // A data refresh can be caused by our own successful action. It must not change
+  // the action's identity or cancel its completion notice.
+  useEffect(() => {
+    const token = lifecycle.current,
+      request = ++inspection.current
+    if (action.current) return
     void service
       .inspect(projectId)
       .then((value) => {
-        if (lifecycle.current === token) setAvailability(value)
+        if (lifecycle.current === token && inspection.current === request && !action.current) {
+          setAvailability(value)
+          setError('')
+        }
       })
       .catch((failure) => {
-        if (lifecycle.current === token) setError(errorText(failure))
+        if (lifecycle.current === token && inspection.current === request && !action.current)
+          setError(errorText(failure))
       })
     return () => {
-      lifecycle.current++
-      action.current?.abort()
-      action.current = null
+      inspection.current++
     }
   }, [service, projectId, revision, checkRevision])
 
@@ -52,6 +69,7 @@ export function ProjectDownloads({
     const token = lifecycle.current,
       controller = new AbortController()
     action.current = controller
+    inspection.current++
     setBusy(kind)
     setError('')
     setNotice('')
