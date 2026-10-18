@@ -18,15 +18,15 @@
   "test_blobs": {
     "tests/expansion/project-links.cloud.ts": {
       "before": "792c48f8193d947a4b868f356f2d2cd7859c4352",
-      "after": "cb919f12978278b6498257339ef5c2e05a6cbfb4"
+      "after": "4a31c45e3a99b32fbba7223e27ed3aa0c2ab81d5"
     },
     "tests/expansion/accounts.cloud.ts": {
       "before": "b083dc4ad5e023c0dc3e81b4e3890b2600954d24",
-      "after": "04eb08700da4db4f680a981da37d9901377bc202"
+      "after": "7464f003c87ca74c56b5b60a2caf241f07b9a2c8"
     }
   },
   "product_component_blob": "9713a1ad52e15b7b07772d4c90f7c8681d74cb8f",
-  "change": "Two test locators now assert text on the unique .sync-status container. All other assertions, existing timeouts, and product/live-region behavior remain unchanged.",
+  "change": "Two test locators now assert exact text on the visible .sync-status > span:not(.sr-only) label. The live announcement cannot satisfy the assertion. All other assertions, existing timeouts, and product/live-region behavior remain unchanged.",
   "verification": "Read-only trace analysis and diff review only. No browser, build or test execution in this lane. Root will run the four affected account/project-link journeys across five profiles after the active full matrix finishes.",
   "privacy": "Only the exact strict-mode error block and selected assertion timing are retained. No OTPs, synthetic account emails, tokens, craft content, network bodies or screenshots are copied."
 }
