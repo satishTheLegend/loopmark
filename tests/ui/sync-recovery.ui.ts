@@ -16,6 +16,9 @@ test('account refresh requires a separate missing-file acknowledgment and restor
   })
   await expect(proceed).toBeDisabled()
   await expect(page.getByLabel('Action result')).toHaveText('No action')
+  await dialog.evaluate(async (element) => {
+    await Promise.all(element.getAnimations().map((animation) => animation.finished))
+  })
   const scan = await new AxeBuilder({ page }).include('dialog').analyze()
   expect(scan.violations).toEqual([])
   if (['chromium', 'chromium-mobile'].includes(info.project.name)) {

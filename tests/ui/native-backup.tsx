@@ -121,8 +121,12 @@ function Fixture() {
         </button>
       </div>
       <p aria-label="Review count">{reviews}</p>
-      <output aria-label="Reviewed source">{last}</output>
-      <output aria-label="Inbox calls">{JSON.stringify(log)}</output>
+      <output aria-label="Reviewed source" style={{ display: 'block', overflowWrap: 'anywhere' }}>
+        {last}
+      </output>
+      <output aria-label="Inbox calls" style={{ display: 'block', overflowWrap: 'anywhere' }}>
+        {JSON.stringify(log)}
+      </output>
       {shown && (
         <NativeBackupNotice
           inbox={inbox}

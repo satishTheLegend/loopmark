@@ -125,7 +125,12 @@ function Fixture() {
         <button onClick={() => setConnected(false)}>Select local collection</button>
       </div>
       <p aria-label="Refresh count">{changes}</p>
-      <output aria-label="Fixture action log">{JSON.stringify(log)}</output>
+      <output
+        aria-label="Fixture action log"
+        style={{ display: 'block', overflowWrap: 'anywhere' }}
+      >
+        {JSON.stringify(log)}
+      </output>
       <div style={{ maxWidth: 340 }}>
         {shown && (
           <ProjectDownloads
