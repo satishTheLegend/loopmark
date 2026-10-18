@@ -1,4 +1,4 @@
-import type { Repository, LocalCollectionReview } from '../../repositories/contracts'
+import type { Repository, LocalCollectionReview, RebaseInput } from '../../repositories/contracts'
 import type {
   CollectionInfo,
   CollectionKey,
@@ -41,6 +41,7 @@ import { NativeMedia } from './files'
 import { NativeDraftStore, type NativeDraft } from './drafts'
 import { activeScope, assertGeneration, scopeKey } from './recovery-journal'
 import { durableFiles } from './files-bridge'
+import { completeNativeRebase, nativeRebaseBlocked } from './rebase'
 
 export interface NativeRepositoryOptions {
   databaseName?: string
@@ -127,6 +128,20 @@ export class NativeRepository implements Repository {
   }
   async reviewLocal(key: CollectionKey): Promise<LocalCollectionReview> {
     return this.database.serial((db) => this.reviewIn(db, key))
+  }
+  rebaseBlocked(key: CollectionKey) {
+    return nativeRebaseBlocked(this.database, key)
+  }
+  async completeRebase(expected: SessionScope, review: LocalCollectionReview, input: RebaseInput) {
+    const result = await completeNativeRebase(
+      this.database,
+      (db, key) => this.reviewIn(db, key),
+      expected,
+      review,
+      input,
+    )
+    this.publish()
+    return result
   }
   async transition(
     expected: SessionScope | null,
@@ -894,7 +909,7 @@ export class NativeRepository implements Repository {
           throw new DomainError('SYNC_REBASE_REQUIRED')
       }
       await db.run(
-        "DELETE FROM pins WHERE scope=? AND (owner LIKE 'draft:%' OR owner LIKE 'operation-plan:%')",
+        "DELETE FROM pins WHERE scope=? AND (owner LIKE 'draft:%' OR owner LIKE 'operation-plan:%' OR owner LIKE 'rebase-archive:%')",
         [scopeKey(key)],
         false,
       )
@@ -917,6 +932,13 @@ export class NativeRepository implements Repository {
       for (const row of workflows) {
         const workflow = JSON.parse(row.body as string)
         if (workflow.collection && scopeKey(workflow.collection) === scopeKey(key))
+          await db.run('DELETE FROM metadata WHERE key=?', [row.key], false)
+      }
+      const archives =
+        (await db.query("SELECT key,body FROM metadata WHERE key LIKE '[\"rebase-%'")).values ?? []
+      for (const row of archives) {
+        const entry = JSON.parse(row.body as string)
+        if (entry.scope && scopeKey(entry.scope) === scopeKey(key))
           await db.run('DELETE FROM metadata WHERE key=?', [row.key], false)
       }
       await db.run('DELETE FROM collections WHERE key=?', [scopeKey(key)], false)

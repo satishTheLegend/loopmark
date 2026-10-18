@@ -8,6 +8,7 @@ import { openNativeRepository } from '../../../src/platform/native/repository'
 import { NativeCredentialStore } from '../../../src/platform/native/session-storage'
 import { durableFiles } from '../../../src/platform/native/files-bridge'
 import { nativeMediaRepair } from './media-repair'
+import { nativeRebase } from './rebase'
 
 const results: { name: string; passed: boolean; error?: string }[] = []
 const assert = (value: unknown) => {
@@ -62,6 +63,9 @@ await test('actual device credential save, read, clear', async () => {
 const restartPhase = await persistenceTests(test)
 await test('native corrupt/missing cache repair preserves draft/export pins and transaction fences', async () => {
   await nativeMediaRepair()
+})
+await test('native source-preserving rebase validates review and archives drafts, media and old commands atomically', async () => {
+  await nativeRebase()
 })
 await adapterTests(test)
 await capabilityTests(test)

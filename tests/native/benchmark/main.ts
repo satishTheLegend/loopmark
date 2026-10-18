@@ -10,6 +10,7 @@ import type { CollectionInfo, SessionScope } from '../../../src/domain/contracts
 import { benchmarkFixture } from './fixture'
 import { nativeExamples } from './examples'
 import { nativeMediaRepair } from '../harness/media-repair'
+import { nativeRebase } from '../harness/rebase'
 import { stageNativeExport } from '../../../src/platform/native/share'
 import { decodeBase64Bytes } from '../../../src/media-validation'
 
@@ -52,7 +53,9 @@ try {
   if (
     command.schemaVersion !== 1 ||
     !/^[a-f0-9-]{36}$/.test(command.runId) ||
-    !['import', 'export', 'startup', 'examples', 'repair', 'profile'].includes(command.action) ||
+    !['import', 'export', 'startup', 'examples', 'repair', 'profile', 'rebase'].includes(
+      command.action,
+    ) ||
     !['small', 'limit'].includes(command.dataset)
   )
     throw new Error('Explicit benchmark command is invalid.')
@@ -210,6 +213,7 @@ try {
   await repo.close()
   if (command.action === 'examples') report.examples = await nativeExamples()
   if (command.action === 'repair') report.repair = await nativeMediaRepair()
+  if (command.action === 'rebase') report.rebase = await nativeRebase()
   if (command.action === 'profile') {
     const decoding = []
     for (const size of [60 * 1024, 6 * 1024 * 1024]) {
