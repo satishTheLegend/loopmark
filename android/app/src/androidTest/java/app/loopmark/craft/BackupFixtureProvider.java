@@ -23,7 +23,7 @@ public class BackupFixtureProvider extends ContentProvider {
         if (file.exists()) return file;
         if ("oversized".equals(kind)) { try (RandomAccessFile output = new RandomAccessFile(file, "rw")) { output.setLength(50L * 1024 * 1024 + 1); } return file; }
         String body = "";
-        if ("invalid".equals(kind)) body = "{invalid synthetic JSON";
+        if ("invalid".equals(kind)) body = "{invalid synthetic JSON " + tag;
         if ("valid".equals(kind) || "other".equals(kind)) {
             String time = "2026-01-01T00:00:00.000Z";
             JSONObject checkpoint = new JSONObject().put("id", "external_checkpoint").put("createdAt", time).put("position", "Row 24").put("toolSize", "4 mm").put("nextStep", "Turn and continue from the external backup").put("notes", "");
