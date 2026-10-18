@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { errorText } from './ui'
-import { UserFacingError } from '../domain/errors'
+import { DomainError, UserFacingError } from '../domain/errors'
 import { parseBackup } from '../data'
 
 describe('user-facing error boundary', () => {
@@ -12,6 +12,15 @@ describe('user-facing error boundary', () => {
     expect(display).toContain('Diagnostic code: UNEXPECTED')
     expect(display).toContain('Help: support#diagnostics')
     expect(errorText(error)).toBe(display)
+  })
+  it('keeps stable domain support metadata with its actionable remedy', () => {
+    const failure = new DomainError('BACKUP_INCOMPLETE')
+    const display = errorText(failure)
+    expect(display).toContain(failure.detail.problem)
+    expect(display).toContain(failure.detail.nextAction)
+    expect(display).toContain(failure.detail.correlationId)
+    expect(display).toContain(failure.detail.helpRef)
+    expect(display).toContain('Diagnostic code: BACKUP_INCOMPLETE')
   })
   it('retains authored validation remedies without exposing unknown backup fields', () => {
     expect(errorText(new UserFacingError('Choose a smaller photo.'))).toBe(

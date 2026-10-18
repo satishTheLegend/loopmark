@@ -9,7 +9,7 @@ async function edit(page: Page, name: string, notes: string, tool: string) {
   await page.getByRole('button', { name: 'Save details', exact: true }).click()
   await expect(page.getByRole('dialog')).toHaveCount(0)
 }
-test('actual two-device conflict shows full changed values, preserves device recovery, and converges after explicit cloud choice', async ({
+test('actual two-device conflict requires a fresh review, preserves device recovery, and converges after explicit cloud choice', async ({
   browser,
 }) => {
   test.setTimeout(120000)
@@ -62,10 +62,35 @@ test('actual two-device conflict shows full changed values, preserves device rec
       'Use the revised shoulder repeat from the other device.',
     )
     await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText('5 mm')
+    await edit(
+      b,
+      'Reviewed cloud cardigan',
+      'The other device revised the sleeve again while this review was open.',
+      '5.5 mm',
+    )
+    await expect(b.locator('.sync-status')).toContainText('Synced to your account', {
+      timeout: 20000,
+    })
+    await expect(review.getByRole('alert')).toContainText(
+      'New changes arrived while this review was open.',
+      { timeout: 60000 },
+    )
+    await expect(
+      review.getByRole('button', { name: 'Use cloud version', exact: true }),
+    ).toHaveCount(0)
+    await review.getByRole('button', { name: 'Refresh versions', exact: true }).click()
+    await expect(review.getByRole('alert')).toHaveCount(0)
+    await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText(
+      'The other device revised the sleeve again while this review was open.',
+    )
+    await expect(review.getByRole('region', { name: 'Cloud version' })).toContainText('5.5 mm')
+    await expect(review.getByRole('region', { name: 'This device version' })).toContainText(
+      'Keep the two extra shoulder repeats from this device.',
+    )
     await review.getByRole('button', { name: 'Use cloud version', exact: true }).click()
     await expect(review).toHaveCount(0)
     await expect(
-      a.getByRole('heading', { name: 'Cloud cardigan', exact: true, level: 1 }),
+      a.getByRole('heading', { name: 'Reviewed cloud cardigan', exact: true, level: 1 }),
     ).toBeVisible()
     await a.getByRole('button', { name: 'Change collection' }).click()
     await a
@@ -83,9 +108,11 @@ test('actual two-device conflict shows full changed values, preserves device rec
     ).toBeVisible()
     await signIn(c, email)
     await chooseAccount(c)
-    await c.getByRole('button', { name: /^Open Cloud cardigan\./ }).click()
+    await c.getByRole('button', { name: /^Open Reviewed cloud cardigan\./ }).click()
     await expect(
-      c.getByText('Use the revised shoulder repeat from the other device.', { exact: true }),
+      c.getByText('The other device revised the sleeve again while this review was open.', {
+        exact: true,
+      }),
     ).toBeVisible()
     await expect(c.getByRole('heading', { name: 'Device cardigan', exact: true })).toHaveCount(0)
   } finally {

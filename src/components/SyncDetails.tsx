@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { SyncCategory, SyncItem, SyncSummary } from './sync-summary'
-import { safeError } from '../domain/errors'
-import { Dialog, ErrorMessage, fullDate } from './ui'
+import { Dialog, ErrorMessage, errorText, formatSafeError, fullDate } from './ui'
 
 const labels: Record<SyncCategory, string> = {
   account: 'Account access',
@@ -39,8 +38,7 @@ export function SyncDetails({
     try {
       await onRetry(items)
     } catch (failure) {
-      const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
     } finally {
       setBusy(false)
     }
@@ -55,11 +53,7 @@ export function SyncDetails({
             <time dateTime={summary.lastSyncedAt}>{fullDate(summary.lastSyncedAt)}</time>.
           </p>
         )}
-        <ErrorMessage
-          message={
-            error || (summary.error ? `${summary.error.problem} ${summary.error.nextAction}` : '')
-          }
-        />
+        <ErrorMessage message={error || (summary.error ? formatSafeError(summary.error) : '')} />
         {summary.items.length === 0 && (
           <p>
             {summary.kind === 'current' || summary.kind === 'local'
@@ -85,8 +79,7 @@ export function SyncDetails({
                 setError('')
                 void onSync()
                   .catch((failure) => {
-                    const detail = safeError(failure)
-                    setError(`${detail.problem} ${detail.nextAction}`)
+                    setError(errorText(failure))
                   })
                   .finally(() => setBusy(false))
               }}
@@ -120,11 +113,7 @@ export function SyncDetails({
                           ? 'Checkpoint'
                           : 'Project change'}
                     </span>
-                    {item.error && (
-                      <p>
-                        {item.error.problem} {item.error.nextAction}
-                      </p>
-                    )}
+                    {item.error && <p>{formatSafeError(item.error)}</p>}
                     {kind === 'conflict' ? (
                       <button className="button secondary" onClick={() => onReview(item.id)}>
                         Review versions

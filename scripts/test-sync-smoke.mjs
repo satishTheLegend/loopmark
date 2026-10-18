@@ -49,14 +49,16 @@ try {
     await result.body?.cancel()
     if (!result.ok) throw new Error('The selected local Auth/Mailpit service is not ready.')
   }
+  const args = process.argv.slice(2)
+  const loadCapture = args.includes('--load-capture')
   const child = spawn(
     process.execPath,
     [
       resolve('node_modules/@playwright/test/cli.js'),
       'test',
       '--config',
-      'playwright.sync.config.ts',
-      ...process.argv.slice(2),
+      loadCapture ? 'playwright.load-capture.config.ts' : 'playwright.sync.config.ts',
+      ...args.filter((argument) => argument !== '--load-capture'),
     ],
     {
       stdio: 'inherit',

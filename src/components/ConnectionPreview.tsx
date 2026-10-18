@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { AttachPreview } from '../services/controller-contract'
-import { safeError } from '../domain/errors'
-import { Dialog, ErrorMessage, fullDate } from './ui'
+import { Dialog, ErrorMessage, errorText, fullDate } from './ui'
 
 export function ConnectionPreview({
   preview,
@@ -37,8 +36,7 @@ export function ConnectionPreview({
     try {
       await action()
     } catch (failure) {
-      const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
     } finally {
       setBusy(false)
     }

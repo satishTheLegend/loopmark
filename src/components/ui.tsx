@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import { IconX, IconNeedleThread } from '@tabler/icons-react'
 import type { Project } from '../types'
-import { DomainError, UserFacingError, safeError } from '../domain/errors'
+import { UserFacingError, safeError, type SafeError } from '../domain/errors'
 
 export function Dialog({
   title,
@@ -130,8 +130,9 @@ export function fullDate(value: string) {
   })
 }
 export function errorText(error: unknown) {
-  if (error instanceof DomainError) return `${error.detail.problem} ${error.detail.nextAction}`
   if (error instanceof UserFacingError) return error.message
-  const detail = safeError(error)
+  return formatSafeError(safeError(error))
+}
+export function formatSafeError(detail: SafeError) {
   return `${detail.problem} ${detail.nextAction} Diagnostic code: ${detail.code} (${detail.correlationId}). Help: ${detail.helpRef}.`
 }

@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import type { CollectionView, ProjectFields, ProjectRecord } from '../domain/contracts'
 import type { ConflictChoice } from '../services/controller-contract'
-import { safeError } from '../domain/errors'
-import { Dialog, ErrorMessage, fullDate } from './ui'
+import { Dialog, ErrorMessage, errorText, fullDate } from './ui'
 
 const fields = [
   ['name', 'Project name'],
@@ -74,8 +73,7 @@ export function ConflictReview({
     try {
       await action()
     } catch (failure) {
-      const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
     } finally {
       setBusy(false)
     }

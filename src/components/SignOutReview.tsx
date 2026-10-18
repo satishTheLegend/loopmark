@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { LocalWorkCounts } from '../services/controller-contract'
-import { safeError } from '../domain/errors'
-import { Dialog, ErrorMessage } from './ui'
+import { Dialog, ErrorMessage, errorText } from './ui'
 
 export function SignOutReview({
   counts,
@@ -45,8 +44,7 @@ export function SignOutReview({
         allowMissingAttachments: keepLocal && allowMissing,
       })
     } catch (failure) {
-      const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
     } finally {
       setBusy(false)
     }

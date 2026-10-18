@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { IconCloud, IconLock, IconLogout } from '@tabler/icons-react'
 import { safeError } from '../domain/errors'
-import { ErrorMessage } from './ui'
+import { ErrorMessage, errorText } from './ui'
 
 export function AccountView({
   cloudAvailable,
@@ -51,7 +51,7 @@ export function AccountView({
       setSent(true)
     } catch (failure) {
       const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
       if (detail.retryAfterMs) setRetryAt(Date.now() + detail.retryAfterMs)
     } finally {
       setBusy(null)
@@ -65,8 +65,7 @@ export function AccountView({
     try {
       await onVerifyCode(email.trim(), code.trim())
     } catch (failure) {
-      const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
     } finally {
       setBusy(null)
     }

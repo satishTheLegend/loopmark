@@ -1,8 +1,7 @@
 import { useId, useState } from 'react'
 import { IconCheck, IconArrowsExchange } from '@tabler/icons-react'
 import type { CollectionInfo, CollectionKey } from '../domain/contracts'
-import { safeError } from '../domain/errors'
-import { Dialog, ErrorMessage } from './ui'
+import { Dialog, ErrorMessage, errorText } from './ui'
 
 export interface CollectionSummary {
   info: CollectionInfo
@@ -41,8 +40,7 @@ export function CollectionPicker({
       await onSelect(key)
       setOpen(false)
     } catch (failure) {
-      const detail = safeError(failure)
-      setError(`${detail.problem} ${detail.nextAction}`)
+      setError(errorText(failure))
     } finally {
       setBusy(false)
     }
