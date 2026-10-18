@@ -2,6 +2,7 @@ import { run, root, evidenceDirectory } from './process.mjs'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { readFile, unlink, writeFile } from 'node:fs/promises'
+import { productManifest, verifyProductAssets, appDirectoryHash } from './product-evidence.mjs'
 const exec = promisify(execFile)
 const device = process.env.LOOPMARK_IOS_SIMULATOR
 if (!device)
@@ -9,6 +10,12 @@ if (!device)
     'Set LOOPMARK_IOS_SIMULATOR to a test-owned booted simulator UUID. No personal device is selected or erased.',
   )
 const html = await readFile(`${root}/ios/App/App/public/index.html`, 'utf8')
+const manifest = await productManifest(`${root}/docs/evidence/expansion/native/harness-bundle.json`)
+await verifyProductAssets(`${root}/ios/App/App/public`, manifest)
+await verifyProductAssets(
+  `${root}/ios/build/Build/Products/Debug-iphonesimulator/App.app/public`,
+  manifest,
+)
 if (!html.includes('native persistence fixture'))
   throw new Error(
     'Build the synthetic harness first: LOOPMARK_NATIVE_TEST_BUILD=1 node scripts/native/harness.mjs, then LOOPMARK_NATIVE_TEST_BUILD=1 node scripts/native/build-ios.mjs. Run native:sync afterwards to restore production assets.',
@@ -56,9 +63,29 @@ for (let pass = 0; pass < 2; pass++) {
 }
 if (reports[1].restartPhase !== 2)
   throw new Error('Process restart did not observe the durable seed.')
+const { stdout: installed } = await exec('xcrun', [
+  'simctl',
+  'get_app_container',
+  device,
+  'app.loopmark.craft',
+  'app',
+])
+await verifyProductAssets(`${installed.trim()}/public`, manifest)
 await writeFile(
   `${await evidenceDirectory()}/ios-runtime.json`,
-  JSON.stringify({ simulator: device, runs: reports }, null, 2) + '\n',
+  JSON.stringify(
+    {
+      simulator: device,
+      sourceCommit: manifest.sourceCommit,
+      manifestFileSha256: manifest.manifestFileSha256,
+      artifactSha256: await appDirectoryHash(installed.trim()),
+      artifactFormat: 'app-directory-sha256',
+      completedAt: new Date().toISOString(),
+      runs: reports,
+    },
+    null,
+    2,
+  ) + '\n',
 )
 console.log(
   `PASS: ${reports[0].results.length} native groups, twice, including actual process relaunch.`,

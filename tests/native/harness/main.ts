@@ -12,6 +12,7 @@ import { nativeRebase } from './rebase'
 import { nativeDownloads } from './downloads'
 import { nativePullNoop } from './pull-noop'
 import { nativeControllerSwitch } from './controller-switch'
+import { nativeRuntimeScheduler } from './runtime-scheduler'
 
 const results: { name: string; passed: boolean; error?: string }[] = []
 const assert = (value: unknown) => {
@@ -79,6 +80,9 @@ await test('empty unchanged-cursor pull preserves real SQLite state, subscriptio
 })
 await test('late sync cleanup preserves a deliberate guest switch in the actual controller and SQLite', async () => {
   await nativeControllerSwitch()
+})
+await test('native runtime scheduler waits for startup and queued selection settlement', async () => {
+  await nativeRuntimeScheduler()
 })
 await capabilityTests(test)
 const report = {
