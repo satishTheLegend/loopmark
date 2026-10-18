@@ -1,9 +1,10 @@
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect, type Page, type Request } from '@playwright/test'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { parseOperatorConfig } from '../../scripts/lib/config.mjs'
 import { assertLocalDocker } from '../../scripts/local.mjs'
 import type { Command } from '../../src/domain/contracts'
+import { canonicalJson } from '../../src/domain/canonical-json'
 import { signIn, chooseAccount, createProject, origin } from '../cloud/helpers'
 
 const execute = promisify(execFile)
@@ -102,6 +103,7 @@ for (const trigger of ['retired', 'cursor'] as const)
       localStep = 'Keep the unsent photo checkpoint on this device',
       draftStep = 'Unfinished draft after the paused checkpoint'
     let release!: () => void
+    let closing = false
     const held = new Promise<void>((resolve) => {
       release = resolve
     })
@@ -123,15 +125,51 @@ for (const trigger of ['retired', 'cursor'] as const)
         )
           sent.push(request.postDataJSON() as Command)
       })
+      const observedResponses = new Map<
+        Request,
+        {
+          operationId: string
+          sha256: string
+          status: number
+          body: { error: { code: string } }
+        }
+      >()
       await a.route('**/functions/v1/sync-push', async (route) => {
         if (route.request().method() === 'POST') {
           const command = route.request().postDataJSON() as Command
-          if (!attempted && command.kind === 'checkpoint.create') {
-            attempted = command
+          if (!attempted && command.kind === 'checkpoint.create') attempted = command
+          if (attempted && command.operationId === attempted.operationId) {
+            // Every immutable retry must remain behind the same barrier. The client's
+            // real request deadline can expire while the second device signs in.
+            expect(command.sha256).toBe(attempted.sha256)
+            expect(canonicalJson(command)).toBe(canonicalJson(attempted))
             await held
+            if (closing || route.request().failure()) {
+              await route.abort().catch(() => {})
+              return
+            }
+            // Capture the real endpoint response before delivering identical bytes
+            // to the browser. CDP can lose an aborted response body after headers.
+            const actual = await route.fetch({ maxRedirects: 0, maxRetries: 0, timeout: 15000 })
+            try {
+              const bytes = await actual.body()
+              expect(bytes.byteLength).toBeLessThanOrEqual(512 * 1024)
+              observedResponses.set(route.request(), {
+                operationId: command.operationId,
+                sha256: command.sha256,
+                status: actual.status(),
+                body: JSON.parse(bytes.toString('utf8')) as { error: { code: string } },
+              })
+              await route.fulfill({ response: actual, body: bytes }).catch((error) => {
+                if (!closing && !route.request().failure()) throw error
+              })
+            } finally {
+              await actual.dispose()
+            }
+            return
           }
         }
-        await route.continue().catch(() => {}) // Closing a failed fixture can abort its held request.
+        await route.continue().catch(() => {}) // Closing a failed fixture can abort a request.
       })
       await saveCheckpoint(a, localStep, true)
       await expect(a.locator('.detail-photo img')).toHaveAttribute(
@@ -183,7 +221,12 @@ for (const trigger of ['retired', 'cursor'] as const)
       release()
       const response = await denied
       expect(response.status()).toBe(409)
-      expect((await response.json()).error.code).toBe(
+      const observed = observedResponses.get(response.request())
+      expect(observed).toBeTruthy()
+      expect(observed!.operationId).toBe(original.operationId)
+      expect(observed!.sha256).toBe(original.sha256)
+      expect(observed!.status).toBe(response.status())
+      expect(observed!.body.error.code).toBe(
         trigger === 'retired' ? 'SYNC_REBASE_REQUIRED' : 'REVISION_CONFLICT',
       )
       await a.unroute('**/functions/v1/sync-push')
@@ -273,6 +316,7 @@ for (const trigger of ['retired', 'cursor'] as const)
       expect(complete.oldReceiptCount).toBe(0)
       expect(complete.checkpointCount).toBe(1)
     } finally {
+      closing = true
       release()
       await first.close()
       await reader.close()
