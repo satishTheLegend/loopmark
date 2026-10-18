@@ -100,6 +100,7 @@ export class BrowserMediaStore implements PlatformMedia {
     bytes: Blob,
     scope: CollectionKey,
     generation: number,
+    options?: { downloaded?: true },
   ): Promise<void> {
     await verifyBytes(ref, bytes)
     // Binary buffers avoid WebKit's unreliable Blob-file staging path in IndexedDB.
@@ -113,7 +114,11 @@ export class BrowserMediaStore implements PlatformMedia {
       if (existing)
         // A verified replacement for the exact immutable descriptor repairs a damaged cache.
         // References and snapshot pins address the same media ID throughout this atomic write.
-        tx.objectStore('media').put({ ...existing, bytes: storedBytes })
+        tx.objectStore('media').put({
+          ...existing,
+          bytes: storedBytes,
+          ...(options?.downloaded ? { downloaded: true } : {}),
+        })
       else
         tx.objectStore('media').add({
           key,
@@ -121,6 +126,7 @@ export class BrowserMediaStore implements PlatformMedia {
           ref,
           bytes: storedBytes,
           preparedAt: new Date().toISOString(),
+          ...(options?.downloaded ? { downloaded: true as const } : {}),
         } satisfies MediaRow)
     })
   }

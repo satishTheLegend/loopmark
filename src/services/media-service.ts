@@ -196,7 +196,9 @@ export function createRemoteMediaService(options: {
           signal,
         )
         await check(scope, signal)
-        await options.media.storeVerified(ref, bytes, scope.key, scope.generation)
+        await options.media.storeVerified(ref, bytes, scope.key, scope.generation, {
+          downloaded: true,
+        })
       }),
   }
 }

@@ -33,7 +33,14 @@ export interface RebaseResult {
   scope: SessionScope
   recovered: CollectionKey
 }
+export interface DownloadRemoval {
+  removed: number
+  retained: number
+}
 export interface Repository {
+  /** Removes only acknowledged remote downloads; all live local/pending/export references stay pinned. */
+  removeDownloads(scope: SessionScope, projectId: string): Promise<DownloadRemoval>
+
   rebaseBlocked(key: CollectionKey): Promise<boolean>
   completeRebase(
     expected: SessionScope,

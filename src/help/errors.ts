@@ -38,6 +38,12 @@ export const errorHelp = {
     'Check the selected collection or restore your own backup.',
     'projects#open',
   ),
+  DOWNLOADS_PROTECTED: entry(
+    'These attachments need to stay on this device.',
+    'They belong to local work, pending changes, a draft, or a backup in progress.',
+    'Finish syncing or exporting, then try again. Local-only projects keep their attachments.',
+    'storage#device',
+  ),
   LOCAL_STORAGE_FAILED: entry(
     'Your changes have not been saved.',
     'Device storage could not finish the write.',

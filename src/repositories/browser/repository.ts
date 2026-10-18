@@ -51,6 +51,7 @@ import {
 } from './schema'
 import { BrowserMediaStore, assertMediaPresent, verifyBytes } from './media-store'
 import { prepareRebase, rebaseIdentity, candidateBlocksRebase } from '../rebase'
+import { removeBrowserDownloads } from './downloads'
 
 export interface BrowserRepositoryOptions {
   databaseName?: string
@@ -85,6 +86,11 @@ export class BrowserRepository implements Repository {
   private publish(): void {
     this.dispatch()
     this.channel?.postMessage('changed')
+  }
+  async removeDownloads(scope: SessionScope, projectId: string) {
+    const result = await removeBrowserDownloads(this.database, scope, projectId)
+    this.publish()
+    return result
   }
   async readActive(): Promise<SessionScope | null> {
     return transaction(this.database, 'readonly', async (tx) => (await activeScope(tx)) ?? null)

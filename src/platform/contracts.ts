@@ -33,6 +33,7 @@ export interface PlatformMedia {
     bytes: Blob,
     scope: CollectionKey,
     generation: Generation,
+    options?: { downloaded?: true },
   ): Promise<void>
   open(ref: MediaRef, scope: CollectionKey): Promise<ReadableStream<Uint8Array>>
   release(ref: MediaRef, scope: CollectionKey, generation: Generation): Promise<void>

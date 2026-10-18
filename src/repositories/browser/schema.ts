@@ -13,6 +13,7 @@ export interface MediaRow {
   ref: MediaRef
   bytes: ArrayBuffer
   preparedAt: string
+  downloaded?: true
 }
 export interface SnapshotRow {
   key: string
