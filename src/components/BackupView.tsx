@@ -20,7 +20,7 @@ import type { LibraryState } from '../data'
 import type { Backup } from '../types'
 import { Dialog, ErrorMessage, errorText, fullDate } from './ui'
 import type { SharePort } from '../platform/contracts'
-import type { ExportProgress } from '../services/backup-service'
+import { IncompleteBackupError, type ExportProgress } from '../services/backup-service'
 export function BackupView({
   onMessage,
   connected = false,
@@ -58,6 +58,7 @@ export function BackupView({
   const exportAbort = useRef<AbortController | null>(null)
   const [exportProgress, setExportProgress] = useState<ExportProgress | null>(null)
   const [exportMessage, setExportMessage] = useState('')
+  const [incomplete, setIncomplete] = useState<IncompleteBackupError | null>(null)
   const mounted = useRef(true)
   useEffect(() => {
     mounted.current = true
@@ -98,6 +99,7 @@ export function BackupView({
     exportAbort.current = abort
     setExportProgress({ stage: 'checking', done: 0, total: 0 })
     setExportMessage('')
+    setIncomplete(null)
     setBusy(true)
     setError('')
     try {
@@ -136,7 +138,10 @@ export function BackupView({
       if (mounted.current) {
         if (abort.signal.aborted)
           setExportMessage('Export cancelled. Your projects and saved checkpoints are unchanged.')
-        else setError(errorText(e))
+        else {
+          setError(errorText(e))
+          if (e instanceof IncompleteBackupError) setIncomplete(e)
+        }
       }
     } finally {
       exportAbort.current = null
@@ -263,6 +268,40 @@ export function BackupView({
             </>
           )}
           {exportMessage && <p role="status">{exportMessage}</p>}
+          {incomplete && (
+            <section
+              className="incomplete-export readable-controls"
+              aria-label="Attachments still needed"
+            >
+              <h3>Attachments still needed</h3>
+              <p>
+                No backup file was created. {incomplete.total}{' '}
+                {incomplete.total === 1 ? 'attachment is' : 'attachments are'} still unavailable.
+              </p>
+              <ul>
+                {incomplete.missing.map((item) => (
+                  <li key={`${item.checkpointId}:${item.kind}`}>
+                    <strong>{item.projectName || 'Saved project'}</strong> ·{' '}
+                    {item.kind === 'photo' ? 'Photo' : 'Voice note'} ·{' '}
+                    {item.position || fullDate(item.checkpointCreatedAt)}
+                  </li>
+                ))}
+              </ul>
+              {incomplete.total > incomplete.missing.length && (
+                <p>
+                  Showing the first {incomplete.missing.length} of {incomplete.total} missing
+                  attachments.
+                </p>
+              )}
+              <p>
+                Files already downloaded are kept on this device. Retrying checks your current
+                collection and downloads the files still needed.
+              </p>
+              <button className="button secondary" disabled={busy} onClick={() => void download()}>
+                Retry complete export
+              </button>
+            </section>
+          )}
           <small>
             Your downloaded file contains your personal notes and media. Store it privately.
           </small>
