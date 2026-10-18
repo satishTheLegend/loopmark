@@ -357,6 +357,8 @@ Review [operations](docs/developer/operations.md) and [database/object recovery]
 
 ## Project structure
 
+All application modules live in this single `loopmark` repository. Work from the root checkout; sibling development worktrees are no longer required. The [workspace guide](docs/developer/workspace.md) describes the layout, private archives and preserved local backend state.
+
 ```text
 src/
   App.tsx, runtime.ts       Application composition and platform selection
@@ -378,6 +380,9 @@ public/                    Static assets, app icons and original SVG artwork
 design-system/             Design tokens, direction and interaction references
 docs/                      Product plans, developer guides, evidence and release gates
 .github/workflows/         Guest/backend and platform build/check definitions
+.local/                    Private archives/toolchains; ignored by Git
+.gstack/                   Private backend profiles and operational state; ignored
+artifacts/native/          Local debug/simulator deliverables; ignored
 ```
 
 Workflow files describe available automation; their presence does not itself prove that a hosted CI run occurred. Generated dependencies, build outputs, local service state, credentials and native deliverables are excluded from source control.

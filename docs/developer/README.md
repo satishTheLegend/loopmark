@@ -1,6 +1,6 @@
 # Developer guide
 
-Start with the [guest quickstart](quickstart.md). It needs Node and npm, has no account or Docker dependency, and reaches a saved checkpoint before cloud setup.
+Keep all modules in the single root checkout described in the [workspace guide](workspace.md). Start with the [guest quickstart](quickstart.md). It needs Node and npm, has no account or Docker dependency, and reaches a saved checkpoint before cloud setup.
 
 | Path | Meaningful success | Additional prerequisites |
 | --- | --- | --- |
