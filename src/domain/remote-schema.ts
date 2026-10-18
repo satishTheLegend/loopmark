@@ -528,6 +528,7 @@ export const billingStatusSchema = z
       .strict()
       .nullable(),
     recoveryKeyConfigured: z.boolean(),
+    currentRecoveryKeyHash: z.string().regex(/^[a-f0-9]{64}$/).nullable(),
   })
   .strict()
 export const purchaseRestoreRequestSchema = z.discriminatedUnion('action', [

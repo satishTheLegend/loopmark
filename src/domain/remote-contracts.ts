@@ -197,6 +197,7 @@ export interface BillingStatus {
   entitlement: EntitlementProjection
   attempt: { id: string; provider: PurchaseProvider; state: PurchaseAttemptState } | null
   recoveryKeyConfigured: boolean
+  currentRecoveryKeyHash: string | null
 }
 export type PurchaseRestoreRequest =
   | ({ action: 'prepare' } & PurchasePreparationInput)
