@@ -73,6 +73,10 @@
           "passed": true
         },
         {
+          "name": "native durable workflow CAS and scope fences preserve deletion continuation across local removal",
+          "passed": true
+        },
+        {
           "name": "native billing remains unconfigured without an authenticated enrolled account",
           "passed": true
         },
@@ -167,6 +171,10 @@
         },
         {
           "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native durable workflow CAS and scope fences preserve deletion continuation across local removal",
           "passed": true
         },
         {

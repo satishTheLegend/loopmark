@@ -61,6 +61,6 @@
       "precondition": "simctl privacy revoke microphone app.loopmark.craft on dedicated simulator"
     }
   ],
-  "iosXCTest": "NativeFlows.testNativeSystemSheetsCancelWithoutErrors PASS",
+  "iosXCTest": "NativeFlows: 2 methods PASS together (OS-denied microphone + share/picker/photo cancellation)",
   "iosMicrophoneXCTest": "NativeFlows.testMicrophoneDenialNeverStartsRecording PASS; OS denial established by simctl, prompt UI not tested"
 }

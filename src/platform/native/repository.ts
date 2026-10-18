@@ -868,6 +868,13 @@ export class NativeRepository implements Repository {
         scopeKey(JSON.parse(capture.body as string).source.scope.key) === scopeKey(key)
       )
         await db.run("DELETE FROM metadata WHERE key='native-camera-continuation'", [], false)
+      const workflows =
+        (await db.query("SELECT key,body FROM metadata WHERE key LIKE 'workflow:%'")).values ?? []
+      for (const row of workflows) {
+        const workflow = JSON.parse(row.body as string)
+        if (workflow.collection && scopeKey(workflow.collection) === scopeKey(key))
+          await db.run('DELETE FROM metadata WHERE key=?', [row.key], false)
+      }
       await db.run('DELETE FROM collections WHERE key=?', [scopeKey(key)], false)
     })
     this.publish()

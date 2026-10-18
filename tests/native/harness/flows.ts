@@ -1,5 +1,6 @@
 import { CapacitorAudioRecorder } from '@capgo/capacitor-audio-recorder'
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem'
+import { createNativeWorkflowStore } from '../../../src/platform/native/workflow-store'
 import { createNativeDeviceStore } from '../../../src/platform/native/device-store'
 import {
   subscribeNativeLifecycle,
@@ -21,6 +22,63 @@ const assert = (value: unknown) => {
 export async function capabilityTests(
   test: (name: string, action: () => Promise<void>) => Promise<void>,
 ) {
+  await test('native durable workflow CAS and scope fences preserve deletion continuation across local removal', async () => {
+    const info = fixture(),
+      name = `workflow_${Date.now()}`
+    let repo = await openNativeRepository({ databaseName: name })
+    await repo.createCollection(info)
+    const scope = await repo.transition(null, {
+      key: info.key,
+      device: { id: 'workflow-device', generation: 'workflow-generation' },
+    })
+    let store = createNativeWorkflowStore(repo)
+    const entry = {
+      kind: 'candidate' as const,
+      accountId: 'account-a',
+      collection: info.key,
+      value: { snapshotId: 'snapshot-fixture' },
+    }
+    const row = await store.write('candidate', null, entry, scope)
+    await store.write('deletion', null, {
+      kind: 'deletion',
+      accountId: 'account-a',
+      collection: null,
+      value: { receipt: 'synthetic-receipt' },
+    })
+    const competing = await Promise.allSettled([
+      store.write('candidate', row.revision, { ...entry, value: { snapshotId: 'first' } }, scope),
+      store.write('candidate', row.revision, { ...entry, value: { snapshotId: 'second' } }, scope),
+    ])
+    assert(competing.filter((result) => result.status === 'fulfilled').length === 1)
+    const saved = (await store.read('candidate'))!
+    let rejected = false
+    try {
+      await store.write('candidate', saved.revision, { ...entry, accountId: 'different' }, scope)
+    } catch {
+      rejected = true
+    }
+    assert(rejected)
+    await repo.close()
+    repo = await openNativeRepository({ databaseName: name })
+    store = createNativeWorkflowStore(repo)
+    assert((await store.read('candidate'))?.revision === saved.revision)
+    assert((await store.list('candidate')).length === 1)
+    const next = await repo.transition(scope, { key: info.key, device: scope.device })
+    rejected = false
+    try {
+      await store.remove('candidate', saved.revision, scope)
+    } catch {
+      rejected = true
+    }
+    assert(rejected && (await store.read('candidate'))?.revision === saved.revision)
+    await repo.removeLocal(info.key, (await repo.readView(info.key)).revision, next.generation)
+    assert(
+      (await store.read('candidate')) === null &&
+        (await store.read('deletion'))?.kind === 'deletion',
+    )
+    await store.remove('deletion', (await store.read('deletion'))!.revision)
+    await repo.close()
+  })
   await test('native billing remains unconfigured without an authenticated enrolled account', async () => {
     assert(!(await Purchases.isConfigured()).isConfigured)
     const billing = createNativeBilling({
