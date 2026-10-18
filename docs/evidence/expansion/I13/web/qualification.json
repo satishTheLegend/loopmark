@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "pending-final-independent-adjudication",
+  "status": "qualified-for-recorded-web-scope",
   "recordedAt": "2026-10-18T19:01:14.106234+00:00",
   "productSourceCommit": "2b6e6286ddb8ca46368f58b82378b644432d19d1",
   "note": "Current production inputs match the frozen source. Each runtime retains actual source scope. Final affected flows qualify status checking and completion announcements; unchanged UI/guest/backend/native paths retain identified earlier evidence. Original failures remain separate from focused closure. Counts do not replace branch adjudication.",
@@ -12440,5 +12440,6 @@
       "path": "docs/evidence/expansion/I13/web/final-announcement-unit-report.json",
       "sha256": "31eca2912f2dd56e9e77c343796b66fb288bdc4a389a85cceb4423c40568fd1f"
     }
-  ]
+  ],
+  "independentReviewCommit": "78fb40c19a9a1fb0d329082ed2708ccb19b8f554"
 }
