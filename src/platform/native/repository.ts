@@ -710,6 +710,7 @@ export class NativeRepository implements Repository {
     revision: string,
     generation: number,
     recovered?: RecoveryReason,
+    allowMissingMedia = false,
   ): Promise<CollectionKey> {
     const target = {
       namespace: `guest_${crypto.randomUUID()}`,
@@ -743,8 +744,26 @@ export class NativeRepository implements Repository {
           throw new DomainError('MEDIA_INVALID')
         allRefs.set(ref.id, ref)
       }
-      const refs = [...allRefs.values()]
-      await assertMediaPresent(db, key, refs)
+      const refs: MediaRef[] = []
+      const draftIds = new Set(drafts.flatMap((draft) => draft.media.map((ref) => ref.id)))
+      const availableFiles = allowMissingMedia
+        ? new Set((await durableFiles.list()).files.map((file) => file.key))
+        : undefined
+      for (const ref of allRefs.values()) {
+        const row = (
+          await db.query('SELECT body,file_key FROM media WHERE scope=? AND id=?', [
+            scopeKey(key),
+            ref.id,
+          ])
+        ).values?.[0]
+        if (row && canonicalJson(JSON.parse(row.body as string)) !== canonicalJson(ref))
+          throw new DomainError('MEDIA_INVALID')
+        if (!row || (availableFiles && !availableFiles.has(row.file_key as string))) {
+          if (allowMissingMedia && !draftIds.has(ref.id)) continue
+          throw new DomainError('BACKUP_INCOMPLETE')
+        }
+        refs.push(ref)
+      }
       const copied = emptyCollection({
         ...source.info,
         key: target,
@@ -827,8 +846,21 @@ export class NativeRepository implements Repository {
     this.publish()
     return target
   }
-  async retainLocal(key: CollectionKey, name: string, revision: string, generation: number) {
-    return this.copyLocal(key, name, revision, generation)
+  async retainLocal(
+    key: CollectionKey,
+    name: string,
+    revision: string,
+    generation: number,
+    options?: { allowMissingMedia?: boolean },
+  ) {
+    return this.copyLocal(
+      key,
+      name,
+      revision,
+      generation,
+      undefined,
+      options?.allowMissingMedia ?? false,
+    )
   }
   async recoverPending(key: CollectionKey, reason: RecoveryReason) {
     const { scope, state } = await this.database.serial(async (db) => ({

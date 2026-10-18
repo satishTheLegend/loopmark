@@ -33,6 +33,71 @@ const scopeFor = (key: SessionScope['key']): SessionScope => ({
 export async function adapterTests(
   test: (name: string, action: () => Promise<void>) => Promise<void>,
 ) {
+  await test('native reviewed retention keeps missing saved refs but refuses missing draft media', async () => {
+    const info = fixture(),
+      scope = scopeFor(info.key)
+    const repo = await openNativeRepository({ databaseName: `missing_${Date.now()}` })
+    await repo.createCollection(info)
+    await repo.activate(scope)
+    const created = await repo.commitLocal(info.key, create(info), 1)
+    const prepared = await repo.media.prepare({ kind: 'voice', bytes: wave() }, info.key, 1)
+    await repo.commitLocal(
+      info.key,
+      {
+        kind: 'checkpoint.create',
+        operationId: crypto.randomUUID(),
+        base: { revision: created.view.projects[0].revision },
+        createdAt: info.createdAt,
+        payload: {
+          updatedAt: info.createdAt,
+          checkpoint: {
+            id: 'missing-saved',
+            projectId: 'native-project',
+            createdAt: info.createdAt,
+            toolSize: '',
+            position: '',
+            nextStep: 'Retain text and unavailable media reference',
+            notes: '',
+            voice: prepared.ref,
+          },
+        },
+      },
+      1,
+    )
+    await repo.database.serial((db) =>
+      db.run('DELETE FROM media WHERE scope=? AND id=?', [scopeKey(info.key), prepared.ref.id]),
+    )
+    const view = await repo.readView(info.key)
+    await rejects(() => repo.retainLocal(info.key, 'Strict copy', view.revision, 1))
+    const retained = await repo.retainLocal(info.key, 'Acknowledged missing', view.revision, 1, {
+      allowMissingMedia: true,
+    })
+    assert((await repo.readView(retained)).checkpoints[0].voice?.id === prepared.ref.id)
+    await rejects(() => repo.media.open(prepared.ref, retained))
+    const draftMedia = await repo.media.prepare({ kind: 'voice', bytes: wave() }, info.key, 1)
+    await repo.drafts.save(
+      'checkpoint:source',
+      info.key,
+      1,
+      { voice: draftMedia.ref },
+      [draftMedia.ref],
+      null,
+    )
+    await repo.database.serial((db) =>
+      db.run('DELETE FROM media WHERE scope=? AND id=?', [scopeKey(info.key), draftMedia.ref.id]),
+    )
+    const count = (await repo.listCollections()).length
+    await rejects(() =>
+      repo.retainLocal(info.key, 'Must preserve draft', view.revision, 1, {
+        allowMissingMedia: true,
+      }),
+    )
+    assert(
+      (await repo.listCollections()).length === count &&
+        !!(await repo.drafts.read('checkpoint:source', info.key)),
+    )
+    await repo.close()
+  })
   await test('native verified authentication resumes only matching-device auth failures', async () => {
     const info = fixture(true),
       scope = scopeFor(info.key),

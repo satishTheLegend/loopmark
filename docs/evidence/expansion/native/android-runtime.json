@@ -45,6 +45,10 @@
           "passed": true
         },
         {
+          "name": "native reviewed retention keeps missing saved refs but refuses missing draft media",
+          "passed": true
+        },
+        {
           "name": "native verified authentication resumes only matching-device auth failures",
           "passed": true
         },
@@ -143,6 +147,10 @@
         },
         {
           "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native reviewed retention keeps missing saved refs but refuses missing draft media",
           "passed": true
         },
         {
