@@ -34,7 +34,7 @@ export function parsePolicy(input = {}) {
       throw new OpsError('VALIDATION')
     for (const [k, v] of Object.entries(input.thresholds)) {
       if (
-        !(k in thresholds) ||
+        !Object.hasOwn(defaultThresholds, k) ||
         !Number.isSafeInteger(v) ||
         v < 1 ||
         v > 8640000 ||

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "item": "I11",
-  "recordedAt": "2026-10-18T14:55:55.541Z",
-  "status": "local-targeted-pass",
+  "recordedAt": "2026-10-18T15:12:19.454Z",
+  "status": "local-complete",
   "target": {
     "environment": "local",
     "projectId": "loopmark-loopmark-expansi-eeac3023",
@@ -17,7 +17,20 @@
       "durationMs": 57241.428466796875
     },
     "operatorUnitTests": 2,
-    "typecheck": "passed"
+    "typecheck": "passed",
+    "finalMigrations": "001–015 fresh local reset, additive016 applied with pinned CLI",
+    "fullServerSuite": {
+      "passed": 76,
+      "failed": 0,
+      "skipped": 0,
+      "files": 15,
+      "startedAt": "2026-10-18T15:05:33.531Z",
+      "durationMs": 354629.6511230469
+    },
+    "ownerRaceRegression": {
+      "passed": 9,
+      "failed": 0
+    }
   },
   "restores": [
     {
@@ -67,9 +80,9 @@
     "scripts/ops.mjs": "dfb8856262e790225b0e60ad85d5b603365d5ada9ce2159b04e6f05f0d56943d",
     "scripts/ops/common.d.mts": "95cd9db957f4bf14e010008943f9f6bda9bdf4ca34e3bd97f58b011b70b923de",
     "scripts/ops/common.mjs": "c5a2eb517b58ba471632b66251bca84cc12524ab3f5b4b5e420ef41e6a1a6e33",
-    "scripts/ops/policy.mjs": "46ef0ac20dbfc97b5be05bd758127b5d2e347f080e9ee1c4f8b07704f8dbb106",
+    "scripts/ops/policy.mjs": "6b9cc8199363eeaab6cc323825a359c0e41a8b52ee3830af8eaa95a2ee2702f5",
     "scripts/ops/recovery.d.mts": "38cc2bdc91fa902efe6ff5b7f0aab9a0769191534d27af1d7efea1a43848cf5d",
-    "scripts/ops/recovery.mjs": "e70f8983366ab86f722a99ec64f5f7979ab98f254a3a8d643d0f1a8812cfbaf0",
+    "scripts/ops/recovery.mjs": "0fa5e6af3181e7baebbd05c1b6f556fc22ed09fea6e9affda469efabf21faafe",
     "scripts/ops/rollback.d.mts": "d2ce538ad3841972b7ad4c2ef1fbc68aa8db7ba12218f4425d8c302e4018e77d",
     "scripts/ops/rollback.mjs": "5194795dce0f5948f23d95a10a12e8d808e1d082200bf6f038ab2ccdcc80886f",
     "scripts/test-ops.mjs": "7916264d89f4020f6fde0874c7d0fbe5fce19d85e899df860e8178fedd8d0c0a",
@@ -78,21 +91,48 @@
     "supabase/functions/_shared/observability.ts": "bb24a649014b4277974b76d2d9dcb1a1fe83d52b37ad8f5816a180d3944897b8",
     "supabase/functions/sync-push/index.ts": "64424f70b86cf2a868b114c94f9f0459a10b6f5b39051221c477528b8b908ec8",
     "supabase/migrations/202610180015_operations_recovery.sql": "15a73d0cded41c05f0648d930ea1bfe77deb91860b9e6100b580954946cc0cb8",
-    "tests/ops/alerts.test.mjs": "bd64164015c02b598e0411173f775ff9749c7e26c754a338f4e807b8cb7593be",
+    "tests/ops/alerts.test.mjs": "c8955254f9ae32408282267e3c5834e9594a4a43addb20e54f09ba30d3aee316",
     "tests/ops/grammar.test.mjs": "435362e47340f7e4816827e9d213ca92a8c6a1744e35f62956fbf788d96940ea",
     "tests/server/deletion.test.ts": "97f256be339e50ad8f8126092fa6bcace641855b6918a2630497c51712dffd2a",
     "tests/server/operations.test.ts": "9a2b1a910754976dd99c6f193b49bc467170aa89ddee0d9c3c7fd4ea62307c7b",
-    "tests/server/recovery.test.ts": "737e8336b5340de5508cda6ee587474deb072c9fd3e4439977838d6274ce5f60"
+    "tests/server/recovery.test.ts": "4c35a95bbdbb665c072ed03968471108072131fbd2d9b4becefd98fa6e101ad7",
+    "supabase/migrations/202610180016_restore_owner.sql": "abf71f7906eeb45c449dbd7f7fc45dadcb85bc0507908c852b8cd768dc19b938"
   },
   "limitations": [
     "Local host and disk share the primary failure domain; no independent-host disaster proof.",
     "Provider network fixtures are synthetic; no live provider qualification or charges.",
     "Ready is completed isolated drill evidence, never traffic promotion; current ledger handshake and ongoing reconciliation required at activation.",
     "No named operational owner, funded operating budget, outbound alert integration or recurring scheduler has been activated.",
-    "Host was shared with unrelated builds; load/native measurements are qualified separately."
+    "Host was shared with unrelated builds; load/native measurements are qualified separately.",
+    "Restore ownership/expiry guard uses verified live PID checks on this local host; hosted fencing requires its separate qualification."
   ],
   "remaining": [
-    "Full assembled server suite after root stable app window",
     "I13 100/1000-account real load measurement"
+  ],
+  "finalRestoreDrills": [
+    {
+      "rpoMs": 13234,
+      "rtoMs": 8264,
+      "rpoTargetMet": true,
+      "rtoTargetMet": true,
+      "erasedAccounts": 74,
+      "objects": 11
+    },
+    {
+      "rpoMs": 8911,
+      "rtoMs": 19998,
+      "rpoTargetMet": true,
+      "rtoTargetMet": true,
+      "erasedAccounts": 74,
+      "objects": 10
+    },
+    {
+      "rpoMs": 31093,
+      "rtoMs": 27114,
+      "rpoTargetMet": true,
+      "rtoTargetMet": true,
+      "erasedAccounts": 74,
+      "objects": 10
+    }
   ]
 }

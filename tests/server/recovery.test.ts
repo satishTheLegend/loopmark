@@ -270,6 +270,10 @@ describe('I11 real encrypted database/object recovery with current independent e
         backupSnapshot(ctx, {
           id,
           beforeCopy: async () => {
+            const indexPath = resolve(ctx.recovery, id, 'index.json'),
+              before = await readFile(indexPath)
+            await expect(backupSnapshot(ctx, { id })).rejects.toThrow('RATE_LIMITED')
+            expect(await readFile(indexPath)).toEqual(before)
             expect(
               await rpc(ctx, 'loopmark_media_sweep_claim', { p_limit: 20, p_owner: null }),
             ).toEqual([])
@@ -306,7 +310,7 @@ describe('I11 real encrypted database/object recovery with current independent e
     await writeFile(resolve(directory, 'orphan.enc'), randomBytes(64))
     await sql(
       ctx,
-      `insert into loopmark_private.restore_drills(id,point_id,expires_at) values(${quote(id)}::uuid,${quote(point.id)}::uuid,now()-interval '1 second')`,
+      `insert into loopmark_private.restore_drills(id,point_id,expires_at,owner_pid) values(${quote(id)}::uuid,${quote(point.id)}::uuid,now()-interval '1 second',2147483647)`,
     )
     await sql(ctx, `create database ${database} template template0;`)
     expect(await cleanupExpiredDrills(ctx, 1)).toBe(1)
@@ -320,6 +324,45 @@ describe('I11 real encrypted database/object recovery with current independent e
         `select removed_at is not null from loopmark_private.restore_drills where id=${quote(id)}::uuid`,
       ),
     ).toBe('t')
+  }, 180000)
+  it('does not expire a live paused restore owner then allow untracked artifacts to reappear', async () => {
+    const point = await backupSnapshot(ctx),
+      inventory = await currentLedger(ctx)
+    let release!: () => void, entered!: () => void
+    const paused = new Promise<void>((r) => {
+        release = r
+      }),
+      started = new Promise<void>((r) => {
+        entered = r
+      })
+    let reads = 0
+    const running = restoreCheck(ctx, point.id, {
+      ledgerReader: async () => {
+        if (++reads === 1) {
+          entered()
+          await paused
+        }
+        return inventory
+      },
+    })
+    await started
+    try {
+      expect(await cleanupExpiredDrills(ctx, 100, Date.now() + 86400000)).toBe(0)
+      expect(
+        await sql(
+          ctx,
+          `select count(*) from loopmark_private.restore_drills where point_id=${quote(point.id)}::uuid and removed_at is null`,
+        ),
+      ).toBe('1')
+    } finally {
+      release()
+    }
+    const result = await running
+    expect(result.ready).toBe(true)
+    expect(
+      await sql(ctx, `select count(*) from pg_database where datname=${quote(result.database)}`),
+    ).toBe('0')
+    await expect(readdir(result.destination)).rejects.toThrow()
   }, 180000)
   it('completes a text-only deletion only after containing recovery bytes are physically expired', async () => {
     const a = await actor()

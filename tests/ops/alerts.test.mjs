@@ -60,5 +60,6 @@ test('operating alerts cover observed queues, conflicts, media, verification, de
   assert.throws(() => parsePolicy({ owner: 'person@example.invalid' }))
   assert.throws(() => parsePolicy({ owner: '   ' }))
   assert.throws(() => parsePolicy({ thresholds: { unknown: 1 } }))
+  assert.throws(() => parsePolicy(JSON.parse('{"thresholds":{"__proto__":1}}')))
   assert.throws(() => parsePolicy({ operatingBudget: { spentMinor: 1 } }))
 })

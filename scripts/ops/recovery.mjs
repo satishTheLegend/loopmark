@@ -108,6 +108,8 @@ async function exportedSnapshot(ctx, signal) {
   let locked = false
   for await (const line of lines) {
     if (line === 'BUSY') {
+      clearTimeout(timer)
+      signal?.removeEventListener('abort', stop)
       stop()
       throw new OpsError('RATE_LIMITED')
     }
@@ -165,169 +167,173 @@ export async function backupSnapshot(ctx, { id = randomUUID(), signal, beforeCop
     : AbortSignal.timeout(240_000)
   if (signal.aborted) throw new OpsError('CANCELLED')
   const directory = pointDirectory(ctx, id),
-    key = await recoveryKey(ctx, true)
-  await mkdir(directory, { recursive: true, mode: 0o700 })
-  const existing = await readJson(resolve(directory, 'index.json')).catch((error) => {
-    if (error.code === 'ENOENT') return null
-    throw new OpsError('MEDIA_INVALID')
-  })
-  if (existing && !['complete', 'copying', 'incomplete'].includes(existing.state))
-    throw new OpsError('MEDIA_INVALID')
-  if (existing?.state === 'complete') {
-    const verified = await verifyPoint(ctx, id)
-    await synchronizePoint(ctx, verified.manifest, verified.index)
-    return existing
-  }
-  if (existing) {
-    // Retrying an incomplete snapshot replaces all of its old encrypted bytes before changing its inventory.
-    for (const name of await readdir(directory)) {
-      if (!/^(?:index\.json|manifest\.enc|database\.enc|[a-f0-9]{64}\.enc)(?:\.next)?$/.test(name))
-        throw new OpsError('MEDIA_INVALID')
-      await rm(resolve(directory, name))
-    }
-    const folder = await open(directory, 'r')
-    try {
-      await folder.sync()
-    } finally {
-      await folder.close()
-    }
-    await sql(
-      ctx,
-      `begin;delete from loopmark_private.recovery_pins where point_id=${quote(id)};delete from loopmark_private.recovery_objects where point_id=${quote(id)}::uuid;delete from loopmark_private.recovery_accounts where point_id=${quote(id)}::uuid;commit;`,
-    )
-  }
-  const snapshot = await exportedSnapshot(ctx, signal),
-    createdAt = new Date().toISOString(),
-    expiresAt = new Date(Date.now() + 7 * day).toISOString()
-  const index = {
-    schemaVersion: 1,
-    id,
-    state: 'copying',
-    createdAt,
-    expiresAt,
-    objectCount: 0,
-    bytes: 0,
-  }
+    snapshot = await exportedSnapshot(ctx, signal)
   try {
-    await durableJson(resolve(directory, 'index.json'), index)
-    await sql(
-      ctx,
-      `insert into loopmark_private.recovery_points(id,state,expires_at,snapshot_id) values(${quote(id)}::uuid,'copying',${quote(expiresAt)}::timestamptz,${quote(snapshot.id)}) on conflict(id) do update set state='copying',snapshot_id=excluded.snapshot_id,expires_at=excluded.expires_at`,
-    )
-    const raw = await sql(
-      ctx,
-      `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select coalesce(jsonb_agg(jsonb_build_object('key',o.object_key,'ownerId',o.owner_id,'sha256',o.sha256,'bytes',o.bytes) order by o.object_key),'[]') from loopmark_private.media_objects o where o.state='ready' and exists(select 1 from storage.objects s where s.bucket_id='loopmark-private' and s.name=o.object_key);commit;`,
-    )
-    const objects = JSON.parse(raw)
-    const accounts = JSON.parse(
+    const key = await recoveryKey(ctx, true)
+    await mkdir(directory, { recursive: true, mode: 0o700 })
+    const existing = await readJson(resolve(directory, 'index.json')).catch((error) => {
+      if (error.code === 'ENOENT') return null
+      throw new OpsError('MEDIA_INVALID')
+    })
+    if (existing && !['complete', 'copying', 'incomplete'].includes(existing.state))
+      throw new OpsError('MEDIA_INVALID')
+    if (existing?.state === 'complete') {
+      const verified = await verifyPoint(ctx, id)
+      await synchronizePoint(ctx, verified.manifest, verified.index)
+      return existing
+    }
+    if (existing) {
+      // Retrying an incomplete snapshot replaces all of its old encrypted bytes before changing its inventory.
+      for (const name of await readdir(directory)) {
+        if (
+          !/^(?:index\.json|manifest\.enc|database\.enc|[a-f0-9]{64}\.enc)(?:\.next)?$/.test(name)
+        )
+          throw new OpsError('MEDIA_INVALID')
+        await rm(resolve(directory, name))
+      }
+      const folder = await open(directory, 'r')
+      try {
+        await folder.sync()
+      } finally {
+        await folder.close()
+      }
       await sql(
         ctx,
-        `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select coalesce(jsonb_agg(id order by id),'[]') from loopmark_private.accounts where state<>'deleted';commit;`,
-      ),
-    )
-    if (accounts.length > 100_000) throw new OpsError('TECHNICAL_CAPACITY_REACHED')
-    for (let offset = 0; offset < accounts.length; offset += 100)
-      await sql(
-        ctx,
-        `insert into loopmark_private.recovery_accounts(point_id,owner_id) values ${accounts
-          .slice(offset, offset + 100)
-          .map((owner) => `(${quote(id)}::uuid,${quote(owner)}::uuid)`)
-          .join(',')} on conflict do nothing;`,
-      )
-    if (objects.length > 100_000) throw new OpsError('TECHNICAL_CAPACITY_REACHED')
-    const filesystem = await statfs(directory),
-      requiredBytes = objects.reduce((sum, object) => sum + object.bytes, 0) + 512 * 1024 * 1024
-    if (filesystem.bavail * filesystem.bsize < requiredBytes + 2 * 1024 * 1024 * 1024)
-      throw new OpsError('TECHNICAL_CAPACITY_REACHED')
-    const missing = await sql(
-      ctx,
-      `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select count(*) from loopmark_private.media m where m.state='ready' and not exists(select 1 from storage.objects s where s.bucket_id='loopmark-private' and s.name=m.object_key);commit;`,
-    )
-    if (missing !== '0') throw new OpsError('MEDIA_UNAVAILABLE')
-    for (let offset = 0; offset < objects.length; offset += 100) {
-      const batch = objects.slice(offset, offset + 100)
-      await sql(
-        ctx,
-        `begin;insert into loopmark_private.recovery_pins(point_id,owner_id,object_key,expires_at) values ${batch.map((o) => `(${quote(id)},${quote(o.ownerId)}::uuid,${quote(o.key)},${quote(expiresAt)}::timestamptz)`).join(',')} on conflict(point_id,object_key) do update set expires_at=excluded.expires_at;insert into loopmark_private.recovery_objects(point_id,owner_id,object_key,sha256,bytes) values ${batch.map((o) => `(${quote(id)}::uuid,${quote(o.ownerId)}::uuid,${quote(o.key)},${quote(o.sha256)},${o.bytes})`).join(',')} on conflict do nothing;commit;`,
+        `begin;delete from loopmark_private.recovery_pins where point_id=${quote(id)};delete from loopmark_private.recovery_objects where point_id=${quote(id)}::uuid;delete from loopmark_private.recovery_accounts where point_id=${quote(id)}::uuid;commit;`,
       )
     }
-    for (const object of objects) object.file = hash(object.key) + '.enc'
-    const manifest = {
+    const createdAt = new Date().toISOString(),
+      expiresAt = new Date(Date.now() + 7 * day).toISOString()
+    const index = {
       schemaVersion: 1,
       id,
-      projectId: ctx.config.projectId,
-      snapshotId: snapshot.id,
+      state: 'copying',
       createdAt,
       expiresAt,
-      databaseHash: null,
-      objects,
-      accounts,
+      objectCount: 0,
+      bytes: 0,
     }
-    let manifestBytes = Buffer.from(JSON.stringify(manifest))
-    await encrypt(resolve(directory, 'manifest.enc'), manifestBytes, key)
-    Object.assign(index, { manifestHash: hash(manifestBytes), objectCount: objects.length })
-    await durableJson(resolve(directory, 'index.json'), index)
-    const dump = await run(
-      'docker',
-      [
-        'exec',
-        ctx.database,
-        'pg_dump',
-        '-U',
-        'postgres',
-        '-d',
-        'postgres',
-        '--format=custom',
-        '--snapshot=' + snapshot.id,
-      ],
-      { timeout: 180_000, maxBytes: 256 * 1024 * 1024, signal },
-    )
-    await encrypt(resolve(directory, 'database.enc'), dump, key)
-    manifest.databaseHash = hash(dump)
-    manifestBytes = Buffer.from(JSON.stringify(manifest))
-    await encrypt(resolve(directory, 'manifest.enc'), manifestBytes, key)
-    Object.assign(index, {
-      databaseHash: manifest.databaseHash,
-      manifestHash: hash(manifestBytes),
-      bytes: dump.length + objects.reduce((sum, o) => sum + o.bytes, 0),
-    })
-    await durableJson(resolve(directory, 'index.json'), index)
-    if (beforeCopy) await beforeCopy()
-    for (let offset = 0; offset < objects.length; offset += 2)
-      await Promise.all(
-        objects.slice(offset, offset + 2).map(async (object) => {
-          if (signal?.aborted) throw new OpsError('CANCELLED')
-          const bytes = await boundedObject(ctx, object.key, object.bytes, signal)
-          if (bytes.length !== object.bytes || hash(bytes) !== object.sha256)
-            throw new OpsError('MEDIA_INVALID')
-          object.file = hash(object.key) + '.enc'
-          await encrypt(resolve(directory, object.file), bytes, key)
-        }),
+    try {
+      await durableJson(resolve(directory, 'index.json'), index)
+      await sql(
+        ctx,
+        `insert into loopmark_private.recovery_points(id,state,expires_at,snapshot_id) values(${quote(id)}::uuid,'copying',${quote(expiresAt)}::timestamptz,${quote(snapshot.id)}) on conflict(id) do update set state='copying',snapshot_id=excluded.snapshot_id,expires_at=excluded.expires_at`,
       )
-    await verifyManifest(ctx, manifest, directory, key)
-    Object.assign(index, {
-      state: 'complete',
-      completedAt: new Date().toISOString(),
-      objectCount: objects.length,
-      bytes: dump.length + objects.reduce((sum, o) => sum + o.bytes, 0),
-      databaseHash: manifest.databaseHash,
-      manifestHash: hash(manifestBytes),
-    })
-    await durableJson(resolve(directory, 'index.json'), index)
-    await sql(
-      ctx,
-      `update loopmark_private.recovery_points set state='complete',completed_at=now(),object_count=${index.objectCount},bytes=${index.bytes},database_hash=${quote(index.databaseHash)},manifest_hash=${quote(index.manifestHash)} where id=${quote(id)}::uuid`,
-    )
-    return index
-  } catch (error) {
-    await durableJson(resolve(directory, 'index.json'), { ...index, state: 'incomplete' }).catch(
-      () => {},
-    )
-    await sql(
-      ctx,
-      `update loopmark_private.recovery_points set state='incomplete' where id=${quote(id)}::uuid`,
-    ).catch(() => {})
-    throw error
+      const raw = await sql(
+        ctx,
+        `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select coalesce(jsonb_agg(jsonb_build_object('key',o.object_key,'ownerId',o.owner_id,'sha256',o.sha256,'bytes',o.bytes) order by o.object_key),'[]') from loopmark_private.media_objects o where o.state='ready' and exists(select 1 from storage.objects s where s.bucket_id='loopmark-private' and s.name=o.object_key);commit;`,
+      )
+      const objects = JSON.parse(raw)
+      const accounts = JSON.parse(
+        await sql(
+          ctx,
+          `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select coalesce(jsonb_agg(id order by id),'[]') from loopmark_private.accounts where state<>'deleted';commit;`,
+        ),
+      )
+      if (accounts.length > 100_000) throw new OpsError('TECHNICAL_CAPACITY_REACHED')
+      for (let offset = 0; offset < accounts.length; offset += 100)
+        await sql(
+          ctx,
+          `insert into loopmark_private.recovery_accounts(point_id,owner_id) values ${accounts
+            .slice(offset, offset + 100)
+            .map((owner) => `(${quote(id)}::uuid,${quote(owner)}::uuid)`)
+            .join(',')} on conflict do nothing;`,
+        )
+      if (objects.length > 100_000) throw new OpsError('TECHNICAL_CAPACITY_REACHED')
+      const filesystem = await statfs(directory),
+        requiredBytes = objects.reduce((sum, object) => sum + object.bytes, 0) + 512 * 1024 * 1024
+      if (filesystem.bavail * filesystem.bsize < requiredBytes + 2 * 1024 * 1024 * 1024)
+        throw new OpsError('TECHNICAL_CAPACITY_REACHED')
+      const missing = await sql(
+        ctx,
+        `begin isolation level repeatable read;set transaction snapshot ${quote(snapshot.id)};select count(*) from loopmark_private.media m where m.state='ready' and not exists(select 1 from storage.objects s where s.bucket_id='loopmark-private' and s.name=m.object_key);commit;`,
+      )
+      if (missing !== '0') throw new OpsError('MEDIA_UNAVAILABLE')
+      for (let offset = 0; offset < objects.length; offset += 100) {
+        const batch = objects.slice(offset, offset + 100)
+        await sql(
+          ctx,
+          `begin;insert into loopmark_private.recovery_pins(point_id,owner_id,object_key,expires_at) values ${batch.map((o) => `(${quote(id)},${quote(o.ownerId)}::uuid,${quote(o.key)},${quote(expiresAt)}::timestamptz)`).join(',')} on conflict(point_id,object_key) do update set expires_at=excluded.expires_at;insert into loopmark_private.recovery_objects(point_id,owner_id,object_key,sha256,bytes) values ${batch.map((o) => `(${quote(id)}::uuid,${quote(o.ownerId)}::uuid,${quote(o.key)},${quote(o.sha256)},${o.bytes})`).join(',')} on conflict do nothing;commit;`,
+        )
+      }
+      for (const object of objects) object.file = hash(object.key) + '.enc'
+      const manifest = {
+        schemaVersion: 1,
+        id,
+        projectId: ctx.config.projectId,
+        snapshotId: snapshot.id,
+        createdAt,
+        expiresAt,
+        databaseHash: null,
+        objects,
+        accounts,
+      }
+      let manifestBytes = Buffer.from(JSON.stringify(manifest))
+      await encrypt(resolve(directory, 'manifest.enc'), manifestBytes, key)
+      Object.assign(index, { manifestHash: hash(manifestBytes), objectCount: objects.length })
+      await durableJson(resolve(directory, 'index.json'), index)
+      const dump = await run(
+        'docker',
+        [
+          'exec',
+          ctx.database,
+          'pg_dump',
+          '-U',
+          'postgres',
+          '-d',
+          'postgres',
+          '--format=custom',
+          '--snapshot=' + snapshot.id,
+        ],
+        { timeout: 180_000, maxBytes: 256 * 1024 * 1024, signal },
+      )
+      await encrypt(resolve(directory, 'database.enc'), dump, key)
+      manifest.databaseHash = hash(dump)
+      manifestBytes = Buffer.from(JSON.stringify(manifest))
+      await encrypt(resolve(directory, 'manifest.enc'), manifestBytes, key)
+      Object.assign(index, {
+        databaseHash: manifest.databaseHash,
+        manifestHash: hash(manifestBytes),
+        bytes: dump.length + objects.reduce((sum, o) => sum + o.bytes, 0),
+      })
+      await durableJson(resolve(directory, 'index.json'), index)
+      if (beforeCopy) await beforeCopy()
+      for (let offset = 0; offset < objects.length; offset += 2)
+        await Promise.all(
+          objects.slice(offset, offset + 2).map(async (object) => {
+            if (signal?.aborted) throw new OpsError('CANCELLED')
+            const bytes = await boundedObject(ctx, object.key, object.bytes, signal)
+            if (bytes.length !== object.bytes || hash(bytes) !== object.sha256)
+              throw new OpsError('MEDIA_INVALID')
+            object.file = hash(object.key) + '.enc'
+            await encrypt(resolve(directory, object.file), bytes, key)
+          }),
+        )
+      await verifyManifest(ctx, manifest, directory, key)
+      Object.assign(index, {
+        state: 'complete',
+        completedAt: new Date().toISOString(),
+        objectCount: objects.length,
+        bytes: dump.length + objects.reduce((sum, o) => sum + o.bytes, 0),
+        databaseHash: manifest.databaseHash,
+        manifestHash: hash(manifestBytes),
+      })
+      await durableJson(resolve(directory, 'index.json'), index)
+      await sql(
+        ctx,
+        `update loopmark_private.recovery_points set state='complete',completed_at=now(),object_count=${index.objectCount},bytes=${index.bytes},database_hash=${quote(index.databaseHash)},manifest_hash=${quote(index.manifestHash)} where id=${quote(id)}::uuid`,
+      )
+      return index
+    } catch (error) {
+      await durableJson(resolve(directory, 'index.json'), { ...index, state: 'incomplete' }).catch(
+        () => {},
+      )
+      await sql(
+        ctx,
+        `update loopmark_private.recovery_points set state='incomplete' where id=${quote(id)}::uuid`,
+      ).catch(() => {})
+      throw error
+    }
   } finally {
     await snapshot.close()
   }
@@ -452,6 +458,18 @@ export async function restoreCheck(
   id,
   { signal, ledgerReader = currentLedger, inspect } = {},
 ) {
+  signal = signal
+    ? AbortSignal.any([signal, AbortSignal.timeout(240000)])
+    : AbortSignal.timeout(240000)
+  const readLedger = () =>
+    new Promise((resolve, reject) => {
+      const cancel = () => reject(new OpsError('CANCELLED'))
+      if (signal.aborted) return cancel()
+      signal.addEventListener('abort', cancel, { once: true })
+      Promise.resolve(ledgerReader(ctx))
+        .then(resolve, reject)
+        .finally(() => signal.removeEventListener('abort', cancel))
+    })
   const began = Date.now(),
     { index, manifest, key, directory } = await verifyPoint(ctx, id)
   const restoreId = randomUUID(),
@@ -469,11 +487,12 @@ export async function restoreCheck(
   }
   await sql(
     ctx,
-    `insert into loopmark_private.restore_drills(id,point_id,expires_at) values(${quote(restoreId)}::uuid,${quote(id)}::uuid,now()+interval '5 minutes')`,
+    `insert into loopmark_private.restore_drills(id,point_id,expires_at,owner_pid) values(${quote(restoreId)}::uuid,${quote(id)}::uuid,now()+interval '5 minutes',${process.pid})`,
   )
   await durableJson(resolve(destination, 'gate.json'), result)
   try {
-    const inventory = await ledgerReader(ctx)
+    const inventory = await readLedger()
+    if (signal.aborted) throw new OpsError('CANCELLED')
     await sql(ctx, `create database ${database} template template0;`)
     const dump = await decrypt(resolve(directory, 'database.enc'), key)
     await run(
@@ -500,6 +519,7 @@ export async function restoreCheck(
     await sql(ctx, 'delete from auth.sessions;', database)
     const erased = new Set(inventory.entries.map((entry) => entry.accountId))
     for (let offset = 0; offset < inventory.entries.length; offset += 50) {
+      if (signal.aborted) throw new OpsError('CANCELLED')
       const batch = inventory.entries.slice(offset, offset + 50)
       await sql(
         ctx,
@@ -508,6 +528,7 @@ export async function restoreCheck(
       )
     }
     for (const object of manifest.objects) {
+      if (signal.aborted) throw new OpsError('CANCELLED')
       if (erased.has(object.ownerId)) continue
       const bytes = await decrypt(resolve(directory, object.file), key)
       if (hash(bytes) !== object.sha256) throw new OpsError('MEDIA_INVALID')
@@ -516,7 +537,7 @@ export async function restoreCheck(
         throw new OpsError('MEDIA_INVALID')
       result.objectCount++
     }
-    const final = await ledgerReader(ctx)
+    const final = await readLedger()
     if (final.watermark !== inventory.watermark) throw new OpsError('SERVICE_UNAVAILABLE')
     const remaining = await sql(
       ctx,
@@ -642,9 +663,20 @@ export async function cleanupExpiredDrills(ctx, limit = 20, now = Date.now()) {
   const ids = JSON.parse(
     await sql(
       ctx,
-      `select coalesce(jsonb_agg(id),'[]') from (select id from loopmark_private.restore_drills where removed_at is null and expires_at<=${quote(new Date(now).toISOString())}::timestamptz order by expires_at,id limit ${limit}) x`,
+      `select coalesce(jsonb_agg(x),'[]') from (select id,owner_pid from loopmark_private.restore_drills where removed_at is null and expires_at<=${quote(new Date(now).toISOString())}::timestamptz order by expires_at,id limit ${limit}) x`,
     ),
   )
-  for (const id of ids) await cleanupDrill(ctx, id)
-  return ids.length
+  let removed = 0
+  for (const item of ids) {
+    if (item.owner_pid === 0) continue
+    try {
+      process.kill(item.owner_pid, 0)
+      continue
+    } catch (error) {
+      if (error.code !== 'ESRCH') continue
+    }
+    await cleanupDrill(ctx, item.id)
+    removed++
+  }
+  return removed
 }
