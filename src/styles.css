@@ -11,6 +11,9 @@
   --clay: #a64b31;
   --border: #e2ddd3;
   --sage: #e8ede1;
+  --control-border: #948777;
+  --danger: #9e3c2b;
+  --focus: #637659;
 }
 * {
   box-sizing: border-box;
@@ -2810,5 +2813,316 @@ h1 {
 @media (max-width: 500px) {
   .form-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Account and recovery flows keep essential text readable at every viewport. */
+.readable-controls {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.readable-controls :is(button, input, textarea, select) {
+  min-height: 44px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.readable-controls .icon-button {
+  min-width: 44px;
+}
+.readable-controls p,
+.readable-controls .hint {
+  font-size: 16px;
+  line-height: 1.6;
+}
+.account-page {
+  max-width: 960px;
+}
+
+.review-counts {
+  margin: 24px 0;
+}
+.review-counts > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+  padding: 11px 0;
+}
+.review-counts dt {
+  max-width: 70%;
+}
+.review-counts dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 600;
+}
+.choice-list {
+  border: 0;
+  padding: 0;
+  margin: 24px 0;
+}
+.choice-list legend {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.choice-list label,
+.confirm-choice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 0;
+  cursor: pointer;
+}
+.choice-list label > span > span {
+  display: block;
+  margin-top: 4px;
+}
+.choice-list input,
+.confirm-choice input {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  margin-top: 3px;
+  accent-color: var(--clay);
+}
+.version-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 24px 0;
+}
+.dialog.wide:has(.conflict-review) {
+  width: 760px;
+}
+.version-comparison section {
+  border-top: 2px solid var(--clay);
+  min-width: 0;
+  padding-top: 12px;
+}
+.version-comparison h3 {
+  margin: 0 0 8px;
+}
+.version-fields {
+  margin: 16px 0;
+}
+.version-fields > div {
+  margin: 0 0 16px;
+}
+.version-fields dt {
+  font-weight: 600;
+}
+.version-fields dd {
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.changed-label {
+  display: inline-block;
+  font-size: 13px;
+  margin-left: 8px;
+  padding: 1px 6px;
+  background: var(--sage-soft);
+  color: var(--ink);
+  border-radius: 4px;
+}
+.merge-editor {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.conflict-actions {
+  flex-wrap: wrap;
+}
+.collection-context {
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+.attachment-placeholder {
+  padding: 24px;
+  background: var(--sage-soft);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.attachment-photo {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.attachment-placeholder p {
+  margin: 8px 0 16px;
+}
+.readable-controls details summary {
+  min-height: 44px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  .version-comparison {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .conflict-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .conflict-actions .button {
+    width: 100%;
+  }
+}
+.account-section {
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+}
+.account-section > :last-child {
+  margin-bottom: 0;
+}
+.account-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+}
+.account-section p {
+  max-width: 70ch;
+}
+.account-identity {
+  overflow-wrap: anywhere;
+}
+.account-form {
+  display: grid;
+  gap: 12px;
+  max-width: 620px;
+}
+.account-form input {
+  width: 100%;
+  max-width: 460px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--control-border);
+  border-radius: 5px;
+  caret-color: var(--clay);
+}
+.account-form #account-code {
+  max-width: 240px;
+  letter-spacing: 2px;
+}
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+.account-actions a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+.collection-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.collection-heading p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  flex: 1 1 240px;
+}
+.collection-heading p span {
+  color: var(--muted);
+}
+.collection-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+}
+.collection-list li + li {
+  border-top: 1px solid var(--border);
+}
+.collection-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 10px;
+  background: transparent;
+  text-align: left;
+  border-radius: 5px;
+}
+.collection-option:hover,
+.collection-option[aria-current='true'] {
+  background: var(--sage);
+}
+.collection-option > span:first-child {
+  display: grid;
+  gap: 4px;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.collection-option span span {
+  color: var(--muted);
+}
+.sync-status,
+.sync-status > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sync-status {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 12px 0;
+  gap: 8px 24px;
+}
+.sync-status > span:first-child {
+  flex: 1 1 240px;
+}
+.sync-status .text-button {
+  color: var(--clay);
+}
+.sync-conflict,
+.sync-quota,
+.sync-failed,
+.sync-disabled,
+.sync-account {
+  color: var(--danger);
+}
+.sync-group {
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+}
+.sync-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sync-group li {
+  padding: 16px 0;
+  overflow-wrap: anywhere;
+}
+.sync-group li + li {
+  border-top: 1px solid var(--border);
+}
+.sync-item-kind {
+  display: block;
+  color: var(--muted);
+  margin-top: 4px;
+}
+@media (max-width: 700px) {
+  .account-section {
+    padding: 24px 0;
+  }
+  .collection-heading {
+    align-items: flex-start;
+  }
+  .readable-controls .account-actions {
+    align-items: stretch;
   }
 }

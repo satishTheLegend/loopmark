@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-18T12:29:49.940072+00:00",
+  "scope": "Component fixtures using production React components and synthetic callbacks; not end-to-end backend/product proof. Startup tests use fake IndexedDB and native-compatible repository port, not native platform evidence.",
+  "results": [
+    {
+      "command": "npx playwright test --config=playwright.ui.config.ts --workers=3",
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "profiles": [
+        "Desktop Chromium",
+        "Desktop Firefox",
+        "Desktop WebKit",
+        "Mobile Chrome",
+        "Mobile Safari"
+      ],
+      "checks": "email OTP form, explicit discard, stale conflict/merge, reflow 320/390/768/1440, axe accessibility, keyboard cancellation; animations finish before contrast sampling"
+    },
+    {
+      "command": "npm test",
+      "passed": 171,
+      "failed": 0,
+      "files": 18
+    },
+    {
+      "command": "npm run build",
+      "result": "passed",
+      "serviceWorkerCache": "loopmark-a7ef76446fb3"
+    }
+  ],
+  "visualReview": "Reviewed conflict desktop wide layout and connection mobile scroll/reflow; controls and long email remain inside dialog.",
+  "sha256": {
+    "src/App.tsx": "d0b69a15c9717c93d91063313743daf6475cb2278d0b63098a8fcd30ea904dc1",
+    "src/styles.css": "ab252cedf9c99a26d5754ff3bd0ffd0fadb70ae83c2e99dad28c815fd8f49196",
+    "src/services/startup.ts": "f1d76f51afe70df9642cbe8e95b56b3aa1a6271f288746e43074c3c9d54794d1",
+    "src/services/startup.test.ts": "9024a122f4eb616d057665526044180af476d25d9135569681d9f6f780ccd793",
+    "playwright.ui.config.ts": "7528efe114c6f6f5c7e4b6b10aa125f1f4cff9c132a89c8b7007c72e84fceaad",
+    "src/components/VoiceNote.tsx": "2d69264a0d449bf853e89d5218f0acdf0c8ee67ec4550f1b1e4ca570eb516cdc",
+    "src/components/ConnectionPreview.tsx": "8e3582a4a5ea21b79e9813cb65b6b001cd6e955564d6ee1116e891d6cb04f0cb",
+    "src/components/Guide.tsx": "751f38f2b4a90483c71aa5b40109dca16651f54aa9ff308113697ca4b11de595",
+    "src/components/SyncDetails.tsx": "1b7fd681b83c3558d0e43295d07709f7d6fee9ada0367c0489e4e03723ddb9d0",
+    "src/components/CollectionPicker.tsx": "6d6394d50d8633540324a4b1a8f0149adb1e385e930db717b06098af6eb9b1b6",
+    "src/components/ConflictReview.tsx": "bdec602c7ddc2b031163d979abfa3b6dc3abb913a285992a840adfb1f8717753",
+    "src/components/SignOutReview.tsx": "865937153ac004225754729a7310420fb7e91c2fb9ef6d0472447d3a41b8bb72",
+    "src/components/Shelf.tsx": "0ca3cc3eb0a079f8e93afa7ddbcdc08417c1cd6fe4efb1b62ff4f80e2006c1ee",
+    "src/components/ProjectView.tsx": "686538172f2b4d502d75c838a207ebf17abf7eea723bb02859e6c2bfc7cd65af",
+    "src/components/BackupView.tsx": "fb7fcda1752e5a349edb80f3f5460aba6479019ec588d5f658a7bdee07ba7fb1",
+    "src/components/Forms.tsx": "da8d5f74117b85659a542725c9056ebc31ab3dcbc40c403fd05d253b6daeae89",
+    "src/components/SyncStatus.tsx": "0d3cf84baae40353523555445cf7da7f4fd2233473822bedd133245c941c90b9",
+    "src/components/BagLabel.tsx": "070e1b82f547513dc300c93e49e1444e9772824e1f8ec052a90b076ed331d946",
+    "src/components/AccountView.tsx": "2e7bd7b3901045e0b18ae0c7dea47d9449d519b6511ea075ceffee251671026d",
+    "src/components/ui.tsx": "dfe0877f98db45c605e35524647b650ad27de1f1510d169fd6b190ad86046492",
+    "tests/ui/main.tsx": "efcfa074c84259e77683511fdd4824f0accc6eb5e34ea090b89dcb16eff39274",
+    "tests/ui/index.html": "d3549c4f8380d3a03ed64a2fee4f1f753164c18e1f827f86bbcb4d4438c137d3",
+    "tests/ui/account-states.ui.ts": "43abf86af0ce3e5f0637a2335c591b2cca768ace8d154aba8e6dfdd5453a973a"
+  }
+}

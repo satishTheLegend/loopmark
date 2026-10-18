@@ -13,6 +13,7 @@ import {
   IconArrowRight,
 } from '@tabler/icons-react'
 import type { Project, Checkpoint } from '../types'
+import type { ProjectMediaAvailability } from '../data'
 import { Badge, CraftArt, fullDate, relativeTime } from './ui'
 export function ProjectView({
   project: p,
@@ -22,6 +23,10 @@ export function ProjectView({
   onLabel,
   onStatus,
   onDelete,
+  mediaAvailability = [],
+  mediaLoading = false,
+  online = true,
+  onDownload,
 }: {
   project: Project
   onBack: () => void
@@ -30,10 +35,57 @@ export function ProjectView({
   onLabel: () => void
   onStatus: () => void
   onDelete: () => void
+  mediaAvailability?: ProjectMediaAvailability[]
+  mediaLoading?: boolean
+  online?: boolean
+  onDownload?: (checkpointId: string, kind: 'photo' | 'voice') => Promise<void>
 }) {
   const [selected, setSelected] = useState<string | null>(null)
+  const [downloading, setDownloading] = useState<'photo' | 'voice' | null>(null)
+  const [downloadError, setDownloadError] = useState('')
   const cp = p.checkpoints.find((c) => c.id === selected) || p.checkpoints[0],
     latest = cp === p.checkpoints[0]
+  const missing = (kind: 'photo' | 'voice') =>
+    mediaAvailability.some(
+      (item) => item.checkpointId === cp?.id && item.kind === kind && item.state === 'missing',
+    )
+  async function download(kind: 'photo' | 'voice') {
+    if (!cp || !onDownload || downloading) return
+    setDownloading(kind)
+    setDownloadError('')
+    try {
+      await onDownload(cp.id, kind)
+    } catch {
+      setDownloadError(
+        'This attachment could not be downloaded. Your checkpoint text is still here. Try again when connected.',
+      )
+    } finally {
+      setDownloading(null)
+    }
+  }
+  function placeholder(kind: 'photo' | 'voice') {
+    return (
+      <div className={`attachment-placeholder attachment-${kind}`}>
+        <strong>{kind === 'photo' ? 'Checkpoint photo' : 'Voice note'}</strong>
+        <p>
+          {online
+            ? 'This attachment is not saved on this device yet.'
+            : `Connect to download this ${kind === 'photo' ? 'photo' : 'voice note'}.`}
+        </p>
+        {onDownload && (
+          <button
+            className="button secondary"
+            disabled={!online || !!downloading}
+            onClick={() => void download(kind)}
+          >
+            {downloading === kind
+              ? 'Downloading…'
+              : `Download ${kind === 'photo' ? 'photo' : 'voice note'}`}
+          </button>
+        )}
+      </div>
+    )
+  }
   return (
     <>
       <button className="text-button back-link" onClick={onBack}>
@@ -102,6 +154,12 @@ export function ProjectView({
                     <audio controls src={cp.voice} />
                   </div>
                 )}
+                {missing('voice') && placeholder('voice')}
+                {downloadError && (
+                  <p className="error" role="alert">
+                    {downloadError}
+                  </p>
+                )}
                 <p className="saved-date">Saved {fullDate(cp.createdAt)}</p>
               </>
             ) : (
@@ -148,12 +206,24 @@ export function ProjectView({
           <div className="detail-photo">
             {cp?.photo ? (
               <img src={cp.photo} alt={`${p.name}, checkpoint saved ${fullDate(cp.createdAt)}`} />
+            ) : mediaLoading ? (
+              <div className="attachment-placeholder attachment-photo">
+                <p>Opening attachments…</p>
+              </div>
+            ) : missing('photo') ? (
+              placeholder('photo')
             ) : (
               <CraftArt project={{ ...p, checkpoints: [] }} large />
             )}
             <span>
               <IconPhoto size={15} />
-              {cp?.photo ? 'Your checkpoint photo' : 'A little inspiration for your project'}
+              {cp?.photo
+                ? 'Your checkpoint photo'
+                : mediaLoading
+                  ? 'Checking attachment availability'
+                  : missing('photo')
+                    ? 'Photo awaiting download'
+                    : 'A little inspiration for your project'}
             </span>
           </div>
           <section className="project-details-card">

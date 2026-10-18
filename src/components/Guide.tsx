@@ -9,10 +9,14 @@ export function Guide({
   onNew,
   onBackup,
   offlineSupport,
+  connected = false,
+  accountEmail,
 }: {
   onNew: () => void
   onBackup: () => void
   offlineSupport: ReturnType<typeof useOfflineSupport>
+  connected?: boolean
+  accountEmail?: string
 }) {
   return (
     <>
@@ -70,8 +74,9 @@ export function Guide({
         <h2 id="offline-heading">Take your workbasket with you</h2>
         <p role="status">{offlineSupport.status}</p>
         <p>
-          Wait for “Ready offline” before disconnecting. Browser data can still be cleared; keep a
-          full backup.
+          “Ready offline” means the app can reopen. Photos and voice notes from another device must
+          also be downloaded before they work offline. Device data can still be cleared; keep a full
+          backup.
         </p>
         <div className="empty-actions">
           <button
@@ -109,9 +114,19 @@ export function Guide({
         <div>
           <h3>One thing to remember</h3>
           <p>
-            Your projects live in this browser, on this device. Download a full backup before
-            clearing browser data or moving to another device. Bag-label QR codes are shortcuts, not
-            backups.
+            {connected ? (
+              <>
+                This collection syncs to {accountEmail || 'your account'}. Local saves, cloud sync
+                and downloaded attachments each have their own status. Keep a complete export before
+                removing a device copy.
+              </>
+            ) : (
+              <>
+                This collection lives on this device. Download a full backup before clearing app or
+                browser data or moving to another device.
+              </>
+            )}{' '}
+            Bag-label QR codes are shortcuts, not backups.
           </p>
           <button className="text-button" onClick={onBackup}>
             Go to backup & restore →

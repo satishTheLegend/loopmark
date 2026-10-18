@@ -18,7 +18,17 @@ import {
 import type { LibraryState } from '../data'
 import type { Backup } from '../types'
 import { Dialog, ErrorMessage, errorText, fullDate } from './ui'
-export function BackupView({ onMessage }: { onMessage: (s: string) => void }) {
+export function BackupView({
+  onMessage,
+  connected = false,
+  accountEmail,
+  collectionName,
+}: {
+  onMessage: (s: string) => void
+  connected?: boolean
+  accountEmail?: string
+  collectionName?: string
+}) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
     [pending, setPending] = useState<Backup | null>(null),
@@ -30,6 +40,13 @@ export function BackupView({ onMessage }: { onMessage: (s: string) => void }) {
     ),
     [storageFeedback, setStorageFeedback] = useState('')
   const input = useRef<HTMLInputElement>(null)
+  const mounted = useRef(true)
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
   useEffect(() => {
     let active = true
     if (!navigator.storage?.persisted || !navigator.storage?.persist) {
@@ -61,7 +78,8 @@ export function BackupView({ onMessage }: { onMessage: (s: string) => void }) {
     setError('')
     try {
       const backup = await exportBackup()
-      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }),
+      if (!mounted.current) return
+      const blob = new Blob([JSON.stringify(backup)], { type: 'application/json' }),
         url = URL.createObjectURL(blob),
         link = document.createElement('a')
       link.href = url
@@ -122,7 +140,7 @@ export function BackupView({ onMessage }: { onMessage: (s: string) => void }) {
         <div>
           <div className="eyebrow">A LITTLE PEACE OF MIND</div>
           <h1>Keep your making safe.</h1>
-          <p>Your notes stay on this device. A backup gives them another place to live.</p>
+          <p>A complete backup gives your saved notes and attachments another place to live.</p>
         </div>
       </header>
       <div className="backup-intro">
@@ -132,9 +150,24 @@ export function BackupView({ onMessage }: { onMessage: (s: string) => void }) {
         <div>
           <h2>Yours, and only yours.</h2>
           <p>
-            No account. No cloud uploads. Loopmark saves your projects in this browser. Clearing
-            browser data, changing devices, or private browsing can remove them. Download a backup
-            regularly.
+            {connected ? (
+              <>
+                This collection syncs privately to <strong>{accountEmail || 'your account'}</strong>
+                . A synced copy is not a backup. A complete export must include every referenced
+                photo and voice note; missing files must finish downloading first.
+              </>
+            ) : (
+              <>
+                This collection stays on this device. It is not uploaded to an account. Clearing app
+                or browser data can remove it. Download a backup regularly.
+              </>
+            )}
+            {collectionName && (
+              <>
+                {' '}
+                Selected collection: <strong>{collectionName}</strong>.
+              </>
+            )}
           </p>
         </div>
       </div>
@@ -262,7 +295,7 @@ export function BackupView({ onMessage }: { onMessage: (s: string) => void }) {
             </div>
           </div>
           <p>
-            This will <strong>replace every project currently in this browser</strong>, including
+            This will <strong>replace every project in the selected collection</strong>, including
             its photos and voice notes. Download a backup of your current collection first if you
             want to keep it.
           </p>

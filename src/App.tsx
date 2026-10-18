@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import {
   IconLayoutGrid,
   IconCircleCheck,
@@ -10,10 +10,13 @@ import {
   IconWifiOff,
   IconLock,
   IconBookmarkPlus,
+  IconUser,
 } from '@tabler/icons-react'
 import type { Project, ProjectInput, CheckpointInput } from './types'
 import {
   listProjects,
+  getProject,
+  mediaAvailability,
   createProject,
   updateProject,
   addCheckpoint,
@@ -22,6 +25,7 @@ import {
   subscribe,
   seedSamples,
 } from './data'
+import type { ProjectMediaAvailability } from './data'
 import { Brand, Dialog, Empty, ErrorMessage, errorText } from './components/ui'
 import { Shelf } from './components/Shelf'
 import { ProjectView } from './components/ProjectView'
@@ -32,14 +36,36 @@ import { Guide } from './components/Guide'
 import { sampleBackup } from './samples'
 import { useOfflineSupport } from './offline'
 import { captureDraftStore, deleteProjectDrafts } from './drafts'
-type Route = 'projects' | 'finished' | 'backup' | 'guide' | `project=${string}`
+import type { AppController, AttachPreview, LocalWorkCounts } from './services/controller-contract'
+import type { CollectionKey, CollectionView } from './domain/contracts'
+import { AccountView } from './components/AccountView'
+import { CollectionPicker } from './components/CollectionPicker'
+import { ConnectionPreview } from './components/ConnectionPreview'
+import { SignOutReview } from './components/SignOutReview'
+import { ConflictReview } from './components/ConflictReview'
+import { SyncStatus } from './components/SyncStatus'
+import { SyncDetails } from './components/SyncDetails'
+import { summarizeSync } from './components/sync-summary'
+type Route = 'projects' | 'finished' | 'backup' | 'guide' | 'account' | `project=${string}`
 type Modal = 'new' | 'edit' | 'checkpoint' | 'label' | 'delete' | null
 function readRoute(): Route {
   let hash = location.hash.slice(1)
   if (hash.startsWith('project=')) return hash as Route
-  return ['finished', 'backup', 'guide'].includes(hash) ? (hash as Route) : 'projects'
+  return ['finished', 'backup', 'guide', 'account'].includes(hash) ? (hash as Route) : 'projects'
 }
-export default function App() {
+const noSubscribe = () => () => {}
+const noSnapshot = () => null
+export default function App({
+  controller,
+  cloudAvailable = false,
+}: {
+  controller?: AppController
+  cloudAvailable?: boolean
+}) {
+  const state = useSyncExternalStore(
+    controller?.subscribe ?? noSubscribe,
+    controller?.getSnapshot ?? noSnapshot,
+  )
   const offlineSupport = useOfflineSupport()
   const [projects, setProjects] = useState<Project[]>([]),
     [loading, setLoading] = useState(true),
@@ -53,6 +79,16 @@ export default function App() {
     [busy, setBusy] = useState(false),
     [actionError, setActionError] = useState(''),
     [editSnapshot, setEditSnapshot] = useState<Project>()
+  const [openedProject, setOpenedProject] = useState<Project | null>(null)
+  const [attachmentState, setAttachmentState] = useState<ProjectMediaAvailability[]>([])
+  const [syncDetails, setSyncDetails] = useState(false)
+  const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
+  const [signOutReview, setSignOutReview] = useState<LocalWorkCounts | null>(null)
+  const [conflict, setConflict] = useState<{
+    operationId: string
+    view: CollectionView
+    acknowledged: CollectionView
+  } | null>(null)
   const exitGuard = useRef<(() => Promise<boolean>) | undefined>(undefined)
   const currentRoute = useRef(route)
   currentRoute.current = route
@@ -66,8 +102,21 @@ export default function App() {
     const current = ++request.current
     try {
       const all = await listProjects()
+      let id: string | undefined
+      try {
+        id = currentRoute.current.startsWith('project=')
+          ? decodeURIComponent(currentRoute.current.slice(8))
+          : undefined
+      } catch {
+        /* Invalid links use the unavailable state. */
+      }
+      const [opened, availability] = id
+        ? await Promise.all([getProject(id), mediaAvailability(id)])
+        : [null, []]
       if (current === request.current) {
         setProjects(all)
+        setOpenedProject(opened)
+        setAttachmentState(availability)
         setLoadError('')
       }
     } catch (e) {
@@ -76,11 +125,12 @@ export default function App() {
       if (current === request.current) setLoading(false)
     }
   }
+  const refreshRef = useRef(refresh)
+  refreshRef.current = refresh
+  useEffect(() => subscribe(() => void refreshRef.current()), [])
   useEffect(() => {
-    void refresh()
-    const off = subscribe(() => void refresh())
-    return off
-  }, [])
+    void refreshRef.current()
+  }, [route, state?.scope?.generation])
   useEffect(() => {
     const change = async () => {
       const next = readRoute()
@@ -146,7 +196,15 @@ export default function App() {
   } catch {
     projectId = 'invalid'
   }
-  const project = projects.find((p) => p.id === projectId)
+  const project =
+    openedProject?.id === projectId ? openedProject : projects.find((p) => p.id === projectId)
+  const summary = summarizeSync({
+    view: state?.view ?? null,
+    online: !offline,
+    working: state?.sync.state === 'syncing',
+    authRequired: state?.auth === 'expired',
+    lastSyncedAt: state?.sync.lastSyncedAt,
+  })
   useEffect(() => {
     document.title = project
       ? `${project.name} · Loopmark`
@@ -234,6 +292,49 @@ export default function App() {
       setBusy(false)
     }
   }
+  async function chooseCollection(key: CollectionKey) {
+    if (!controller) return
+    if (exitGuard.current && !(await exitGuard.current())) return
+    await controller.chooseCollection(key)
+    setModal(null)
+    navigate('projects')
+    await refresh()
+  }
+  async function previewConnection(key: CollectionKey) {
+    if (!controller || busy) return
+    setBusy(true)
+    try {
+      setConnectionPreview(await controller.previewAttach(key))
+    } catch (error) {
+      notify(errorText(error), true)
+    } finally {
+      setBusy(false)
+    }
+  }
+  async function reviewSignOut() {
+    if (!controller || busy) return
+    setBusy(true)
+    try {
+      setSignOutReview(await controller.prepareSignOut())
+    } catch (error) {
+      notify(errorText(error), true)
+    } finally {
+      setBusy(false)
+    }
+  }
+  async function reviewConflict(operationId: string) {
+    if (!controller || busy) return
+    setBusy(true)
+    try {
+      const versions = await controller.loadConflict(operationId)
+      setSyncDetails(false)
+      setConflict({ operationId, ...versions })
+    } catch (error) {
+      notify(errorText(error), true)
+    } finally {
+      setBusy(false)
+    }
+  }
   const nav = [
     {
       route: 'projects',
@@ -249,6 +350,7 @@ export default function App() {
     },
     { route: 'backup', label: 'Backup & restore', icon: IconDownload },
     { route: 'guide', label: 'A little guide', icon: IconBook2 },
+    { route: 'account', label: 'Account & device', icon: IconUser },
   ] as const
   return (
     <div className="app-shell">
@@ -355,6 +457,24 @@ export default function App() {
           </div>
         )}
         <main id="main" ref={main} tabIndex={-1} className="main-content">
+          {state && (
+            <div className="collection-context">
+              <CollectionPicker
+                collections={state.collections.map((info) => ({
+                  info,
+                  projects: info.projects,
+                  checkpoints: info.checkpoints,
+                  available:
+                    info.kind !== 'connected' || info.accountId === state.account?.accountId,
+                }))}
+                selected={state.view?.info}
+                accountEmail={state.account?.email}
+                loading={state.phase === 'starting'}
+                onSelect={chooseCollection}
+              />
+              <SyncStatus summary={summary} onDetails={() => setSyncDetails(true)} />
+            </div>
+          )}
           {loading ? (
             <div className="loading-state">
               <img src="/icon.svg" width="42" height="42" alt="" />
@@ -368,6 +488,29 @@ export default function App() {
               </p>
               <button className="button primary" onClick={() => void refresh()}>
                 Try again
+              </button>
+            </Empty>
+          ) : state?.view?.info.kind === 'connected' &&
+            state.view.hydration !== 'ready' &&
+            (route === 'projects' || route === 'finished' || !!projectId) ? (
+            <Empty
+              title={offline ? 'Connect to load your projects' : 'Loading your projects'}
+              text="Your account collection is opening. Saved records will appear after the complete first snapshot is checked."
+            >
+              <ErrorMessage
+                message={state.error ? `${state.error.problem} ${state.error.nextAction}` : ''}
+              />
+              <button
+                className="button primary"
+                disabled={offline || state.sync.state === 'syncing'}
+                onClick={() =>
+                  void controller?.runSync().catch((error) => notify(errorText(error), true))
+                }
+              >
+                {state.sync.state === 'syncing' ? 'Loading…' : 'Try syncing now'}
+              </button>
+              <button className="button secondary" onClick={() => navigate('account')}>
+                Account &amp; device
               </button>
             </Empty>
           ) : projectId && !project ? (
@@ -388,6 +531,9 @@ export default function App() {
             <ProjectView
               key={project.id}
               project={project}
+              mediaAvailability={openedProject?.id === projectId ? attachmentState : []}
+              mediaLoading={openedProject?.id !== projectId}
+              online={!offline}
               onBack={() => navigate(project.status === 'finished' ? 'finished' : 'projects')}
               onCheckpoint={() => setModal('checkpoint')}
               onEdit={() => {
@@ -403,13 +549,51 @@ export default function App() {
               }}
             />
           ) : route === 'backup' ? (
-            <BackupView onMessage={notify} />
+            <BackupView
+              onMessage={notify}
+              connected={state?.view?.info.kind === 'connected'}
+              accountEmail={state?.account?.email}
+              collectionName={state?.view?.info.name}
+            />
           ) : route === 'guide' ? (
             <Guide
               offlineSupport={offlineSupport}
+              connected={state?.view?.info.kind === 'connected'}
+              accountEmail={state?.account?.email}
               onNew={() => setModal('new')}
               onBackup={() => navigate('backup')}
             />
+          ) : route === 'account' ? (
+            <AccountView
+              cloudAvailable={cloudAvailable}
+              accountEmail={state?.account?.email}
+              signedIn={state?.auth === 'authenticated'}
+              onRequestCode={(email) => controller!.requestCode(email)}
+              onVerifyCode={(email, code) => controller!.verifyCode(email, code)}
+              onSignOut={() => void reviewSignOut()}
+            >
+              {state?.auth === 'authenticated' &&
+                state.account &&
+                state.view?.info.kind !== 'connected' && (
+                  <section className="account-section">
+                    <h2>Connect this collection</h2>
+                    <p>
+                      Review exactly what will be copied from{' '}
+                      <strong>{state.view?.info.name}</strong> to{' '}
+                      <strong>{state.account.email}</strong>.
+                    </p>
+                    <button
+                      className="button primary"
+                      disabled={busy || !state.view}
+                      onClick={() => {
+                        if (state.view) void previewConnection(state.view.info.key)
+                      }}
+                    >
+                      {busy ? 'Checking collections…' : 'Review connection'}
+                    </button>
+                  </section>
+                )}
+            </AccountView>
           ) : (
             <Shelf
               key={route}
@@ -423,6 +607,75 @@ export default function App() {
           )}
         </main>
       </div>
+      {syncDetails && controller && (
+        <SyncDetails
+          summary={summary}
+          onClose={() => setSyncDetails(false)}
+          onRetry={async (items) => {
+            await controller.retryOperations(items.map((item) => item.id))
+          }}
+          onReview={(operationId) => void reviewConflict(operationId)}
+          onSignIn={() => {
+            setSyncDetails(false)
+            navigate('account')
+          }}
+          onCapacity={() => {
+            setSyncDetails(false)
+            navigate('account')
+          }}
+        />
+      )}
+      {connectionPreview && controller && (
+        <ConnectionPreview
+          preview={connectionPreview}
+          stale={
+            state?.view?.info.key.collectionId === connectionPreview.source.key.collectionId &&
+            state.view.revision !== connectionPreview.source.revision
+          }
+          onRefresh={() => previewConnection(connectionPreview.source.key)}
+          onClose={() => setConnectionPreview(null)}
+          onConfirm={async (preview) => {
+            await controller.confirmAttach(preview)
+            setConnectionPreview(null)
+            navigate('projects')
+            notify('Collection connected. Your original local collection is still here.')
+          }}
+        />
+      )}
+      {signOutReview && controller && (
+        <SignOutReview
+          counts={signOutReview}
+          accountEmail={state?.account?.email || 'your account'}
+          onClose={() => setSignOutReview(null)}
+          onBackup={() => {
+            setSignOutReview(null)
+            navigate('backup')
+          }}
+          onConfirm={async (options) => {
+            await controller.signOut(options)
+            setSignOutReview(null)
+            navigate('projects')
+          }}
+        />
+      )}
+      {conflict && controller && (
+        <ConflictReview
+          key={`${conflict.operationId}:${conflict.view.revision}`}
+          {...conflict}
+          stale={state?.view?.revision !== conflict.view.revision}
+          onClose={() => setConflict(null)}
+          onRefresh={async () => {
+            await controller.runSync()
+            setConflict({
+              operationId: conflict.operationId,
+              ...(await controller.loadConflict(conflict.operationId)),
+            })
+          }}
+          onResolve={(operationId, expectedRevision, choice) =>
+            controller.resolveConflict(operationId, expectedRevision, choice)
+          }
+        />
+      )}
       {toast && (
         <div
           className={`toast ${toastError ? 'toast-error' : ''}`}
