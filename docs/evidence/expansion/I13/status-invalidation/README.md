@@ -1,0 +1,11 @@
+# Status invalidation after a local save
+
+C01 and D02 require local durability, pending sync and cloud acknowledgement to remain distinct. On base `b5151ea`, App's local save and its independent facade refresh could finish while the controller's repository notification was still reading storage. The controller retained an earlier empty pending view and confirmed-sync time, so the visible summary continued saying “Synced to your account” for the new unsent work.
+
+The controlled regression uses the actual browser repository, local data facade and summary function. It holds only the controller's metadata read after a real local commit. The facade finishes saving, listing, opening and checking media; the repository has one pending command. The old source still reports current. Releasing the read changes it to waiting. [The exact red output](red.log) and [original test patch](original-red-test.patch) preserve that pre-fix result.
+
+The candidate invalidates cloud-current status synchronously on a known repository notification. It shows “Checking saved changes” until an owned, current refresh reads the view. The existing full SessionScope and refreshVersion checks control clearing; an older success, failure or A→guest→A completion cannot clear a newer invalidation. Coordinator status publications cannot restore idle/current while the view remains invalid. The subscription error handler also checks captured scope and version.
+
+Local save completion does not wait for this checking state. `transitioning` and runtime scheduler admission are unchanged. The scheduler's work identity excludes this presentation state, so checking does not start a polling loop. Valid unchanged-cursor polls already produce no repository notification. Existing SyncStatus live-region rules do not announce each checking/current transition with zero pending items. Known authentication, conflict, quota, failure and offline priorities remain ahead of checking; guest collections retain their local label.
+
+[Metadata](metadata.json) binds source and evidence hashes. Focused controller/summary/scheduler tests pass 54/54; all unit tests pass 387/387 across 47 files. TypeScript exits0 and format/diff checks pass. No browser, native, backend or service run was performed in this lane; those results are not claimed here.

@@ -1,0 +1,26 @@
+
+ RUN  v5.0.5 <client-worktree>
+
+ ❯ src/services/app-controller.test.ts (36 tests | 1 failed | 35 skipped) 96ms
+   × a completed local save cannot retain a prior Synced claim while its controller refresh is held 95ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/app-controller.test.ts > a completed local save cannot retain a prior Synced claim while its controller refresh is held
+AssertionError: expected 'current' not to be 'current' // Object.is equality
+ ❯ src/services/app-controller.test.ts:219:31
+    217|   }
+    218|   expect(summary().kind).toBe('waiting')
+    219|   expect(whileHeld!.kind).not.toBe('current')
+       |                               ^
+    220|   expect(whileHeld!.label).not.toBe('Synced to your account')
+    221| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 35 skipped (36)
+   Start at  00:02:41
+   Duration  438ms (import 35%, transform 33%, tests 31%, worker 1%)
+

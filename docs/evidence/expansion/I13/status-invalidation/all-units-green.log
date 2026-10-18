@@ -1,0 +1,12 @@
+
+ RUN  v5.0.5 <client-worktree>
+
+
+ Test Files  47 passed (47)
+      Tests  387 passed (387)
+   Start at  00:06:50
+   Duration  1.61s (tests 63%, import 31%, transform 4%, worker 1%)
+
+    Isolate  47 workers spawned · ~87ms startup each (spawn + environment, per file)
+             at least ~367ms faster with isolate: false — reuses workers across files instead of one per file
+

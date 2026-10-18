@@ -1,0 +1,50 @@
+{
+  "base_source": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+  "candidate_source": "a01778045aa8d816590ac6346dd7764ad54f832f",
+  "requirements": [
+    "C01: distinct local, pending and synced state",
+    "D02: cloud acknowledgement is separate from local durability"
+  ],
+  "red": {
+    "command": "vitest run src/services/app-controller.test.ts -t 'completed local save cannot retain'",
+    "test_patch": "original-red-test.patch",
+    "product_source": "b5151ea62beda2b6df89a2e592cba4b4310227eb",
+    "outcome": "1 failed, 35 skipped; actual current status persisted while local save and facade refresh completed",
+    "duration_ms": 438
+  },
+  "green": {
+    "focused": {
+      "command": "vitest run src/services/app-controller.test.ts src/components/sync-summary.test.ts src/sync/runtime-scheduler.test.ts",
+      "passed": 54,
+      "files": 3,
+      "duration_ms": 556
+    },
+    "all_units": {
+      "command": "vitest run",
+      "passed": 387,
+      "files": 47,
+      "duration_ms": 1610
+    },
+    "typescript": {
+      "command": "tsc -b --pretty false",
+      "exit_code": 0
+    },
+    "format": "Prettier and git diff --check PASS"
+  },
+  "production_file_blobs": {
+    "src/services/app-controller.ts": "a3d47dea3ef5c43e5d4d9c25b2008a12fa98b501",
+    "src/services/controller-contract.ts": "49aad32a386589eeaf9f1e377355bf855770eafd",
+    "src/components/sync-summary.ts": "4d41ce86de4467089a25f7d4e2876929c2cfd2f6"
+  },
+  "preserved_evidence_sha256": {
+    "red.log": "21222219de0cba0fa8a02f3b68a9d4f2db0e3dd2140a6aa190cbf2a7a2cfc401",
+    "focused-green.log": "130a4d2252669556f919797f627811f669a4dd4a7c73dcdf7e6b2a041d12467f",
+    "all-units-green.log": "d655a15ab12e5e35171880f2cc24428fc0b50b012c3ed61d0bc33b38f3046125",
+    "typescript.log": "11ca1ccc49ba625ec196e14fc83c5f503174ab1fb46ae6274ef58cfbe6a64f9d",
+    "original-red-test.patch": "a387562b1f3504825d67c866a9fef2fb21f13156daa7cef22b05d92d3cbbb222"
+  },
+  "scope": "Controller status freshness and summary label only. No App, runtime scheduler, repository, protocol, auth, payment, server or native adapter production change.",
+  "runtime_verification": "No browser, native, backend or service execution in this lane. Independent review and root-coordinated affected runtime qualification pending.",
+  "red_test_model": "Real BrowserRepository with fake-indexeddb; real local facade and actual coordinator with deterministic transport; hold only controller notification readActive. Facade creation, list/get/media reads and durable pending query all finish before held read releases. No network or timer makes this test fail.",
+  "privacy": "No credentials, OTPs, account records or provider payloads. Test output paths are replaced with <client-worktree>; other stdout unchanged."
+}

@@ -1,0 +1,91 @@
+diff --git a/src/services/app-controller.test.ts b/src/services/app-controller.test.ts
+index c953404..423430e 100644
+--- a/src/services/app-controller.test.ts
++++ b/src/services/app-controller.test.ts
+@@ -16,6 +16,9 @@ import type { AccountAuth } from '../auth/auth-service'
+ import { createAppController } from './app-controller'
+ import { DomainError } from '../domain/errors'
+ import { createSyncCoordinator } from '../sync/coordinator'
++import { createLocalDataAdapter } from './local-data-service'
++import { createBrowserOperationPlanStore } from '../repositories/browser/operation-plans'
++import { summarizeSync } from '../components/sync-summary'
+ const repos: BrowserRepository[] = [],
+   controllers: ReturnType<typeof createAppController>[] = []
+ afterEach(async () => {
+@@ -146,6 +149,76 @@ function deferred<T = void>() {
+   })
+   return { promise, resolve, reject }
+ }
++it('a completed local save cannot retain a prior Synced claim while its controller refresh is held', async () => {
++  const { controller, repo, connected, recoveryTransport } = await setup(false, true)
++  await controller.verifyCode('maker@example.test', '123456')
++  await controller.chooseCollection(connected.key)
++  recoveryTransport.pull.mockResolvedValue({
++    protocolVersion: 2,
++    collectionId: connected.key.collectionId,
++    epoch: connected.key.epoch,
++    afterCursor: '20',
++    nextCursor: '20',
++    hasMore: false,
++    entries: [],
++  })
++  await controller.runSync()
++  const summary = () => {
++    const state = controller.getSnapshot()
++    return summarizeSync({
++      view: state.view,
++      online: true,
++      working: state.sync.state === 'syncing',
++      syncState: state.sync.state,
++      lastSyncedAt: state.sync.lastSyncedAt,
++      syncError: state.error ?? undefined,
++    })
++  }
++  expect(summary().label).toBe('Synced to your account')
++  const scope = controller.getSnapshot().scope!
++  const adapter = createLocalDataAdapter({
++    repository: repo,
++    media: repo.media,
++    plans: createBrowserOperationPlanStore(repo),
++    scope: () => scope,
++  })
++  const entered = deferred(),
++    finish = deferred()
++  const read = repo.readActive.bind(repo)
++  vi.spyOn(repo, 'readActive').mockImplementationOnce(async () => {
++    entered.resolve()
++    await finish.promise
++    return read()
++  })
++  let whileHeld: ReturnType<typeof summarizeSync>
++  try {
++    const saved = await adapter.createProject(
++      {
++        name: 'New locally committed scarf',
++        craft: 'Crochet',
++        color: 'sage',
++        yarn: 'DK',
++        toolSize: '4 mm',
++        notes: '',
++      },
++      'held-controller-save',
++    )
++    await entered.promise
++    // These are the independent reads awaited by App.refresh after a local save.
++    // They finish while the controller's repository notification is still held.
++    expect((await adapter.listProjects()).some((p) => p.id === saved.id)).toBe(true)
++    expect((await adapter.getProject(saved.id))?.name).toBe('New locally committed scarf')
++    expect(await adapter.mediaAvailability(saved.id)).toEqual([])
++    expect(await repo.pending(scope.key)).toHaveLength(1)
++    whileHeld = summary()
++  } finally {
++    finish.resolve()
++    await vi.waitFor(() => expect(controller.getSnapshot().view?.pending).toHaveLength(1))
++  }
++  expect(summary().kind).toBe('waiting')
++  expect(whileHeld!.kind).not.toBe('current')
++  expect(whileHeld!.label).not.toBe('Synced to your account')
++})
+ const asyncActions = ['runSync', 'retryOperations', 'retryAttachments'] as const
+ for (const action of asyncActions) {
+   for (const duringSelection of [false, true]) {
