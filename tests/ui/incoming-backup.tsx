@@ -22,7 +22,7 @@ function Fixture() {
     })
   return (
     <main>
-      <button onClick={review}>Review received backup</button>
+      {!incoming && <button onClick={review}>Review received backup</button>}
       <output aria-label="Restore result">{result}</output>
       <BackupView
         incomingFile={incoming}

@@ -27,4 +27,5 @@ test('invalid received JSON leaves restore unavailable and never invokes the res
     page.getByRole('button', { name: 'Restore as separate collection', exact: true }),
   ).toHaveCount(0)
   await expect(page.getByLabel('Restore result')).toHaveText('No restore')
+  await expect(page.getByRole('button', { name: 'Review received backup' })).toBeVisible()
 })

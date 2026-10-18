@@ -58,7 +58,7 @@ export function BackupView({
     ),
     [storageFeedback, setStorageFeedback] = useState('')
   const input = useRef<HTMLInputElement>(null)
-  const restoreToken = useRef(crypto.randomUUID())
+  const restoreToken = useRef<string>(crypto.randomUUID())
   const fileRead = useRef(0)
   const restoringIncoming = useRef(false)
   const exportAbort = useRef<AbortController | null>(null)
@@ -182,7 +182,10 @@ export function BackupView({
       restoreToken.current = operationToken ?? crypto.randomUUID()
       setPending(backup)
     } catch (e) {
-      if (mounted.current && fileRead.current === reading) setError(errorText(e))
+      if (mounted.current && fileRead.current === reading) {
+        setError(errorText(e))
+        if (operationToken) onIncomingCancel?.()
+      }
     } finally {
       if (mounted.current && fileRead.current === reading) setBusy(false)
       if (input.current) input.current.value = ''

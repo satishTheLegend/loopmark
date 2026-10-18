@@ -16,6 +16,7 @@ import type { DeviceStore } from './auth/auth-service'
 import type { NativeLifecycleEvent } from './platform/native/lifecycle'
 import type { NativeAudioOptions } from './platform/native/audio'
 import type { NativeCaptureRecovery, NativeCaptureSource } from './platform/native/capture-recovery'
+import type { NativeBackupInbox } from './platform/native/backup-inbox'
 import type { AppController } from './services/controller-contract'
 import type { ReplacementService } from './services/replacement-service'
 import type { WorkflowStore } from './services/workflow-store'
@@ -43,29 +44,41 @@ interface Storage {
   share?: SharePort
   workflows: WorkflowStore
   captureRecovery?: NativeCaptureRecovery
+  backupInbox?: NativeBackupInbox
 }
 async function openStorage(
   native: boolean,
   access: (info: CollectionInfo) => boolean,
 ): Promise<Storage> {
   if (native) {
-    const [repositoryModule, plans, drafts, devices, credentials, sharing, workflows, recovery] =
-      await Promise.all([
-        import('./platform/native/repository'),
-        import('./platform/native/operation-plans'),
-        import('./platform/native/drafts'),
-        import('./platform/native/device-store'),
-        import('./platform/native/session-storage'),
-        import('./platform/native/share'),
-        import('./platform/native/workflow-store'),
-        import('./platform/native/capture-recovery'),
-      ])
+    const [
+      repositoryModule,
+      plans,
+      drafts,
+      devices,
+      credentials,
+      sharing,
+      workflows,
+      recovery,
+      inbox,
+    ] = await Promise.all([
+      import('./platform/native/repository'),
+      import('./platform/native/operation-plans'),
+      import('./platform/native/drafts'),
+      import('./platform/native/device-store'),
+      import('./platform/native/session-storage'),
+      import('./platform/native/share'),
+      import('./platform/native/workflow-store'),
+      import('./platform/native/capture-recovery'),
+      import('./platform/native/backup-inbox'),
+    ])
     const repository = await repositoryModule.openNativeRepository({ access })
     await prepareNativeStorage(repository)
     return {
       repository,
       workflows: workflows.createNativeWorkflowStore(repository),
       captureRecovery: new recovery.NativeCaptureRecovery(repository),
+      backupInbox: inbox.createNativeBackupInbox(repository),
       media: repository.media,
       plans: plans.createNativeOperationPlanStore(repository),
       devices: devices.createNativeDeviceStore(repository),
@@ -227,6 +240,21 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     if (!value) throw new DomainError('ACCOUNT_CHANGED')
     return structuredClone(value)
   }
+  const incomingListeners = new Set<() => void>()
+  const incomingBackups = storage.backupInbox
+    ? {
+        ...storage.backupInbox,
+        subscribe(listener: () => void) {
+          incomingListeners.add(listener)
+          return () => {
+            incomingListeners.delete(listener)
+          }
+        },
+      }
+    : undefined
+  await incomingBackups?.initialize(() => {
+    for (const listener of incomingListeners) listener()
+  })
   const projectContinuation = createProjectContinuation({
     repository,
     workflows: storage.workflows,
@@ -547,6 +575,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     config,
     controller,
     backups,
+    incomingBackups,
     downloads,
     billing,
     upgradePrompts,
@@ -717,6 +746,8 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
       document.removeEventListener('visibilitychange', onVisibility)
       await removeNative?.()
       await removeCapture?.()
+      await incomingBackups?.dispose()
+      incomingListeners.clear()
       captureListeners.clear()
       deletionListeners.clear()
       connectionListeners.clear()

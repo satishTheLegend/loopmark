@@ -37,6 +37,8 @@ import { ProjectView } from './components/ProjectView'
 import { ProjectDownloads } from './components/ProjectDownloads'
 import { ProjectForm, CheckpointForm } from './components/Forms'
 import { BackupView } from './components/BackupView'
+import { NativeBackupNotice } from './components/NativeBackupNotice'
+import type { IncomingBackup } from './platform/native/backup-inbox'
 import { BagLabel } from './components/BagLabel'
 import { Guide } from './components/Guide'
 import { sampleBackup } from './samples'
@@ -108,6 +110,11 @@ export default function App({
   const [syncDetails, setSyncDetails] = useState(false)
   const [syncRecovery, setSyncRecovery] = useState<SyncRecoveryPreview | null>(null)
   const [diagnostics, setDiagnostics] = useState<DiagnosticReport | null>(null)
+  const [incomingReview, setIncomingReview] = useState<{
+    item: IncomingBackup
+    file: Blob
+    reviewId: string
+  } | null>(null)
   const [reopenUpgrade, setReopenUpgrade] = useState<string | null>(null)
   const [connectionPreview, setConnectionPreview] = useState<AttachPreview | null>(null)
   const [connectionMode, setConnectionMode] = useState<'attach' | 'replace'>('attach')
@@ -257,6 +264,7 @@ export default function App({
         return
       }
       setRoute(next)
+      if (next !== 'backup') setIncomingReview(null)
       setModal(null)
       setMobileOpen(false)
       const previousFocus = document.activeElement
@@ -699,6 +707,17 @@ export default function App({
             />
           )}
           {runtime?.native && !modal && <NativeCaptureNotice runtime={runtime} />}
+          {runtime?.incomingBackups && state?.scope && !modal && !incomingReview && (
+            <NativeBackupNotice
+              inbox={runtime.incomingBackups}
+              scope={state.scope}
+              collectionName={state.view?.info.name ?? 'this collection'}
+              onReview={(item, file) => {
+                setIncomingReview({ item, file, reviewId: crypto.randomUUID() })
+                navigate('backup')
+              }}
+            />
+          )}
           {loading ? (
             <div className="loading-state">
               <img src="/icon.svg" width="42" height="42" alt="" />
@@ -804,6 +823,16 @@ export default function App({
               connected={state?.view?.info.kind === 'connected'}
               accountEmail={state?.account?.email}
               collectionName={state?.view?.info.name}
+              incomingFile={
+                incomingReview
+                  ? {
+                      reviewId: incomingReview.reviewId,
+                      file: incomingReview.file,
+                      operationToken: incomingReview.item.operationToken,
+                    }
+                  : undefined
+              }
+              onIncomingCancel={() => setIncomingReview(null)}
               restoreRecovered={
                 runtime
                   ? async (backup, token) => {
@@ -812,6 +841,15 @@ export default function App({
                         `Restored ${new Date().toLocaleDateString()}`,
                         token,
                       )
+                      if (incomingReview && token === incomingReview.item.operationToken) {
+                        const source = incomingReview.item.source
+                        if (!source || !runtime.incomingBackups)
+                          throw new DomainError('ACCOUNT_CHANGED')
+                        await runtime.incomingBackups.finish(incomingReview.item.id, source, {
+                          state: 'imported',
+                          collection: key,
+                        })
+                      }
                       await controller!.chooseCollection(key)
                     }
                   : undefined

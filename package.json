@@ -43,6 +43,7 @@
     "ops": "node scripts/ops.mjs",
     "test:ops": "node scripts/test-ops.mjs",
     "test:load:capture": "node scripts/test-sync-smoke.mjs --load-capture",
+    "test:load": "node scripts/test-load.mjs",
     "test:ui:purchases": "playwright test --config=tests/ui/purchases.config.ts"
   },
   "engines": {
