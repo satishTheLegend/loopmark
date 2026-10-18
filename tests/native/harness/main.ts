@@ -1,5 +1,6 @@
 import { persistenceTests } from './persistence'
 import { adapterTests } from './adapters'
+import { capabilityTests, installManualFlows } from './flows'
 import { Capacitor } from '@capacitor/core'
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import { verifyRepositoryContract } from '../../../src/repositories/contract-suite'
@@ -59,6 +60,7 @@ await test('actual device credential save, read, clear', async () => {
 })
 const restartPhase = await persistenceTests(test)
 await adapterTests(test)
+await capabilityTests(test)
 const report = {
   schemaVersion: 1,
   restartPhase,
@@ -74,3 +76,4 @@ await Filesystem.writeFile({
   directory: Directory.Data,
   encoding: Encoding.UTF8,
 })
+installManualFlows()

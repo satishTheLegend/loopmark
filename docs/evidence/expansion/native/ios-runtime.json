@@ -59,6 +59,22 @@
         {
           "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
           "passed": true
+        },
+        {
+          "name": "native per-account device identity and verified offline label persist and clear",
+          "passed": true
+        },
+        {
+          "name": "native Web Locks exclude a second foreground sync owner until release",
+          "passed": true
+        },
+        {
+          "name": "actual native app/network subscriptions and microphone permission inspection",
+          "passed": true
+        },
+        {
+          "name": "native WebView normalizes a synthetic photo to resized JPEG pixels",
+          "passed": true
         }
       ]
     },
@@ -119,6 +135,22 @@
         },
         {
           "name": "native conflict recovery copies media before atomic retirement, preserves failures, and deduplicates retry",
+          "passed": true
+        },
+        {
+          "name": "native per-account device identity and verified offline label persist and clear",
+          "passed": true
+        },
+        {
+          "name": "native Web Locks exclude a second foreground sync owner until release",
+          "passed": true
+        },
+        {
+          "name": "actual native app/network subscriptions and microphone permission inspection",
+          "passed": true
+        },
+        {
+          "name": "native WebView normalizes a synthetic photo to resized JPEG pixels",
           "passed": true
         }
       ]

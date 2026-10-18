@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-18",
+  "scope": "Test-owned simulators; synthetic JSON only; no share recipient or network transfer selected",
+  "android": [
+    {
+      "action": "share",
+      "status": "cancelled"
+    },
+    {
+      "action": "picker",
+      "status": "cancelled"
+    },
+    {
+      "action": "photo",
+      "status": "cancelled"
+    },
+    {
+      "action": "picker",
+      "status": "ok",
+      "bytes": 36,
+      "type": "application/json"
+    }
+  ],
+  "ios": [
+    {
+      "action": "share",
+      "status": "cancelled"
+    },
+    {
+      "action": "picker",
+      "status": "cancelled"
+    },
+    {
+      "action": "photo",
+      "status": "cancelled"
+    }
+  ],
+  "iosXCTest": "NativeFlows.testNativeSystemSheetsCancelWithoutErrors PASS"
+}
