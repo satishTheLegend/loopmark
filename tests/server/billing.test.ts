@@ -21,6 +21,43 @@ import {
 } from './billing-fixtures'
 beforeAll(seedBilling)
 describe('I08 actual local SQL/HTTP with explicitly synthetic provider contract fixture', () => {
+  it('refuses sandbox webhook and grant admission inside a production ledger transaction', async () => {
+    const a = await actor(),
+      event = 'evt_' + randomUUID().replaceAll('-', ''),
+      purchase = 'pay_' + randomUUID().replaceAll('-', '')
+    // Transaction-local catalog change: no production HTTP endpoint, key, provider
+    // call or persistent environment change is involved in this reverse-direction proof.
+    const result = await sql(`begin;
+      update loopmark_private.billing_settings set environment='production' where id;
+      set local role service_role;
+      set local request.jwt.claims='{"role":"service_role"}';
+      do $$ begin
+        begin perform public.loopmark_billing_webhook('razorpay','sandbox',${quote(event)},${quote('a'.repeat(64))},'{}'::jsonb);
+          raise exception 'SANDBOX_EVENT_ACCEPTED';
+        exception when raise_exception then if sqlerrm<>'CAPABILITY_UNAVAILABLE' then raise; end if; end;
+        begin perform public.loopmark_billing_purchase_claim('razorpay','sandbox',${quote(purchase)});
+          raise exception 'SANDBOX_LEASE_ACCEPTED';
+        exception when raise_exception then if sqlerrm<>'CAPABILITY_UNAVAILABLE' then raise; end if; end;
+        begin perform public.loopmark_billing_observe('razorpay','sandbox',${quote(purchase)},1,${quote(a.session.billingPrincipalId)}::uuid,${quote(webProduct.id)},'valid','synthetic-reverse-environment');
+          raise exception 'SANDBOX_GRANT_ACCEPTED';
+        exception when raise_exception then if sqlerrm<>'CAPABILITY_UNAVAILABLE' then raise; end if; end;
+      end $$;
+      select 'sandbox-into-production-denied';rollback;`)
+    expect(result).toContain('sandbox-into-production-denied')
+    expect(await sql('select environment from loopmark_private.billing_settings where id')).toBe(
+      'sandbox',
+    )
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.webhook_inbox where event_id=${quote(event)}`,
+      ),
+    ).toBe('0')
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.purchase_grants where canonical_purchase_id=${quote(purchase)}`,
+      ),
+    ).toBe('0')
+  })
   it('keeps product/identity/entitlement authority server-side and native config public-only', async () => {
     const a = await actor(),
       products = await request(a.token, 'checkout', { action: 'products' })

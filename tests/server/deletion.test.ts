@@ -3,8 +3,17 @@ import { createClient } from '@supabase/supabase-js'
 import { createHash, randomBytes, randomUUID } from 'node:crypto'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { actor, createProject, localEnvironment, request, sql, quote, type Actor } from './helpers'
-import { audioFixture, reserve } from './media-fixtures'
+import {
+  actor,
+  command,
+  createProject,
+  localEnvironment,
+  request,
+  sql,
+  quote,
+  type Actor,
+} from './helpers'
+import { audioFixture, reserve, upload, download } from './media-fixtures'
 const run = promisify(execFile)
 async function authorization(a: Actor) {
   const env = await localEnvironment(),
@@ -51,6 +60,101 @@ async function advanceSyntheticDeadline(a: Actor) {
   )
 }
 describe('I07 real deletion barrier and independent ledger', () => {
+  it('serializes a live media finalizer before deletion and erases its bytes without resurrection', async () => {
+    const a = await actor(),
+      created = await createProject(a),
+      fixture = audioFixture(119)
+    const checkpoint = {
+      id: randomUUID(),
+      projectId: created.project.id,
+      createdAt: new Date().toISOString(),
+      position: '19',
+      toolSize: '4mm',
+      nextStep: 'Finalized before erasure',
+      notes: '',
+      voice: fixture.ref,
+    }
+    const append = await command(
+      a,
+      { kind: 'checkpoint.create', payload: { checkpoint, updatedAt: checkpoint.createdAt } },
+      { revision: '1' },
+    )
+    expect((await request(a.token, 'sync-push', append)).status).toBe(200)
+    const reservation = await reserve(a, fixture.ref)
+    expect((await upload(a, reservation.body, fixture.bytes)).status).toBe(200)
+    const finalize = await command(
+      a,
+      {
+        kind: 'media.attach',
+        payload: {
+          projectId: created.project.id,
+          checkpointId: checkpoint.id,
+          reservationId: reservation.body.id,
+          media: fixture.ref,
+        },
+      },
+      { afterOperationId: append.operationId },
+    )
+    const auth = await authorization(a),
+      env = await localEnvironment(),
+      marker = 'loopmark-finalize-delete-' + randomUUID()
+    const held = sql(
+      `begin;set local application_name=${quote(marker)};set local role authenticated;set local request.jwt.claim.sub=${quote(a.id)};select public.loopmark_push(${quote(JSON.stringify(finalize))}::jsonb);select pg_sleep(2);commit;`,
+    )
+    for (let attempt = 0; ; attempt++) {
+      if (
+        (await sql(
+          `select count(*) from pg_stat_activity where application_name=${quote(marker)} and wait_event='PgSleep'`,
+        )) === '1'
+      )
+        break
+      if (attempt === 49) throw new Error('Media finalization order barrier unavailable')
+      await new Promise((resolve) => setTimeout(resolve, 40))
+    }
+    let finished = false
+    const deleting = request(a.token, 'account-delete', auth.body).then((value) => {
+      finished = true
+      return value
+    })
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    expect(finished).toBe(false)
+    await held
+    expect((await deleting).status).toBe(200)
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.operation_receipts where owner_id=${quote(a.id)}::uuid and operation_id=${quote(finalize.operationId)}`,
+      ),
+    ).toBe('1')
+    const objectKey = await sql(
+      `select object_key from loopmark_private.media where owner_id=${quote(a.id)}::uuid and id=${quote(fixture.ref.id)} and state='ready'`,
+    )
+    expect(objectKey).not.toBe('')
+    expect((await request(a.token, 'media-finalize', finalize)).status).toBe(401)
+    expect((await download(a, fixture.ref)).status).toBe(401)
+    await advanceSyntheticDeadline(a)
+    const purged = await request(env.serviceKey, 'jobs', {
+      action: 'resume-deletions',
+      limit: 1,
+      ownerId: a.id,
+    })
+    expect(purged.body.counts).toEqual({ examined: 1, changed: 1, failed: 0 })
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.media_objects where owner_id=${quote(a.id)}::uuid`,
+      ),
+    ).toBe('0')
+    expect(
+      await sql(
+        `select count(*) from storage.objects where bucket_id='loopmark-private' and name=${quote(objectKey)}`,
+      ),
+    ).toBe('0')
+    expect((await request(a.token, 'media-finalize', finalize)).status).toBe(401)
+    expect(
+      await sql(
+        `select count(*) from loopmark_private.checkpoints where owner_id=${quote(a.id)}::uuid`,
+      ),
+    ).toBe('0')
+  })
   it('requires recent auth, durably revokes refresh, denies old JWTs, and completes live erasure with a narrow receipt', async () => {
     const a = await actor()
     await createProject(a)
