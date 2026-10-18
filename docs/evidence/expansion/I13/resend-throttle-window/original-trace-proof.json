@@ -50,8 +50,8 @@
     "received_status": 200
   },
   "diagnosis": "The second request arrived after the configured resend interval expired. HTTP 200 was consistent with the real policy. The test incorrectly assumed reload and typing always finish inside five seconds.",
-  "fixture_change": "Keep initial real delivery, disabled resend control and reload. At the second POST boundary, guard the exact UUID example.invalid user and local Docker/profile, atomically require one matched auth.users row, set only its confirmation/recovery last-send timestamps to database clock plus one minute, then continue the unmocked request. The future fixture window is bounded by the existing total 60-second test timeout. Real HTTP429 and timed UI remedy assertions remain unchanged.",
-  "not_claimed": "This controlled fixture verifies real Auth throttled-state handling after reload; it does not measure the exact wall-clock five-second boundary or provider latency.",
+  "fixture_change": "Keep initial real delivery, disabled resend control and reload. At the second POST boundary, guard the exact UUID example.invalid user and local Docker/profile, atomically require one matched auth.users row, set only its confirmation/recovery last-send timestamps to current database clock, then immediately continue the unmocked request. Return the database marker and observation timestamps. Attach local monotonic SQL/response bounds plus browser request timings and actual status. A non-429 outside an established five-second window fails as an expired or unproven fixture precondition; it is never accepted as a pass or misreported as a throttle bypass. Real HTTP429 and timed UI remedy assertions remain unchanged.",
+  "not_claimed": "This controlled fixture verifies real Auth throttled-state handling after reload. It does not change clocks, use future timestamps, change global rate limits, mock responses, or guarantee host scheduling inside the five-second boundary.",
   "verification": {
     "format_check": "PASS",
     "git_diff_check": "PASS",
@@ -61,7 +61,7 @@
   },
   "test_blobs": {
     "before": "bdea342689f01e6d4380452dc485eeb7403976d1",
-    "after": "ee6678aa9237cb6e60a0bd1c1970f6fc86e10180"
+    "after": "c0cd886a93b388061c322ef901c6145c7ba2540b"
   },
   "privacy": "Only request timing/status and generic UI action names are retained. No email address, OTP, request/response body, token, credential or session data copied."
 }
