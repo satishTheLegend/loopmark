@@ -113,9 +113,17 @@ test('known saved-change checking replaces current without repeated announcement
   const label = page.locator('.sync-status > span:not(.sr-only)')
   const announcement = page.locator('.sync-status [role=status]')
   const checking = page.getByRole('button', { name: 'Check saved change', exact: true })
+  await announcement.evaluate((node) => {
+    const state = window as typeof window & { completions?: string[] }
+    state.completions = []
+    new MutationObserver(() => {
+      const text = node.textContent
+      if (text === 'Synced to your account') state.completions!.push(text)
+    }).observe(node, { subtree: true, characterData: true, childList: true })
+  })
   await expect(label).toHaveText('Synced to your account')
   await checking.focus()
-  await checking.click()
+  await checking.press('Enter')
   await expect(label).toHaveText('Checking saved changes')
   await expect(announcement).toHaveText('')
   await expect(page.getByRole('button', { name: 'Check saved change', exact: true })).toBeFocused()
@@ -123,9 +131,42 @@ test('known saved-change checking replaces current without repeated announcement
   await expect(announcement).toHaveText('')
   await page.getByRole('button', { name: 'Publish pending change', exact: true }).click()
   await expect(label).toHaveText('1 item waiting to sync')
+  await page.getByRole('button', { name: 'Drain pending while syncing', exact: true }).click()
+  await expect(label).toHaveText('Syncing with your account')
+  await expect(announcement).toHaveText('')
+  await checking.click()
+  await expect(label).toHaveText('Checking saved changes')
+  await expect(announcement).toHaveText('')
   await page.getByRole('button', { name: 'Publish confirmed sync', exact: true }).click()
   await expect(label).toHaveText('Synced to your account')
   await expect(announcement).toHaveText('Synced to your account')
+  for (let i = 0; i < 3; i++)
+    await page.getByRole('button', { name: 'Repeat current view', exact: true }).click()
+  await expect(announcement).toHaveText('Synced to your account')
+  for (let i = 0; i < 3; i++) {
+    await checking.click()
+    await page.getByRole('button', { name: 'Publish confirmed sync', exact: true }).click()
+  }
+  await expect(announcement).toHaveText('')
+  for (const part of [
+    'collection',
+    'account',
+    'epoch',
+    'generation',
+    'device',
+    'device generation',
+  ]) {
+    await page.getByRole('button', { name: 'Publish pending change', exact: true }).click()
+    await expect(label).toHaveText('1 item waiting to sync')
+    await page.getByRole('button', { name: `Change announcement ${part}`, exact: true }).click()
+    await expect(label).toHaveText('Checking saved changes')
+    await page.getByRole('button', { name: 'Publish confirmed sync', exact: true }).click()
+    await expect(label).toHaveText('Synced to your account')
+    await expect(announcement).toHaveText('')
+  }
+  expect(
+    await page.evaluate(() => (window as typeof window & { completions: string[] }).completions),
+  ).toEqual(['Synced to your account'])
   await page.getByRole('button', { name: 'Check saved change', exact: true }).click()
   await page.getByRole('button', { name: 'Receive conflict before view', exact: true }).click()
   await expect(label).toHaveText('Changes need your review')

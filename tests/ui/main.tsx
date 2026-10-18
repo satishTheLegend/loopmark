@@ -12,6 +12,7 @@ import { ConflictReview } from '../../src/components/ConflictReview'
 import { SignOutReview } from '../../src/components/SignOutReview'
 import { SyncStatus } from '../../src/components/SyncStatus'
 import { summarizeSync, type SyncSummary } from '../../src/components/sync-summary'
+import { canonicalJson } from '../../src/domain/canonical-json'
 import { DomainError } from '../../src/domain/errors'
 import { info, project, now } from '../../src/repositories/browser/fixtures.test-support'
 import type { DeletionReceipt, CollectionView, PendingIntent } from '../../src/domain/contracts'
@@ -99,8 +100,13 @@ function Harness() {
   const scenario = new URLSearchParams(location.search).get('scenario') || 'account'
   const [open, setOpen] = useState(true)
   const [freshness, setFreshness] = useState<
-    'idle' | 'checking' | 'pending' | 'conflict' | 'error'
+    'idle' | 'checking' | 'syncing' | 'pending' | 'conflict' | 'error'
   >('idle')
+  const [syncScope, setSyncScope] = useState({
+    key: info(true).key,
+    generation: 1,
+    device: { id: 'device', generation: 'generation' },
+  })
   const [stale, setStale] = useState(scenario === 'conflict-stale')
   const [result, setResult] = useState('')
   const [syncSummary, setSyncSummary] = useState<SyncSummary>({
@@ -120,30 +126,69 @@ function Harness() {
       <output aria-label="Action result">{result}</output>
       {scenario === 'sync-checking' && (
         <>
-          <SyncStatus
-            summary={summarizeSync({
-              view:
-                freshness === 'pending'
-                  ? { ...acknowledged, pending: [{ ...pending, state: 'queued' }] }
-                  : acknowledged,
-              online: true,
-              working: false,
-              syncState: freshness,
-              lastSyncedAt: now,
-              syncError:
-                freshness === 'conflict'
-                  ? new DomainError('REVISION_CONFLICT').detail
-                  : freshness === 'error'
-                    ? new DomainError('MEDIA_CAPACITY_REACHED').detail
-                    : undefined,
-            })}
-            onDetails={() => {}}
-          />
+          <div className="sync-status-host">
+            <SyncStatus
+              key={canonicalJson(syncScope)}
+              summary={summarizeSync({
+                view:
+                  freshness === 'pending'
+                    ? { ...acknowledged, pending: [{ ...pending, state: 'queued' }] }
+                    : acknowledged,
+                online: true,
+                working: freshness === 'syncing',
+                syncState: freshness,
+                lastSyncedAt: now,
+                syncError:
+                  freshness === 'conflict'
+                    ? new DomainError('REVISION_CONFLICT').detail
+                    : freshness === 'error'
+                      ? new DomainError('MEDIA_CAPACITY_REACHED').detail
+                      : undefined,
+              })}
+              onDetails={() => {}}
+            />
+          </div>
           <button onClick={() => setFreshness('checking')}>Check saved change</button>
+          <button onClick={() => setFreshness('syncing')}>Drain pending while syncing</button>
           <button onClick={() => setFreshness('pending')}>Publish pending change</button>
           <button onClick={() => setFreshness('idle')}>Publish confirmed sync</button>
+          <button onClick={() => setSyncScope((scope) => ({ ...scope }))}>
+            Repeat current view
+          </button>
           <button onClick={() => setFreshness('conflict')}>Receive conflict before view</button>
           <button onClick={() => setFreshness('error')}>Receive capacity before view</button>
+          {(
+            ['collection', 'account', 'epoch', 'generation', 'device', 'device generation'] as const
+          ).map((part) => (
+            <button
+              key={part}
+              onClick={() => {
+                setFreshness('checking')
+                setSyncScope((scope) => ({
+                  key: {
+                    ...scope.key,
+                    collectionId:
+                      part === 'collection'
+                        ? `${scope.key.collectionId}-next`
+                        : scope.key.collectionId,
+                    namespace:
+                      part === 'account' ? `${scope.key.namespace}-next` : scope.key.namespace,
+                    epoch: part === 'epoch' ? `${scope.key.epoch}-next` : scope.key.epoch,
+                  },
+                  generation: scope.generation + (part === 'generation' ? 1 : 0),
+                  device: {
+                    id: part === 'device' ? `${scope.device.id}-next` : scope.device.id,
+                    generation:
+                      part === 'device generation'
+                        ? `${scope.device.generation}-next`
+                        : scope.device.generation,
+                  },
+                }))
+              }}
+            >
+              Change announcement {part}
+            </button>
+          ))}
         </>
       )}
       {scenario === 'sync-announcement' && (

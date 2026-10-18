@@ -16,13 +16,15 @@ export function SyncStatus({
   onDetails: () => void
 }) {
   const previous = useRef(summary)
+  // Acknowledgements can drain the queue before the final account pull completes.
+  const pendingCycle = useRef(false)
   const [announcement, setAnnouncement] = useState('')
   useEffect(() => {
     const old = previous.current
-    if (
-      (summary.actionable && old.kind !== summary.kind) ||
-      (summary.kind === 'current' && old.items.length > 0 && !!summary.lastSyncedAt)
-    )
+    if (summary.items.length > 0) pendingCycle.current = true
+    const completed = summary.kind === 'current' && !!summary.lastSyncedAt && pendingCycle.current
+    if (completed) pendingCycle.current = false
+    if ((summary.actionable && old.kind !== summary.kind) || completed)
       setAnnouncement(summary.label)
     else if (old.kind !== summary.kind) setAnnouncement('')
     previous.current = summary

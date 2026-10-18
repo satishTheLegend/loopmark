@@ -719,7 +719,11 @@ export default function App({
                 loading={state.phase === 'starting'}
                 onSelect={chooseCollection}
               />
-              <SyncStatus summary={summary} onDetails={() => setSyncDetails(true)} />
+              <SyncStatus
+                key={canonicalJson(state.scope)}
+                summary={summary}
+                onDetails={() => setSyncDetails(true)}
+              />
             </div>
           )}
           {runtime && (
