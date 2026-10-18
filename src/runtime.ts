@@ -23,6 +23,7 @@ import { createAppController } from './services/app-controller'
 import { createLocalDataAdapter } from './services/local-data-service'
 import { createDeletionService } from './services/deletion-service'
 import { createBackupService } from './services/backup-service'
+import { createDownloadsService } from './services/downloads-service'
 import { prepareBrowserStorage, prepareNativeStorage } from './services/startup'
 import { createSyncCoordinator } from './sync/coordinator'
 import { createSyncTransport } from './sync/transport'
@@ -355,6 +356,13 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     mediaConcurrency: config.mediaConcurrency,
     remote: remoteMedia && transport ? { media: remoteMedia, transport, current } : undefined,
   })
+  const downloads = createDownloadsService({
+    repository,
+    media: storage.media,
+    scope,
+    remote: remoteMedia,
+    mediaConcurrency: config.mediaConcurrency,
+  })
   installDataAdapter({ ...data, exportBackup: backups.exportComplete })
   const deletion = createDeletionService({
     repository,
@@ -539,6 +547,7 @@ export async function createRuntime(environment: Readonly<Record<string, unknown
     config,
     controller,
     backups,
+    downloads,
     billing,
     upgradePrompts,
     purchaseRecovery,

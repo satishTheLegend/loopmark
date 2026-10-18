@@ -30,6 +30,8 @@ export function BackupView({
   share,
   native = false,
   exportComplete,
+  incomingFile,
+  onIncomingCancel,
 }: {
   onMessage: (s: string) => void
   connected?: boolean
@@ -42,6 +44,8 @@ export function BackupView({
     signal: AbortSignal,
     onProgress: (progress: ExportProgress) => void,
   ) => Promise<Backup>
+  incomingFile?: { reviewId: string; file: Blob; operationToken: string }
+  onIncomingCancel?: () => void
 }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -55,6 +59,8 @@ export function BackupView({
     [storageFeedback, setStorageFeedback] = useState('')
   const input = useRef<HTMLInputElement>(null)
   const restoreToken = useRef(crypto.randomUUID())
+  const fileRead = useRef(0)
+  const restoringIncoming = useRef(false)
   const exportAbort = useRef<AbortController | null>(null)
   const [exportProgress, setExportProgress] = useState<ExportProgress | null>(null)
   const [exportMessage, setExportMessage] = useState('')
@@ -64,9 +70,15 @@ export function BackupView({
     mounted.current = true
     return () => {
       mounted.current = false
+      fileRead.current++
       exportAbort.current?.abort()
     }
   }, [])
+  useEffect(() => {
+    if (incomingFile) void importFile(incomingFile.file, incomingFile.operationToken)
+    // Each explicit review gets a new reviewId; its durable restore token stays unchanged.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incomingFile?.reviewId])
   useEffect(() => {
     let active = true
     if (!navigator.storage?.persisted || !navigator.storage?.persist) {
@@ -151,8 +163,10 @@ export function BackupView({
       }
     }
   }
-  async function importFile(file?: Blob) {
+  async function importFile(file?: Blob, operationToken?: string) {
     if (!file) return
+    const reading = ++fileRead.current
+    restoringIncoming.current = !!operationToken
     setError('')
     setBusy(true)
     try {
@@ -162,14 +176,15 @@ export function BackupView({
         throw new UserFacingError('Choose a Loopmark backup smaller than 50 MB.')
       const backup = parseBackup(await file.text())
       await validateBackupMedia(backup)
+      if (!mounted.current || fileRead.current !== reading) return
       setCurrentCollection(current)
       setChanged(false)
-      restoreToken.current = crypto.randomUUID()
+      restoreToken.current = operationToken ?? crypto.randomUUID()
       setPending(backup)
     } catch (e) {
-      setError(errorText(e))
+      if (mounted.current && fileRead.current === reading) setError(errorText(e))
     } finally {
-      setBusy(false)
+      if (mounted.current && fileRead.current === reading) setBusy(false)
       if (input.current) input.current.value = ''
     }
   }
@@ -415,6 +430,7 @@ export function BackupView({
             if (!busy) {
               setPending(null)
               setError('')
+              if (restoringIncoming.current) onIncomingCancel?.()
             }
           }}
         >
@@ -449,7 +465,14 @@ export function BackupView({
           )}
           <ErrorMessage message={error} />
           <div className="dialog-actions">
-            <button className="button subtle" disabled={busy} onClick={() => setPending(null)}>
+            <button
+              className="button subtle"
+              disabled={busy}
+              onClick={() => {
+                setPending(null)
+                if (restoringIncoming.current) onIncomingCancel?.()
+              }}
+            >
               Cancel
             </button>
             <button className="button primary" disabled={busy} onClick={restore}>

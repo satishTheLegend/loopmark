@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import {
   IconArrowLeft,
   IconBookmarkPlus,
@@ -27,6 +27,7 @@ export function ProjectView({
   mediaLoading = false,
   online = true,
   onDownload,
+  downloads,
 }: {
   project: Project
   onBack: () => void
@@ -39,6 +40,7 @@ export function ProjectView({
   mediaLoading?: boolean
   online?: boolean
   onDownload?: (checkpointId: string, kind: 'photo' | 'voice') => Promise<void>
+  downloads?: ReactNode
 }) {
   const [selected, setSelected] = useState<string | null>(null)
   const [downloading, setDownloading] = useState<'photo' | 'voice' | null>(null)
@@ -112,6 +114,7 @@ export function ProjectView({
           Save a checkpoint
         </button>
       </header>
+      {downloads}
       <div className="project-detail-grid">
         <div className="detail-main">
           <section

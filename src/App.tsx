@@ -34,6 +34,7 @@ import type { ProjectMediaAvailability } from './data'
 import { Brand, Dialog, Empty, ErrorMessage, errorText } from './components/ui'
 import { Shelf } from './components/Shelf'
 import { ProjectView } from './components/ProjectView'
+import { ProjectDownloads } from './components/ProjectDownloads'
 import { ProjectForm, CheckpointForm } from './components/Forms'
 import { BackupView } from './components/BackupView'
 import { BagLabel } from './components/BagLabel'
@@ -757,6 +758,19 @@ export default function App({
               mediaAvailability={openedProject?.id === projectId ? attachmentState : []}
               mediaLoading={openedProject?.id !== projectId}
               online={!offline}
+              downloads={
+                runtime &&
+                state?.view && (
+                  <ProjectDownloads
+                    service={runtime.downloads}
+                    projectId={project.id}
+                    revision={`${state.view.revision}:${attachmentState.map((item) => `${item.checkpointId}/${item.kind}/${item.state}`).join(',')}`}
+                    connected={state.view.info.kind === 'connected'}
+                    online={!offline}
+                    onChange={() => refreshRef.current()}
+                  />
+                )
+              }
               onDownload={
                 runtime && state?.view?.info.kind === 'connected'
                   ? async (checkpointId, kind) => {

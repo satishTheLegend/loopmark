@@ -1,0 +1,304 @@
+{
+  "runId": "1a38e754-ecf0-42ff-aa9b-7fe225abb821",
+  "readyAt": "2026-10-18T15:34:38.647Z",
+  "stopPath": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/load-capture/1a38e754-ecf0-42ff-aa9b-7fe225abb821.stop",
+  "source": "de2a2bc11de6b16c5ef915087d592d7ca6403733",
+  "journalPath": "/Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/.gstack/load-capture/1a38e754-ecf0-42ff-aa9b-7fe225abb821.jsonl",
+  "finishedAt": "2026-10-18T15:36:19.144Z",
+  "samples": [
+    {
+      "startedAt": "2026-10-18T15:34:38.841Z",
+      "committedAt": "2026-10-18T15:34:39.342Z",
+      "saveMs": 115.79999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:34:40.446Z",
+      "committedAt": "2026-10-18T15:34:40.860Z",
+      "saveMs": 81
+    },
+    {
+      "startedAt": "2026-10-18T15:34:42.038Z",
+      "committedAt": "2026-10-18T15:34:42.420Z",
+      "saveMs": 46.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:34:43.597Z",
+      "committedAt": "2026-10-18T15:34:43.957Z",
+      "saveMs": 37
+    },
+    {
+      "startedAt": "2026-10-18T15:34:45.057Z",
+      "committedAt": "2026-10-18T15:34:45.434Z",
+      "saveMs": 36.79999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:34:46.591Z",
+      "committedAt": "2026-10-18T15:34:47.089Z",
+      "saveMs": 36.19999998807907
+    },
+    {
+      "startedAt": "2026-10-18T15:34:48.174Z",
+      "committedAt": "2026-10-18T15:34:48.548Z",
+      "saveMs": 33.099999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:34:49.641Z",
+      "committedAt": "2026-10-18T15:34:50.063Z",
+      "saveMs": 88.40000000596046
+    },
+    {
+      "startedAt": "2026-10-18T15:34:51.157Z",
+      "committedAt": "2026-10-18T15:34:51.506Z",
+      "saveMs": 22.5
+    },
+    {
+      "startedAt": "2026-10-18T15:34:52.584Z",
+      "committedAt": "2026-10-18T15:34:53.132Z",
+      "saveMs": 46.20000000298023
+    },
+    {
+      "startedAt": "2026-10-18T15:34:54.265Z",
+      "committedAt": "2026-10-18T15:34:54.607Z",
+      "saveMs": 19.5
+    },
+    {
+      "startedAt": "2026-10-18T15:34:55.694Z",
+      "committedAt": "2026-10-18T15:34:56.124Z",
+      "saveMs": 37
+    },
+    {
+      "startedAt": "2026-10-18T15:34:57.250Z",
+      "committedAt": "2026-10-18T15:34:57.634Z",
+      "saveMs": 36.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:34:58.802Z",
+      "committedAt": "2026-10-18T15:34:59.110Z",
+      "saveMs": 21.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:35:00.162Z",
+      "committedAt": "2026-10-18T15:35:00.504Z",
+      "saveMs": 31.600000008940697
+    },
+    {
+      "startedAt": "2026-10-18T15:35:01.576Z",
+      "committedAt": "2026-10-18T15:35:01.909Z",
+      "saveMs": 31.900000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:35:02.974Z",
+      "committedAt": "2026-10-18T15:35:03.320Z",
+      "saveMs": 37.8999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:35:04.604Z",
+      "committedAt": "2026-10-18T15:35:04.938Z",
+      "saveMs": 64.5
+    },
+    {
+      "startedAt": "2026-10-18T15:35:06.217Z",
+      "committedAt": "2026-10-18T15:35:06.597Z",
+      "saveMs": 60.80000001192093
+    },
+    {
+      "startedAt": "2026-10-18T15:35:07.792Z",
+      "committedAt": "2026-10-18T15:35:08.214Z",
+      "saveMs": 33.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:35:11.279Z",
+      "committedAt": "2026-10-18T15:35:11.943Z",
+      "saveMs": 110.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:35:13.130Z",
+      "committedAt": "2026-10-18T15:35:13.564Z",
+      "saveMs": 64.90000000596046
+    },
+    {
+      "startedAt": "2026-10-18T15:35:14.768Z",
+      "committedAt": "2026-10-18T15:35:15.310Z",
+      "saveMs": 85.5
+    },
+    {
+      "startedAt": "2026-10-18T15:35:16.421Z",
+      "committedAt": "2026-10-18T15:35:17.163Z",
+      "saveMs": 75.70000000298023
+    },
+    {
+      "startedAt": "2026-10-18T15:35:18.366Z",
+      "committedAt": "2026-10-18T15:35:18.887Z",
+      "saveMs": 47.099999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:35:20.223Z",
+      "committedAt": "2026-10-18T15:35:20.773Z",
+      "saveMs": 103.09999999403954
+    },
+    {
+      "startedAt": "2026-10-18T15:35:22.205Z",
+      "committedAt": "2026-10-18T15:35:22.475Z",
+      "saveMs": 39
+    },
+    {
+      "startedAt": "2026-10-18T15:35:23.836Z",
+      "committedAt": "2026-10-18T15:35:24.301Z",
+      "saveMs": 48.5
+    },
+    {
+      "startedAt": "2026-10-18T15:35:25.456Z",
+      "committedAt": "2026-10-18T15:35:26.248Z",
+      "saveMs": 51.900000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:35:27.430Z",
+      "committedAt": "2026-10-18T15:35:27.917Z",
+      "saveMs": 56.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:35:29.058Z",
+      "committedAt": "2026-10-18T15:35:29.445Z",
+      "saveMs": 48.70000000298023
+    },
+    {
+      "startedAt": "2026-10-18T15:35:30.695Z",
+      "committedAt": "2026-10-18T15:35:31.333Z",
+      "saveMs": 97.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:35:32.466Z",
+      "committedAt": "2026-10-18T15:35:32.967Z",
+      "saveMs": 62.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:35:34.195Z",
+      "committedAt": "2026-10-18T15:35:34.683Z",
+      "saveMs": 57.599999994039536
+    },
+    {
+      "startedAt": "2026-10-18T15:35:35.917Z",
+      "committedAt": "2026-10-18T15:35:36.314Z",
+      "saveMs": 59.20000000298023
+    },
+    {
+      "startedAt": "2026-10-18T15:35:37.435Z",
+      "committedAt": "2026-10-18T15:35:38.019Z",
+      "saveMs": 101.79999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:35:39.280Z",
+      "committedAt": "2026-10-18T15:35:39.662Z",
+      "saveMs": 35.3999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:35:40.857Z",
+      "committedAt": "2026-10-18T15:35:41.407Z",
+      "saveMs": 96.59999999403954
+    },
+    {
+      "startedAt": "2026-10-18T15:35:42.604Z",
+      "committedAt": "2026-10-18T15:35:43.096Z",
+      "saveMs": 65.5
+    },
+    {
+      "startedAt": "2026-10-18T15:35:44.381Z",
+      "committedAt": "2026-10-18T15:35:45.008Z",
+      "saveMs": 33
+    },
+    {
+      "startedAt": "2026-10-18T15:35:46.232Z",
+      "committedAt": "2026-10-18T15:35:46.711Z",
+      "saveMs": 119.80000001192093
+    },
+    {
+      "startedAt": "2026-10-18T15:35:48.062Z",
+      "committedAt": "2026-10-18T15:35:48.619Z",
+      "saveMs": 32.900000005960464
+    },
+    {
+      "startedAt": "2026-10-18T15:35:49.913Z",
+      "committedAt": "2026-10-18T15:35:50.423Z",
+      "saveMs": 110.40000000596046
+    },
+    {
+      "startedAt": "2026-10-18T15:35:51.648Z",
+      "committedAt": "2026-10-18T15:35:52.144Z",
+      "saveMs": 51.30000001192093
+    },
+    {
+      "startedAt": "2026-10-18T15:35:53.414Z",
+      "committedAt": "2026-10-18T15:35:53.890Z",
+      "saveMs": 107.6000000089407
+    },
+    {
+      "startedAt": "2026-10-18T15:35:54.998Z",
+      "committedAt": "2026-10-18T15:35:55.446Z",
+      "saveMs": 77.90000000596046
+    },
+    {
+      "startedAt": "2026-10-18T15:35:56.691Z",
+      "committedAt": "2026-10-18T15:35:57.046Z",
+      "saveMs": 82.3999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:35:58.277Z",
+      "committedAt": "2026-10-18T15:35:58.692Z",
+      "saveMs": 75.59999999403954
+    },
+    {
+      "startedAt": "2026-10-18T15:35:59.969Z",
+      "committedAt": "2026-10-18T15:36:00.528Z",
+      "saveMs": 66.59999999403954
+    },
+    {
+      "startedAt": "2026-10-18T15:36:01.742Z",
+      "committedAt": "2026-10-18T15:36:02.278Z",
+      "saveMs": 123.3999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:36:03.361Z",
+      "committedAt": "2026-10-18T15:36:03.972Z",
+      "saveMs": 84.3999999910593
+    },
+    {
+      "startedAt": "2026-10-18T15:36:05.378Z",
+      "committedAt": "2026-10-18T15:36:06.772Z",
+      "saveMs": 73.29999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:36:07.993Z",
+      "committedAt": "2026-10-18T15:36:08.726Z",
+      "saveMs": 128.5
+    },
+    {
+      "startedAt": "2026-10-18T15:36:09.884Z",
+      "committedAt": "2026-10-18T15:36:10.588Z",
+      "saveMs": 81.79999999701977
+    },
+    {
+      "startedAt": "2026-10-18T15:36:11.972Z",
+      "committedAt": "2026-10-18T15:36:12.572Z",
+      "saveMs": 83.69999998807907
+    },
+    {
+      "startedAt": "2026-10-18T15:36:13.834Z",
+      "committedAt": "2026-10-18T15:36:14.352Z",
+      "saveMs": 43.70000000298023
+    },
+    {
+      "startedAt": "2026-10-18T15:36:15.748Z",
+      "committedAt": "2026-10-18T15:36:16.197Z",
+      "saveMs": 37.19999998807907
+    }
+  ],
+  "responses": {
+    "200": 166,
+    "503": 1
+  },
+  "failures": [],
+  "preservedCheckpoints": 57,
+  "targetMs": 500,
+  "maxSaveMs": 128.5,
+  "conditions": "Actual Chromium app connected to the selected loopback backend. Match sample timestamps against the separate workload phases; this report alone does not prove overlap or load size."
+}
