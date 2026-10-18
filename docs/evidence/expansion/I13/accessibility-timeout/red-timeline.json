@@ -1,0 +1,212 @@
+{
+  "time_unit": "milliseconds relative to Before Hooks start in test.trace",
+  "before_hooks_start_ms": 133243.823,
+  "test_timeout_ms": 30000,
+  "after_hooks_started_ms": 30011.743,
+  "after_hooks_finished_ms": 36249.996,
+  "stages": [
+    {
+      "screen": "empty",
+      "scan_started_ms": 2680.15,
+      "result_attached_ms": 5169.645,
+      "assertion_finished_ms": 5174.449,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-empty.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2512",
+      "assertion_call_id": "oent@2513"
+    },
+    {
+      "screen": "project-form",
+      "scan_started_ms": 5398.91,
+      "result_attached_ms": 7198.473,
+      "assertion_finished_ms": 7200.523,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-project-form.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2540",
+      "assertion_call_id": "oent@2541"
+    },
+    {
+      "screen": "project-detail",
+      "scan_started_ms": 9762.807,
+      "result_attached_ms": 12069.655,
+      "assertion_finished_ms": 12081.246,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-project-detail.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2608",
+      "assertion_call_id": "oent@2609"
+    },
+    {
+      "screen": "checkpoint-form",
+      "scan_started_ms": 12238.789,
+      "result_attached_ms": 15994.787,
+      "assertion_finished_ms": 15996.089,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-checkpoint-form.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2636",
+      "assertion_call_id": "oent@2637"
+    },
+    {
+      "screen": "bag-label",
+      "scan_started_ms": 18193.718,
+      "result_attached_ms": 20775.61,
+      "assertion_finished_ms": 20778.85,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-bag-label.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2668",
+      "assertion_call_id": "oent@2669"
+    },
+    {
+      "screen": "populated-shelf",
+      "scan_started_ms": 21343.364,
+      "result_attached_ms": 24989.739,
+      "assertion_finished_ms": 24991.411,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-populated-shelf.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2698",
+      "assertion_call_id": "oent@2699"
+    },
+    {
+      "screen": "backup",
+      "scan_started_ms": 25043.06,
+      "result_attached_ms": 28787.923,
+      "assertion_finished_ms": 28788.853,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-backup.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2726",
+      "assertion_call_id": "oent@2727"
+    },
+    {
+      "screen": "guide",
+      "scan_started_ms": 28880.586,
+      "result_attached_ms": 30977.012,
+      "assertion_finished_ms": 30977.87,
+      "violations": 0,
+      "assertion_error": null,
+      "attachment_file": "axe-guide.json",
+      "attachment_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trace_attachment": "attachments/97d170e1550eee4afc0af065b78cda302a97674c",
+      "attachment_call_id": "oent@2758",
+      "assertion_call_id": "oent@2759"
+    }
+  ],
+  "guide_processing": [
+    {
+      "call_id": "oent@2732",
+      "title": "Evaluate",
+      "function": "AxeBuilder.analyze",
+      "started_ms": 29093.427,
+      "finished_ms": 29329.712,
+      "error": null
+    },
+    {
+      "call_id": "oent@2734",
+      "title": "Evaluate",
+      "function": "AxeBuilder.analyze",
+      "started_ms": 29330.165,
+      "finished_ms": 29343.777,
+      "error": null
+    },
+    {
+      "call_id": "oent@2736",
+      "title": "Evaluate",
+      "function": "AxeBuilder.runPartialRecursive",
+      "started_ms": 29344.293,
+      "finished_ms": 29355.136,
+      "error": null
+    },
+    {
+      "call_id": "oent@2738",
+      "title": "Evaluate",
+      "function": "AxeBuilder.runPartialRecursive",
+      "started_ms": 29355.691,
+      "finished_ms": 29966.262,
+      "error": null
+    },
+    {
+      "call_id": "oent@2740",
+      "title": "Create page",
+      "function": "AxeBuilder.finishRun",
+      "started_ms": 29967.496,
+      "finished_ms": 30434.547,
+      "error": null
+    },
+    {
+      "call_id": "oent@2742",
+      "title": "After Hooks",
+      "function": "After Hooks",
+      "started_ms": 30011.743,
+      "finished_ms": 36249.996,
+      "error": null
+    },
+    {
+      "call_id": "oent@2744",
+      "title": "Evaluate",
+      "function": "AxeBuilder.finishRun",
+      "started_ms": 30434.95,
+      "finished_ms": 30692.412,
+      "error": null
+    },
+    {
+      "call_id": "oent@2753",
+      "title": "Evaluate",
+      "function": "AxeBuilder.axeConfigure",
+      "started_ms": 30692.769,
+      "finished_ms": 30694.266,
+      "error": null
+    },
+    {
+      "call_id": "oent@2754",
+      "title": "Evaluate",
+      "function": "AxeBuilder.finishRun",
+      "started_ms": 30694.508,
+      "finished_ms": 30695.964,
+      "error": null
+    },
+    {
+      "call_id": "oent@2755",
+      "title": "Evaluate",
+      "function": "chunkResults",
+      "started_ms": 30696.857,
+      "finished_ms": 30703.721,
+      "error": null
+    },
+    {
+      "call_id": "oent@2756",
+      "title": "Evaluate",
+      "function": "AxeBuilder.finishRun",
+      "started_ms": 30704.029,
+      "finished_ms": 30972.233,
+      "error": null
+    },
+    {
+      "call_id": "oent@2757",
+      "title": "Close page",
+      "function": null,
+      "started_ms": 30973.79,
+      "finished_ms": 30976.691,
+      "error": null
+    }
+  ],
+  "trace_events_with_error": []
+}

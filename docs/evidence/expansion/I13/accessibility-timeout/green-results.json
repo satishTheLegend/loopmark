@@ -1,0 +1,264 @@
+{
+  "command": "LOOPMARK_TEST_PORT=4181 PLAYWRIGHT_JSON_OUTPUT_FILE=.gstack/axe-aggregate-green.json npx playwright test tests/journeys.spec.ts --grep 'axe WCAG 2.2 AA scan covers eight core screens and dialogs' --workers=1 --reporter=list,json --output=.gstack/axe-aggregate-results > .gstack/axe-aggregate-green.log 2>&1",
+  "exit_code": 0,
+  "test_source_blob": "e85e54597422a432c6b9b3757713fa8b38810397",
+  "production_build_source_commit": "a07b014cdde249bbba94c6567a73f24f800797da",
+  "full_json_report_sha256": "71661ccbace468288f3f71fdaed2b2e4d5dd6dd9f3a50743c71a98f3c59ba3e8",
+  "stdout_sha256": "115445676763af2bf923dd50c230474abe47f94a0d60b0e1c3449afc32a626b5",
+  "stats": {
+    "startTime": "2026-10-18T16:57:43.221Z",
+    "duration": 26094.733,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "results": [
+    {
+      "project": "chromium",
+      "test": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "status": "passed",
+      "duration_ms": 3800,
+      "retry": 0,
+      "attachments": [
+        {
+          "file": "green/chromium/axe-empty.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-project-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-project-detail.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-checkpoint-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-bag-label.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-populated-shelf.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-backup.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium/axe-guide.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        }
+      ]
+    },
+    {
+      "project": "firefox",
+      "test": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "status": "passed",
+      "duration_ms": 5518,
+      "retry": 0,
+      "attachments": [
+        {
+          "file": "green/firefox/axe-empty.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-project-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-project-detail.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-checkpoint-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-bag-label.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-populated-shelf.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-backup.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/firefox/axe-guide.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        }
+      ]
+    },
+    {
+      "project": "webkit",
+      "test": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "status": "passed",
+      "duration_ms": 5117,
+      "retry": 0,
+      "attachments": [
+        {
+          "file": "green/webkit/axe-empty.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-project-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-project-detail.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-checkpoint-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-bag-label.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-populated-shelf.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-backup.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit/axe-guide.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        }
+      ]
+    },
+    {
+      "project": "chromium-mobile",
+      "test": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "status": "passed",
+      "duration_ms": 3549,
+      "retry": 0,
+      "attachments": [
+        {
+          "file": "green/chromium-mobile/axe-empty.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-project-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-project-detail.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-checkpoint-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-bag-label.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-populated-shelf.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-backup.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/chromium-mobile/axe-guide.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        }
+      ]
+    },
+    {
+      "project": "webkit-mobile",
+      "test": "axe WCAG 2.2 AA scan covers eight core screens and dialogs",
+      "status": "passed",
+      "duration_ms": 4584,
+      "retry": 0,
+      "attachments": [
+        {
+          "file": "green/webkit-mobile/axe-empty.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-project-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-project-detail.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-checkpoint-form.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-bag-label.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-populated-shelf.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-backup.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        },
+        {
+          "file": "green/webkit-mobile/axe-guide.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "violations": 0
+        }
+      ]
+    }
+  ],
+  "preservation": "stdout copied byte-for-byte; attachments base64-decoded from the actual JSON reporter without modification. Full report remains local because it includes absolute environment paths. No reruns/retries or product changes."
+}

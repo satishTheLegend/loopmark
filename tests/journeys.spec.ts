@@ -667,6 +667,8 @@ for (const width of [320, 390]) {
 }
 
 test('axe WCAG 2.2 AA scan covers eight core screens and dialogs', async ({ page }, testInfo) => {
+  // Eight sequential scans share one budget, including axe's result-processing pages.
+  test.setTimeout(60_000)
   const scan = async (state: string) => {
     await page.evaluate(async () => {
       await Promise.all(

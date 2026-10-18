@@ -1,0 +1,47 @@
+[Exact source lines 1-8]
+
+> loopmark@1.0.0 test:e2e
+> playwright test journeys.spec.ts offline.spec.ts offline-first-install.spec.ts reliability.spec.ts draft-recovery.spec.ts diagnostics.spec.ts upgrade-guest.spec.ts app-startup.spec.ts local-migration.spec.ts privacy-routes.spec.ts --workers=2
+
+[WebServer] (node:93175) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 264 tests using 2 workers
+
+[Exact source lines 51-51]
+  ✓   36 [chromium] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (4.9s)
+
+[Exact source lines 109-109]
+  ✘   88 [firefox] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (36.2s)
+
+[Exact source lines 165-165]
+  ✓  140 [webkit] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (8.6s)
+
+[Exact source lines 223-223]
+  ✓  194 [chromium-mobile] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (4.4s)
+
+[Exact source lines 279-279]
+  ✓  246 [webkit-mobile] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (4.5s)
+
+[Exact source lines 298-318]
+  1) [firefox] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs 
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #8: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/journeys-axe-WCAG-2-2-AA-s-6a0fc-ht-core-screens-and-dialogs-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/journeys-axe-WCAG-2-2-AA-s-6a0fc-ht-core-screens-and-dialogs-firefox/error-context.md
+
+    attachment #11: trace (application/zip) ────────────────────────────────────────────────────────
+    test-results/journeys-axe-WCAG-2-2-AA-s-6a0fc-ht-core-screens-and-dialogs-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/journeys-axe-WCAG-2-2-AA-s-6a0fc-ht-core-screens-and-dialogs-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [firefox] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs 
+  263 passed (6.7m)

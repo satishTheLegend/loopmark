@@ -1,0 +1,22 @@
+[WebServer] (node:7007) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:7068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (3.8s)
+(node:7088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [firefox] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (5.5s)
+(node:7192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [webkit] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (5.1s)
+(node:7239) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [chromium-mobile] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (3.5s)
+(node:7271) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [webkit-mobile] › tests/journeys.spec.ts:669:1 › axe WCAG 2.2 AA scan covers eight core screens and dialogs (4.6s)
+
+  5 passed (26.1s)

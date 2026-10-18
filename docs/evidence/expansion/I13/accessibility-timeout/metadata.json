@@ -1,0 +1,54 @@
+{
+  "product_source_commit": "a07b014cdde249bbba94c6567a73f24f800797da",
+  "test_source_blob": "f61ba37139cc2398dfd4148524123ad791254a25",
+  "trace_relative_path": ".gstack/final-guest-after-sw-fix-failure/journeys-axe-WCAG-2-2-AA-s-6a0fc-ht-core-screens-and-dialogs-firefox/trace.zip",
+  "trace_sha256": "d923b30757144191bc6b42c648317770fa2f55d685d792d27c7d2ac5f6849159",
+  "trace_bytes": 16265789,
+  "stdout_relative_path": ".gstack/final-guest-after-sw-fix.log",
+  "stdout_sha256": "48a73d743e601a503eaf9e6eacc9d9b47a85c4ba20fd24704038c8361fa0b6c3",
+  "stdout_bytes": 44705,
+  "stdout_excerpt_lines_1_based_inclusive": [
+    [
+      1,
+      8
+    ],
+    [
+      51,
+      51
+    ],
+    [
+      109,
+      109
+    ],
+    [
+      165,
+      165
+    ],
+    [
+      223,
+      223
+    ],
+    [
+      279,
+      279
+    ],
+    [
+      298,
+      318
+    ]
+  ],
+  "red_result": {
+    "passed": 263,
+    "failed": 1,
+    "failed_profile": "firefox",
+    "failure": "Test timeout of 30000ms exceeded.",
+    "violations_in_each_of_eight_results": 0
+  },
+  "extraction": "Python standard-library zipfile/json; attachment bytes copied unchanged; safe event fields selected; root absolute path replaced only in stdout excerpt; raw trace kept locally rather than committed. No test/browser/build run for extraction.",
+  "green_verification": {
+    "status": "5 passed; 40 exact empty axe attachments",
+    "evidence": "green-results.json",
+    "stdout": "green.stdout.log",
+    "change": "Only this aggregate test receives test.setTimeout(60_000); scans/assertions unchanged."
+  }
+}
