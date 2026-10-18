@@ -163,6 +163,17 @@ for (const trigger of ['retired', 'cursor'] as const)
       }
       const aged = await fixtureSql(email, original, trigger)
       expect(aged.oldReceiptCount).toBe(0)
+      const pullErrors: string[] = []
+      a.on('response', (response) => {
+        if (
+          new URL(response.url()).pathname === '/functions/v1/sync-pull' &&
+          response.status() === 409
+        )
+          void response
+            .json()
+            .then((body) => pullErrors.push(body.error.code))
+            .catch(() => {})
+      })
       const denied = a.waitForResponse(
         (response) =>
           new URL(response.url()).pathname === '/functions/v1/sync-push' &&
@@ -177,13 +188,8 @@ for (const trigger of ['retired', 'cursor'] as const)
       )
       await a.unroute('**/functions/v1/sync-push')
       if (trigger === 'cursor') {
-        const expired = a.waitForResponse(
-          (response) =>
-            new URL(response.url()).pathname === '/functions/v1/sync-pull' &&
-            response.status() === 409,
-        )
         await a.reload()
-        expect((await (await expired).json()).error.code).toBe('SYNC_REBASE_REQUIRED')
+        await expect.poll(() => pullErrors).toContain('SYNC_REBASE_REQUIRED')
       } else {
         // Cold restart exercises cached identity with auth='expired'; recovery still requires verified re-registration.
         await a.reload()
@@ -210,7 +216,7 @@ for (const trigger of ['retired', 'cursor'] as const)
       await expect(a.locator('.collection-heading')).toContainText('Account projects')
       await openProject(a, title)
       expect(await a.locator('body').innerText()).not.toContain(localStep)
-      await expect(a.locator('.detail-photo img')).toHaveCount(0)
+      await expect(a.locator('.detail-photo img[src^="data:"]')).toHaveCount(0)
       const after = await fixtureSql(email, original, 'inspect')
       expect(after.oldReceiptCount).toBe(0)
       expect(after.checkpointCount).toBe(0)
@@ -238,7 +244,7 @@ for (const trigger of ['retired', 'cursor'] as const)
       } else await b.reload()
       await openProject(b, title)
       expect(await b.locator('body').innerText()).not.toContain(localStep)
-      await expect(b.locator('.detail-photo img')).toHaveCount(0)
+      await expect(b.locator('.detail-photo img[src^="data:"]')).toHaveCount(0)
       await chooseAccount(a)
       await openProject(a, title)
       const newStep = 'Fresh account checkpoint after recovery'

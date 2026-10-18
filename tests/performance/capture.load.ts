@@ -109,7 +109,7 @@ test('connected local capture remains durable during the independently timed ser
   )
   await page.getByRole('button', { name: 'Backup & restore', exact: true }).click()
   await expect(
-    page.getByRole('heading', { name: 'Backup & restore', exact: true, level: 1 }),
+    page.getByRole('heading', { name: 'Keep your making safe.', exact: true, level: 1 }),
   ).toBeVisible()
   await appendFile(
     journalPath,
