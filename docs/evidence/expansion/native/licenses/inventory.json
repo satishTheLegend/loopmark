@@ -1,0 +1,101 @@
+{
+  "scope": "Selected direct native packages and resolved SPM license texts. Full Android transitive distribution inventory remains a release review item. SQLCipher is linked despite unencrypted local DB; store encryption declaration remains required. MPL recorder source is unmodified.",
+  "packages": [
+    {
+      "package": "@capacitor/core",
+      "version": "8.5.3",
+      "license": "MIT",
+      "notices": [
+        "capacitor-core-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/ios",
+      "version": "8.5.3",
+      "license": "MIT",
+      "notices": [
+        "capacitor-ios-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/android",
+      "version": "8.5.3",
+      "license": "MIT",
+      "notices": [
+        "capacitor-android-0.txt"
+      ]
+    },
+    {
+      "package": "@aparajita/capacitor-secure-storage",
+      "version": "8.0.1",
+      "license": "MIT",
+      "notices": [
+        "aparajita-capacitor-secure-storage-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor-community/sqlite",
+      "version": "8.1.1",
+      "license": "MIT",
+      "notices": [
+        "capacitor-community-sqlite-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/app",
+      "version": "8.1.2",
+      "license": "MIT",
+      "notices": [
+        "capacitor-app-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/camera",
+      "version": "8.2.6",
+      "license": "MIT",
+      "notices": [
+        "capacitor-camera-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/filesystem",
+      "version": "8.1.5",
+      "license": "MIT",
+      "notices": [
+        "capacitor-filesystem-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/network",
+      "version": "8.0.1",
+      "license": "MIT",
+      "notices": [
+        "capacitor-network-0.txt"
+      ]
+    },
+    {
+      "package": "@capacitor/share",
+      "version": "8.0.3",
+      "license": "MIT",
+      "notices": [
+        "capacitor-share-0.txt"
+      ]
+    },
+    {
+      "package": "@capgo/capacitor-audio-recorder",
+      "version": "8.3.4",
+      "license": "MPL-2.0",
+      "notices": [
+        "capgo-capacitor-audio-recorder-0.txt"
+      ]
+    },
+    {
+      "package": "@revenuecat/purchases-capacitor",
+      "version": "13.7.4",
+      "license": "MIT",
+      "notices": [
+        "revenuecat-purchases-capacitor-0.txt"
+      ]
+    }
+  ]
+}

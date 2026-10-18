@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="app.loopmark.craft.DurableFilesTest" tests="2" failures="0" errors="0" skipped="0" time="0.467" timestamp="2026-10-18T11:52:27" hostname="localhost">
+  <properties>
+    <property name="device" value="loopmark_i04_api36(AVD) - 16" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="rejectsTraversalAndCorruptionWithoutPublication" classname="app.loopmark.craft.DurableFilesTest" time="0.007" />
+  <testcase name="immutableByteRoundtripAcrossStoreReopen" classname="app.loopmark.craft.DurableFilesTest" time="0.0" />
+</testsuite>

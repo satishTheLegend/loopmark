@@ -1,0 +1,93 @@
+{
+  "emulator": "emulator-5580",
+  "runs": [
+    {
+      "schemaVersion": 1,
+      "restartPhase": 1,
+      "platform": "android",
+      "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
+      "results": [
+        {
+          "name": "real native platform",
+          "passed": true
+        },
+        {
+          "name": "SQLite save, close, reopen, idempotence, stale generation, snapshot",
+          "passed": true
+        },
+        {
+          "name": "durable byte roundtrip, reopen, immutable rejection, hash rejection, removal",
+          "passed": true
+        },
+        {
+          "name": "actual device credential save, read, clear",
+          "passed": true
+        },
+        {
+          "name": "actual SQLite record/outbox atomicity and failed transaction preserves draft",
+          "passed": true
+        },
+        {
+          "name": "native validated media, draft pins, CAS, source isolation and cleanup protection",
+          "passed": true
+        },
+        {
+          "name": "native media promotion before SQL fault leaves recoverable journal and no visible ref",
+          "passed": true
+        },
+        {
+          "name": "snapshot pins survive source removal and media-preserving import stays revision fenced",
+          "passed": true
+        },
+        {
+          "name": "saved collection survives a full native app process restart",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "restartPhase": 2,
+      "platform": "android",
+      "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
+      "results": [
+        {
+          "name": "real native platform",
+          "passed": true
+        },
+        {
+          "name": "SQLite save, close, reopen, idempotence, stale generation, snapshot",
+          "passed": true
+        },
+        {
+          "name": "durable byte roundtrip, reopen, immutable rejection, hash rejection, removal",
+          "passed": true
+        },
+        {
+          "name": "actual device credential save, read, clear",
+          "passed": true
+        },
+        {
+          "name": "actual SQLite record/outbox atomicity and failed transaction preserves draft",
+          "passed": true
+        },
+        {
+          "name": "native validated media, draft pins, CAS, source isolation and cleanup protection",
+          "passed": true
+        },
+        {
+          "name": "native media promotion before SQL fault leaves recoverable journal and no visible ref",
+          "passed": true
+        },
+        {
+          "name": "snapshot pins survive source removal and media-preserving import stays revision fenced",
+          "passed": true
+        },
+        {
+          "name": "saved collection survives a full native app process restart",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

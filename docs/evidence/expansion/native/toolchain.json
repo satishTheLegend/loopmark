@@ -1,0 +1,13 @@
+{
+  "node": "26.8.2",
+  "xcode": "27.1",
+  "iosSDK": "27.1",
+  "iosSimulator": "26.5",
+  "androidAPI": 36,
+  "gradle": "8.14.3",
+  "agp": "8.13.2",
+  "java": "21.0.12+101.0.LTS",
+  "javaArtifact": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_aarch64_mac_hotspot_21.0.12.1_1.tar.gz",
+  "javaSHA256": "3623232f33a9c3baadf304480b2535f9a3cba8a58d42ecbb438ba267315d9998",
+  "note": "Project-local JDK archive SHA256 verified. No host Java setting or license acceptance changed."
+}

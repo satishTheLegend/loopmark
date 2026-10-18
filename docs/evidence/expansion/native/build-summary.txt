@@ -1,0 +1,7 @@
+loopmark-native-ios-qualified-build.log
+** BUILD SUCCEEDED **
+loopmark-native-android-qualified-tests.log
+Starting 2 tests on loopmark_i04_api36(AVD) - 16
+Finished 2 tests on loopmark_i04_api36(AVD) - 16
+BUILD SUCCESSFUL in 16s
+PASS: 9 native groups, twice, including actual process relaunch.
