@@ -6,12 +6,12 @@ Status: **implementation and local verification in progress; external activation
 
 | Boundary | Evidence available | Remaining gate |
 | --- | --- | --- |
-| Guest craft workflow and separate restore | Browser regression, migration, draft and backup tests; preserved foundation checks | Final integrated source freeze and complete current matrix |
-| Account/connection/sync/deletion | Actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, private receipt and retained-copy tests | Current media/purchase integration, full adversarial and final regression |
-| iOS/Android | Real simulator/emulator persistence, native adapters and production-screen save/relaunch/permission flows | Exact final bundle rerun, physical hardware, store sandbox, signing and actual associated-domain proof |
-| Web/store purchases | Strict contracts, hosted-navigation and native adapters; local provider-authority implementation progressing | Real merchant/RevenueCat/store accounts and actual sandbox scenario evidence |
-| Operations and contributor workflow | Local setup/configuration and current evidence | Full recovery/rollback/load/clean-contributor execution and independent judgment |
-| Pilot and funding | Concrete protocol, operating scenarios and activation record | Named owners, approved funds, consented cohort, actual 10/8/5 outcomes |
+| Guest craft workflow and separate restore | 353 unit cases, 20 scale cases, full 255-case UI and 264-case guest matrices | Verify the newly found background-sync collection-switch correction and bind final source |
+| Account/connection/sync/deletion | Actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, authority/retention/recovery; final 84/84 server tests | Current cloud run 77/80; correct stale collection refresh and rerun affected integration; explicit conflict-refresh fixture passes all five profiles |
+| iOS/Android | Real SQLite/files, inbox-store faults, OS file delivery, production capture/relaunch/permissions/diagnostic share cancel/review/restore/repeat; measured small/48 MiB operations | Physical hardware, store sandbox, signing and actual associated-domain proof |
+| Web/store purchases | Strict contracts, hosted/native adapters and actual local ledger/webhook authority using an explicitly synthetic provider | Real merchant/RevenueCat/store accounts and actual sandbox scenario evidence |
+| Operations and contributor workflow | Actual encrypted database/object recovery, independent-current erasure ledger, fair scheduling, alerts, compatible rollback, clean automated contributor checkout and dependency provenance; 1,000-account recovery/audit pass, simultaneous burst and peak backup fail | Independent final judgment; hosted capacity qualification, disaster-separated external recovery facility and operating owner |
+| Pilot and funding | Concrete 21-day/15-maker protocol, operating scenarios and activation record | Named owners, approved funds, consented cohort, actual 10/8/5 outcomes |
 
 Use the [execution ledger](expansion-execution.md) for changing implementation detail. A PASS in one boundary does not imply another. Simulator microphone denial is not physical recording fidelity. A synthetic provider response is not a provider sandbox transaction. A source review is not an executed recovery drill.
 
