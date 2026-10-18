@@ -1,0 +1,9 @@
+file:///Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/scripts/native/process.mjs:26
+    throw new Error(
+          ^
+
+Error: Set LOOPMARK_JAVA_HOME to a Java 21 installation. No global settings or licenses are changed.
+    at androidEnvironment (file:///Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/scripts/native/process.mjs:26:11)
+    at async file:///Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/scripts/native/test-android-product.mjs:17:13
+
+Node.js v26.8.2

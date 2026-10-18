@@ -1,0 +1,501 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project ios/App/App.xcodeproj -scheme LoopmarkUITests -sdk iphonesimulator -configuration Debug -derivedDataPath ios/build -destination "platform=iOS Simulator,id=AF7F7764-88DA-4BD8-A46A-660E9D848AC5" CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM= CODE_SIGN_ENTITLEMENTS=/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/tests/native/ios/persistence/simulator-entitlements.plist "-only-testing:LoopmarkUITests/ProductFlows" test
+
+Build settings from command line:
+    CODE_SIGN_ENTITLEMENTS = /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/tests/native/ios/persistence/simulator-entitlements.plist
+    CODE_SIGN_IDENTITY = -
+    CODE_SIGN_STYLE = Manual
+    CODE_SIGNING_ALLOWED = YES
+    DEVELOPMENT_TEAM = 
+    SDKROOT = iphonesimulator27.1
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  CapacitorCamera: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capacitor/camera @ local
+  CapacitorFilesystem: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capacitor/filesystem @ local
+  IONCameraLib: https://github.com/ionic-team/ion-ios-camera.git @ 2.0.0
+  CapgoCapacitorAudioRecorder: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capgo/capacitor-audio-recorder @ local
+  CapacitorApp: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capacitor/app @ local
+  IONFilesystemLib: https://github.com/ionic-team/ion-ios-filesystem.git @ 2.0.1
+  AparajitaCapacitorSecureStorage: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@aparajita/capacitor-secure-storage @ local
+  RevenueCat: https://github.com/RevenueCat/purchases-ios-spm @ 5.95.0
+  CapacitorShare: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capacitor/share @ local
+  KeychainSwift: https://github.com/evgenyneu/keychain-swift.git @ 21.0.0
+  capacitor-swift-pm: https://github.com/ionic-team/capacitor-swift-pm.git @ 8.5.3
+  RevenuecatPurchasesCapacitor: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@revenuecat/purchases-capacitor @ local
+  CapacitorNetwork: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capacitor/network @ local
+  CapApp-SPM: /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/CapApp-SPM @ local
+  SQLCipher: https://github.com/sqlcipher/SQLCipher.swift.git @ 4.19.0
+  PurchasesHybridCommon: https://github.com/RevenueCat/purchases-hybrid-common.git @ 19.12.0
+  CapacitorCommunitySqlite: /Users/lalaji/Repos/CGProjects/loopmark-expansion-integration/node_modules/@capacitor-community/sqlite @ local
+  ZIPFoundation: https://github.com/weichsel/ZIPFoundation.git @ 0.9.20
+
+note: Using codesigning identity override: -
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+warning: Building targets in manual order is deprecated - choose Dependency Order in scheme settings instead, or set DISABLE_MANUAL_TARGET_ORDER_BUILD_WARNING in any of the targets in the current scheme to suppress this warning
+note: Target dependency graph (40 targets)
+    Target 'LoopmarkUITests' in project 'App'
+        ➜ Explicit dependency on target 'App' in project 'App'
+    Target 'App' in project 'App'
+        ➜ Explicit dependency on target 'CapApp-SPM-product' in project 'CapApp-SPM'
+    Target 'CapApp-SPM-product' in project 'CapApp-SPM'
+        ➜ Explicit dependency on target 'CapApp-SPM' in project 'CapApp-SPM'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'AparajitaCapacitorSecureStorage-product' in project 'AparajitaCapacitorSecureStorage'
+        ➜ Explicit dependency on target 'CapacitorCommunitySqlite-product' in project 'CapacitorCommunitySqlite'
+        ➜ Explicit dependency on target 'CapacitorApp-product' in project 'CapacitorApp'
+        ➜ Explicit dependency on target 'CapacitorCamera-product' in project 'CapacitorCamera'
+        ➜ Explicit dependency on target 'CapacitorFilesystem-product' in project 'CapacitorFilesystem'
+        ➜ Explicit dependency on target 'CapacitorNetwork-product' in project 'CapacitorNetwork'
+        ➜ Explicit dependency on target 'CapacitorShare-product' in project 'CapacitorShare'
+        ➜ Explicit dependency on target 'CapgoCapacitorAudioRecorder-product' in project 'CapgoCapacitorAudioRecorder'
+        ➜ Explicit dependency on target 'RevenuecatPurchasesCapacitor-product' in project 'RevenuecatPurchasesCapacitor'
+    Target 'CapApp-SPM' in project 'CapApp-SPM'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'AparajitaCapacitorSecureStorage-product' in project 'AparajitaCapacitorSecureStorage'
+        ➜ Explicit dependency on target 'CapacitorCommunitySqlite-product' in project 'CapacitorCommunitySqlite'
+        ➜ Explicit dependency on target 'CapacitorApp-product' in project 'CapacitorApp'
+        ➜ Explicit dependency on target 'CapacitorCamera-product' in project 'CapacitorCamera'
+        ➜ Explicit dependency on target 'CapacitorFilesystem-product' in project 'CapacitorFilesystem'
+        ➜ Explicit dependency on target 'CapacitorNetwork-product' in project 'CapacitorNetwork'
+        ➜ Explicit dependency on target 'CapacitorShare-product' in project 'CapacitorShare'
+        ➜ Explicit dependency on target 'CapgoCapacitorAudioRecorder-product' in project 'CapgoCapacitorAudioRecorder'
+        ➜ Explicit dependency on target 'RevenuecatPurchasesCapacitor-product' in project 'RevenuecatPurchasesCapacitor'
+    Target 'RevenuecatPurchasesCapacitor-product' in project 'RevenuecatPurchasesCapacitor'
+        ➜ Explicit dependency on target 'RevenuecatPurchasesCapacitor' in project 'RevenuecatPurchasesCapacitor'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'PurchasesHybridCommon-product' in project 'PurchasesHybridCommon'
+    Target 'RevenuecatPurchasesCapacitor' in project 'RevenuecatPurchasesCapacitor'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'PurchasesHybridCommon-product' in project 'PurchasesHybridCommon'
+    Target 'PurchasesHybridCommon-product' in project 'PurchasesHybridCommon'
+        ➜ Explicit dependency on target 'PurchasesHybridCommon' in project 'PurchasesHybridCommon'
+        ➜ Explicit dependency on target 'RevenueCat-product' in project 'RevenueCat'
+    Target 'PurchasesHybridCommon' in project 'PurchasesHybridCommon'
+        ➜ Explicit dependency on target 'RevenueCat-product' in project 'RevenueCat'
+    Target 'RevenueCat-product' in project 'RevenueCat'
+        ➜ Explicit dependency on target 'RevenueCat' in project 'RevenueCat'
+        ➜ Explicit dependency on target 'RevenueCat_RevenueCat' in project 'RevenueCat'
+    Target 'RevenueCat' in project 'RevenueCat'
+        ➜ Explicit dependency on target 'RevenueCat_RevenueCat' in project 'RevenueCat'
+    Target 'RevenueCat_RevenueCat' in project 'RevenueCat' (no dependencies)
+    Target 'CapgoCapacitorAudioRecorder-product' in project 'CapgoCapacitorAudioRecorder'
+        ➜ Explicit dependency on target 'CapacitorAudioRecorderPlugin' in project 'CapgoCapacitorAudioRecorder'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CapacitorAudioRecorderPlugin' in project 'CapgoCapacitorAudioRecorder'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CapacitorShare-product' in project 'CapacitorShare'
+        ➜ Explicit dependency on target 'SharePlugin' in project 'CapacitorShare'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'SharePlugin' in project 'CapacitorShare'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CapacitorNetwork-product' in project 'CapacitorNetwork'
+        ➜ Explicit dependency on target 'CAPNetworkPlugin' in project 'CapacitorNetwork'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CAPNetworkPlugin' in project 'CapacitorNetwork'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CapacitorFilesystem-product' in project 'CapacitorFilesystem'
+        ➜ Explicit dependency on target 'FilesystemPlugin' in project 'CapacitorFilesystem'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'IONFilesystemLib-product' in project 'IONFilesystemLib'
+    Target 'FilesystemPlugin' in project 'CapacitorFilesystem'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'IONFilesystemLib-product' in project 'IONFilesystemLib'
+    Target 'IONFilesystemLib-product' in project 'IONFilesystemLib'
+        ➜ Explicit dependency on target 'IONFilesystemLib' in project 'IONFilesystemLib'
+    Target 'IONFilesystemLib' in project 'IONFilesystemLib' (no dependencies)
+    Target 'CapacitorCamera-product' in project 'CapacitorCamera'
+        ➜ Explicit dependency on target 'CameraPlugin' in project 'CapacitorCamera'
+        ➜ Explicit dependency on target 'IONCameraLib-product' in project 'IONCameraLib'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CameraPlugin' in project 'CapacitorCamera'
+        ➜ Explicit dependency on target 'IONCameraLib-product' in project 'IONCameraLib'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'IONCameraLib-product' in project 'IONCameraLib'
+        ➜ Explicit dependency on target 'IONCameraLib' in project 'IONCameraLib'
+        ➜ Explicit dependency on target 'IONCameraLib_IONCameraLib' in project 'IONCameraLib'
+    Target 'IONCameraLib' in project 'IONCameraLib'
+        ➜ Explicit dependency on target 'IONCameraLib_IONCameraLib' in project 'IONCameraLib'
+    Target 'IONCameraLib_IONCameraLib' in project 'IONCameraLib' (no dependencies)
+    Target 'CapacitorApp-product' in project 'CapacitorApp'
+        ➜ Explicit dependency on target 'AppPlugin' in project 'CapacitorApp'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'AppPlugin' in project 'CapacitorApp'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+    Target 'CapacitorCommunitySqlite-product' in project 'CapacitorCommunitySqlite'
+        ➜ Explicit dependency on target 'CapacitorSQLitePlugin' in project 'CapacitorCommunitySqlite'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'SQLCipher-product' in project 'SQLCipher'
+        ➜ Explicit dependency on target 'ZIPFoundation-product' in project 'ZIPFoundation'
+    Target 'CapacitorSQLitePlugin' in project 'CapacitorCommunitySqlite'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'SQLCipher-product' in project 'SQLCipher'
+        ➜ Explicit dependency on target 'ZIPFoundation-product' in project 'ZIPFoundation'
+    Target 'ZIPFoundation-product' in project 'ZIPFoundation'
+        ➜ Explicit dependency on target 'ZIPFoundation' in project 'ZIPFoundation'
+        ➜ Explicit dependency on target 'ZIPFoundation_ZIPFoundation' in project 'ZIPFoundation'
+    Target 'ZIPFoundation' in project 'ZIPFoundation'
+        ➜ Explicit dependency on target 'ZIPFoundation_ZIPFoundation' in project 'ZIPFoundation'
+    Target 'ZIPFoundation_ZIPFoundation' in project 'ZIPFoundation' (no dependencies)
+    Target 'SQLCipher-product' in project 'SQLCipher' (no dependencies)
+    Target 'AparajitaCapacitorSecureStorage-product' in project 'AparajitaCapacitorSecureStorage'
+        ➜ Explicit dependency on target 'SecureStoragePlugin' in project 'AparajitaCapacitorSecureStorage'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'KeychainSwift-product' in project 'KeychainSwift'
+    Target 'SecureStoragePlugin' in project 'AparajitaCapacitorSecureStorage'
+        ➜ Explicit dependency on target 'Capacitor-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'Cordova-product' in project 'capacitor-swift-pm'
+        ➜ Explicit dependency on target 'KeychainSwift-product' in project 'KeychainSwift'
+    Target 'KeychainSwift-product' in project 'KeychainSwift'
+        ➜ Explicit dependency on target 'KeychainSwift' in project 'KeychainSwift'
+    Target 'KeychainSwift' in project 'KeychainSwift' (no dependencies)
+    Target 'Cordova-product' in project 'capacitor-swift-pm' (no dependencies)
+    Target 'Capacitor-product' in project 'capacitor-swift-pm' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/App/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ReadFileContents /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/docc/features.json
+
+Build description signature: 33447a848d001f0846b51adeda885d15
+Build description path: /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/XCBuildData/33447a848d001f0846b51adeda885d15.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-e829b21a6f8c9b70876ba0858053c04435d3147121984ba087c28d913653d626.sdkstatcache
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/App.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SDKStatCaches.noindex/iphonesimulator27.1-24A94232-e829b21a6f8c9b70876ba0858053c04435d3147121984ba087c28d913653d626.sdkstatcache
+
+ProcessInfoPlistFile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/ZIPFoundation_ZIPFoundation.bundle/Info.plist /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/ZIPFoundation.build/Debug-iphonesimulator/ZIPFoundation_ZIPFoundation-b.build/empty-ZIPFoundation_ZIPFoundation.plist (in target 'ZIPFoundation_ZIPFoundation' from project 'ZIPFoundation')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SourcePackages/checkouts/ZIPFoundation
+    builtin-infoPlistUtility /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/ZIPFoundation.build/Debug-iphonesimulator/ZIPFoundation_ZIPFoundation-b.build/empty-ZIPFoundation_ZIPFoundation.plist -producttype com.apple.product-type.bundle -expandbuildsettings -format binary -platform iphonesimulator -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/ZIPFoundation_ZIPFoundation.bundle/Info.plist
+
+ProcessInfoPlistFile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/IONCameraLib_IONCameraLib.bundle/Info.plist /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/IONCameraLib.build/Debug-iphonesimulator/IONCameraLib_IONCameraLib-b.build/empty-IONCameraLib_IONCameraLib.plist (in target 'IONCameraLib_IONCameraLib' from project 'IONCameraLib')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SourcePackages/checkouts/ion-ios-camera
+    builtin-infoPlistUtility /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/IONCameraLib.build/Debug-iphonesimulator/IONCameraLib_IONCameraLib-b.build/empty-IONCameraLib_IONCameraLib.plist -producttype com.apple.product-type.bundle -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/IONCameraLib.build/Debug-iphonesimulator/IONCameraLib_IONCameraLib-b.build/assetcatalog_generated_info.plist -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/IONCameraLib_IONCameraLib.bundle/Info.plist
+
+ProcessInfoPlistFile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/PackageFrameworks/IONCameraLib.framework/Info.plist /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/IONCameraLib.build/Debug-iphonesimulator/IONCameraLib-product-t.build/empty-IONCameraLib.plist (in target 'IONCameraLib-product' from project 'IONCameraLib')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SourcePackages/checkouts/ion-ios-camera
+    builtin-infoPlistUtility /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/IONCameraLib.build/Debug-iphonesimulator/IONCameraLib-product-t.build/empty-IONCameraLib.plist -producttype com.apple.product-type.framework -expandbuildsettings -format binary -platform iphonesimulator -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/PackageFrameworks/IONCameraLib.framework/Info.plist
+
+ProcessInfoPlistFile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/RevenueCat_RevenueCat.bundle/Info.plist /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/RevenueCat.build/Debug-iphonesimulator/RevenueCat_RevenueCat-b.build/empty-RevenueCat_RevenueCat.plist (in target 'RevenueCat_RevenueCat' from project 'RevenueCat')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SourcePackages/checkouts/purchases-ios-spm
+    builtin-infoPlistUtility /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/RevenueCat.build/Debug-iphonesimulator/RevenueCat_RevenueCat-b.build/empty-RevenueCat_RevenueCat.plist -producttype com.apple.product-type.bundle -expandbuildsettings -format binary -platform iphonesimulator -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/RevenueCat_RevenueCat.bundle/Info.plist
+
+Copy /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/RevenueCat_RevenueCat.bundle /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/RevenueCat_RevenueCat.bundle (in target 'App' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/RevenueCat_RevenueCat.bundle /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app
+
+CopySwiftLibs /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app (in target 'App' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/App.debug.dylib --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Frameworks --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/PlugIns --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/SystemExtensions --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Extensions --platform iphonesimulator --toolchain /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v27.1.266.1.uPB2BA/Metal.xctoolchain --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/App.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+Copy /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/ZIPFoundation_ZIPFoundation.bundle /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/ZIPFoundation_ZIPFoundation.bundle (in target 'App' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/ZIPFoundation_ZIPFoundation.bundle /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app
+
+Copy /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/IONCameraLib_IONCameraLib.bundle /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/IONCameraLib_IONCameraLib.bundle (in target 'App' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/IONCameraLib_IONCameraLib.bundle /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app
+
+ProcessInfoPlistFile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/App/Info.plist (in target 'App' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-infoPlistUtility /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App/App/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/App.build/Base.lproj/LaunchScreen-SBPartialInfo.plist -additionalcontentfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/App.build/Base.lproj/Main-SBPartialInfo.plist -additionalcontentfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/App.build/assetcatalog_generated_info.plist -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Frameworks/Capacitor.framework -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Frameworks/Cordova.framework -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Frameworks/IONCameraLib.framework -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Frameworks/SQLCipher.framework -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/IONCameraLib_IONCameraLib.bundle -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/RevenueCat_RevenueCat.bundle -scanforprivacyfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/ZIPFoundation_ZIPFoundation.bundle -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/App.app/Info.plist
+
+ProcessInfoPlistFile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/Info.plist /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/LoopmarkUITests.build/empty-LoopmarkUITests.plist (in target 'LoopmarkUITests' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-infoPlistUtility /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/LoopmarkUITests.build/empty-LoopmarkUITests.plist -producttype com.apple.product-type.bundle.ui-testing -expandbuildsettings -format binary -platform iphonesimulator -additionalcontentfile /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/LoopmarkUITests.build/ProductTypeInfoPlistAdditions.plist -o /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/Info.plist
+
+CopySwiftLibs /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest (in target 'LoopmarkUITests' from project 'App')
+    cd /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/App
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/LoopmarkUITests --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/Frameworks --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/PlugIns --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/SystemExtensions --scan-folder /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/Extensions --platform iphonesimulator --toolchain /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v27.1.266.1.uPB2BA/Metal.xctoolchain --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Products/Debug-iphonesimulator/LoopmarkUITests-Runner.app/PlugIns/LoopmarkUITests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/App.build/Debug-iphonesimulator/LoopmarkUITests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+PruneExplicitPrecompiledModules /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+PruneExplicitPrecompiledModules /Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/SDKExplicitPrecompiledModules
+
+2026-10-18 23:15:49.180 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 23:15:50.981622+0530 LoopmarkUITests-Runner[43894:3289503] [Default] Running tests...
+    t =      nans Interface orientation changed to Portrait
+Test Suite 'Selected tests' started at 2026-10-18 23:15:51.700.
+Test Suite 'LoopmarkUITests.xctest' started at 2026-10-18 23:15:51.703.
+Test Suite 'ProductFlows' started at 2026-10-18 23:15:51.703.
+Test Case '-[LoopmarkUITests.ProductFlows testProductionCheckpointAndNativePermissions]' started.
+    t =     0.00s Start Test at 2026-10-18 23:15:51.704
+    t =     0.09s Set Up
+    t =     0.09s Open app.loopmark.craft
+    t =     0.09s     Launch app.loopmark.craft
+2026-10-18 23:15:52.069 xcodebuild[43397:3288403] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-18 23:15:52.069 xcodebuild[43397:3288403] [MT] IDELaunchParametersSnapshot: no debugger version
+objc[43894]: Class UIAccessibilityLoaderWebShared is implemented in both /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebCore.axbundle/WebCore (0x1084d8310) and /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/AccessibilityBundles/WebKit.axbundle/WebKit (0x108554398). This may cause spurious casting failures and mysterious crashes. One of the duplicates must be removed or renamed.
+2026-10-18 23:15:52.095 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.85s         Setting up automation session
+    t =     1.55s         Wait for app.loopmark.craft to idle
+    t =     3.07s Waiting 30.0s for "New project" Button to exist
+    t =     4.10s     Checking `Expect predicate `existsNoRetry == 1` for object "New project" Button`
+    t =     4.10s         Checking existence of `"New project" Button`
+    t =     4.18s Checking existence of `Button (First Match)`
+    t =     4.20s Waiting 30.0s for Button (First Match) to exist
+    t =     5.23s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     5.23s         Checking existence of `Button (First Match)`
+    t =     5.26s Find the Button (First Match)
+    t =     5.30s Tap "Pick up iOS native QA scarf" Button
+    t =     5.30s     Wait for app.loopmark.craft to idle
+    t =     5.30s     Find the "Pick up iOS native QA scarf" Button
+    t =     5.32s     Check for interrupting elements affecting "Pick up iOS native QA scarf" Button
+    t =     5.35s     Synthesize event
+    t =     5.64s     Wait for app.loopmark.craft to idle
+    t =     5.64s Waiting 30.0s for "Save a checkpoint" Button to exist
+    t =     6.68s     Checking `Expect predicate `existsNoRetry == 1` for object "Save a checkpoint" Button`
+    t =     6.68s         Checking existence of `"Save a checkpoint" Button`
+    t =     6.71s Find the "Save a checkpoint" Button
+    t =     6.74s Tap "Save a checkpoint" Button
+    t =     6.74s     Wait for app.loopmark.craft to idle
+    t =     6.74s     Find the "Save a checkpoint" Button
+    t =     6.76s     Check for interrupting elements affecting "Save a checkpoint" Button
+    t =     6.78s     Synthesize event
+    t =     7.06s     Wait for app.loopmark.craft to idle
+    t =     7.15s Waiting 10.0s for TextView (First Match) to exist
+    t =     8.19s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =     8.19s         Checking existence of `TextView (First Match)`
+    t =     8.26s Tap TextView (First Match)
+    t =     8.26s     Wait for app.loopmark.craft to idle
+    t =     8.27s     Find the TextView (First Match)
+    t =     8.31s     Check for interrupting elements affecting "e.g. Start row 24. Chain 2, turn, then work the first shell into the corner space." TextView
+    t =     8.33s     Synthesize event
+    t =     8.62s     Wait for app.loopmark.craft to idle
+    t =     9.06s Type 'Start row 24 with ...' into "e.g. Start row 24. Chain 2, turn, then work the first shell into the corner space." TextView
+    t =     9.06s     Wait for app.loopmark.craft to idle
+    t =     9.06s     Find the "e.g. Start row 24. Chain 2, turn, then work the first shell into the corner space." TextView
+    t =     9.13s     Check for interrupting elements affecting "e.g. Start row 24. Chain 2, turn, then work the first shell into the corner space." TextView
+    t =     9.27s     Synthesize event
+    t =     9.99s     Wait for app.loopmark.craft to idle
+    t =     9.99s Checking existence of `"Done" Button`
+    t =    10.04s Tap "Done" Button
+    t =    10.04s     Wait for app.loopmark.craft to idle
+    t =    10.04s     Find the "Done" Button
+    t =    10.07s     Check for interrupting elements affecting "Done" Button
+    t =    10.09s     Synthesize event
+    t =    10.38s     Wait for app.loopmark.craft to idle
+    t =    10.61s Waiting 30.0s for Button (First Match) to exist
+    t =    11.63s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    11.63s         Checking existence of `Button (First Match)`
+    t =    11.67s Find the Button (First Match)
+    t =    11.70s Tap "Add a photo Take a photo or choose one from this device" Button
+    t =    11.70s     Wait for app.loopmark.craft to idle
+    t =    11.70s     Find the "Add a photo Take a photo or choose one from this device" Button
+    t =    11.72s     Check for interrupting elements affecting "Add a photo Take a photo or choose one from this device" Button
+    t =    11.74s     Synthesize event
+    t =    12.02s     Wait for app.loopmark.craft to idle
+    t =    12.10s Waiting 10.0s for "PopoverDismissRegion" Other to exist
+    t =    13.12s     Checking `Expect predicate `existsNoRetry == 1` for object "PopoverDismissRegion" Other`
+    t =    13.13s         Checking existence of `"PopoverDismissRegion" Other`
+    t =    13.21s Tap "PopoverDismissRegion" Other[0.50, 0.20]
+    t =    13.21s     Wait for app.loopmark.craft to idle
+    t =    13.21s     Find the "PopoverDismissRegion" Other
+    t =    13.27s     Check for interrupting elements affecting "PopoverDismissRegion" Other
+    t =    13.31s     Synthesize event
+    t =    13.31s         Find the "PopoverDismissRegion" Other
+    t =    13.39s         Find the "PopoverDismissRegion" Other
+    t =    13.44s         Find the "PopoverDismissRegion" Other
+    t =    13.77s     Wait for app.loopmark.craft to idle
+    t =    14.01s Waiting 30.0s for "Record a quick note" Button to exist
+    t =    15.03s     Checking `Expect predicate `existsNoRetry == 1` for object "Record a quick note" Button`
+    t =    15.03s         Checking existence of `"Record a quick note" Button`
+    t =    15.06s Find the "Record a quick note" Button
+    t =    15.10s Tap "Record a quick note" Button
+    t =    15.10s     Wait for app.loopmark.craft to idle
+    t =    15.10s     Find the "Record a quick note" Button
+    t =    15.14s     Check for interrupting elements affecting "Record a quick note" Button
+    t =    15.16s     Synthesize event
+    t =    15.45s     Wait for app.loopmark.craft to idle
+    t =    15.46s Waiting 10.0s for StaticText (First Match) to exist
+    t =    16.48s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    16.48s         Checking existence of `StaticText (First Match)`
+    t =    16.52s Waiting 30.0s for "Save checkpoint" Button to exist
+    t =    17.55s     Checking `Expect predicate `existsNoRetry == 1` for object "Save checkpoint" Button`
+    t =    17.55s         Checking existence of `"Save checkpoint" Button`
+    t =    17.58s Find the "Save checkpoint" Button
+    t =    17.62s Swipe up Target Application 'app.loopmark.craft'
+    t =    17.62s     Wait for app.loopmark.craft to idle
+    t =    17.63s     Find the Target Application 'app.loopmark.craft'
+    t =    17.64s     Check for interrupting elements affecting "Loopmark" Application
+    t =    17.66s     Synthesize event
+    t =    18.10s     Wait for app.loopmark.craft to idle
+    t =    18.65s Find the "Save checkpoint" Button
+    t =    18.72s Tap "Save checkpoint" Button
+    t =    18.72s     Wait for app.loopmark.craft to idle
+    t =    18.73s     Find the "Save checkpoint" Button
+    t =    18.75s     Check for interrupting elements affecting "Save checkpoint" Button
+    t =    18.81s     Synthesize event
+    t =    19.10s     Wait for app.loopmark.craft to idle
+    t =    19.10s Waiting 30.0s for "Save checkpoint" Button to not exist
+    t =    20.13s     Checking `Expect predicate `existsNoRetry == 0` for object "Save checkpoint" Button`
+    t =    20.14s         Checking existence of `"Save checkpoint" Button`
+    t =    20.19s Waiting 20.0s for StaticText (First Match) to exist
+    t =    21.21s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    21.21s         Checking existence of `StaticText (First Match)`
+    t =    21.27s Terminate app.loopmark.craft:43903
+2026-10-18 23:16:13.027 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 23:16:13.033 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    22.37s Open app.loopmark.craft
+    t =    22.37s     Launch app.loopmark.craft
+2026-10-18 23:16:14.100 xcodebuild[43397:3288403] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-18 23:16:14.101 xcodebuild[43397:3288403] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-18 23:16:14.132 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    22.82s         Setting up automation session
+    t =    24.77s         Wait for app.loopmark.craft to idle
+    t =    26.81s Waiting 30.0s for StaticText (First Match) to exist
+    t =    27.89s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    27.89s         Checking existence of `StaticText (First Match)`
+    t =    28.04s Waiting 30.0s for "Open navigation" Button to exist
+    t =    29.06s     Checking `Expect predicate `existsNoRetry == 1` for object "Open navigation" Button`
+    t =    29.06s         Checking existence of `"Open navigation" Button`
+    t =    29.10s Find the "Open navigation" Button
+    t =    29.16s Tap "Open navigation" Button
+    t =    29.16s     Wait for app.loopmark.craft to idle
+    t =    29.16s     Find the "Open navigation" Button
+    t =    29.18s     Check for interrupting elements affecting "Open navigation" Button
+    t =    29.23s     Synthesize event
+    t =    29.53s     Wait for app.loopmark.craft to idle
+    t =    29.54s Waiting 30.0s for "Account & device" Button to exist
+    t =    30.55s     Checking `Expect predicate `existsNoRetry == 1` for object "Account & device" Button`
+    t =    30.55s         Checking existence of `"Account & device" Button`
+    t =    30.58s Find the "Account & device" Button
+    t =    30.61s Tap "Account & device" Button
+    t =    30.61s     Wait for app.loopmark.craft to idle
+    t =    30.61s     Find the "Account & device" Button
+    t =    30.63s     Check for interrupting elements affecting "Account & device" Button
+    t =    30.65s     Synthesize event
+    t =    30.94s     Wait for app.loopmark.craft to idle
+    t =    30.94s Waiting 10.0s for "Your account" StaticText to exist
+    t =    31.96s     Checking `Expect predicate `existsNoRetry == 1` for object "Your account" StaticText`
+    t =    31.96s         Checking existence of `"Your account" StaticText`
+    t =    32.11s Waiting 30.0s for "Preview diagnostic report" Button to exist
+    t =    33.13s     Checking `Expect predicate `existsNoRetry == 1` for object "Preview diagnostic report" Button`
+    t =    33.13s         Checking existence of `"Preview diagnostic report" Button`
+    t =    33.17s Find the "Preview diagnostic report" Button
+    t =    33.22s Swipe up Target Application 'app.loopmark.craft'
+    t =    33.22s     Wait for app.loopmark.craft to idle
+    t =    33.22s     Find the Target Application 'app.loopmark.craft'
+    t =    33.24s     Check for interrupting elements affecting "Loopmark" Application
+    t =    33.26s     Synthesize event
+    t =    33.69s     Wait for app.loopmark.craft to idle
+    t =    35.81s Find the "Preview diagnostic report" Button
+    t =    35.85s Swipe up Target Application 'app.loopmark.craft'
+    t =    35.85s     Wait for app.loopmark.craft to idle
+    t =    35.85s     Find the Target Application 'app.loopmark.craft'
+    t =    35.86s     Check for interrupting elements affecting "Loopmark" Application
+    t =    35.88s     Synthesize event
+    t =    36.29s     Wait for app.loopmark.craft to idle
+    t =    36.30s Find the "Preview diagnostic report" Button
+    t =    36.34s Tap "Preview diagnostic report" Button
+    t =    36.34s     Wait for app.loopmark.craft to idle
+    t =    36.35s     Find the "Preview diagnostic report" Button
+    t =    36.37s     Check for interrupting elements affecting "Preview diagnostic report" Button
+    t =    36.39s     Synthesize event
+    t =    36.68s     Wait for app.loopmark.craft to idle
+    t =    36.92s Waiting 10.0s for TextView (First Match) to exist
+    t =    37.94s     Checking `Expect predicate `existsNoRetry == 1` for object TextView (First Match)`
+    t =    37.94s         Checking existence of `TextView (First Match)`
+    t =    37.97s Find the TextView (First Match)
+    t =    37.99s Waiting 30.0s for "Share diagnostic file" Button to exist
+    t =    39.00s     Checking `Expect predicate `existsNoRetry == 1` for object "Share diagnostic file" Button`
+    t =    39.00s         Checking existence of `"Share diagnostic file" Button`
+    t =    39.04s Find the "Share diagnostic file" Button
+    t =    39.08s Tap "Share diagnostic file" Button
+    t =    39.08s     Wait for app.loopmark.craft to idle
+    t =    39.08s     Find the "Share diagnostic file" Button
+    t =    39.10s     Check for interrupting elements affecting "Share diagnostic file" Button
+    t =    39.13s     Synthesize event
+    t =    39.44s     Wait for app.loopmark.craft to idle
+    t =    39.95s Waiting 10.0s for "PopoverDismissRegion" Other to exist
+    t =    40.96s     Checking `Expect predicate `existsNoRetry == 1` for object "PopoverDismissRegion" Other`
+    t =    40.96s         Checking existence of `"PopoverDismissRegion" Other`
+    t =    41.14s Tap "PopoverDismissRegion" Other[0.50, 0.20]
+    t =    41.14s     Wait for app.loopmark.craft to idle
+    t =    41.14s     Find the "PopoverDismissRegion" Other
+    t =    41.20s     Check for interrupting elements affecting "PopoverDismissRegion" Other
+    t =    41.24s     Synthesize event
+    t =    41.25s         Find the "PopoverDismissRegion" Other
+    t =    41.35s         Find the "PopoverDismissRegion" Other
+    t =    41.41s         Find the "PopoverDismissRegion" Other
+    t =    41.75s     Wait for app.loopmark.craft to idle
+    t =    42.14s Waiting 10.0s for StaticText (First Match) to exist
+    t =    43.17s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    43.17s         Checking existence of `StaticText (First Match)`
+    t =    43.21s Waiting 30.0s for "Close dialog" Button to exist
+    t =    44.22s     Checking `Expect predicate `existsNoRetry == 1` for object "Close dialog" Button`
+    t =    44.22s         Checking existence of `"Close dialog" Button`
+    t =    44.26s Find the "Close dialog" Button
+    t =    44.30s Tap "Close dialog" Button
+    t =    44.30s     Wait for app.loopmark.craft to idle
+    t =    44.30s     Find the "Close dialog" Button
+    t =    44.33s     Check for interrupting elements affecting "Close dialog" Button
+    t =    44.37s     Synthesize event
+    t =    44.66s     Wait for app.loopmark.craft to idle
+    t =    44.67s Tear Down
+Test Case '-[LoopmarkUITests.ProductFlows testProductionCheckpointAndNativePermissions]' passed (45.093 seconds).
+Test Suite 'ProductFlows' passed at 2026-10-18 23:16:36.798.
+	 Executed 1 test, with 0 failures (0 unexpected) in 45.093 (45.095) seconds
+Test Suite 'LoopmarkUITests.xctest' passed at 2026-10-18 23:16:36.798.
+	 Executed 1 test, with 0 failures (0 unexpected) in 45.093 (45.096) seconds
+Test Suite 'Selected tests' passed at 2026-10-18 23:16:36.799.
+	 Executed 1 test, with 0 failures (0 unexpected) in 45.093 (45.098) seconds
+2026-10-18 23:16:36.917 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 23:16:36.920 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 23:16:36.935 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 23:16:36.937 xcodebuild[43397:3288403] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-18 23:16:37.210 xcodebuild[43397:3288403] [MT] IDETestOperationsObserverDebug: 48.265 elapsed -- Testing started completed.
+2026-10-18 23:16:37.210 xcodebuild[43397:3288403] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-18 23:16:37.210 xcodebuild[43397:3288403] [MT] IDETestOperationsObserverDebug: 48.265 sec, +48.265 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/ios/build/Logs/Test/Test-LoopmarkUITests-2026.10.18_23-15-45-+0530.xcresult
+
+** TEST SUCCEEDED **
+
+Testing started

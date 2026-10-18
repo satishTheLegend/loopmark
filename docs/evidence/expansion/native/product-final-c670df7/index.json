@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+  "webSourceEquivalent": "a1a3b72",
+  "testFixtureCommits": [
+    "33aea9b",
+    "d7fc461",
+    "0ba8433"
+  ],
+  "recordedAt": "2026-10-18T17:47:48.446Z",
+  "performanceClaim": false,
+  "scope": "Actual production assets in iOS 26.5 simulator and Android 16/API36 emulator; local ad hoc/debug signatures. Both checkpoint/diagnostic and OS backup journeys verify the exact installed artifact.",
+  "files": {
+    "android-after-os-wait.xml": "b6a6a233aabdbfa02ceebfa4d438ac0ec517ca3949e06534cd7b8f75d4099851",
+    "android-inbox-product.json": "d075c83a838bb4ee2de743bfb0c6d9cbaf8580a8aeb6295ac25a285142de6b8c",
+    "android-inbox.log": "125ef7de740faa12306c5b746d2d79f2930719a97104db8f76c12b496cb46256",
+    "android-product.json": "a2021857e9af0f33c0fb46fdd3dcd54043d637a1c96734fa5593ac806b37180d",
+    "android-product.log": "78894ca58701f42be6c0067287c4e7cdbe0fdd6097d323d2486391b2882da049",
+    "android-system-ui-confirmed.xml": "b6f855f58c26d4365f7453319025503eb4a31b23ffdf74c1f620329ed54e569e",
+    "android-system-ui-original.xml": "b6f855f58c26d4365f7453319025503eb4a31b23ffdf74c1f620329ed54e569e",
+    "failed-android-system-ui.log": "930c982c938f7701b37d385601c017383cdb3de7433512d8da45cd56184ce48c",
+    "failed-ios-share-dismissal.log": "30d0cf32fe99f8e05784544062406c6a9d06a56fada5724c377ddb85f99b0f86",
+    "ios-inbox-product.json": "5ad73583669118f4b13639b700029535613f6682d113156cf6569a31bb9cd3a3",
+    "ios-inbox.log": "3edc4ae84cf4a8fb9f5ac938273879d9ddb25aa01c0dcfa762baf8bc90457019",
+    "ios-product.json": "78abb1fc574ae6a98a71bb4851d447225e6d8e5cf56a7986b4536320c150e0c3",
+    "ios-product.log": "da837ce6ab07b6017992986b56311ffffc5071356e2cc11bc9a05c878e20206a",
+    "product-bundle.json": "f862829fa5274450068df13eeb373d62667e0e45820afe2098bec9da82336ccc",
+    "rejected-android-missing-java-env.log": "3615a1e983d216a6720577e0f06db8b4c6d1113a16ea060fdddd247f683e9e53"
+  },
+  "artifactManifest": {
+    "schemaVersion": 1,
+    "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+    "webSourceEquivalent": "a1a3b72",
+    "productionWebAssets": true,
+    "storeDistribution": false,
+    "ios": {
+      "file": "loopmark-ios-simulator-c670df7.tar.gz",
+      "sha256": "f46269511cbd06f95f0c82b1e0049ddf92b307cc182a0281db6548b1ff9dad08",
+      "appDirectorySha256": "71b76fad69247bada8621bd51826674cc8f59f344dde2552f5fd772ecac54917",
+      "target": "iOS Simulator arm64, ad hoc local simulator signature"
+    },
+    "android": {
+      "file": "loopmark-android-debug-c670df7.apk",
+      "sha256": "f8b981f83cb24cc3bbcb0ebf454c98fd2267acbd5981b664571afc53d8e012f5",
+      "target": "Android debug APK; local debug key, no release/store signing"
+    }
+  },
+  "archiveExtractionVerified": true,
+  "failedAttempts": [
+    {
+      "file": "failed-android-system-ui.log",
+      "observation": "Original and repeated UIAutomator captures showed the Android System UI is not responding dialog. Clicking the explicit Wait action revealed the expected native camera source sheet. The unchanged complete production journey then passed on the same APK.",
+      "cause": "Underlying OS ANR cause is unestablished. Dialog was observed during cold boot/build overlap; timing does not establish causation.",
+      "recovery": "Clicked Wait, cancelled the pending camera sheet via OS Back, reran exact full journey without data reset or fixture/product changes."
+    },
+    {
+      "file": "failed-ios-share-dismissal.log",
+      "observation": "The first simulated dismissal tap left the diagnostic OS share popover visibly open. Cancellation-status assertion timed out. The unchanged full journey subsequently passed without product or fixture changes.",
+      "cause": "Underlying failed tap/dismissal cause is unestablished. No product or assertion changes were made."
+    },
+    {
+      "file": "rejected-android-missing-java-env.log",
+      "observation": "An attempted rerun exited before device/UI execution because the explicit task-local Java environment variable was absent. The required existing Java21 path was supplied for the successful run."
+    }
+  ],
+  "limitations": [
+    "Simulator/emulator proof only; physical document provider, camera/audio, memory-pressure and device transfer gates remain separate.",
+    "No distribution signing or live provider/store transaction qualification.",
+    "No performance claim; earlier isolated native metrics and all-byte staged-export evidence remain separate."
+  ]
+}

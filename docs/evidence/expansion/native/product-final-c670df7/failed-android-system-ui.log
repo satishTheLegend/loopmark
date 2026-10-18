@@ -1,0 +1,9 @@
+file:///Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/scripts/native/test-android-product.mjs:82
+    throw new Error('Native camera source sheet not shown.')
+          ^
+
+Error: Native camera source sheet not shown.
+    at file:///Users/lalaji/Repos/CGProjects/loopmark.expansion-native-measurements/scripts/native/test-android-product.mjs:82:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.8.2

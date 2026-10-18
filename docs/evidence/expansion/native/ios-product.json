@@ -1,11 +1,11 @@
 {
   "simulator": "AF7F7764-88DA-4BD8-A46A-660E9D848AC5",
   "passed": true,
-  "completedAt": "2026-10-18T17:12:06.013Z",
-  "bundle": "26b6ac1945df7742231b29a6ca81fcd3087549072ecb96ea379dd1b4ef8c3fbc",
-  "sourceCommit": "8d3141c02d13168c125fe0ff6d366486cfc0c5d8",
-  "manifestFileSha256": "b0f774406e27667bd93e44ea041622bace1000dae399045c03d7ac92611cc259",
-  "artifactSha256": "765a48ac02a5d568c1d27be3521060dee72dbaced2ae509c89b840fc3c89ec57",
+  "completedAt": "2026-10-18T17:46:38.671Z",
+  "bundle": "607dd32f395529ad0cb620375366eb3409f8a9e4d7af65a374536948a67071a5",
+  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+  "manifestFileSha256": "f862829fa5274450068df13eeb373d62667e0e45820afe2098bec9da82336ccc",
+  "artifactSha256": "71b76fad69247bada8621bd51826674cc8f59f344dde2552f5fd772ecac54917",
   "artifactFormat": "app-directory-sha256",
   "assertions": [
     "project creation",

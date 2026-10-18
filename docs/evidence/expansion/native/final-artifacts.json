@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "sourceCommit": "8d3141c02d13168c125fe0ff6d366486cfc0c5d8",
-  "webSourceEquivalent": "0b518fa",
+  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+  "webSourceEquivalent": "a1a3b72",
   "productionWebAssets": true,
   "storeDistribution": false,
   "ios": {
-    "file": "loopmark-ios-simulator-8d3141c.tar.gz",
-    "sha256": "19f89838c7f052aa9c0dfbf4a7bca338a23c24d50929710a9a34f0014aef5dc9",
-    "appDirectorySha256": "765a48ac02a5d568c1d27be3521060dee72dbaced2ae509c89b840fc3c89ec57",
+    "file": "loopmark-ios-simulator-c670df7.tar.gz",
+    "sha256": "f46269511cbd06f95f0c82b1e0049ddf92b307cc182a0281db6548b1ff9dad08",
+    "appDirectorySha256": "71b76fad69247bada8621bd51826674cc8f59f344dde2552f5fd772ecac54917",
     "target": "iOS Simulator arm64, ad hoc local simulator signature"
   },
   "android": {
-    "file": "loopmark-android-debug-8d3141c.apk",
-    "sha256": "69d1bf14789a11f9b7ad5090dbff27a843342623c9c819189918b79be7ee40ee",
+    "file": "loopmark-android-debug-c670df7.apk",
+    "sha256": "f8b981f83cb24cc3bbcb0ebf454c98fd2267acbd5981b664571afc53d8e012f5",
     "target": "Android debug APK; local debug key, no release/store signing"
   }
 }

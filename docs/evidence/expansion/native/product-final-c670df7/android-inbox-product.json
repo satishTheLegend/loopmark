@@ -1,0 +1,17 @@
+{
+  "sourceCommit": "c670df7e7c24c491b397e53264835811abc702ea",
+  "manifestFileSha256": "f862829fa5274450068df13eeb373d62667e0e45820afe2098bec9da82336ccc",
+  "artifactSha256": "f8b981f83cb24cc3bbcb0ebf454c98fd2267acbd5981b664571afc53d8e012f5",
+  "platform": "android",
+  "emulator": "emulator-5580",
+  "completedAt": "2026-10-18T17:46:57.008Z",
+  "passed": true,
+  "assertions": [
+    "separate-UID OS content read grant and VIEW delivery",
+    "explicit full preview, cancel and process relaunch",
+    "unrelated second-file notice does not block reviewed completion",
+    "separate collection and original preserved",
+    "SEND of same file and relaunch do not duplicate import",
+    "malformed and oversized files fail safely"
+  ]
+}
