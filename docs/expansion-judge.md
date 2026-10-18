@@ -1,6 +1,6 @@
 # Independent expansion judgment — frozen-source review pending final execution
 
-Review date: 18 October 2026. Reviewer: `final_traceability_review`, independent of implementation authors. Product source: `a07b014cdde249bbba94c6567a73f24f800797da`. **This is not a final PASS.**
+Review date: 18 October 2026. Reviewer: `final_traceability_review`, independent of implementation authors. Reviewed candidate source: `a07b014cdde249bbba94c6567a73f24f800797da`. **Its final freeze is withdrawn; this is not a final PASS.** The actual-cloud run exposed a no-op empty-pull revision defect described below. Existing evidence remains scoped to the recorded source/artifacts until the corrected implementation is bound.
 
 [requirements.json](evidence/expansion/requirements.json) retains every accepted ID: R1–R9, X01–X10, C00–C23, D01–D12, DX01–DX08, E01–E14 and T01–T46: 123 requirements and 286 T branches. All implementation files and assertion sources are bound to immutable source hashes. The matrix selects 199 primary/supporting assertion anchors and records exact executed case names where available. Those counts are inventory checks, not proof of acceptance. Higher-level requirements retain their own scope; a broad test-group reference does not automatically import unrelated physical/provider/human gates.
 
@@ -38,6 +38,7 @@ The accepted load obligation checks bounded work, integrity and uninterrupted lo
 
 Remaining local gates are finite:
 
+0. Correct and verify IR22: an empty sync page with unchanged cursor must not advance the local collection revision and invalidate an open deletion review. The observed failure sends no deletion request and preserves data/draft; browser and native repository semantics require the narrow regression. Rebind affected execution and production artifacts after the source changes.
 1. Complete and bind the actual-cloud browser run. Rendered UI and guest coverage are qualified above with their failed-run/focused-closure history preserved.
 2. Complete the 1,000-account bounded recovery/invariant audit and simultaneous actual-App capture/export check, preserving the original burst failure and observed limits.
 3. Bind final supporting-command results and adjudicate each requirement/branch. Pending execution is still explicit in the matrix.

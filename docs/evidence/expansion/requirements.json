@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL FROZEN-SOURCE ADJUDICATION: backend84, final native artifacts and rendered255/guest263+focused5 qualification reviewed; actual-cloud, final load auxiliary continuation and supporting-command mapping pending",
+  "reviewState": "PROVISIONAL CANDIDATE REVIEW: a07b014 freeze withdrawn after actual cloud run exposed no-op empty-pull revision mutation invalidating deletion review. Existing evidence remains candidate/scoped proof; corrected source, targeted regression and new final binding pending.",
   "reviewer": "final_traceability_review (independent of implementation authors)",
   "reviewedSourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
   "requiredIds": [
@@ -30898,6 +30898,20 @@
         "firstInstallPointer",
         "webGuestFrozen"
       ]
+    },
+    {
+      "id": "IR22",
+      "requirements": [
+        "T05",
+        "T10",
+        "T27",
+        "D03",
+        "D09"
+      ],
+      "finding": "Actual cloud account-deletion review is invalidated by a no-op empty sync-pull: applyPage/change advances local collection revision even when afterCursor equals nextCursor and no receipt changes exist. No deletion HTTP request occurs; data and draft remain safe.",
+      "owner": "client/browser/native adapters",
+      "status": "local defect confirmed by implementation owner; preserve review CAS, fix no-op revision semantics and assert both repositories; final product freeze withdrawn",
+      "proofRefs": []
     }
   ]
 }
