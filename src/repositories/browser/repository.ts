@@ -25,6 +25,8 @@ import {
   deviceKey,
   viewOf,
   applyIntent,
+  prepareResolution,
+  type ConflictResolution,
   applyReceipt,
   hydrateState,
   assertRecords,
@@ -122,6 +124,150 @@ export class BrowserRepository implements Repository {
   }
   async readView(key: CollectionKey): Promise<CollectionView> {
     return transaction(this.database, 'readonly', async (tx) => viewOf(await getState(tx, key)))
+  }
+  async readAcknowledged(key: CollectionKey): Promise<CollectionView> {
+    return transaction(this.database, 'readonly', async (tx) => {
+      const state = await getState(tx, key)
+      return viewOf({ ...state, pending: [], anchors: { projects: [], checkpoints: [] } })
+    })
+  }
+  async resolvePending(
+    key: CollectionKey,
+    resolution: ConflictResolution,
+    generation: number,
+  ): Promise<{ recovered: CollectionKey | null; commit: LocalCommit | null }> {
+    const fingerprint = await canonicalHash(resolution)
+    const receiptKey = JSON.stringify([
+      'resolution',
+      keyOf(key),
+      resolution.operationId,
+      resolution.expectedRevision,
+    ])
+    type ResolutionReceipt = {
+      key: string
+      fingerprint: string
+      value: { recovered: CollectionKey | null; commit: LocalCommit | null }
+    }
+    const { state, scope, previous } = await transaction(this.database, 'readonly', async (tx) => ({
+      state: await getState(tx, key),
+      scope: await assertGeneration(tx, key, generation),
+      previous: await requestResult<ResolutionReceipt | undefined>(
+        tx.objectStore('meta').get(receiptKey),
+      ),
+    }))
+    if (previous) {
+      if (previous.fingerprint !== fingerprint) throw new DomainError('OPERATION_REUSED')
+      return previous.value
+    }
+    const observedVersion = state.version
+    const preserved = prepareResolution(state, resolution)
+    const recoveryKey: CollectionKey = {
+      namespace: `guest_${crypto.randomUUID()}`,
+      collectionId: crypto.randomUUID(),
+      epoch: crypto.randomUUID(),
+    }
+    let recovered: StoredCollection | null = null
+    if (preserved.projects.length) {
+      recovered = emptyCollection({
+        key: recoveryKey,
+        name: resolution.recoveryName,
+        kind: 'recovered',
+        accountId: null,
+        createdAt: new Date().toISOString(),
+        legacyAccess: false,
+      })
+      recovered.projects = preserved.projects
+      recovered.checkpoints = preserved.checkpoints
+      recovered.version = localRevision(
+        ...preserved.projects.map((p) => p.revision),
+        ...preserved.checkpoints.map((c) => c.revision),
+      )
+      recovered.provenance = {
+        kind: 'recovered',
+        sourceId: key.collectionId,
+        capturedAt: recovered.info.createdAt,
+      }
+      assertRecords(recovered.projects, recovered.checkpoints)
+    }
+    if (resolution.replacement) {
+      const intent = resolution.replacement,
+        { createdAt: _createdAt, ...mutation } = intent
+      const command = await signCommand({
+        ...mutation,
+        protocolVersion: 2,
+        payloadVersion: 1,
+        collectionId: key.collectionId,
+        epoch: key.epoch,
+        deviceId: scope.device.id,
+        deviceGeneration: scope.device.generation,
+        sequence: nextRevision(state.sequences[deviceKey(scope.device)] ?? '0'),
+      })
+      applyIntent(state, intent, { upgraded: this.access(state.info) })
+      state.pending.push({ intent, command, state: 'queued' })
+      state.sequence = command.sequence
+      state.sequences[deviceKey(scope.device)] = command.sequence
+      state.operations[intent.operationId] = {
+        hash: await canonicalHash(intent),
+        savedAt: intent.createdAt,
+      }
+    }
+    state.version = nextRevision(state.version)
+    const value = {
+      recovered: recovered ? recoveryKey : null,
+      commit: resolution.replacement
+        ? {
+            operationId: resolution.replacement.operationId,
+            savedAt: resolution.replacement.createdAt,
+            view: viewOf(state),
+          }
+        : null,
+    }
+    const result = await transaction(this.database, 'readwrite', async (tx) => {
+      await assertGeneration(tx, key, generation)
+      const existing = await requestResult<ResolutionReceipt | undefined>(
+        tx.objectStore('meta').get(receiptKey),
+      )
+      if (existing) {
+        if (existing.fingerprint !== fingerprint) throw new DomainError('OPERATION_REUSED')
+        return existing.value
+      }
+      const current = await getState(tx, key)
+      if (current.version !== observedVersion) throw new DomainError('REVISION_CONFLICT')
+      if (recovered) {
+        const refs = mediaRefs(recovered.checkpoints)
+        await assertMediaPresent(tx, key, refs)
+        for (const ref of refs) {
+          const row = await requestResult<MediaRow>(
+            tx.objectStore('media').get(mediaKey(key, ref.id)),
+          )
+          tx.objectStore('media').add({
+            ...row,
+            key: mediaKey(recoveryKey, ref.id),
+            scope: recoveryKey,
+          })
+        }
+        putState(tx, recovered)
+      }
+      const intent = resolution.replacement
+      if (intent) {
+        const refs =
+          intent.kind === 'checkpoint.create'
+            ? mediaRefs([{ ...intent.payload.checkpoint, revision: '0' }])
+            : intent.kind === 'media.attach'
+              ? [intent.payload.media]
+              : []
+        await assertMediaPresent(tx, key, refs)
+      }
+      putState(tx, state)
+      tx.objectStore('meta').add({
+        key: receiptKey,
+        fingerprint,
+        value,
+      } satisfies ResolutionReceipt)
+      return value
+    })
+    this.publish()
+    return result
   }
   async commitLocal(
     key: CollectionKey,
@@ -306,7 +452,9 @@ export class BrowserRepository implements Repository {
       await assertMediaPresent(tx, candidate.info.key, mediaRefs(candidate.checkpoints))
       const next = emptyCollection({
         ...candidate.info,
-        legacyAccess: candidate.provenance.kind === 'legacy' && candidate.info.legacyAccess,
+        legacyAccess:
+          previous.info.legacyAccess ||
+          (candidate.provenance.kind === 'legacy' && candidate.info.legacyAccess),
       })
       next.version = localRevision(
         previous.version,

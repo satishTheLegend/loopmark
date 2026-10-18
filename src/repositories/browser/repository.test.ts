@@ -606,3 +606,161 @@ it('rejects omitted or cyclic snapshot pages before changing the durable collect
   ).rejects.toMatchObject({ detail: { code: 'SYNC_PAGE_INVALID' } })
   expect((await repository.readView(key)).revision).toBe('0')
 })
+
+it('atomically preserves conflicted work and dependent checkpoint history before using the cloud shadow', async () => {
+  const { repository, key } = await setup(true)
+  await repository.acknowledge(key, receipt('initial', '0'.repeat(64)), 1)
+  await repository.commitLocal(key, update(), 1)
+  await repository.commitLocal(
+    key,
+    {
+      kind: 'checkpoint.create',
+      operationId: 'dependent',
+      createdAt: now,
+      base: { afterOperationId: 'update' },
+      payload: {
+        updatedAt: now,
+        checkpoint: {
+          id: 'dependent-cp',
+          projectId: 'project',
+          createdAt: now,
+          position: 'Row 2',
+          toolSize: '4 mm',
+          nextStep: 'Keep this note',
+          notes: '',
+        },
+      },
+    },
+    1,
+  )
+  await repository.markFailure(key, 'update', new DomainError('REVISION_CONFLICT').detail, 1)
+  const review = await repository.readView(key)
+  expect((await repository.readAcknowledged(key)).projects[0].name).toBe('Moss scarf')
+  const resolved = await repository.resolvePending(
+    key,
+    {
+      operationId: 'update',
+      expectedRevision: review.revision,
+      recoveryName: 'Before cloud choice',
+    },
+    1,
+  )
+  expect(resolved.recovered).not.toBeNull()
+  expect(resolved.commit).toBeNull()
+  const kept = await repository.readView(resolved.recovered!)
+  expect(kept.projects[0].name).toBe('Changed scarf')
+  expect(kept.checkpoints[0].nextStep).toBe('Keep this note')
+  expect((await repository.readView(key)).projects[0].name).toBe('Moss scarf')
+  expect(await repository.pending(key)).toEqual([])
+})
+it('uses a new immutable replacement command and deduplicates lost resolution responses', async () => {
+  const { repository, key } = await setup(true)
+  await repository.acknowledge(key, receipt('initial', '0'.repeat(64)), 1)
+  await repository.commitLocal(key, update(), 1)
+  await repository.acknowledge(
+    key,
+    receipt('newer', '1'.repeat(64), '2', [
+      { kind: 'project.put', value: { ...project('project', '2'), name: 'Cloud edit' } },
+    ]),
+    1,
+  )
+  await repository.markFailure(key, 'update', new DomainError('REVISION_CONFLICT').detail, 1)
+  const resolution = {
+    operationId: 'update',
+    expectedRevision: (await repository.readView(key)).revision,
+    recoveryName: 'Before merged choice',
+    replacement: { ...update('2'), operationId: 'fresh-resolution' } as LocalIntent,
+  }
+  const first = await repository.resolvePending(key, resolution, 1),
+    again = await repository.resolvePending(key, resolution, 1)
+  expect(again).toEqual(first)
+  expect(await repository.listCollections()).toHaveLength(2)
+  const pending = await repository.pending(key)
+  expect(pending).toHaveLength(1)
+  expect(pending[0].command).toMatchObject({
+    operationId: 'fresh-resolution',
+    base: { revision: '2' },
+    sequence: '2',
+  })
+  await expect(
+    repository.resolvePending(key, { ...resolution, recoveryName: 'Altered' }, 1),
+  ).rejects.toMatchObject({ detail: { code: 'OPERATION_REUSED' } })
+})
+it('does not retire attempted operations, stale reviews or resurrect a remotely deleted project', async () => {
+  const { repository, key } = await setup(true)
+  await repository.acknowledge(key, receipt('initial', '0'.repeat(64)), 1)
+  await repository.commitLocal(key, update(), 1)
+  await repository.markAttempt(key, 'update', 1)
+  await expect(
+    repository.resolvePending(
+      key,
+      {
+        operationId: 'update',
+        expectedRevision: (await repository.readView(key)).revision,
+        recoveryName: 'Keep',
+      },
+      1,
+    ),
+  ).rejects.toMatchObject({ detail: { code: 'REVISION_CONFLICT' } })
+  await repository.markFailure(key, 'update', new DomainError('REVISION_CONFLICT').detail, 1)
+  const stale = (await repository.readView(key)).revision
+  await repository.acknowledge(
+    key,
+    receipt('delete', '1'.repeat(64), '2', [
+      { kind: 'project.delete', id: 'project', revision: '2' },
+    ]),
+    1,
+  )
+  await expect(
+    repository.resolvePending(
+      key,
+      { operationId: 'update', expectedRevision: stale, recoveryName: 'Keep' },
+      1,
+    ),
+  ).rejects.toMatchObject({ detail: { code: 'REVISION_CONFLICT' } })
+  await expect(
+    repository.resolvePending(
+      key,
+      {
+        operationId: 'update',
+        expectedRevision: (await repository.readView(key)).revision,
+        recoveryName: 'Keep',
+        replacement: { ...update('2'), operationId: 'new' },
+      },
+      1,
+    ),
+  ).rejects.toMatchObject({ detail: { code: 'REVISION_CONFLICT' } })
+  expect(await repository.pending(key)).toHaveLength(1)
+})
+it('rolls back retirement, recovery collection and fresh replacement together if storage aborts', async () => {
+  const { repository, key } = await setup(true)
+  await repository.acknowledge(key, receipt('initial', '0'.repeat(64)), 1)
+  await repository.commitLocal(key, update(), 1)
+  await repository.markFailure(key, 'update', new DomainError('REVISION_CONFLICT').detail, 1)
+  const before = await repository.readView(key),
+    original = IDBObjectStore.prototype.put
+  const spy = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementation(function (
+    this: IDBObjectStore,
+    value: unknown,
+    key?: IDBValidKey,
+  ) {
+    const r = original.call(this, value, key)
+    if (this.name === 'collections') this.transaction.abort()
+    return r
+  })
+  await expect(
+    repository.resolvePending(
+      key,
+      {
+        operationId: 'update',
+        expectedRevision: before.revision,
+        recoveryName: 'Kept',
+        replacement: { ...update('1'), operationId: 'new' },
+      },
+      1,
+    ),
+  ).rejects.toMatchObject({ detail: { code: 'LOCAL_STORAGE_FAILED' } })
+  spy.mockRestore()
+  expect(await repository.readView(key)).toEqual(before)
+  expect(await repository.listCollections()).toHaveLength(1)
+})

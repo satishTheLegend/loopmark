@@ -474,3 +474,81 @@ export function hydrateState(
   state.anchors = { projects: [], checkpoints: [] }
   state.hydration = 'ready'
 }
+
+export interface ConflictResolution {
+  operationId: string
+  expectedRevision: string
+  recoveryName: string
+  replacement?: LocalIntent
+}
+/** Validate and detach exactly one rejected/conflicting operation and its dependent closure. */
+export function prepareResolution(
+  state: StoredCollection,
+  resolution: ConflictResolution,
+): { projects: ProjectRecord[]; checkpoints: CheckpointRecord[]; retired: string[] } {
+  if (state.info.kind !== 'connected' || state.version !== resolution.expectedRevision)
+    throw new DomainError('REVISION_CONFLICT')
+  const first = state.pending.find((p) => p.intent.operationId === resolution.operationId)
+  if (!first) throw new DomainError('NOT_AVAILABLE')
+  if (first.state !== 'conflict' && first.state !== 'rejected')
+    throw new DomainError('REVISION_CONFLICT')
+  const retired = new Set([resolution.operationId])
+  for (let changed = true; changed;) {
+    changed = false
+    for (const pending of state.pending)
+      if (
+        pending.intent.base &&
+        'afterOperationId' in pending.intent.base &&
+        retired.has(pending.intent.base.afterOperationId) &&
+        !retired.has(pending.intent.operationId)
+      ) {
+        retired.add(pending.intent.operationId)
+        changed = true
+      }
+  }
+  const affected = new Set<string>()
+  for (const pending of state.pending)
+    if (retired.has(pending.intent.operationId)) {
+      if (pending.state === 'attempted') throw new DomainError('REVISION_CONFLICT')
+      const intent = pending.intent
+      if (intent.kind === 'project.create') affected.add(intent.payload.project.id)
+      else if (intent.kind === 'checkpoint.create')
+        affected.add(intent.payload.checkpoint.projectId)
+      else if (intent.kind !== 'collection.replace') affected.add(intent.payload.projectId)
+    }
+  const view = viewOf(state)
+  const projects = view.projects.filter((p) => affected.has(p.id)),
+    checkpoints = view.checkpoints.filter((c) => affected.has(c.projectId))
+  if (resolution.replacement) {
+    const intent = resolution.replacement,
+      command = {
+        ...intentCommand(intent),
+        collectionId: state.info.key.collectionId,
+        epoch: state.info.key.epoch,
+      }
+    if (
+      retired.has(intent.operationId) ||
+      Object.hasOwn(state.operations, intent.operationId) ||
+      Object.hasOwn(state.receipts, intent.operationId)
+    )
+      throw new DomainError('OPERATION_REUSED')
+    if (
+      intent.kind === 'project.create' ||
+      intent.kind === 'collection.replace' ||
+      !intent.base ||
+      !('revision' in intent.base)
+    )
+      throw new DomainError('REVISION_CONFLICT')
+    const target = revisionTarget(command)
+    const current = (target.kind === 'checkpoint' ? state.checkpoints : state.projects).find(
+      (p) => p.id === target.id,
+    )
+    if (!current || current.revision !== intent.base.revision)
+      throw new DomainError('REVISION_CONFLICT')
+    const projectId = 'projectId' in current ? current.projectId : current.id
+    if (!affected.has(projectId)) throw new DomainError('REVISION_CONFLICT')
+  }
+  state.pending = state.pending.filter((p) => !retired.has(p.intent.operationId))
+  if (!state.pending.length) state.anchors = { projects: [], checkpoints: [] }
+  return { projects, checkpoints, retired: [...retired] }
+}
