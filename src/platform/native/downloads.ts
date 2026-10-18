@@ -14,6 +14,7 @@ export async function removeNativeDownloads(
   database: NativeDatabase,
   scope: SessionScope,
   projectId: string,
+  removeFile: (key: string) => Promise<void> = (key) => durableFiles.remove({ key }),
 ) {
   if (!id.safeParse(projectId).success) throw new DomainError('VALIDATION')
   scope = structuredClone(scope)
@@ -83,7 +84,7 @@ export async function removeNativeDownloads(
           ?.length
       )
         throw new DomainError('INVARIANT_VIOLATION')
-      await durableFiles.remove({ key: item.fileKey })
+      await removeFile(item.fileKey)
       await db.run('DELETE FROM metadata WHERE key=?', [item.key])
     }
     return result

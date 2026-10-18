@@ -1,5 +1,6 @@
 import { openNativeRepository } from '../../../src/platform/native/repository'
 import { createNativeWorkflowStore } from '../../../src/platform/native/workflow-store'
+import { removeNativeDownloads } from '../../../src/platform/native/downloads'
 import { durableFiles } from '../../../src/platform/native/files-bridge'
 import { scopeKey } from '../../../src/platform/native/recovery-journal'
 import { sha256Bytes } from '../../../src/domain/canonical-json'
@@ -175,15 +176,13 @@ export async function nativeDownloads() {
     'SQL rollback destroyed downloaded bytes',
   )
   await repo.database.serial((db) => db.execute('DROP TRIGGER fail_download_delete;'))
-  const nativeRemove = durableFiles.remove.bind(durableFiles)
-  durableFiles.remove = async () => {
-    throw new DomainError('LOCAL_STORAGE_FAILED')
-  }
-  try {
-    await rejects(() => repo.removeDownloads(scope, 'native-project'), 'LOCAL_STORAGE_FAILED')
-  } finally {
-    durableFiles.remove = nativeRemove
-  }
+  await rejects(
+    () =>
+      removeNativeDownloads(repo.database, scope, 'native-project', async () => {
+        throw new DomainError('LOCAL_STORAGE_FAILED')
+      }),
+    'LOCAL_STORAGE_FAILED',
+  )
   assert(
     !(await row(ref.id)) && (await durableFiles.list()).files.some((item) => item.key === file),
     'Failed physical cleanup should retain only an unreferenced journalled file',
