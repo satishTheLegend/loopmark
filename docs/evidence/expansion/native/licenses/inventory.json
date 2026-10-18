@@ -1,5 +1,5 @@
 {
-  "scope": "Selected direct native packages and resolved SPM license texts. Full Android transitive distribution inventory remains a release review item. SQLCipher is linked despite unencrypted local DB; store encryption declaration remains required. MPL recorder source is unmodified.",
+  "scope": "Selected direct native packages and copied SPM license texts. See android-inventory.json and spm-inventory.json for resolved Android runtime coordinates/artifact hashes and all pinned Swift revision-to-notice mappings. Missing upstream notice text is explicit in the supplemental inventory; legal/distribution review remains external. SQLCipher is linked despite unencrypted local DB; store encryption declaration remains required. MPL recorder source is unmodified.",
   "packages": [
     {
       "package": "@capacitor/core",
@@ -97,5 +97,11 @@
         "revenuecat-purchases-capacitor-0.txt"
       ]
     }
+  ],
+  "supplementalEvidence": [
+    "android-spm-inventory.md",
+    "android-inventory.json",
+    "android-resolved-graph.json",
+    "spm-inventory.json"
   ]
 }

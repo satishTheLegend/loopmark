@@ -38,6 +38,8 @@ Use **http://127.0.0.1:4173**, then check **A little guide** for “Ready offlin
 - Print readable project-bag labels with QR shortcuts. A label points to a record; it does not contain the project or replace a backup.
 - Sign in optionally with an email code. Signing in leaves local projects in place; connecting them requires a destination/count preview and explicit confirmation.
 - Queue connected edits offline, retry immutable operations, distinguish saved text from pending attachments, and review conflicts without silently replacing either version.
+- Check whether every project attachment is available offline, download missing files, or remove eligible downloaded copies while preserving cloud data and files needed by unfinished work.
+- Review backup files opened from iOS or Android before restoring them as a separate local collection. Repeated deliveries retain their original import identity.
 - Review local copies before sign-out or account deletion. Keep a private deletion receipt to check progress after sign-out.
 - Offer three active projects free. A verified one-time upgrade permits more active projects, within storage limits. Reaching the allowance never hides saved projects, edits, checkpoints, history or export. Eligible pre-expansion collections preserve their migration access; importing a backup does not create a purchase grant.
 - Keep an upgrade-gated draft on the device through sign-in and checkout. Price comes from the configured provider. Payment returns and SDK results require server verification; Continue opens the saved action for review without automatically creating or reopening a project.
@@ -49,7 +51,7 @@ First launch is empty. Optional sample projects are labeled examples. Limits are
 
 Before putting a project away, choose **Save a checkpoint**. The required field is **What will you do next?** On return, the latest instruction, row and tool size are shown immediately.
 
-Photos are resized locally. Browser recordings require microphone permission and HTTPS or localhost, and stop after two minutes. Native capture uses platform permission and interruption handling. Media is uploaded only for a collection you explicitly connect. A connected photo may need a download before it is available offline.
+Photos are resized locally. Browser recordings require microphone permission and HTTPS or localhost, and stop after two minutes. Native capture uses platform permission and interruption handling. Media is uploaded only for a collection you explicitly connect. Use **Project files** to check offline availability before leaving a connection. Removing downloads affects eligible cached bytes on this device; saved text, cloud attachments, local originals and protected unfinished work stay intact.
 
 Download a complete backup regularly. Drafts are separate and **not included**: save them as projects/checkpoints first. An export with missing attachment bytes fails with recovery guidance rather than claiming to be complete. Backups contain private notes and media and are not encrypted by Loopmark.
 

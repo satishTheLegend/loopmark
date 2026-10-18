@@ -13,10 +13,14 @@ Run checks from the project directory. A missing runtime is a failing prerequisi
 | `npm run test:server -- --suite all` | Actual isolated SQL/Edge/Auth/Storage boundary tests; requires local stack |
 | `npm run test:sync` | Actual OTP, multi-browser conflict/media/replacement/deletion and app cloud UI; requires explicit `LOOPMARK_SYNC_PUBLIC_ENV` |
 | `npm run test:ui` | Synthetic component pages with real services/IDB where applicable and controlled provider I/O; no backend required |
+| `npm run test:load -- --accounts 100` / `--accounts 1000` | Actual isolated reconnect, interrupted-media, webhook, compaction and encrypted-backup workload; preserves burst failures separately from bounded recovery |
+| `npm run test:load:capture` | Independently timed actual App checkpoint saves, reload and full export; overlap must be matched to a separate load report |
 | `npm run test:native:ios` / `npm run test:native:android` | Actual native bridge assertions after building the dedicated synthetic harness |
 | `npm run test:release` | Release evidence validation; does not manufacture absent external qualification |
 
 Use `npx playwright install chromium firefox webkit` to install the pinned browser versions. Linux runners also need browser system libraries (`npx playwright install --with-deps`). Browser installation is a one-time tool download; it is not part of ordinary `npm test`. Worker processes and platform suites should be limited on machines with insufficient memory.
+
+Load fixtures require the exact owned local profile and synthetic accounts. They never establish paid-provider capacity. Report raw HTTP/transport failures, recovered effects and incomplete commands separately; do not turn a failed simultaneous burst into a PASS because a later recovery phase succeeds. Run native memory and browser performance measurements separately from deliberate backend stress.
 
 ## Read, run, then adapt
 

@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "status": "pass",
+  "date": "2026-10-18",
+  "testedWebSourceCommit": "feb71f4ba27f23cbbc1935f976618633bbf3d5c8",
+  "command": "LOOPMARK_TEST_PORT=4181 npm run test:e2e -- scale.spec.ts --workers=1",
+  "passed": 20,
+  "failed": 0,
+  "skipped": 0,
+  "elapsedSeconds": 40.9,
+  "testSourceSha256": "cd1b04aa434ee9ed4659ec41a348a2c902cd7620f2298a3f0149d2a5d4436d09",
+  "appSourceSha256": "7adf49d70206072251d8092436798210530df8ef1bbe5c2e5e26c38e0dd894ee",
+  "serviceWorkerSha256": "a2aba08b92a4d6f61e5e7b46f6d49062bc5d4656dce520d8c3788d3cc8f73399",
+  "conditions": "Owned backend containers stopped; native agent paused functional builds/tests for this interval. Unrelated host applications remained open. Desktop machine with browser mobile emulation, no physical-device or hosted capacity claim.",
+  "metrics": [
+    {
+      "project": "chromium",
+      "browser": "156.0.8078.4",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": true,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "50 projects / 500 text checkpoints",
+      "fixtureBytes": 176401,
+      "searchMs": [
+        1.199999988079071,
+        1.2000000029802322,
+        1
+      ],
+      "shelfReloadMs": 36.79999999701977
+    },
+    {
+      "project": "chromium",
+      "browser": "156.0.8078.4",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": true,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "20 projects / 200 initial text checkpoints; three additional saves",
+      "fixtureBytes": 70486,
+      "saveMs": [
+        25.299999997019768,
+        23.600000008940697,
+        21.600000008940697
+      ],
+      "targetMs": 500
+    },
+    {
+      "project": "chromium",
+      "browser": "156.0.8078.4",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": true,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "10 projects / 100 checkpoints; 100 distinct 240x160 PNGs and one 1-second synthetic WAV per checkpoint",
+      "fixtureBytes": 8285353,
+      "distinctPhotos": 100,
+      "photoBytes": {
+        "min": 45776,
+        "max": 45784
+      },
+      "voiceBytes": 16044,
+      "validationMs": 77.6000000089407,
+      "commitMs": 395.8999999910593,
+      "combinedWorkMs": 473.5,
+      "targetMs": 5000,
+      "roundtrip": "Every portable project/checkpoint/media field preserved in the separate restored collection."
+    },
+    {
+      "project": "firefox",
+      "browser": "157.0",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "50 projects / 500 text checkpoints",
+      "fixtureBytes": 176401,
+      "searchMs": [
+        3,
+        3,
+        2
+      ],
+      "shelfReloadMs": 66
+    },
+    {
+      "project": "firefox",
+      "browser": "157.0",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "20 projects / 200 initial text checkpoints; three additional saves",
+      "fixtureBytes": 70486,
+      "saveMs": [
+        20,
+        17,
+        13
+      ],
+      "targetMs": 500
+    },
+    {
+      "project": "firefox",
+      "browser": "157.0",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "10 projects / 100 checkpoints; 100 distinct 240x160 PNGs and one 1-second synthetic WAV per checkpoint",
+      "fixtureBytes": 8285353,
+      "distinctPhotos": 100,
+      "photoBytes": {
+        "min": 45776,
+        "max": 45784
+      },
+      "voiceBytes": 16044,
+      "validationMs": 94,
+      "commitMs": 547,
+      "combinedWorkMs": 641,
+      "targetMs": 5000,
+      "roundtrip": "Every portable project/checkpoint/media field preserved in the separate restored collection."
+    },
+    {
+      "project": "webkit",
+      "browser": "27.2",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "50 projects / 500 text checkpoints",
+      "fixtureBytes": 176401,
+      "searchMs": [
+        2,
+        2,
+        2
+      ],
+      "shelfReloadMs": 72
+    },
+    {
+      "project": "webkit",
+      "browser": "27.2",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "20 projects / 200 initial text checkpoints; three additional saves",
+      "fixtureBytes": 70486,
+      "saveMs": [
+        22,
+        12,
+        15
+      ],
+      "targetMs": 500
+    },
+    {
+      "project": "webkit",
+      "browser": "27.2",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "10 projects / 100 checkpoints; 100 distinct 240x160 PNGs and one 1-second synthetic WAV per checkpoint",
+      "fixtureBytes": 8285353,
+      "distinctPhotos": 100,
+      "photoBytes": {
+        "min": 45776,
+        "max": 45784
+      },
+      "voiceBytes": 16044,
+      "validationMs": 87,
+      "commitMs": 407,
+      "combinedWorkMs": 494,
+      "targetMs": 5000,
+      "roundtrip": "Every portable project/checkpoint/media field preserved in the separate restored collection."
+    },
+    {
+      "project": "chromium-mobile",
+      "browser": "156.0.8078.4",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "50 projects / 500 text checkpoints",
+      "fixtureBytes": 176401,
+      "searchMs": [
+        1.2999999970197678,
+        1.0999999940395355,
+        1.0999999940395355
+      ],
+      "shelfReloadMs": 38.79999999701977
+    },
+    {
+      "project": "chromium-mobile",
+      "browser": "156.0.8078.4",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "20 projects / 200 initial text checkpoints; three additional saves",
+      "fixtureBytes": 70486,
+      "saveMs": [
+        24.299999997019768,
+        22.400000005960464,
+        21.30000001192093
+      ],
+      "targetMs": 500
+    },
+    {
+      "project": "chromium-mobile",
+      "browser": "156.0.8078.4",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "10 projects / 100 checkpoints; 100 distinct 240x160 PNGs and one 1-second synthetic WAV per checkpoint",
+      "fixtureBytes": 8285353,
+      "distinctPhotos": 100,
+      "photoBytes": {
+        "min": 45776,
+        "max": 45784
+      },
+      "voiceBytes": 16044,
+      "validationMs": 75.8999999910593,
+      "commitMs": 415,
+      "combinedWorkMs": 490.8999999910593,
+      "targetMs": 5000,
+      "roundtrip": "Every portable project/checkpoint/media field preserved in the separate restored collection."
+    },
+    {
+      "project": "webkit-mobile",
+      "browser": "27.2",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "50 projects / 500 text checkpoints",
+      "fixtureBytes": 176401,
+      "searchMs": [
+        2,
+        2,
+        1
+      ],
+      "shelfReloadMs": 55
+    },
+    {
+      "project": "webkit-mobile",
+      "browser": "27.2",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "20 projects / 200 initial text checkpoints; three additional saves",
+      "fixtureBytes": 70486,
+      "saveMs": [
+        15,
+        15,
+        11
+      ],
+      "targetMs": 500
+    },
+    {
+      "project": "webkit-mobile",
+      "browser": "27.2",
+      "workerCache": "loopmark-ae6a4d9ee0a4",
+      "workers": 1,
+      "calibratedBudget": false,
+      "platform": "darwin arm64",
+      "cpu": "Apple M5",
+      "conditions": "Headless localhost, no CPU/network throttling; synthetic isolated library.",
+      "scenario": "10 projects / 100 checkpoints; 100 distinct 240x160 PNGs and one 1-second synthetic WAV per checkpoint",
+      "fixtureBytes": 8285353,
+      "distinctPhotos": 100,
+      "photoBytes": {
+        "min": 45776,
+        "max": 45784
+      },
+      "voiceBytes": 16044,
+      "validationMs": 86,
+      "commitMs": 496,
+      "combinedWorkMs": 582,
+      "targetMs": 5000,
+      "roundtrip": "Every portable project/checkpoint/media field preserved in the separate restored collection."
+    }
+  ]
+}
