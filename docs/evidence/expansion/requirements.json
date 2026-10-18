@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL CANDIDATE REVIEW: a07b014 freeze withdrawn after actual cloud run exposed no-op empty-pull revision mutation invalidating deletion review. Existing evidence remains candidate/scoped proof; corrected source, targeted regression and new final binding pending.",
+  "reviewState": "PROVISIONAL CORRECTED-CANDIDATE REVIEW: 0b518fa no-op fix source/controlled units reviewed; same-cohort load safety/recovery/auxiliary observations qualified with burstFAIL retained. Final corrected native/cloud/unit/build binding pending.",
   "reviewer": "final_traceability_review (independent of implementation authors)",
   "reviewedSourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
   "requiredIds": [
@@ -146,7 +146,8 @@
     "local-measurement-recorded": "Actual measured native adapter result, with no invented latency/memory budget or physical-device qualification.",
     "pending-derived-adjudication": "Higher-level accepted obligation maps specific branch/direct-review evidence; final decision remains pending and does not inherit unrelated broader gates.",
     "implemented-awaiting-final-integrated-proof": "Source implementation exists; final integrated execution is still pending.",
-    "local-runtime-verified": "Specific local acceptance branch executed on exact frozen or independently source-equivalent artifacts. External provider/physical/human gates remain separate; no whole-project approval implied."
+    "local-runtime-verified": "Specific local acceptance branch executed on exact frozen or independently source-equivalent artifacts. External provider/physical/human gates remain separate; no whole-project approval implied.",
+    "local-runtime-verified-with-limits": "Specific acceptance observations executed with explicitly retained stress failures, staging/physical/resource limits and source scope. Does not claim full stress capacity or whole-project release approval."
   },
   "evidenceRules": [
     "Every requirement is retained; no proposed filename is treated as proof when absent.",
@@ -449,6 +450,76 @@
         "greenStdoutSha256": "115445676763af2bf923dd50c230474abe47f94a0d60b0e1c3449afc32a626b5"
       },
       "limitation": "Cause of the slower Firefox execution remains unproven; trace establishes aggregate budget exhaustion and zero reported violations, not a performance guarantee. Full 264-case suite was not rerun after test-only budget correction."
+    },
+    "load100": {
+      "path": "docs/evidence/expansion/load/backend-100.json",
+      "sha256": "bc20664d985e6857f312394e9f1e05db922e8b233983a009c6e3a4c6791c8431",
+      "scope": "Actual 100-account complete local fixture: reconnect, duplicate retries, owner denial, interrupted media, webhook dedupe, controlled 429, retention and concurrent recovery point. This was a shared-host run, not hosted capacity.",
+      "sourceRevision": "a828658",
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false
+    },
+    "load1000Burst": {
+      "path": "docs/evidence/expansion/load/backend-1000-recovery-burst.json",
+      "sha256": "9ee09ebddbb18367b13d8c3a37100c5ec0c44b8c75d45bdc0acdb6907bd1d55b",
+      "scope": "Failed simultaneous 1,000-account burst retained: 903 pipelines exhaust bounded retries; backup at peak fails with unknown precise cause. Original immutable commands all converge afterward within 13.992s at eight workers; exact pulls and 1,000 owner denials pass. Aggregate argv-limited audit ends this harness run before auxiliaries.",
+      "sourceRevision": "bf5709d",
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false,
+      "independentBinding": {
+        "harnessSourceSha256": "08896fc29ad1b03051ba856070db7168b925fa70d1bc0a5a93038349f4a4086e",
+        "sourceCommitHashMatches": true,
+        "rawResultSha256": "09fe28fc516e030d5e9a359d882eaeb93c6360c9cfedc6080a1ec3f7f3236122",
+        "preservedOriginalFieldsMatch": true
+      }
+    },
+    "load1000Audit": {
+      "path": "docs/evidence/expansion/load/backend-1000-recovery-audit.json",
+      "sha256": "9268f023c44d3ef37eb8e1e8f4791ebbce26ee1987af9564d45a7a9b5b6ef291",
+      "scope": "Separate default read-only audit of the exact recovered cohort; 2,000 canonical command hashes and materialized entities, equal receipt/feed, zero pending/mismatch. No Auth session or mutation.",
+      "sourceRevision": "4aba6e6",
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false,
+      "rawAuditNote": "The explicit execute run repeats and replaces the local read-only-audit.json. The committed earlier audit differs only in its two timestamps; all invariant values and cohort digest agree. Both versions are not claimed byte-identical."
+    },
+    "load1000Auxiliary": {
+      "path": "docs/evidence/expansion/load/backend-1000-recovery-continuation.json",
+      "sha256": "1482356f7c5d4905c5621dd2ea4341b47cc58d9d18af0f69f0728f3acbe60944",
+      "scope": "Guarded explicit continuation repeats same-cohort audit then verifies 10 interrupted media recoveries, 20 webhook deliveries to one inbox/grant, 25 typed 429s, 500 dormant devices and fair compaction/refused retired command. Original burst result stays failed.",
+      "sourceRevision": "2511d2c",
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false,
+      "independentBinding": {
+        "harnessSourceSha256": "b4ec34c72f0ba4e44dbe3c84c22a933e7d5cd3b4b36f7b59ffcc0f6f79019d5f",
+        "sourceCommitHashMatches": true,
+        "rawResultSha256": "9e58ffcac5050d887550286c31318220958c9f87de1b109851d36616e87c08ea",
+        "preservedOriginalFieldsMatch": true
+      }
+    },
+    "loadLimits": {
+      "path": "docs/evidence/expansion/load/backend-1000-limit-clarifications.json",
+      "sha256": "e9ffad2a97ed66848ae0f9eeb7e377c4dd3820480a89c8fb714ff2c9672064e5",
+      "scope": "Failed backup-at-peak preserved; ten truncated-upload staging rows remain quota-accounted pending expiry with zero matching physical Storage objects. Not a swept/zero-leak result; separate server usage-sweep assertions qualify collection.",
+      "sourceRevision": null,
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false
+    },
+    "loadCapture1000": {
+      "path": "docs/evidence/expansion/load/capture-1000-recovery.json",
+      "sha256": "0f208fd490b4dcdab39aa29e0c9836e82583e914013c56babb0c83cfd881b712",
+      "scope": "Actual connected Chromium production App: 159 UI saves, reload and complete export preserve all unique checkpoint instructions, max69.9ms under500ms target. Timestamp cross-check:60 complete saves wholly inside burst,10 inside bounded recovery. Capture source predates no-op fix.",
+      "sourceRevision": "66941c7",
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false
+    },
+    "noopPullFix": {
+      "path": "docs/evidence/expansion/I13/noop-pull/metadata.json",
+      "sha256": "421facc7b70880505096b9d0c5dd3dffdd84c132c408224d102a86e93359ae6a",
+      "scope": "Controlled old-source red: two exact failures,24passes; shared browser/native source fix; focused69/69 units and typecheck. Browser unit/controller proof only; SQLite and full cloud rerun separate.",
+      "sourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "reviewedAgainstRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+      "currentFreezeQualified": false,
+      "independentBinding": "All preserved log hashes and three corrected source blobs independently matched. Original red test formatting blobs were not captured; that limitation remains explicit."
     }
   },
   "tests": {
@@ -12640,6 +12711,134 @@
           "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
         }
       ]
+    },
+    "tests/load/continue.test.ts:review:8a19bda99a07": {
+      "file": "tests/load/continue.test.ts",
+      "line": 29,
+      "testName": "continues only the interrupted invariant and auxiliary phases of an exact recovered synthetic cohort",
+      "sourceSha256": "b4ec34c72f0ba4e44dbe3c84c22a933e7d5cd3b4b36f7b59ffcc0f6f79019d5f",
+      "level": "actual-local-integration",
+      "executedProofRefs": [
+        "load1000Audit",
+        "load1000Auxiliary"
+      ],
+      "frozenSource": {
+        "path": "tests/load/continue.test.ts",
+        "sourceRevision": "2511d2c",
+        "sha256": "b4ec34c72f0ba4e44dbe3c84c22a933e7d5cd3b4b36f7b59ffcc0f6f79019d5f",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Default returns before Auth/session/mutation. Explicit execute reauthenticates11 existing owners, creates1 synthetic limit owner and runs profile-wide fixture/reconcile/compaction in exclusive window. One original command is deliberately refused after compaction; no originals resent to establish recovery."
+    },
+    "tests/performance/capture.load.ts:review:c1e430059721": {
+      "file": "tests/performance/capture.load.ts",
+      "line": 9,
+      "testName": "connected local capture remains durable during the independently timed service load",
+      "sourceSha256": "c9667817569182c02297c828bcf3c7437b4519b9adec6a9b87eb1b8f70347c5d",
+      "level": "actual-local-integration",
+      "executedProofRefs": [
+        "loadCapture1000"
+      ],
+      "frozenSource": {
+        "path": "tests/performance/capture.load.ts",
+        "sourceRevision": "66941c7",
+        "sha256": "c9667817569182c02297c828bcf3c7437b4519b9adec6a9b87eb1b8f70347c5d",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Actual visible form/save/next-step observation; reload then full export count plus unique instruction count; zero page errors; each measured save below500ms. Match timestamps with distinct server run before claiming overlap."
+    },
+    "tests/server/boundaries.test.ts:review:53d4493abfd7": {
+      "file": "tests/server/boundaries.test.ts",
+      "line": 41,
+      "testName": "keeps an Auth outage retryable and accepts the unchanged command after recovery",
+      "sourceSha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
+      "level": "actual-server-integration",
+      "executedProofRefs": [
+        "backendFinal84"
+      ],
+      "frozenSource": {
+        "path": "tests/server/boundaries.test.ts",
+        "sourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+        "sha256": "912068505c03dee93e69332a51ce041f0bdbda75e9f3fbac47b1051efc0dbe68",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Actual local Auth pause:503 SERVICE_UNAVAILABLE/retryable, no receipt before recovery, unchanged command accepted after Auth resumes.",
+      "frozenExecutions": [
+        {
+          "proofRef": "backendFinal84",
+          "testName": "raw SQL authority, exact serialization and real authentication boundaries keeps an Auth outage retryable and accepts the unchanged command after recovery",
+          "status": "passed",
+          "durationMs": 11224.101917
+        }
+      ]
+    },
+    "src/repositories/browser/pull-review.test.ts:review:7be6c1a5c054": {
+      "file": "src/repositories/browser/pull-review.test.ts",
+      "line": 38,
+      "testName": "an unchanged empty pull preserves a device review, pending work, drafts and subscribers",
+      "sourceSha256": "3f2a66460fb00f45e0e5ace9a717dfc132847cb703f82b563874943ed172b740",
+      "level": "unit-or-contract",
+      "executedProofRefs": [
+        "noopPullFix"
+      ],
+      "frozenSource": {
+        "path": "src/repositories/browser/pull-review.test.ts",
+        "sourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+        "sha256": "3f2a66460fb00f45e0e5ace9a717dfc132847cb703f82b563874943ed172b740",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Actual IDB semantics through fake-indexeddb; unchanged review/view/draft and zero subscriber notification, followed by successful transition. Native runtime remains separate."
+    },
+    "src/repositories/browser/pull-review.test.ts:review:44affe9a4333": {
+      "file": "src/repositories/browser/pull-review.test.ts",
+      "line": 56,
+      "testName": "an empty pull still rejects stale generation, wrong collection/epoch/cursor and malformed progress",
+      "sourceSha256": "3f2a66460fb00f45e0e5ace9a717dfc132847cb703f82b563874943ed172b740",
+      "level": "unit-or-contract",
+      "executedProofRefs": [
+        "noopPullFix"
+      ],
+      "frozenSource": {
+        "path": "src/repositories/browser/pull-review.test.ts",
+        "sourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+        "sha256": "3f2a66460fb00f45e0e5ace9a717dfc132847cb703f82b563874943ed172b740",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "All original scope and schema fences remain before no-op return; malformed empty progress fails without state change."
+    },
+    "src/repositories/browser/pull-review.test.ts:review:655c4ccf43ed": {
+      "file": "src/repositories/browser/pull-review.test.ts",
+      "line": 82,
+      "testName": "a real receipt/cursor advance invalidates review (already acknowledged: %s)",
+      "sourceSha256": "3f2a66460fb00f45e0e5ace9a717dfc132847cb703f82b563874943ed172b740",
+      "level": "unit-or-contract",
+      "executedProofRefs": [
+        "noopPullFix"
+      ],
+      "frozenSource": {
+        "path": "src/repositories/browser/pull-review.test.ts",
+        "sourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+        "sha256": "3f2a66460fb00f45e0e5ace9a717dfc132847cb703f82b563874943ed172b740",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Parameterized false/true; genuine receipt/cursor changes advance revision and stale review fails, while draft remains."
+    },
+    "src/services/app-controller.test.ts:review:ec1152919377": {
+      "file": "src/services/app-controller.test.ts",
+      "line": 333,
+      "testName": "an empty background pull after deletion review permits explicit draft discard and preserves guest work",
+      "sourceSha256": "2521942ed568d8076c89e9d4e3f11a0feca837a2d61260217879dc22db49c9b4",
+      "level": "unit-or-contract",
+      "executedProofRefs": [
+        "noopPullFix"
+      ],
+      "frozenSource": {
+        "path": "src/services/app-controller.test.ts",
+        "sourceRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534",
+        "sha256": "2521942ed568d8076c89e9d4e3f11a0feca837a2d61260217879dc22db49c9b4",
+        "workingCopyMatchesFreeze": true
+      },
+      "assertionNote": "Exact reviewed draft then unchanged background page; deletion barrier called before credentials removed; connected copy removed only after barrier, distinct guest project retained."
     }
   },
   "requirements": [
@@ -21473,14 +21672,18 @@
         "tests/expansion/accounts.cloud.ts:49",
         "src/services/backup-service.test.ts:254",
         "tests/expansion/accounts.cloud.ts:5",
-        "tests/expansion/accounts.cloud.ts:119"
+        "tests/expansion/accounts.cloud.ts:119",
+        "src/repositories/browser/pull-review.test.ts:review:7be6c1a5c054",
+        "src/services/app-controller.test.ts:review:ec1152919377"
       ],
       "acceptanceBranches": [
         {
           "branch": "Switch account",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "src/services/app-controller.test.ts:328"
+            "src/services/app-controller.test.ts:328",
+            "src/repositories/browser/pull-review.test.ts:review:7be6c1a5c054",
+            "src/services/app-controller.test.ts:review:ec1152919377"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -21488,7 +21691,10 @@
             "src/components/SignOutReview.tsx",
             "src/repositories/state.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "noopPullFix"
+          ]
         },
         {
           "branch": "pending save or upload",
@@ -21580,7 +21786,8 @@
         }
       ],
       "proofRefs": [
-        "unitCurrent"
+        "unitCurrent",
+        "noopPullFix"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -22349,7 +22556,10 @@
         "src/repositories/browser/repository.test.ts:272",
         "src/sync/coordinator.test.ts:93",
         "src/domain/contracts.test.ts:145",
-        "src/sync/coordinator.test.ts:73"
+        "src/sync/coordinator.test.ts:73",
+        "src/repositories/browser/pull-review.test.ts:review:7be6c1a5c054",
+        "src/repositories/browser/pull-review.test.ts:review:44affe9a4333",
+        "src/repositories/browser/pull-review.test.ts:review:655c4ccf43ed"
       ],
       "acceptanceBranches": [
         {
@@ -22436,7 +22646,10 @@
           "branch": "empty pull",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "src/domain/contracts.test.ts:145"
+            "src/domain/contracts.test.ts:145",
+            "src/repositories/browser/pull-review.test.ts:review:7be6c1a5c054",
+            "src/repositories/browser/pull-review.test.ts:review:44affe9a4333",
+            "src/repositories/browser/pull-review.test.ts:review:655c4ccf43ed"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -22445,7 +22658,11 @@
             "src/sync/realtime-hints.ts",
             "supabase/migrations/202610180003_reads_retention.sql"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "noopPullFix"
+          ],
+          "reviewNote": "The corrected source skips only empty unchanged polls after all generation/scope/cursor/schema fences. Exact browser assertions preserve review/draft/pending/subscribers; genuine acknowledged or unacknowledged receipt progress still invalidates review. Final native/current full-cloud execution remains pending."
         },
         {
           "branch": "realtime lost",
@@ -22489,7 +22706,8 @@
         "unitCurrent",
         "I03",
         "I07",
-        "I08"
+        "I08",
+        "noopPullFix"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -26049,14 +26267,16 @@
         "tests/server/deletion.test.ts:176",
         "tests/server/billing.test.ts:275",
         "tests/server/billing.test.ts:599",
-        "tests/server/deletion.test.ts:review:8201fe874ed2"
+        "tests/server/deletion.test.ts:review:8201fe874ed2",
+        "src/services/app-controller.test.ts:review:ec1152919377"
       ],
       "acceptanceBranches": [
         {
           "branch": "Delete request",
           "status": "assertions-located-awaiting-final-proof",
           "oracleRefs": [
-            "tests/server/deletion.test.ts:54"
+            "tests/server/deletion.test.ts:54",
+            "src/services/app-controller.test.ts:review:ec1152919377"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -26073,7 +26293,8 @@
             }
           ],
           "proofRefs": [
-            "backendFinal84"
+            "backendFinal84",
+            "noopPullFix"
           ]
         },
         {
@@ -26123,7 +26344,7 @@
             "tests/server/billing.test.ts:599",
             "tests/server/deletion.test.ts:review:8201fe874ed2"
           ],
-          "reviewNote": "Controlled finalizer-first held transaction added to existing deletion-first admitted upload and payment/late-provider assertions. New fixture runtime pending.",
+          "reviewNote": "The controlled finalizer-first held transaction and reverse payment-environment fixtures pass in the source-matched 84-case actual backend qualification; opposite-order assertions also remain mapped. Current client deletion-review no-op regression is separately pending final integrated verification.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "src/services/deletion-service.ts",
@@ -26212,7 +26433,8 @@
         "I03",
         "I07",
         "I08",
-        "cloudReview"
+        "cloudReview",
+        "noopPullFix"
       ],
       "status": "pending-integrated-verification",
       "limitations": []
@@ -29666,20 +29888,24 @@
       ],
       "oracleRefs": [
         "tests/load/reconnect.test.ts:review:807548cea412",
-        "tests/server/review-regressions.test.ts:110"
+        "tests/server/review-regressions.test.ts:110",
+        "tests/load/continue.test.ts:review:8a19bda99a07",
+        "tests/performance/capture.load.ts:review:c1e430059721"
       ],
       "acceptanceBranches": [
         {
           "branch": "100→1,000 reconnects",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-runtime-verified-with-limits",
           "oracleRefs": [
-            "tests/load/reconnect.test.ts:review:807548cea412"
+            "tests/load/reconnect.test.ts:review:807548cea412",
+            "tests/load/continue.test.ts:review:8a19bda99a07",
+            "tests/performance/capture.load.ts:review:c1e430059721"
           ],
           "assertionLocation": {
             "file": "tests/load/reconnect.test.ts",
             "line": 58
           },
-          "reviewNote": "Original immutable project+checkpoint commands are sent simultaneously; duplicates return same receipt; pulled operation IDs/hashes and final stored revision/content/ownership audit must match. Bounded eight-worker retry reuses originals within five minutes; burst result remains distinct.",
+          "reviewNote": "100 completes all phases. 1,000 simultaneous stress fails; all1,000 then recover original immutable commands within13.992s/eight workers. Separate exact same-cohort audit verifies2,000 hashes/entities/equal feed; all owner denials pass. Actual App capture overlaps both phases. This closes bounded-recovery/safety observation, not burst-capacity success.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "scripts/test-load.mjs",
@@ -29687,13 +29913,20 @@
             "src/sync/coordinator.ts",
             "supabase/functions/sync-push/index.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "load100",
+            "load1000Burst",
+            "load1000Audit",
+            "loadCapture1000"
+          ]
         },
         {
           "branch": "interrupted staging",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-runtime-verified-with-limits",
           "oracleRefs": [
-            "tests/load/reconnect.test.ts:review:807548cea412"
+            "tests/load/reconnect.test.ts:review:807548cea412",
+            "tests/load/continue.test.ts:review:8a19bda99a07"
           ],
           "assertionLocation": {
             "file": "tests/load/reconnect.test.ts",
@@ -29707,13 +29940,18 @@
             "src/sync/coordinator.ts",
             "supabase/functions/sync-push/index.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "load1000Auxiliary",
+            "loadLimits"
+          ]
         },
         {
           "branch": "webhook storm",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-runtime-verified-with-limits",
           "oracleRefs": [
-            "tests/load/reconnect.test.ts:review:807548cea412"
+            "tests/load/reconnect.test.ts:review:807548cea412",
+            "tests/load/continue.test.ts:review:8a19bda99a07"
           ],
           "assertionLocation": {
             "file": "tests/load/reconnect.test.ts",
@@ -29727,13 +29965,17 @@
             "src/sync/coordinator.ts",
             "supabase/functions/sync-push/index.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "load1000Auxiliary"
+          ]
         },
         {
           "branch": "inactive storage",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-runtime-verified-with-limits",
           "oracleRefs": [
-            "tests/load/reconnect.test.ts:review:807548cea412"
+            "tests/load/reconnect.test.ts:review:807548cea412",
+            "tests/load/continue.test.ts:review:8a19bda99a07"
           ],
           "assertionLocation": {
             "file": "tests/load/reconnect.test.ts",
@@ -29747,14 +29989,18 @@
             "src/sync/coordinator.ts",
             "supabase/functions/sync-push/index.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "load1000Auxiliary"
+          ]
         },
         {
           "branch": "fair queue",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-runtime-verified-with-limits",
           "oracleRefs": [
             "tests/load/reconnect.test.ts:review:807548cea412",
-            "tests/server/review-regressions.test.ts:110"
+            "tests/server/review-regressions.test.ts:110",
+            "tests/load/continue.test.ts:review:8a19bda99a07"
           ],
           "assertionLocation": {
             "file": "tests/load/reconnect.test.ts",
@@ -29762,7 +30008,8 @@
           },
           "reviewNote": "Bounded compaction rounds cover cohort beyond one batch. Separate actual-server regression proves later accounts are visited rather than repeatedly processing the first batch.",
           "proofRefs": [
-            "backendFinal84"
+            "backendFinal84",
+            "load1000Auxiliary"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -29782,15 +30029,17 @@
         },
         {
           "branch": "429/503",
-          "status": "assertions-located-awaiting-final-proof",
+          "status": "local-runtime-verified-with-limits",
           "oracleRefs": [
-            "tests/load/reconnect.test.ts:review:807548cea412"
+            "tests/load/reconnect.test.ts:review:807548cea412",
+            "tests/load/continue.test.ts:review:8a19bda99a07",
+            "tests/server/boundaries.test.ts:review:53d4493abfd7"
           ],
           "assertionLocation": {
             "file": "tests/load/reconnect.test.ts",
             "line": 661
           },
-          "reviewNote": "Twenty-five real HTTP refusals against a controlled exhausted synthetic bucket must be 429/RATE_LIMITED/retryable. Naturally occurring gateway/Edge 500/503/transport failures are preserved in phase-separated raw metrics; bounded retry/recovery is assessed separately and is not relabeled uniform typed infrastructure backpressure.",
+          "reviewNote": "25 controlled real HTTP429 refusals assert RATE_LIMITED/retryable. Actual server Auth-outage regression asserts503/SERVICE_UNAVAILABLE/retryable and unchanged retry; stress records1,653 typed503 plus169 untyped503/29untyped500 and transport failures, without claiming uniform typed infrastructure failure.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "scripts/test-load.mjs",
@@ -29798,7 +30047,12 @@
             "src/sync/coordinator.ts",
             "supabase/functions/sync-push/index.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "proofRefs": [
+            "load1000Auxiliary",
+            "backendFinal84",
+            "load1000Burst"
+          ]
         }
       ],
       "testFiles": [
@@ -29813,12 +30067,25 @@
         {
           "path": "tests/server/review-regressions.test.ts",
           "present": true
+        },
+        {
+          "path": "tests/load/continue.test.ts",
+          "present": true
         }
       ],
-      "proofRefs": [],
-      "status": "pending-integrated-verification",
+      "proofRefs": [
+        "load100",
+        "load1000Burst",
+        "load1000Audit",
+        "load1000Auxiliary",
+        "loadLimits",
+        "loadCapture1000"
+      ],
+      "status": "local-runtime-verified-with-limits",
       "limitations": [
-        "The 100-account run and original failed 1,000-account burst are retained separately. Final 1,000-account bounded recovery, invariant audit and simultaneous actual-App capture evidence are pending. A completed bounded local stress investigation is not 1,000-user capacity, production cost or uniform typed gateway-overload qualification."
+        "Completed local stress investigation establishes bounded unchanged-command recovery, observed atomicity/ownership, bounded staging/fair compaction, typed application overload and durable local capture. The 1,000 simultaneous burst and concurrent backup remain FAIL; gateway/transport errors include untyped responses. It is not hosted capacity or funded operating-cost qualification.",
+        "Ten deliberately truncated-upload staging rows remain pending expiry and quota-accounted; no physical objects exist for them. This cohort was not swept; separate source-matched actual server tests exercise safe orphan collection.",
+        "Server product source is unchanged by subsequent client no-op fix. Capture ran on a07b014-equivalent product; affected final client/native functional binding remains pending."
       ]
     },
     {
@@ -29858,7 +30125,8 @@
         "tests/scale.spec.ts:review:ba3a738de933",
         "src/services/local-data-service.test.ts:245",
         "tests/native/benchmark/main.ts:review:dc64c5ea89fb",
-        "tests/native/benchmark/main.ts:review:0a24dc36cd68"
+        "tests/native/benchmark/main.ts:review:0a24dc36cd68",
+        "tests/performance/capture.load.ts:review:c1e430059721"
       ],
       "acceptanceBranches": [
         {
@@ -29867,10 +30135,12 @@
           "oracleRefs": [
             "tests/scale.spec.ts:review:9a8c570dcbee",
             "tests/scale.spec.ts:review:3de160f7b6e8",
-            "tests/scale.spec.ts:review:ba3a738de933"
+            "tests/scale.spec.ts:review:ba3a738de933",
+            "tests/performance/capture.load.ts:review:c1e430059721"
           ],
           "proofRefs": [
-            "webScaleFinal"
+            "webScaleFinal",
+            "loadCapture1000"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -29971,7 +30241,8 @@
         "nativeProduct",
         "nativeMeasuredFinal",
         "webScaleFinal",
-        "nativeShareBytes"
+        "nativeShareBytes",
+        "loadCapture1000"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -30910,8 +31181,11 @@
       ],
       "finding": "Actual cloud account-deletion review is invalidated by a no-op empty sync-pull: applyPage/change advances local collection revision even when afterCursor equals nextCursor and no receipt changes exist. No deletion HTTP request occurs; data and draft remain safe.",
       "owner": "client/browser/native adapters",
-      "status": "local defect confirmed by implementation owner; preserve review CAS, fix no-op revision semantics and assert both repositories; final product freeze withdrawn",
-      "proofRefs": []
+      "status": "0b518fa source and exact controlled red/green assertions independently reviewed; browser/controller focused69pass; actual SQLite and complete corrected-cloud/final artifact binding pending",
+      "proofRefs": [
+        "noopPullFix"
+      ]
     }
-  ]
+  ],
+  "candidateFixRevision": "0b518fa8cdea04a61b443a09ab0eb2db8aa8d534"
 }
