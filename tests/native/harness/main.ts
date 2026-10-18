@@ -63,6 +63,7 @@ const report = {
   schemaVersion: 1,
   restartPhase,
   platform: Capacitor.getPlatform(),
+  origin: location.origin,
   scope: 'synthetic simulator fixture; not physical/store/power-loss qualification',
   results,
 }

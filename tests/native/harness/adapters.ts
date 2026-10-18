@@ -28,6 +28,59 @@ const scopeFor = (key: SessionScope['key']): SessionScope => ({
 export async function adapterTests(
   test: (name: string, action: () => Promise<void>) => Promise<void>,
 ) {
+  await test('native transition rejects newly added drafts and stale identities; retained copy preserves draft media', async () => {
+    const info = fixture(),
+      destination = fixture(),
+      name = `transition_${Date.now()}`
+    let repo = await openNativeRepository({ databaseName: name })
+    await repo.createCollection(info)
+    await repo.createCollection(destination)
+    assert((await repo.readActive()) === null)
+    const first = await repo.transition(null, { key: info.key, device: scopeFor(info.key).device })
+    assert(first.generation === 0)
+    const review = await repo.reviewLocal(info.key),
+      drafts = createNativeDraftStore(repo, first)
+    const draft = {
+      key: 'checkpoint:native-project',
+      revision: 'saved-draft',
+      baseRevision: '1',
+      value: {
+        nextStep: 'Retain this draft too',
+        voice: bytesToDataUrl(new Uint8Array(await wave().arrayBuffer()), 'audio/wav'),
+      },
+    }
+    await drafts.write(draft.key, undefined, draft)
+    await rejects(() =>
+      repo.transition(first, { key: destination.key, device: first.device }, review),
+    )
+    await rejects(() =>
+      repo.transition(
+        { ...first, device: { ...first.device, id: 'other-device' } },
+        { key: destination.key, device: first.device },
+      ),
+    )
+    assert((await repo.readActive())?.generation === 0)
+    const latest = await repo.reviewLocal(info.key)
+    const fenced = await repo.transition(first, { key: info.key, device: first.device }, latest)
+    await rejects(() => drafts.write(draft.key, draft.revision, { ...draft, revision: 'late' }))
+    const retained = await repo.retainLocal(
+      info.key,
+      'Retained draft fixture',
+      latest.revision,
+      fenced.generation,
+    )
+    const selected = await repo.transition(fenced, { key: retained, device: first.device })
+    const restored = await createNativeDraftStore(repo, selected).read<typeof draft.value>(
+      draft.key,
+    )
+    assert(restored?.value.voice === draft.value.voice && restored.revision === draft.revision)
+    assert((await repo.drafts.read(draft.key, info.key))?.revision === draft.revision)
+    await repo.close()
+    repo = await openNativeRepository({ databaseName: name })
+    assert((await repo.readActive())?.generation === selected.generation)
+    assert(scopeKey((await repo.readActive())!.key) === scopeKey(retained))
+    await repo.close()
+  })
   await test('native portable draft retains caller revision, normalized media, atomic pins and opening scope', async () => {
     const info = fixture(),
       name = `draftport_${Date.now()}`,

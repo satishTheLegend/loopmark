@@ -1,4 +1,4 @@
-import type { Repository } from '../../repositories/contracts'
+import type { Repository, LocalCollectionReview } from '../../repositories/contracts'
 import type {
   CollectionInfo,
   CollectionKey,
@@ -37,7 +37,7 @@ import {
 } from '../../repositories/state'
 import { NativeDatabase } from './database'
 import { NativeMedia } from './files'
-import { NativeDraftStore } from './drafts'
+import { NativeDraftStore, type NativeDraft } from './drafts'
 import { activeScope, assertGeneration, scopeKey } from './recovery-journal'
 import { durableFiles } from './files-bridge'
 
@@ -86,6 +86,63 @@ export class NativeRepository implements Repository {
         /* Isolate observers. */
       }
     }
+  }
+  async readActive(): Promise<SessionScope | null> {
+    return this.database.serial(activeScope)
+  }
+  private async reviewIn(
+    db: SQLiteDBConnection,
+    key: CollectionKey,
+  ): Promise<LocalCollectionReview> {
+    const state = await getState(db, key),
+      prefix = `draft:${scopeKey(key)}:`
+    const rows =
+      (
+        await db.query('SELECT body FROM metadata WHERE substr(key,1,length(?))=?', [
+          prefix,
+          prefix,
+        ])
+      ).values ?? []
+    return {
+      key,
+      revision: state.version,
+      drafts: rows
+        .map((row) => {
+          const draft = JSON.parse(row.body as string) as NativeDraft
+          return { key: draft.id, revision: draft.revision }
+        })
+        .sort((a, b) => a.key.localeCompare(b.key)),
+    }
+  }
+  async reviewLocal(key: CollectionKey): Promise<LocalCollectionReview> {
+    return this.database.serial((db) => this.reviewIn(db, key))
+  }
+  async transition(
+    expected: SessionScope | null,
+    target: Pick<SessionScope, 'key' | 'device'>,
+    review?: LocalCollectionReview,
+  ): Promise<SessionScope> {
+    if (!id.safeParse(target.device.id).success || !id.safeParse(target.device.generation).success)
+      throw new DomainError('VALIDATION')
+    const result = await this.database.transaction(async (db) => {
+      const current = await activeScope(db)
+      if (canonicalJson(current) !== canonicalJson(expected))
+        throw new DomainError('ACCOUNT_CHANGED')
+      await getState(db, target.key)
+      if (review && canonicalJson(await this.reviewIn(db, review.key)) !== canonicalJson(review))
+        throw new DomainError('REVISION_CONFLICT')
+      const generation = (current?.generation ?? -1) + 1
+      if (!Number.isSafeInteger(generation)) throw new DomainError('INVARIANT_VIOLATION')
+      const scope = { ...target, generation }
+      await db.run(
+        "INSERT OR REPLACE INTO metadata(key,body) VALUES('active',?)",
+        [JSON.stringify(scope)],
+        false,
+      )
+      return scope
+    })
+    this.publish()
+    return result
   }
   async listCollections(): Promise<CollectionInfo[]> {
     return this.database.serial(async (db) =>
@@ -489,8 +546,29 @@ export class NativeRepository implements Repository {
       await assertGeneration(db, key, generation, true)
       const source = await getState(db, key)
       if (source.version !== revision) throw new DomainError('REVISION_CONFLICT')
-      const view = viewOf(source),
-        refs = mediaRefs(view.checkpoints)
+      const view = viewOf(source)
+      const draftPrefix = `draft:${scopeKey(key)}:`
+      const drafts: NativeDraft[] = recovered
+        ? []
+        : (
+            (
+              await db.query('SELECT body FROM metadata WHERE substr(key,1,length(?))=?', [
+                draftPrefix,
+                draftPrefix,
+              ])
+            ).values ?? []
+          ).map((row) => JSON.parse(row.body as string) as NativeDraft)
+      const allRefs = new Map<string, MediaRef>()
+      for (const ref of [
+        ...mediaRefs(view.checkpoints),
+        ...drafts.flatMap((draft) => draft.media),
+      ]) {
+        const previous = allRefs.get(ref.id)
+        if (previous && canonicalJson(previous) !== canonicalJson(ref))
+          throw new DomainError('MEDIA_INVALID')
+        allRefs.set(ref.id, ref)
+      }
+      const refs = [...allRefs.values()]
       await assertMediaPresent(db, key, refs)
       const copied = emptyCollection({
         ...source.info,
@@ -523,6 +601,19 @@ export class NativeRepository implements Repository {
             false,
           )
           await db.run('DELETE FROM prepared_files WHERE file_key=?', [fileKey], false)
+        }
+        for (const draft of drafts) {
+          await db.run(
+            'INSERT INTO metadata(key,body) VALUES(?,?)',
+            [`draft:${scopeKey(target)}:${draft.id}`, JSON.stringify({ ...draft, scope: target })],
+            false,
+          )
+          for (const ref of draft.media)
+            await db.run(
+              'INSERT INTO pins(owner,scope,media_id) VALUES(?,?,?)',
+              [`draft:${draft.id}`, scopeKey(target), ref.id],
+              false,
+            )
         }
         if (recovered) {
           source.pending = []

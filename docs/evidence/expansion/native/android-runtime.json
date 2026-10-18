@@ -5,6 +5,7 @@
       "schemaVersion": 1,
       "restartPhase": 1,
       "platform": "android",
+      "origin": "https://localhost",
       "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
       "results": [
         {
@@ -41,6 +42,10 @@
         },
         {
           "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native transition rejects newly added drafts and stale identities; retained copy preserves draft media",
           "passed": true
         },
         {
@@ -61,6 +66,7 @@
       "schemaVersion": 1,
       "restartPhase": 2,
       "platform": "android",
+      "origin": "https://localhost",
       "scope": "synthetic simulator fixture; not physical/store/power-loss qualification",
       "results": [
         {
@@ -97,6 +103,10 @@
         },
         {
           "name": "saved collection survives a full native app process restart",
+          "passed": true
+        },
+        {
+          "name": "native transition rejects newly added drafts and stale identities; retained copy preserves draft media",
           "passed": true
         },
         {
