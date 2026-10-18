@@ -6,8 +6,8 @@ Status: **implementation and local verification in progress; external activation
 
 | Boundary | Evidence available | Remaining gate |
 | --- | --- | --- |
-| Guest craft workflow and separate restore | 353 unit cases, 20 scale cases, full 255-case UI and 264-case guest matrices | Verify the newly found background-sync collection-switch correction and bind final source |
-| Account/connection/sync/deletion | Actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, authority/retention/recovery; final 84/84 server tests | Current cloud run 77/80; correct stale collection refresh and rerun affected integration; explicit conflict-refresh fixture passes all five profiles |
+| Guest craft workflow and separate restore | 373 unit cases, 20 scale cases, full 255-case UI and 264-case guest matrices | Complete browser/native runtime qualification for the reviewed `a1a3b72` collection-switch correction |
+| Account/connection/sync/deletion | Actual local Auth/Postgres/Storage/Edge, delivered codes, two-device flows, authority/retention/recovery; final 84/84 server tests | Current cloud run 77/80; source/unit correction passed; rerun affected integration; explicit conflict-refresh fixture passes all five profiles |
 | iOS/Android | Real SQLite/files, inbox-store faults, OS file delivery, production capture/relaunch/permissions/diagnostic share cancel/review/restore/repeat; measured small/48 MiB operations | Physical hardware, store sandbox, signing and actual associated-domain proof |
 | Web/store purchases | Strict contracts, hosted/native adapters and actual local ledger/webhook authority using an explicitly synthetic provider | Real merchant/RevenueCat/store accounts and actual sandbox scenario evidence |
 | Operations and contributor workflow | Actual encrypted database/object recovery, independent-current erasure ledger, fair scheduling, alerts, compatible rollback, clean automated contributor checkout and dependency provenance; 1,000-account recovery/audit pass, simultaneous burst and peak backup fail | Independent final judgment; hosted capacity qualification, disaster-separated external recovery facility and operating owner |
