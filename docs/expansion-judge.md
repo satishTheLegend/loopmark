@@ -18,7 +18,7 @@ The [84-case qualification](evidence/expansion/I11/final-qualification-84.json) 
 
 ## Native runtime and measurement evidence
 
-The [intake qualification](evidence/expansion/native/incoming-backup/runtime/qualification.json), [functional index](evidence/expansion/native/benchmarks/functional-final/index.json), and [production UI results](evidence/expansion/native/product-final-fb52c6e/index.json) have matching raw hashes. Actual simulator/emulator execution covers OS-delivered private bytes, reopen, full-scope re-review, validated separate restore, stable-token retries, handled receipts, notice persistence and source preservation. Actual production UI adds review, cancel, relaunch, restore and repeated-intent journeys. Android also rejects malformed/oversized OS files and completes an already-reviewed import despite a different incoming notice. The final `a07b014` production-bundle refresh remains pending.
+The [intake qualification](evidence/expansion/native/incoming-backup/runtime/qualification.json), [functional index](evidence/expansion/native/benchmarks/functional-final/index.json), and [final production UI results](evidence/expansion/native/product-final-348a05d/index.json) have matching raw hashes. Actual simulator/emulator execution covers OS-delivered private bytes, reopen, full-scope re-review, validated separate restore, stable-token retries, handled receipts, notice persistence and source preservation. Actual production UI adds review, cancel, relaunch, restore and repeated-intent journeys. Android also rejects malformed/oversized OS files and completes an already-reviewed import despite a different incoming notice. The refreshed `348a05d` artifacts contain the same product source as `a07b014`. Independent checks match all 11 raw evidence files, 90 web assets inside each artifact, canonical APK/archive hashes, all 143 regular iOS app files and all four exact tested-artifact references. Only test-fixture selectors/payload uniqueness changed. The initial iOS first-tap cause remains unproven; the exact-field rerun passed on the same artifact and collection, and the failed log remains preserved.
 
 Native download assertions protect local provenance, drafts, export pins, upload/candidate work and pending commands; exercise real SQLite rollback; and retry durable cleanup after an injected deletion failure and reopen. Relevant adapter source is unchanged from its recorded executions. Platform offset and Foundation-to-JS conversion defects were corrected and verified through the actual bridge.
 
@@ -33,9 +33,8 @@ The accepted load obligation checks bounded work, integrity and uninterrupted lo
 Remaining local gates are finite:
 
 1. Complete and bind the full frozen guest, rendered UI and actual-cloud browser runs, retaining prior failures and their specific corrections.
-2. Bind refreshed production native bundles and their actual product journeys to the final source and exact artifact hashes.
-3. Complete the 1,000-account bounded recovery/invariant audit and simultaneous actual-App capture/export check, preserving the original burst failure and observed limits.
-4. Bind final supporting-command results and adjudicate each requirement/branch. Pending execution is still explicit in the matrix.
+2. Complete the 1,000-account bounded recovery/invariant audit and simultaneous actual-App capture/export check, preserving the original burst failure and observed limits.
+3. Bind final supporting-command results and adjudicate each requirement/branch. Pending execution is still explicit in the matrix.
 
 No additional implementation defect was found in this source pass. This statement does not predict pending runtime results.
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Loopmark",
-  "reviewState": "PROVISIONAL FROZEN-SOURCE ADJUDICATION: all 123 IDs and 286 T branches mapped; backend84 source-matched, native/UI and SW evidence reviewed; final full browser/cloud, refreshed native bundles and 1,000-account recovery pending",
+  "reviewState": "PROVISIONAL FROZEN-SOURCE ADJUDICATION: all 123 IDs / 286 branches mapped; source-matched backend84 and final native artifacts qualified; full guest/UI/cloud manifests, supporting commands and 1,000-account recovery pending",
   "reviewer": "final_traceability_review (independent of implementation authors)",
   "reviewedSourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
   "requiredIds": [
@@ -145,7 +145,8 @@
     "local-runtime-evidence-awaiting-final-freeze": "Specific executed local assertions and source equivalence reviewed; final integrated qualification is not implied.",
     "local-measurement-recorded": "Actual measured native adapter result, with no invented latency/memory budget or physical-device qualification.",
     "pending-derived-adjudication": "Higher-level accepted obligation maps specific branch/direct-review evidence; final decision remains pending and does not inherit unrelated broader gates.",
-    "implemented-awaiting-final-integrated-proof": "Source implementation exists; final integrated execution is still pending."
+    "implemented-awaiting-final-integrated-proof": "Source implementation exists; final integrated execution is still pending.",
+    "local-runtime-verified": "Specific local acceptance branch executed on exact frozen or independently source-equivalent artifacts. External provider/physical/human gates remain separate; no whole-project approval implied."
   },
   "evidenceRules": [
     "Every requirement is retained; no proposed filename is treated as proof when absent.",
@@ -355,6 +356,41 @@
       "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
       "reviewedAgainstRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
       "currentFreezeQualified": true
+    },
+    "nativeProductFrozen": {
+      "path": "docs/evidence/expansion/native/product-final-348a05d/index.json",
+      "sha256": "802ccd7796d06f0bfa248fac7d909cf29053e5280c32f77459061f52a046c0a8",
+      "scope": "Actual production checkpoint, native permission denial/cancellation, redacted diagnostics and OS backup review/cancel/relaunch/restore/repeat on selected iOS simulator and Android emulator. Exact canonical artifacts independently hash-verified. No physical/store/performance claim.",
+      "sourceRevision": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+      "reviewedAgainstRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
+      "currentFreezeQualified": true,
+      "independentBinding": {
+        "rawEvidenceFilesVerified": 11,
+        "webAssetsVerifiedInsideEachArtifact": 90,
+        "iosArchiveRegularFilesHashed": 143,
+        "canonicalManifestMatchesIndex": true,
+        "archiveApkAndTestedAppDirectoryHashesMatch": true,
+        "fourTestReportsMatchExactArtifactsAndManifest": true,
+        "productSourceDiffAgainstFreeze": "empty",
+        "sourcePathsCompared": [
+          "src",
+          "public",
+          "index.html",
+          "vite.config.ts",
+          "package.json",
+          "package-lock.json",
+          "capacitor.config.ts",
+          "ios/App/App",
+          "android/app/src/main",
+          "android/app/build.gradle",
+          "ios/App/App.xcodeproj/project.pbxproj",
+          "ios/App/CapApp-SPM"
+        ]
+      },
+      "fixtureChanges": {
+        "ios": "ffd9363: require the Project name field before typing, rather than the first text field. Initial first-tap cause remains unproven; full rerun passed on same artifact/collection.",
+        "android": "3438617: distinct immutable malformed bytes for each run avoid correctly handled prior-file receipt. Product source unchanged."
+      }
     }
   },
   "tests": {
@@ -8695,34 +8731,54 @@
       "line": 124,
       "testName": "testExternalBackupReviewCancelRelaunchRestoreAndRepeat",
       "sourceSha256": "763b543a4d8a2e18697e172f8c15ec2098bfe604a717687829f118afe10ca6eb",
-      "level": "actual-runtime",
+      "level": "actual-native-production-ui",
       "executedProofRefs": [
-        "nativeProductReviewed"
+        "nativeProductFrozen"
       ],
-      "assertionNote": "Actual OS open and production UI: preview, cancel, process restart, explicit separate restore, My projects navigation, handled repeat and one restored card after relaunch.",
       "frozenSource": {
         "path": "ios/App/UITests/NativeFlows.swift",
         "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
         "sha256": "763b543a4d8a2e18697e172f8c15ec2098bfe604a717687829f118afe10ca6eb",
-        "workingCopyMatchesFreeze": true
-      }
+        "workingCopyMatchesFreeze": false
+      },
+      "frozenExecutions": [
+        {
+          "proofRef": "nativeProductFrozen",
+          "report": "docs/evidence/expansion/native/product-final-348a05d/ios-inbox-product.json",
+          "status": "passed",
+          "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+          "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+          "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+          "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+        }
+      ]
     },
     "scripts/native/test-android-inbox-product.mjs:review:2a0847daca28": {
       "file": "scripts/native/test-android-inbox-product.mjs",
       "line": 91,
       "testName": "Actual Android external backup production UI journey",
       "sourceSha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
-      "level": "actual-runtime",
+      "level": "actual-native-production-ui",
       "executedProofRefs": [
-        "nativeProductReviewed"
+        "nativeProductFrozen"
       ],
-      "assertionNote": "Separate-UID VIEW/SEND; explicit preview/cancel/relaunch; unrelated incoming notice during preview; exactly one separate collection; original preserved; malformed and oversized rejection.",
       "frozenSource": {
         "path": "scripts/native/test-android-inbox-product.mjs",
         "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
         "sha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
         "workingCopyMatchesFreeze": true
-      }
+      },
+      "frozenExecutions": [
+        {
+          "proofRef": "nativeProductFrozen",
+          "report": "docs/evidence/expansion/native/product-final-348a05d/android-inbox-product.json",
+          "status": "passed",
+          "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+          "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+          "fixtureSourceSha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
+          "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+        }
+      ]
     },
     "tests/native/benchmark/main.ts:review:0a24dc36cd68": {
       "file": "tests/native/benchmark/main.ts",
@@ -8755,6 +8811,60 @@
         "sha256": "08896fc29ad1b03051ba856070db7168b925fa70d1bc0a5a93038349f4a4086e",
         "workingCopyMatchesFreeze": true
       }
+    },
+    "ios/App/UITests/NativeFlows.swift:review:23985d2e504b": {
+      "file": "ios/App/UITests/NativeFlows.swift",
+      "line": 47,
+      "testName": "testProductionCheckpointAndNativePermissions",
+      "sourceSha256": "763b543a4d8a2e18697e172f8c15ec2098bfe604a717687829f118afe10ca6eb",
+      "level": "actual-native-production-ui",
+      "executedProofRefs": [
+        "nativeProductFrozen"
+      ],
+      "frozenSource": {
+        "path": "ios/App/UITests/NativeFlows.swift",
+        "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
+        "sha256": "763b543a4d8a2e18697e172f8c15ec2098bfe604a717687829f118afe10ca6eb",
+        "workingCopyMatchesFreeze": false
+      },
+      "frozenExecutions": [
+        {
+          "proofRef": "nativeProductFrozen",
+          "report": "docs/evidence/expansion/native/product-final-348a05d/ios-product.json",
+          "status": "passed",
+          "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+          "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+          "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+          "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+        }
+      ]
+    },
+    "scripts/native/test-android-product.mjs:review:ed089b9874cd": {
+      "file": "scripts/native/test-android-product.mjs",
+      "line": 44,
+      "testName": "Actual Android production checkpoint, permission, diagnostics and relaunch journey",
+      "sourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+      "level": "actual-native-production-ui",
+      "executedProofRefs": [
+        "nativeProductFrozen"
+      ],
+      "frozenSource": {
+        "path": "scripts/native/test-android-product.mjs",
+        "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
+        "sha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+        "workingCopyMatchesFreeze": true
+      },
+      "frozenExecutions": [
+        {
+          "proofRef": "nativeProductFrozen",
+          "report": "docs/evidence/expansion/native/product-final-348a05d/android-product.json",
+          "status": "passed",
+          "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+          "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+          "fixtureSourceSha256": "54c197ed15473470aa5c467f9ee2d593f30651b8efb23ab2c2083ee8bcdc0f6f",
+          "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+        }
+      ]
     }
   },
   "requirements": [
@@ -8854,7 +8964,9 @@
         "Referenced T branches map the relevant local behavior; their broader platform/provider/human gates are not automatically inherited. This requirement retains its own accepted scope and any direct review below. Final frozen runtime adjudication remains pending."
       ],
       "directOracleRefs": [
-        "tests/offline-first-install.spec.ts:review:8a86d9db84b7"
+        "tests/offline-first-install.spec.ts:review:8a86d9db84b7",
+        "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+        "scripts/native/test-android-product.mjs:review:ed089b9874cd"
       ],
       "implementation": [
         {
@@ -8955,6 +9067,9 @@
           "sha256": "6c6f7ae6f3d99c3581e492a5154807671bddd97f569e05ada0dc7328190cadcf",
           "workingCopyMatchesFreeze": true
         }
+      ],
+      "directEvidenceRefs": [
+        "nativeProductFrozen"
       ]
     },
     {
@@ -14840,6 +14955,13 @@
           "sha256": "ec5b4fec7a8031ee29c6ad25f7ec7000c5c879893672d5e5e9a053a0434ddee0",
           "workingCopyMatchesFreeze": true
         }
+      ],
+      "directOracleRefs": [
+        "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+        "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+      ],
+      "directEvidenceRefs": [
+        "nativeProductFrozen"
       ]
     },
     {
@@ -22187,14 +22309,21 @@
             "docs/evidence/expansion/native/native-ui-flows.json:1:Actual simulator/emulator sheet, picker and audio outcomes"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "iOS/Android actual camera source-sheet cancellation; successful physical camera remains external.",
+          "reviewNote": "Actual production OS camera-source sheet canceled on simulator/emulator, then text checkpoint still saves.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "src/platform/native/capture.ts",
             "src/platform/native/capture-recovery.ts",
             "src/media.ts"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "supportingLocalOracleRefs": [
+            "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+            "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+          ],
+          "proofRefs": [
+            "nativeProductFrozen"
+          ]
         },
         {
           "branch": "process return",
@@ -22229,7 +22358,8 @@
       "proofRefs": [
         "unitCurrent",
         "native",
-        "nativeProduct"
+        "nativeProduct",
+        "nativeProductFrozen"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -22297,14 +22427,21 @@
             "docs/evidence/expansion/native/native-ui-flows.json:1:Actual simulator/emulator sheet, picker and audio outcomes"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "iOS actual OS-denied microphone plus supplemental adapter guard.",
+          "reviewNote": "Actual OS microphone denial in production app retains text checkpoint; successful physical recording is not established by denial.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "src/platform/native/capture.ts",
             "src/components/NativeVoiceNote.tsx",
             "src/components/VoiceNote.tsx"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "supportingLocalOracleRefs": [
+            "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+            "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+          ],
+          "proofRefs": [
+            "nativeProductFrozen"
+          ]
         },
         {
           "branch": "two-minute stop",
@@ -22401,7 +22538,8 @@
       "proofRefs": [
         "unitCurrent",
         "native",
-        "nativeProduct"
+        "nativeProduct",
+        "nativeProductFrozen"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
@@ -22505,7 +22643,9 @@
         "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:06faec824ab6",
         "ios/App/UITests/NativeFlows.swift:review:59d994bd8323",
         "scripts/native/test-android-inbox-product.mjs:review:2a0847daca28",
-        "tests/native/benchmark/main.ts:review:0a24dc36cd68"
+        "tests/native/benchmark/main.ts:review:0a24dc36cd68",
+        "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+        "scripts/native/test-android-product.mjs:review:ed089b9874cd"
       ],
       "acceptanceBranches": [
         {
@@ -22542,7 +22682,7 @@
             "docs/evidence/expansion/native/native-ui-flows.json:1:Actual simulator/emulator sheet, picker and audio outcomes"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "iOS/Android actual share/picker cancellation; synthetic fixture independent of actual App.",
+          "reviewNote": "Earlier native backup/picker cancellation plus current production diagnostic OS share-sheet cancellation. The current production share assertion concerns diagnostics, not a fabricated complete-backup receiver test.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "src/platform/native/share.ts",
@@ -22557,20 +22697,28 @@
             "android/app/src/main/java/app/loopmark/craft/BackupInboxPlugin.java",
             "android/app/src/main/java/app/loopmark/craft/MainActivity.java"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "supportingLocalOracleRefs": [
+            "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+            "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+          ],
+          "proofRefs": [
+            "nativeProductFrozen"
+          ]
         },
         {
           "branch": "import",
-          "status": "local-runtime-evidence-awaiting-final-freeze",
+          "status": "local-runtime-verified",
           "oracleRefs": [
             "docs/evidence/expansion/native/native-ui-flows.json:1:Actual simulator/emulator sheet, picker and audio outcomes",
             "ios/App/UITests/NativeFlows.swift:review:59d994bd8323",
             "scripts/native/test-android-inbox-product.mjs:review:2a0847daca28"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "Actual production UI passes on selected simulator/emulator, including OS intake, review/cancel/relaunch/separate restore and repeated file delivery. Refresh against final a07b014 bundles remains pending.",
+          "reviewNote": "Actual production UI on exact refreshed source-equivalent artifacts; OS intake, explicit review/cancel/relaunch/separate restore/repeat, with malformed/oversized rejection on Android. Raw logs, per-platform reports, bundle, canonical archive/APK and extracted iOS bytes are independently bound. Physical document providers remain external.",
           "proofRefs": [
-            "nativeProductReviewed"
+            "nativeProductReviewed",
+            "nativeProductFrozen"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -22586,7 +22734,26 @@
             "android/app/src/main/java/app/loopmark/craft/BackupInboxPlugin.java",
             "android/app/src/main/java/app/loopmark/craft/MainActivity.java"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/ios-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            },
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            }
+          ]
         },
         {
           "branch": "invalid file",
@@ -22597,7 +22764,8 @@
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
           "proofRefs": [
-            "nativeProductReviewed"
+            "nativeProductReviewed",
+            "nativeProductFrozen"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -22613,7 +22781,18 @@
             "android/app/src/main/java/app/loopmark/craft/BackupInboxPlugin.java",
             "android/app/src/main/java/app/loopmark/craft/MainActivity.java"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            }
+          ],
+          "reviewNote": "Actual production UI on exact refreshed source-equivalent artifacts; OS intake, explicit review/cancel/relaunch/separate restore/repeat, with malformed/oversized rejection on Android. Raw logs, per-platform reports, bundle, canonical archive/APK and extracted iOS bytes are independently bound. Physical document providers remain external."
         },
         {
           "branch": "disk full",
@@ -22643,7 +22822,7 @@
         },
         {
           "branch": "launch file",
-          "status": "local-runtime-evidence-awaiting-final-freeze",
+          "status": "local-runtime-verified",
           "oracleRefs": [
             "ios/App/UITests/NativeFlows.swift:review:7c2a55d3482a",
             "tests/native/harness/inbox.ts:review:82b4fe5df904",
@@ -22651,11 +22830,12 @@
             "scripts/native/test-android-inbox-product.mjs:review:2a0847daca28"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "Actual production UI passes on selected simulator/emulator, including OS intake, review/cancel/relaunch/separate restore and repeated file delivery. Refresh against final a07b014 bundles remains pending.",
+          "reviewNote": "Actual production UI on exact refreshed source-equivalent artifacts; OS intake, explicit review/cancel/relaunch/separate restore/repeat, with malformed/oversized rejection on Android. Raw logs, per-platform reports, bundle, canonical archive/APK and extracted iOS bytes are independently bound. Physical document providers remain external.",
           "proofRefs": [
             "nativeInboxFinal",
             "nativeFunctionalFinal",
-            "nativeProductReviewed"
+            "nativeProductReviewed",
+            "nativeProductFrozen"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -22671,11 +22851,30 @@
             "android/app/src/main/java/app/loopmark/craft/BackupInboxPlugin.java",
             "android/app/src/main/java/app/loopmark/craft/MainActivity.java"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/ios-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            },
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            }
+          ]
         },
         {
           "branch": "repeated intent",
-          "status": "local-runtime-evidence-awaiting-final-freeze",
+          "status": "local-runtime-verified",
           "oracleRefs": [
             "ios/App/UITests/BackupInboxStoreTests.swift:review:3e1d86e145d8",
             "android/app/src/androidTest/java/app/loopmark/craft/BackupInboxTest.java:review:06faec824ab6",
@@ -22684,11 +22883,12 @@
             "scripts/native/test-android-inbox-product.mjs:review:2a0847daca28"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "Actual production UI passes on selected simulator/emulator, including OS intake, review/cancel/relaunch/separate restore and repeated file delivery. Refresh against final a07b014 bundles remains pending.",
+          "reviewNote": "Actual production UI on exact refreshed source-equivalent artifacts; OS intake, explicit review/cancel/relaunch/separate restore/repeat, with malformed/oversized rejection on Android. Raw logs, per-platform reports, bundle, canonical archive/APK and extracted iOS bytes are independently bound. Physical document providers remain external.",
           "proofRefs": [
             "nativeInboxFinal",
             "nativeFunctionalFinal",
-            "nativeProductReviewed"
+            "nativeProductReviewed",
+            "nativeProductFrozen"
           ],
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
@@ -22704,7 +22904,26 @@
             "android/app/src/main/java/app/loopmark/craft/BackupInboxPlugin.java",
             "android/app/src/main/java/app/loopmark/craft/MainActivity.java"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/ios-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "64ad92b1d9dc9510453f25833cb9304ab5966bcb23cb11ee3e6fb483432b3585",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            },
+            {
+              "proofRef": "nativeProductFrozen",
+              "report": "docs/evidence/expansion/native/product-final-348a05d/android-inbox-product.json",
+              "status": "passed",
+              "testedArtifactSource": "348a05d8b0d7e1616010ebaf6d0a0c6d376388dd",
+              "fixtureSourceRevision": "e567e92316446e3425fbd4edb1fd9012bca373c2",
+              "fixtureSourceSha256": "22b6c54fa574413bdf581502980bd5d5d6c27aea67733dd2f2e31a468d48cb88",
+              "fixtureChangeReview": "Only exact-field selection and distinct malformed test payloads changed after product freeze; implementation source is equivalent."
+            }
+          ]
         }
       ],
       "testFiles": [
@@ -22752,11 +22971,12 @@
         "nativeInboxFinal",
         "nativeFunctionalFinal",
         "nativeProductReviewed",
-        "nativeShareBytes"
+        "nativeShareBytes",
+        "nativeProductFrozen"
       ],
       "status": "pending-integrated-verification",
       "limitations": [
-        "Actual native OS intake and production UI are qualified on the selected simulator/emulator only; final a07b014 asset refresh pending. Complete private staged export bytes verified separately. Physical providers, receiving applications and full-volume/power-loss behavior remain external."
+        "Current production native OS import/review/cancel/relaunch/restore/repeat passes on exact source-equivalent simulator/emulator artifacts. Complete private staged backup bytes are independently verified; an external receiving app and physical document providers, full-volume/power-loss behavior remain unqualified."
       ]
     },
     {
@@ -23164,7 +23384,14 @@
             "src/platform/native/lifecycle.ts",
             "src/components/ui.tsx"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "supportingLocalOracleRefs": [
+            "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+          ],
+          "proofRefs": [
+            "nativeProductFrozen"
+          ],
+          "reviewNote": "Android emulator hardware Back cancels native sheet and returns from account screen to workbasket. Physical-device qualification remains separate."
         },
         {
           "branch": "safe areas",
@@ -23212,14 +23439,21 @@
             "docs/evidence/expansion/native/native-ui-flows.json:1:Actual simulator/emulator sheet, picker and audio outcomes"
           ],
           "externalQualification": "not-qualified; requires the specified provider, physical device, human walkthrough or deployment evidence separately",
-          "reviewNote": "Actual simulator/emulator sheets only; physical accessibility remains required.",
+          "reviewNote": "Actual production camera-source and diagnostic share sheets with cancellation; no external receiving app claim.",
           "sourceRevision": "a07b014cdde249bbba94c6567a73f24f800797da",
           "implementationRefs": [
             "src/styles.css",
             "src/platform/native/lifecycle.ts",
             "src/components/ui.tsx"
           ],
-          "frozenExecutions": []
+          "frozenExecutions": [],
+          "supportingLocalOracleRefs": [
+            "ios/App/UITests/NativeFlows.swift:review:23985d2e504b",
+            "scripts/native/test-android-product.mjs:review:ed089b9874cd"
+          ],
+          "proofRefs": [
+            "nativeProductFrozen"
+          ]
         }
       ],
       "testFiles": [
@@ -23231,7 +23465,8 @@
       "proofRefs": [
         "unitCurrent",
         "native",
-        "nativeProduct"
+        "nativeProduct",
+        "nativeProductFrozen"
       ],
       "status": "external-blocked",
       "limitations": [
@@ -25161,11 +25396,12 @@
       ],
       "finding": "Native externally opened backup file and repeated-intent continuation previously missing",
       "owner": "native",
-      "status": "OS adapter and production UI assertions passed on selected simulator/emulator; final frozen bundle refresh pending",
+      "status": "closed locally on selected simulator/emulator: production UI and OS adapter results bound to exact refreshed artifacts and equivalent frozen product source",
       "proofRefs": [
         "nativeInboxFinal",
         "nativeFunctionalFinal",
-        "nativeProductReviewed"
+        "nativeProductReviewed",
+        "nativeProductFrozen"
       ]
     },
     {
@@ -25260,11 +25496,12 @@
       ],
       "finding": "OS delivery exposed Android numeric offset and iOS Foundation-to-JS conversion failures",
       "owner": "native",
-      "status": "OS adapter and production UI assertions passed on selected simulator/emulator; final frozen bundle refresh pending",
+      "status": "closed locally on selected simulator/emulator: production UI and OS adapter results bound to exact refreshed artifacts and equivalent frozen product source",
       "proofRefs": [
         "nativeInboxFinal",
         "nativeFunctionalFinal",
-        "nativeProductReviewed"
+        "nativeProductReviewed",
+        "nativeProductFrozen"
       ]
     },
     {
