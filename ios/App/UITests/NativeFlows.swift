@@ -54,7 +54,7 @@ final class ProductFlows: XCTestCase {
             tap(existingProject, app: app)
         } else {
             tap(app.buttons["New project"], app: app)
-            let name = app.textFields.firstMatch
+            let name = app.textFields.containing(NSPredicate(format: "label BEGINSWITH %@", "Project name")).firstMatch
             XCTAssertTrue(name.waitForExistence(timeout: 10), app.debugDescription)
             name.tap()
             if let existing = name.value as? String, existing != name.placeholderValue {
