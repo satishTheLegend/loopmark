@@ -33,6 +33,18 @@ export interface Repository {
   activate(scope: SessionScope): Promise<void>
   commitLocal(key: CollectionKey, intent: LocalIntent, generation: Generation): Promise<LocalCommit>
   readView(key: CollectionKey): Promise<CollectionView>
+  /** Durable server shadow, never the local pending overlay; pending is always empty. */
+  readAcknowledged(key: CollectionKey): Promise<CollectionView>
+  resolvePending(
+    key: CollectionKey,
+    resolution: {
+      operationId: string
+      expectedRevision: string
+      recoveryName: string
+      replacement?: LocalIntent
+    },
+    generation: Generation,
+  ): Promise<{ recovered: CollectionKey | null; commit: LocalCommit | null }>
   applyPage(key: CollectionKey, page: PullPage, generation: Generation): Promise<void>
   acknowledge(key: CollectionKey, receipt: Receipt, generation: Generation): Promise<void>
   hydrate(key: CollectionKey, pages: SnapshotManifest[], generation: Generation): Promise<void>
