@@ -1,0 +1,35 @@
+{
+  "before": {
+    "x": 1269.5333251953125,
+    "y": 307.1333312988281,
+    "width": 128.4666748046875,
+    "height": 42
+  },
+  "during": {
+    "x": 1269.5333251953125,
+    "y": 344.1333312988281,
+    "width": 128.4666748046875,
+    "height": 42
+  },
+  "events": [
+    {
+      "type": "pointerdown",
+      "target": "BUTTON",
+      "text": "New project"
+    },
+    {
+      "type": "banner",
+      "text": "An update is ready. Save your work, close all Loopmark tabs, then reopen to apply it."
+    },
+    {
+      "type": "pointerup",
+      "target": "HEADER",
+      "text": "YOUR LITTLE CORNER OF MAKINGYour projects, patiently waiting.A few stitches now. A little note for later. Pick up right where you left off.New project"
+    },
+    {
+      "type": "click",
+      "target": "HEADER",
+      "text": "YOUR LITTLE CORNER OF MAKINGYour projects, patiently waiting.A few stitches now. A little note for later. Pick up right where you left off.New project"
+    }
+  ]
+}

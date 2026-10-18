@@ -1,0 +1,271 @@
+{
+  "lane": 0,
+  "run": 8,
+  "pass": false,
+  "source": ".gstack/first-click-layout-failure.json; failing attempt; opaque device identifiers omitted",
+  "events": [
+    {
+      "t": 137,
+      "kind": "added",
+      "target": "DIV#1:Skip to contentloopmark.loopmark.A place for ",
+      "button": "undefined",
+      "active": "BODY#2:Skip to contentloopmark.loopmark.A place for ",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": false,
+      "scopeGeneration": null
+    },
+    {
+      "t": 238,
+      "kind": "pointerdown:capture",
+      "target": "BUTTON#3:New project",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 307.1333312988281,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 307.1333312988281,
+        "right": 1397.999984741211,
+        "bottom": 349.1333312988281,
+        "left": 1269.5333251953125
+      },
+      "active": "BODY#2:Skip to contentloopmark.loopmark.A place for ",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 238,
+      "kind": "pointerdown:bubble",
+      "target": "BUTTON#3:New project",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 307.1333312988281,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 307.1333312988281,
+        "right": 1397.999984741211,
+        "bottom": 349.1333312988281,
+        "left": 1269.5333251953125
+      },
+      "active": "BODY#2:Skip to contentloopmark.loopmark.A place for ",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 238,
+      "kind": "mousedown:capture",
+      "target": "BUTTON#3:New project",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 307.1333312988281,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 307.1333312988281,
+        "right": 1397.999984741211,
+        "bottom": 349.1333312988281,
+        "left": 1269.5333251953125
+      },
+      "active": "BODY#2:Skip to contentloopmark.loopmark.A place for ",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 238,
+      "kind": "mousedown:bubble",
+      "target": "BUTTON#3:New project",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 307.1333312988281,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 307.1333312988281,
+        "right": 1397.999984741211,
+        "bottom": 349.1333312988281,
+        "left": 1269.5333251953125
+      },
+      "active": "BODY#2:Skip to contentloopmark.loopmark.A place for ",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 242,
+      "kind": "focusin:capture",
+      "target": "BUTTON#3:New project",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 307.1333312988281,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 307.1333312988281,
+        "right": 1397.999984741211,
+        "bottom": 349.1333312988281,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 242,
+      "kind": "focusin:bubble",
+      "target": "BUTTON#3:New project",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 307.1333312988281,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 307.1333312988281,
+        "right": 1397.999984741211,
+        "bottom": 349.1333312988281,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 255,
+      "kind": "pointerup:capture",
+      "target": "HEADER#4:YOUR LITTLE CORNER OF MAKINGYour projects, pa",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 343.95001220703125,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 343.95001220703125,
+        "right": 1397.999984741211,
+        "bottom": 385.95001220703125,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 255,
+      "kind": "pointerup:bubble",
+      "target": "HEADER#4:YOUR LITTLE CORNER OF MAKINGYour projects, pa",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 343.95001220703125,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 343.95001220703125,
+        "right": 1397.999984741211,
+        "bottom": 385.95001220703125,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 255,
+      "kind": "mouseup:capture",
+      "target": "HEADER#4:YOUR LITTLE CORNER OF MAKINGYour projects, pa",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 343.95001220703125,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 343.95001220703125,
+        "right": 1397.999984741211,
+        "bottom": 385.95001220703125,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 255,
+      "kind": "mouseup:bubble",
+      "target": "HEADER#4:YOUR LITTLE CORNER OF MAKINGYour projects, pa",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 343.95001220703125,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 343.95001220703125,
+        "right": 1397.999984741211,
+        "bottom": 385.95001220703125,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 255,
+      "kind": "click:capture",
+      "target": "HEADER#4:YOUR LITTLE CORNER OF MAKINGYour projects, pa",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 343.95001220703125,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 343.95001220703125,
+        "right": 1397.999984741211,
+        "bottom": 385.95001220703125,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    },
+    {
+      "t": 256,
+      "kind": "click:bubble",
+      "target": "HEADER#4:YOUR LITTLE CORNER OF MAKINGYour projects, pa",
+      "button": "BUTTON#3:New project",
+      "bbox": {
+        "x": 1269.5333251953125,
+        "y": 343.95001220703125,
+        "width": 128.46665954589844,
+        "height": 42,
+        "top": 343.95001220703125,
+        "right": 1397.999984741211,
+        "bottom": 385.95001220703125,
+        "left": 1269.5333251953125
+      },
+      "active": "BUTTON#3:New project",
+      "dialogs": [],
+      "fontStatus": "loaded",
+      "onClick": true,
+      "scopeGeneration": 0
+    }
+  ]
+}

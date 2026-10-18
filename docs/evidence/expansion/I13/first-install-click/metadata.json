@@ -1,0 +1,36 @@
+{
+  "sourceCommit": "a07b014cdde249bbba94c6567a73f24f800797da",
+  "beforeOfflineBlob": "86b4507a1c56cd52050a71e23acbe81365f5e5af",
+  "afterOfflineBlob": "aaadb58d08445166b32a7434b722a442a45b089e",
+  "naturalProbe": {
+    "contexts": 21,
+    "failures": 1
+  },
+  "bannerProbe": {
+    "contexts": 30,
+    "failures": 0,
+    "contextsWithFalseUpdateBanner": 21
+  },
+  "red": {
+    "command": "LOOPMARK_TEST_PORT=4184 npx playwright test tests/offline-first-install.spec.ts --project=firefox --workers=1",
+    "failed": 1,
+    "passed": 0,
+    "testSeconds": 9.0
+  },
+  "green": {
+    "command": "LOOPMARK_TEST_PORT=4184 npx playwright test tests/offline-first-install.spec.ts tests/offline.spec.ts --workers=1",
+    "passed": 20,
+    "failed": 0,
+    "totalSeconds": 22.4
+  },
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "serviceWorkerCache": "loopmark-7c017ae0a7b1"
+  },
+  "sha256": {
+    "src/offline.ts": "16167cd8962556cbbb5dba44aa44dd7a48c5780b210cc8f4aafad2ec81cbe81e",
+    "tests/offline-first-install.spec.ts": "984205956e745760e997278d463527519848085e062c99028a25d402a83a0e4d",
+    "dist/sw.js": "6e7e14059d23f1c6f1cd39d05e4a4d514f51478b961f4f74c9a5f7a8a8c1277a"
+  }
+}

@@ -1,0 +1,49 @@
+[WebServer] (node:92535) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:92536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [firefox] › tests/offline-first-install.spec.ts:88:1 › first offline installation never inserts an update banner between pointerdown and pointerup (9.0s)
+
+
+  1) [firefox] › tests/offline-first-install.spec.ts:88:1 › first offline installation never inserts an update banner between pointerdown and pointerup 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Project name')
+    Expected: visible
+    Timeout: 8000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByLabel('Project name') with timeout 8000ms
+      - waiting for getByLabel('Project name')
+
+
+      137 |       body: JSON.stringify({ before, during, events }, null, 2),
+      138 |     })
+    > 139 |     await expect(page.getByLabel('Project name')).toBeVisible()
+          |                                                   ^
+      140 |     expect(events).not.toEqual(
+      141 |       expect.arrayContaining([expect.objectContaining({ type: 'banner' })]),
+      142 |     )
+        at <project-root>/tests/offline-first-install.spec.ts:139:51
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/offline-first-install-firs-8597d-n-pointerdown-and-pointerup-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/offline-first-install-firs-8597d-n-pointerdown-and-pointerup-firefox/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/offline-first-install-firs-8597d-n-pointerdown-and-pointerup-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/offline-first-install-firs-8597d-n-pointerdown-and-pointerup-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [firefox] › tests/offline-first-install.spec.ts:88:1 › first offline installation never inserts an update banner between pointerdown and pointerup 
