@@ -22,6 +22,7 @@ import { DomainError } from '../domain/errors'
 import { projectInputSchema, checkpointInputSchema, supportedTimestamp } from '../domain/schema'
 import { MAX_BACKUP_BYTES, utf8Bytes } from '../domain/policy'
 import { validateBackupMedia } from '../media-validation'
+import { limiter, mapBounded } from './concurrency'
 import { describeInline, inlineMedia, storeInline } from './media-codec'
 
 export interface LocalDataDependencies {
@@ -59,26 +60,26 @@ async function expandProject(
   deps: LocalDataDependencies,
   scope: SessionScope,
   allowMissing: boolean,
+  limit: ReturnType<typeof limiter>,
 ): Promise<Project> {
   const { revision: _revision, ...fields } = project
   const inline = async (ref: NonNullable<CheckpointRecord['photo']>) => {
     try {
-      return await inlineMedia(ref, deps.media, scope)
+      return await limit(() => inlineMedia(ref, deps.media, scope))
     } catch (error) {
       if (allowMissing && error instanceof DomainError && error.detail.code === 'BACKUP_INCOMPLETE')
         return undefined
       throw error
     }
   }
-  const children: Checkpoint[] = await Promise.all(
-    checkpoints
-      .filter((c) => c.projectId === project.id)
-      .map(async (c) => {
-        const { revision: _rev, projectId: _id, photo, voice, ...fields } = c
-        const p = photo ? await inline(photo) : undefined,
-          v = voice ? await inline(voice) : undefined
-        return { ...fields, ...(p ? { photo: p } : {}), ...(v ? { voice: v } : {}) }
-      }),
+  const children: Checkpoint[] = await mapBounded(
+    checkpoints.filter((c) => c.projectId === project.id),
+    async (c) => {
+      const { revision: _rev, projectId: _id, photo, voice, ...fields } = c
+      const p = photo ? await inline(photo) : undefined,
+        v = voice ? await inline(voice) : undefined
+      return { ...fields, ...(p ? { photo: p } : {}), ...(v ? { voice: v } : {}) }
+    },
   )
   return {
     ...fields,
@@ -126,19 +127,27 @@ export async function normalizeBackup(
 export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter {
   const { repository, media, plans } = deps
   const scope = () => structuredClone(deps.scope())
+  const limit = limiter(2)
   const list = async (bound: SessionScope) => {
     const view = await repository.readView(bound.key)
-    return (
-      await Promise.all(
-        view.projects.map((p) => expandProject(p, view.checkpoints, deps, bound, true)),
-      )
-    ).sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
+    return view.projects
+      .map(({ revision: _revision, ...project }) => ({
+        ...project,
+        checkpoints: view.checkpoints
+          .filter((c) => c.projectId === project.id)
+          .map(
+            ({ revision: _revision, projectId: _projectId, photo: _photo, voice: _voice, ...c }) =>
+              c,
+          )
+          .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
+      }))
+      .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
   }
   const resultProject = async (bound: SessionScope, id: string) => {
     const view = await repository.readView(bound.key),
       project = view.projects.find((p) => p.id === id)
     if (!project) throw new DomainError('NOT_AVAILABLE')
-    return expandProject(project, view.checkpoints, deps, bound, true)
+    return expandProject(project, view.checkpoints, deps, bound, true, limit)
   }
   async function planned(
     bound: SessionScope,
@@ -173,6 +182,33 @@ export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter
   }
   return {
     listProjects: () => list(scope()),
+    async getProject(id) {
+      const bound = scope(),
+        view = await repository.readView(bound.key),
+        project = view.projects.find((p) => p.id === id)
+      return project ? expandProject(project, view.checkpoints, deps, bound, true, limit) : null
+    },
+    async mediaAvailability(projectId) {
+      const bound = scope(),
+        view = await repository.readView(bound.key)
+      const refs = view.checkpoints
+        .filter((c) => c.projectId === projectId)
+        .flatMap((c) =>
+          (['photo', 'voice'] as const).flatMap((kind) =>
+            c[kind] ? [{ checkpointId: c.id, kind, ref: c[kind] }] : [],
+          ),
+        )
+      return mapBounded(refs, async ({ ref, ...item }) => {
+        try {
+          await limit(async () => (await media.open(ref, bound.key)).cancel())
+          return { ...item, state: 'available' as const }
+        } catch (error) {
+          if (error instanceof DomainError && error.detail.code === 'BACKUP_INCOMPLETE')
+            return { ...item, state: 'missing' as const }
+          throw error
+        }
+      })
+    },
     async getLibraryState() {
       const view = await repository.readView(scope().key)
       return {
@@ -309,10 +345,8 @@ export function createLocalDataAdapter(deps: LocalDataDependencies): DataAdapter
           format: 'loopmark',
           version: 1,
           exportedAt: new Date().toISOString(),
-          projects: await Promise.all(
-            snapshot.view.projects.map((p) =>
-              expandProject(p, snapshot.view.checkpoints, deps, bound, false),
-            ),
+          projects: await mapBounded(snapshot.view.projects, (p) =>
+            expandProject(p, snapshot.view.checkpoints, deps, bound, false, limit),
           ),
         }
         if (utf8Bytes(backup) > MAX_BACKUP_BYTES)

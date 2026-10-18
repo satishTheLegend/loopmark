@@ -51,10 +51,10 @@ it('the installed facade path captures newest checkpoint, all media and full his
     { position: 'row 2', toolSize: '4 mm', nextStep: 'Turn next', notes: '' },
     'checkpoint-two',
   )
-  const listed = await adapter.listProjects()
-  expect(listed[0].checkpoints.map((c) => c.nextStep)).toEqual(['Turn next', 'Turn first'])
-  expect(listed[0].checkpoints[1].photo).toBe(png)
-  expect(listed[0].checkpoints[1].voice).toBe(wav)
+  const listed = [await adapter.getProject(p.id)]
+  expect(listed[0]!.checkpoints.map((c) => c.nextStep)).toEqual(['Turn next', 'Turn first'])
+  expect(listed[0]!.checkpoints[1].photo).toBe(png)
+  expect(listed[0]!.checkpoints[1].voice).toBe(wav)
   const backup = await adapter.exportBackup()
   expect(backup.projects).toEqual(listed)
   await repository.close()
@@ -65,7 +65,7 @@ it('the installed facade path captures newest checkpoint, all media and full his
     plans: createBrowserOperationPlanStore(repository),
     scope: () => scope,
   })
-  expect(await adapter.listProjects()).toEqual(listed)
+  expect(await adapter.getProject(p.id)).toEqual(listed[0])
 })
 it('durable operation plans keep create/checkpoint retries byte-identical after reopen', async () => {
   const p = await adapter.createProject(input, 'durable-create')
@@ -216,4 +216,38 @@ it('server receipt references missing media permit readable text but cannot prod
     notes: '',
   })
   expect((await adapter.listProjects())[0].checkpoints[0].nextStep).toBe('New local text')
+})
+it('shelf reads no media and selected detail/availability bound media work to two', async () => {
+  const p = await adapter.createProject(input, 'shelf')
+  for (let i = 0; i < 4; i++)
+    await adapter.addCheckpoint(
+      p.id,
+      { position: String(i), toolSize: '4 mm', nextStep: 'Turn', notes: '', photo: png },
+      `cp-${i}`,
+    )
+  let calls = 0,
+    active = 0,
+    maximum = 0
+  const open = repository.media.open.bind(repository.media)
+  repository.media.open = async (...args) => {
+    calls++
+    active++
+    maximum = Math.max(maximum, active)
+    await new Promise((resolve) => setTimeout(resolve, 1))
+    try {
+      return await open(...args)
+    } finally {
+      active--
+    }
+  }
+  const listed = await adapter.listProjects()
+  expect(calls).toBe(0)
+  expect(listed[0].checkpoints[0].photo).toBeUndefined()
+  const [detail, availability] = await Promise.all([
+    adapter.getProject(p.id),
+    adapter.mediaAvailability(p.id),
+  ])
+  expect(detail?.checkpoints.every((c) => c.photo === png)).toBe(true)
+  expect(availability.every((item) => item.state === 'available')).toBe(true)
+  expect(maximum).toBe(2)
 })
