@@ -57,7 +57,12 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
   const count = Number(process.env.LOOPMARK_LOAD_ACCOUNTS)
   expect([100, 1000]).toContain(count)
   const env = await localEnvironment()
-  const boundedRequest = async (token: string, endpoint: string, body: unknown) => {
+  const boundedRequest = async (
+    token: string,
+    endpoint: string,
+    body: unknown,
+    timeout = 60000,
+  ) => {
     const response = await fetch(env.url + '/functions/v1/' + endpoint, {
       method: 'POST',
       headers: {
@@ -66,7 +71,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         'content-type': 'application/json',
       },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(60000),
+      signal: AbortSignal.timeout(timeout),
     })
     return {
       status: response.status,
@@ -77,7 +82,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
     id = randomUUID(),
     started = new Date().toISOString(),
     report: any = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       id,
       accounts: count,
       concurrency: count,
@@ -198,12 +203,25 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
     )),
   )
   const prepared = await mapLimit(credentials, 16, async (a) => {
-    const value = project()
-    return {
-      a,
-      value,
-      cmd: await command(a, { kind: 'project.create', payload: { project: value } }),
-    }
+    const value = project(),
+      cmd = await command(a, { kind: 'project.create', payload: { project: value } }),
+      checkpoint = {
+        id: randomUUID(),
+        projectId: value.id,
+        createdAt: new Date().toISOString(),
+        position: '12',
+        toolSize: '4mm',
+        nextStep: 'Concurrent restart',
+        notes: '',
+      },
+      checkpointCommand = await command(
+        a,
+        { kind: 'checkpoint.create', payload: { checkpoint, updatedAt: checkpoint.createdAt } },
+        { afterOperationId: cmd.operationId },
+      )
+    // Keep both immutable commands in memory through burst and bounded recovery.
+    // No auth credentials or command bodies are written to load evidence.
+    return { a, value, cmd, checkpointCommand }
   })
   const owners = credentials.map((a) => quote(a.id) + '::uuid').join(',')
   report.retainedActiveAccountsAtBurst = Number(
@@ -289,22 +307,40 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
   }
   const sampler = sample(),
     begin = performance.now()
-  const send = async (a: Actor, endpoint: string, body: unknown) => {
+  let metrics = report
+  const send = async (a: Actor, endpoint: string, body: unknown, deadline = Infinity) => {
     for (let attempt = 0; attempt < 8; attempt++) {
+      if (Date.now() >= deadline) throw new Error('LOAD_RECOVERY_DEADLINE')
       const start = performance.now()
       let result: { status: number; body: any }
       try {
-        result = await boundedRequest(a.token, endpoint, body)
-      } catch {
+        result = await boundedRequest(
+          a.token,
+          endpoint,
+          body,
+          Math.max(1, Math.min(60000, deadline - Date.now())),
+        )
+      } catch (error) {
+        const candidate =
+          (error as { cause?: { code?: string }; name?: string })?.cause?.code ??
+          (error as Error)?.name
+        const code =
+          /^(ECONNRESET|ECONNREFUSED|ETIMEDOUT|EMFILE|ENFILE|UND_ERR_[A-Z_]+|TimeoutError|AbortError|TypeError)$/.test(
+            candidate ?? '',
+          )
+            ? candidate!
+            : 'UNKNOWN'
+        metrics.transportErrors ??= {}
+        metrics.transportErrors[code] = (metrics.transportErrors[code] ?? 0) + 1
         result = { status: 0, body: { error: { code: 'TRANSPORT' } } }
       }
-      report.latenciesMs.push(performance.now() - start)
-      report.responseCodes[result.status] = (report.responseCodes[result.status] ?? 0) + 1
+      metrics.latenciesMs.push(performance.now() - start)
+      metrics.responseCodes[result.status] = (metrics.responseCodes[result.status] ?? 0) + 1
       const code = /^[A-Z_]{1,60}$/.test(result.body?.error?.code ?? '')
         ? result.body.error.code
         : 'UNTYPED'
       const kind = `${endpoint}:${result.status}:${result.status === 200 ? 'OK' : code}`
-      report.responseKinds[kind] = (report.responseKinds[kind] ?? 0) + 1
+      metrics.responseKinds[kind] = (metrics.responseKinds[kind] ?? 0) + 1
       if (result.status === 200) return result
       // Network/gateway failures are transient even when they occur before the Edge error envelope.
       // Retry the exact immutable command, as the production durable queue does after an unknown outcome.
@@ -313,7 +349,7 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         result.status >= 500 ||
         (result.status === 429 && result.body?.error?.retryable)
       ) {
-        report.retryCount++
+        metrics.retryCount++
         await wait(Math.min(10000, 500 * 2 ** attempt) + Math.random() * 1000)
         continue
       }
@@ -334,7 +370,8 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         at: new Date().toISOString(),
       }),
     )
-    const backup = backupSnapshot(ctx).then(
+    const backupId = randomUUID()
+    const backup = backupSnapshot(ctx, { id: backupId }).then(
       (value) => ({ ok: true as const, value }),
       (error) => ({
         ok: false as const,
@@ -342,30 +379,13 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
       }),
     )
     const outcomes = await Promise.allSettled(
-      prepared.map(async ({ a, value, cmd }, index) => {
+      prepared.map(async ({ a, cmd, checkpointCommand }, index) => {
         const first = await send(a, 'sync-push', cmd)
         if (index % 10 === 0) {
           const repeated = await send(a, 'sync-push', cmd)
           expect(repeated.body).toEqual(first.body)
         }
-        const checkpoint = {
-          id: randomUUID(),
-          projectId: value.id,
-          createdAt: new Date().toISOString(),
-          position: '12',
-          toolSize: '4mm',
-          nextStep: 'Concurrent restart',
-          notes: '',
-        }
-        await send(
-          a,
-          'sync-push',
-          await command(
-            a,
-            { kind: 'checkpoint.create', payload: { checkpoint, updatedAt: checkpoint.createdAt } },
-            { afterOperationId: cmd.operationId },
-          ),
-        )
+        await send(a, 'sync-push', checkpointCommand)
         const page = await send(a, 'sync-pull', pullRequest(a))
         expect(page.body.entries).toHaveLength(2)
         // Verify ownership after the burst below, so an overloaded gateway cannot masquerade as authorization denial.
@@ -388,8 +408,38 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
           : 'UNCLASSIFIED'
       report.failureKinds[kind] = (report.failureKinds[kind] ?? 0) + 1
     }
-    if (failed.length) throw new Error('Concurrent reconnect failures: ' + failed.length)
-    expect(recovery.ok).toBe(true)
+    report.burstSuccess = failed.length === 0 && recovery.ok
+    report.burstFinishedAt = new Date().toISOString()
+    metrics = { latenciesMs: [], responseCodes: {}, responseKinds: {}, retryCount: 0 }
+    report.postPressure = metrics
+    if (failed.length) {
+      report.phase = 'bounded-post-pressure-recovery'
+      report.recoveryStartedAt = new Date().toISOString()
+      const deadline = Date.now() + 5 * 60_000
+      const recovered = await mapLimit(prepared, 8, async ({ a, cmd, checkpointCommand }) => {
+        try {
+          await send(a, 'sync-push', cmd, deadline)
+          await send(a, 'sync-push', checkpointCommand, deadline)
+          const page = await send(a, 'sync-pull', pullRequest(a), deadline)
+          expect(page.body.entries).toHaveLength(2)
+          return true
+        } catch {
+          return false
+        }
+      })
+      report.recoveryFinishedAt = new Date().toISOString()
+      report.recoveredAccounts = recovered.filter(Boolean).length
+      report.recoveryConcurrency = 8
+      report.recoveryDeadlineMs = 300000
+      expect(report.recoveredAccounts).toBe(count)
+    }
+    if (!recovery.ok) {
+      // Retry the same recovery-point identity after burst pressure, preserving
+      // the failed concurrent-backup result above and its original raw timings.
+      const resumed = await backupSnapshot(ctx, { id: backupId })
+      report.postPressureBackupComplete = true
+      report.postPressureRecoveryBytes = resumed.bytes
+    }
     await mapLimit(prepared, 8, async ({ a }, index) => {
       const denied = await retryHttp('cross-owner-pull', () =>
         boundedRequest(credentials[(index + 1) % count].token, 'sync-pull', pullRequest(a)),
@@ -595,8 +645,14 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
     report.interruptedMediaRecovered = 10
     report.duplicateWebhookDeliveries = 20
     report.compactionRounds = rounds
-    report.success = true
+    report.recoveryAndInvariantsComplete = true
+    report.success = report.burstSuccess
     report.phase = 'complete'
+    // A recovered overload run is not relabeled a successful simultaneous burst.
+    expect(
+      report.burstSuccess,
+      'Original simultaneous burst exceeded this local runtime capacity; recovery evidence is reported separately',
+    ).toBe(true)
   } finally {
     sampling = false
     await sampler
@@ -613,6 +669,13 @@ it('real concurrent reconnects preserve owner effects under delayed commits, int
         .filter(([code]) => code !== '200')
         .reduce((sum, [, n]) => sum + Number(n), 0) / Math.max(1, total)
     delete report.latenciesMs
+    if (report.postPressure) {
+      const values = report.postPressure.latenciesMs.sort((a: number, b: number) => a - b)
+      report.postPressure.requests = values.length
+      report.postPressure.p50Ms = values[Math.floor((values.length - 1) * 0.5)] ?? null
+      report.postPressure.p95Ms = values[Math.floor((values.length - 1) * 0.95)] ?? null
+      delete report.postPressure.latenciesMs
+    }
     report.elapsedMs = performance.now() - begin
     report.finishedAt = new Date().toISOString()
     await writeFile(directory + '/result.json', JSON.stringify(report, null, 2))
